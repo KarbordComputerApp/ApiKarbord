@@ -28,7 +28,7 @@
 
         public string TrsRprt { get; set; }
 
-        public string Spec { get; set; }
+        public string Spec { get; set; } 
 
         public string VstrCode { get; set; } 
     }
