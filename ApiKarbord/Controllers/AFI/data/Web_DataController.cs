@@ -965,9 +965,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             sql += string.Format("  KhdtCode = {0} )", KhdtCode[i]);
                     }
 
-
                 }
-
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_ErjDocK>(sql);
                 return Ok(listTrzI);
@@ -1005,7 +1003,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/Web_Data/Web_ErjUsers   ارجاع شونده/ارجاع دهنده
-              [Route("api/Web_Data/Web_ErjUsers/{ace}/{sal}/{group}")]
+        [Route("api/Web_Data/Web_ErjUsers/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> GetWeb_ErjUsers(string ace, string sal, string group)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
@@ -1013,6 +1011,158 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(@"Select * from Web_ErjUsers");
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjUsers>(sql).ToList();
                 return Ok(listDB);
+            }
+            return null;
+        }
+
+        public partial class Web_ErjDocB_Last
+        {
+            public string CustName { get; set; }
+
+            public string KhdtName { get; set; }
+
+            public string Spec { get; set; }
+
+            public string Status { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public string MhltDate { get; set; }
+
+            public string EghdamComm { get; set; }
+
+            public string SpecialComm { get; set; }
+
+            public string FinalComm { get; set; }
+
+            public string DocDesc { get; set; }
+
+            public int? DocBStep { get; set; }
+
+            public string RjRadif { get; set; }
+
+            public int? BandNo { get; set; }
+
+            public int? DocBMode { get; set; }
+
+            public string RjComm { get; set; }
+
+            public string RjDate { get; set; }
+
+            public string RjStatus { get; set; }
+
+            public string RjEndDate { get; set; }
+
+            public string RjMhltDate { get; set; }
+
+            public DateTime? RjUpdateDate { get; set; }
+
+            public string RjUpdateUser { get; set; }
+
+            public int? ErjaCount { get; set; }
+
+            public double? RjTime { get; set; }
+
+            public string FromUserCode { get; set; }
+
+            public string FromUserName { get; set; }
+
+            public string ToUserCode { get; set; }
+
+            public string ToUserName { get; set; }
+
+            public string RjReadSt { get; set; }
+
+        }
+
+
+        public class ErjDocB_Last
+        {
+            public string erjaMode { get; set; }
+
+            public string docBMode { get; set; }
+
+            public string fromUserCode { get; set; }
+
+            public string toUserCode { get; set; }
+
+            public string srchSt { get; set; }
+
+            public string azTarikh0 { get; set; }
+
+            public string taTarikh0 { get; set; }
+
+            public string azTarikh1 { get; set; }
+
+            public string taTarikh1 { get; set; }
+
+            public string azTarikh2 { get; set; }
+
+            public string taTarikh2 { get; set; }
+
+            public string status { get; set; }
+
+            public string custCode { get; set; }
+
+            public string khdtCode { get; set; }
+        }
+
+        // Post: api/Web_Data/Web_ErjDocB_Last گزارش فهرست ارجاعات  
+        [Route("api/Web_Data/Web_ErjDocB_Last/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ErjDocB_Last(string ace, string sal, string group, ErjDocB_Last ErjDocB_Last)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}') AS ErjDocK where 1 = 1 "
+                          , ErjDocB_Last.erjaMode
+                          , ErjDocB_Last.docBMode
+                          , ErjDocB_Last.fromUserCode
+                          , ErjDocB_Last.toUserCode
+                          , ErjDocB_Last.srchSt);
+
+                /* if (ErjDocB_Last.azTarikh != "")
+                     sql += string.Format(" and DocDate >= '{0}' ", ErjDocB_Last.azTarikh);
+
+                 if (ErjDocB_Last.taTarikh != "")
+                     sql += string.Format(" and DocDate <= '{0}' ", ErjDocB_Last.taTarikh);
+
+
+                 if (ErjDocB_Last.Status != "")
+                     sql += string.Format(" and Status = '{0}' ", ErjDocB_Last.Status);
+
+                 if (ErjDocB_Last.CustCode != "")
+                 {
+                     sql += " and ( ";
+                     string[] CustCode = ErjDocB_Last.CustCode.Split('*');
+                     for (int i = 0; i < CustCode.Length; i++)
+                     {
+                         if (i < CustCode.Length - 1)
+                             sql += string.Format("  CustCode = '{0}' Or ", CustCode[i]);
+                         else
+                             sql += string.Format("  CustCode = '{0}' )", CustCode[i]);
+                     }
+                     //sql += string.Format(" and CustCode = '{0}' ", ErjDocKObject.CustCode);
+                 }
+
+                 if (ErjDocB_Last.KhdtCode != "")
+                 {
+                     sql += " and ( ";
+                     string[] KhdtCode = ErjDocB_Last.KhdtCode.Split('*');
+
+                     for (int i = 0; i < KhdtCode.Length; i++)
+                     {
+                         if (i < KhdtCode.Length - 1)
+                             sql += string.Format("  KhdtCode = {0} Or ", KhdtCode[i]);
+                         else
+                             sql += string.Format("  KhdtCode = {0} )", KhdtCode[i]);
+                     }
+
+                 }*/
+
+                var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
+                return Ok(listErjDocB_Last);
             }
             return null;
         }
