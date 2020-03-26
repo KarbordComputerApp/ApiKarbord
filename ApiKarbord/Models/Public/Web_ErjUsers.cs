@@ -16,9 +16,9 @@
 
         public string ProgName { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; }   
 
-        public string Psw { get; set; }
+        public string Psw { get; set; } 
 
         //public image Emza { get; set; }
 
