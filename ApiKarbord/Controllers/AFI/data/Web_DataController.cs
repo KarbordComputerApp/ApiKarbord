@@ -1017,6 +1017,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public partial class Web_ErjDocB_Last
         {
+            public long? DocNo { get; set; }
+
+            public string DocDate { get; set; }
+
             public string CustName { get; set; }
 
             public string KhdtName { get; set; }
@@ -1088,17 +1092,17 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string srchSt { get; set; }
 
-            public string azTarikh0 { get; set; }
+            public string azDocDate { get; set; }
 
-            public string taTarikh0 { get; set; }
+            public string taDocDate { get; set; }
 
-            public string azTarikh1 { get; set; }
+            public string azRjDate { get; set; }
 
-            public string taTarikh1 { get; set; }
+            public string taRjDate { get; set; }
 
-            public string azTarikh2 { get; set; }
+            public string azMhltDate { get; set; }
 
-            public string taTarikh2 { get; set; }
+            public string taMhltDate { get; set; }
 
             public string status { get; set; }
 
@@ -1122,44 +1126,54 @@ namespace ApiKarbord.Controllers.AFI.data
                           , ErjDocB_Last.toUserCode
                           , ErjDocB_Last.srchSt);
 
-                /* if (ErjDocB_Last.azTarikh != "")
-                     sql += string.Format(" and DocDate >= '{0}' ", ErjDocB_Last.azTarikh);
+                if (ErjDocB_Last.azDocDate != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", ErjDocB_Last.azDocDate);
 
-                 if (ErjDocB_Last.taTarikh != "")
-                     sql += string.Format(" and DocDate <= '{0}' ", ErjDocB_Last.taTarikh);
+                if (ErjDocB_Last.taDocDate != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", ErjDocB_Last.taDocDate);
 
+                if (ErjDocB_Last.azRjDate != "")
+                    sql += string.Format(" and RjDate >= '{0}' ", ErjDocB_Last.azRjDate);
 
-                 if (ErjDocB_Last.Status != "")
-                     sql += string.Format(" and Status = '{0}' ", ErjDocB_Last.Status);
+                if (ErjDocB_Last.taRjDate != "")
+                    sql += string.Format(" and RjDate <= '{0}' ", ErjDocB_Last.taRjDate);
 
-                 if (ErjDocB_Last.CustCode != "")
-                 {
-                     sql += " and ( ";
-                     string[] CustCode = ErjDocB_Last.CustCode.Split('*');
-                     for (int i = 0; i < CustCode.Length; i++)
-                     {
-                         if (i < CustCode.Length - 1)
-                             sql += string.Format("  CustCode = '{0}' Or ", CustCode[i]);
-                         else
-                             sql += string.Format("  CustCode = '{0}' )", CustCode[i]);
-                     }
-                     //sql += string.Format(" and CustCode = '{0}' ", ErjDocKObject.CustCode);
-                 }
+                if (ErjDocB_Last.azMhltDate != "")
+                    sql += string.Format(" and MhltDate >= '{0}' ", ErjDocB_Last.azMhltDate);
 
-                 if (ErjDocB_Last.KhdtCode != "")
-                 {
-                     sql += " and ( ";
-                     string[] KhdtCode = ErjDocB_Last.KhdtCode.Split('*');
+                if (ErjDocB_Last.taMhltDate != "")
+                    sql += string.Format(" and MhltDate <= '{0}' ", ErjDocB_Last.taMhltDate);
 
-                     for (int i = 0; i < KhdtCode.Length; i++)
-                     {
-                         if (i < KhdtCode.Length - 1)
-                             sql += string.Format("  KhdtCode = {0} Or ", KhdtCode[i]);
-                         else
-                             sql += string.Format("  KhdtCode = {0} )", KhdtCode[i]);
-                     }
+                if (ErjDocB_Last.status != "")
+                    sql += string.Format(" and Status = '{0}' ", ErjDocB_Last.status);
 
-                 }*/
+                if (ErjDocB_Last.khdtCode != "")
+                {
+                    sql += " and ( ";
+                    string[] KhdtCode = ErjDocB_Last.khdtCode.Split('*');
+
+                    for (int i = 0; i < KhdtCode.Length; i++)
+                    {
+                        if (i < KhdtCode.Length - 1)
+                            sql += string.Format("  KhdtCode = {0} Or ", KhdtCode[i]);
+                        else
+                            sql += string.Format("  KhdtCode = {0} )", KhdtCode[i]);
+                    }
+                }
+
+                if (ErjDocB_Last.custCode != "")
+                {
+                    sql += " and ( ";
+                    string[] CustCode = ErjDocB_Last.custCode.Split('*');
+                    for (int i = 0; i < CustCode.Length; i++)
+                    {
+                        if (i < CustCode.Length - 1)
+                            sql += string.Format("  CustCode = '{0}' Or ", CustCode[i]);
+                        else
+                            sql += string.Format("  CustCode = '{0}' )", CustCode[i]);
+                    }
+                    //sql += string.Format(" and CustCode = '{0}' ", ErjDocKObject.CustCode);
+                }
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
                 return Ok(listErjDocB_Last);
