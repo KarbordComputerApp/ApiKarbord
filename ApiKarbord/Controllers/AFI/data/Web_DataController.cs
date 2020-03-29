@@ -729,7 +729,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  set @username = '{2}'
                                                  select 'DocK'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'Fdoc') as Trs
                                                  union all
-                                                 select 'DocKMin'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FdocMin') as Trs"
+                                                 select 'FERJ'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FERJ') as Trs"
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReportErj>(sql).ToList();
                     return Ok(listDB);
