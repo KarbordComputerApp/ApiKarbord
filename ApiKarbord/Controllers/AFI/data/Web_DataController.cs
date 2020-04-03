@@ -1182,6 +1182,56 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class Web_ErjDocErja
+        {
+            public long SerialNumber { get; set; }
+
+            public int? BandNo { get; set; }
+
+            public int? DocBMode { get; set; }
+
+            public string RjComm { get; set; }
+
+            public string RjDate { get; set; }
+
+            public string RjStatus { get; set; }
+
+            public string RjTimeSt { get; set; }
+
+            public string FromUserCode { get; set; }
+
+            public string FromUserName { get; set; }
+
+            public string ToUserCode { get; set; }
+
+            public string ToUserName { get; set; }
+
+            public string RjReadSt { get; set; }
+        }
+
+        public class ErjDocErja
+        {
+            public long SerialNumber { get; set; }
+        }
+
+        // Post: api/Web_Data/Web_ErjDocErja گزارش ریز ارجاعات  
+        [Route("api/Web_Data/Web_ErjDocErja/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ErjDocErja(string ace, string sal, string group, ErjDocErja ErjDocErja)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group)) 
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 "
+                          , ErjDocErja.SerialNumber
+                          );
+
+                var listErjDocErja = UnitDatabase.db.Database.SqlQuery<Web_ErjDocErja>(sql);
+                return Ok(listErjDocErja);
+            }
+            return null;
+        }
+
         //-------------------------------------------------------------------------------------------------------------------------------
     }
 }
