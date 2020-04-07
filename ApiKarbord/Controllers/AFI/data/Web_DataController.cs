@@ -1207,6 +1207,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string ToUserName { get; set; }
 
             public string RjReadSt { get; set; }
+
+            public string RooneveshtUsers { get; set; }
         }
 
         public class ErjDocErja
@@ -1222,9 +1224,8 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(ace, sal, group)) 
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 "
-                          , ErjDocErja.SerialNumber
-                          );
+                          @"select * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 order by BandNo,DocBMode "
+                          , ErjDocErja.SerialNumber);
 
                 var listErjDocErja = UnitDatabase.db.Database.SqlQuery<Web_ErjDocErja>(sql);
                 return Ok(listErjDocErja);
