@@ -247,6 +247,7 @@
     <Compile Include="Models\Public\Web_Kala.cs" />
     <Compile Include="Models\Public\Web_KalaPrice.cs" />
     <Compile Include="Models\Public\Web_Thvl.cs" />
+    <Compile Include="Models\Public\Web_TrzlKalaExf.cs" />
     <Compile Include="Models\Public\Web_Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

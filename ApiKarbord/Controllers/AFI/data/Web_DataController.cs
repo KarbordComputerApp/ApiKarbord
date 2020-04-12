@@ -638,14 +638,41 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  dbo.Web_TrzIKala('{0}', '{1}') AS TrzI where 1 = 1 ",
                           TrzIObject.azTarikh, TrzIObject.taTarikh);
-                if (TrzIObject.InvCode != "0")
-                    sql += string.Format(" and InvCode = '{0}' ", TrzIObject.InvCode);
+                //if (TrzIObject.InvCode != "0")
+                //    sql += string.Format(" and InvCode = '{0}' ", TrzIObject.InvCode);
 
                 if (TrzIObject.KGruCode != "0")
                     sql += string.Format(" and KGruCode = '{0}' ", TrzIObject.KGruCode);
 
-                if (TrzIObject.KalaCode != "0")
-                    sql += string.Format("and KalaCode = '{0}' ", TrzIObject.KalaCode);
+                if (TrzIObject.InvCode != "")
+                {
+                    sql += " and ( ";
+                    string[] InvCode = TrzIObject.InvCode.Split('*');
+
+                    for (int i = 0; i < InvCode.Length; i++)
+                    {
+                        if (i < InvCode.Length - 1)
+                            sql += string.Format("  InvCode = {0} Or ", InvCode[i]);
+                        else
+                            sql += string.Format("  InvCode = {0} )", InvCode[i]);
+                    }
+                }
+
+
+                if (TrzIObject.KalaCode != "")
+                {
+                    sql += " and ( ";
+                    string[] KalaCode = TrzIObject.KalaCode.Split('*');
+
+                    for (int i = 0; i < KalaCode.Length; i++)
+                    {
+                        if (i < KalaCode.Length - 1)
+                            sql += string.Format("  KalaCode = {0} Or ", KalaCode[i]);
+                        else
+                            sql += string.Format("  KalaCode = {0} )", KalaCode[i]);
+                    }
+                }
+
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_TrzIKala>(sql);
                 return Ok(listTrzI);
@@ -653,6 +680,65 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+        public class TrzIExfObject
+        {
+            public string azTarikh { get; set; }
+            public string taTarikh { get; set; }
+            public string InvCode { get; set; }
+            public string KGruCode { get; set; }
+            public string KalaCode { get; set; }
+        }
+        // Post: api/Web_Data/TrzIExf گزارش موجودی انبار  
+        // HE_Report_TrzIKalaExf
+        [Route("api/Web_Data/TrzIExf/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrzIKalaExf(string ace, string sal, string group, TrzIExfObject TrzIExfObject)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}') AS TrzIExf where 1 = 1 ",
+                          TrzIExfObject.azTarikh, TrzIExfObject.taTarikh);
+
+                if (TrzIExfObject.KGruCode != "0")
+                    sql += string.Format(" and KGruCode = '{0}' ", TrzIExfObject.KGruCode);
+
+                if (TrzIExfObject.InvCode != "")
+                {
+                    sql += " and ( ";
+                    string[] InvCode = TrzIExfObject.InvCode.Split('*');
+
+                    for (int i = 0; i < InvCode.Length; i++)
+                    {
+                        if (i < InvCode.Length - 1)
+                            sql += string.Format(" InvCode = {0} Or ", InvCode[i]);
+                        else
+                            sql += string.Format(" InvCode = {0} )", InvCode[i]);
+                    }
+                }
+
+
+                if (TrzIExfObject.KalaCode != "")
+                {
+                    sql += " and ( ";
+                    string[] KalaCode = TrzIExfObject.KalaCode.Split('*');
+
+                    for (int i = 0; i < KalaCode.Length; i++)
+                    {
+                        if (i < KalaCode.Length - 1)
+                            sql += string.Format(" KalaCode = {0} Or ", KalaCode[i]);
+                        else
+                            sql += string.Format(" KalaCode = {0} )", KalaCode[i]);
+                    }
+                }
+
+                sql += " order by KalaCode ";
+
+                var listTrzIExf = UnitDatabase.db.Database.SqlQuery<Web_TrzIKalaExf>(sql);
+                return Ok(listTrzIExf);
+            }
+            return null;
+        }
 
 
         // دریافت اطلاعات سطح دسترسی کاربر
