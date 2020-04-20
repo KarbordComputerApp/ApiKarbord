@@ -40,15 +40,17 @@
 
         // مدل های گزارشات انبار مالی بازرگانی
         public virtual DbSet<Web_TrzIKala> Web_TrzIKala { get; set; }
+        public virtual DbSet<Web_IDocR> Web_IDocR { get; set; }
+
 
 
 
         // مدل های سیستم اتوماسیون اداری
 
-       // public virtual DbSet<Web_DocBDocCUser> Web_DocBDocCUser { get; set; }
-       // public virtual DbSet<Web_ErjCust> Web_ErjCust { get; set; }
-       // public virtual DbSet<Web_ErjDocK> Web_ErjDocK { get; set; }
-       // public virtual DbSet<Web_Khdt> Web_Khdt { get; set; }  
+        // public virtual DbSet<Web_DocBDocCUser> Web_DocBDocCUser { get; set; }
+        // public virtual DbSet<Web_ErjCust> Web_ErjCust { get; set; }
+        // public virtual DbSet<Web_ErjDocK> Web_ErjDocK { get; set; }
+        // public virtual DbSet<Web_Khdt> Web_Khdt { get; set; }  
 
         public ApiModel(string connectionString) : base(connectionString)
         {

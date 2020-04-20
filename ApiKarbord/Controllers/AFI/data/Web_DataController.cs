@@ -741,6 +741,76 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class IDocRObject
+        {
+            public string azTarikh { get; set; }
+            public string taTarikh { get; set; }
+            public string InvCode { get; set; }
+            public string KalaCode { get; set; }
+            public string ModeCode { get; set; }
+            public string ThvlCode { get; set; }
+        }
+        
+        // Post: api/Web_Data/IDocR گزارش ريز گردش اسناد انبارداري
+        // HE_Report_IDocR
+        [Route("api/Web_Data/IDocR/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_IDocRExf(string ace, string sal, string group, IDocRObject IDocRObject)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
+                          IDocRObject.azTarikh, IDocRObject.taTarikh);
+
+                if (IDocRObject.InvCode != "")
+                {
+                    sql += " and ( ";
+                    string[] InvCode = IDocRObject.InvCode.Split('*');
+
+                    for (int i = 0; i < InvCode.Length; i++)
+                    {
+                        if (i < InvCode.Length - 1)
+                            sql += string.Format(" InvCode = {0} Or ", InvCode[i]);
+                        else
+                            sql += string.Format(" InvCode = {0} )", InvCode[i]);
+                    }
+                }
+
+
+                if (IDocRObject.KalaCode != "")
+                {
+                    sql += " and ( ";
+                    string[] KalaCode = IDocRObject.KalaCode.Split('*');
+
+                    for (int i = 0; i < KalaCode.Length; i++)
+                    {
+                        if (i < KalaCode.Length - 1)
+                            sql += string.Format(" KalaCode = {0} Or ", KalaCode[i]);
+                        else
+                            sql += string.Format(" KalaCode = {0} )", KalaCode[i]);
+                    }
+                }
+
+                if (IDocRObject.ModeCode != "")
+                {
+                    sql += string.Format(" and (ModeCode={0})", IDocRObject.ModeCode);
+                }
+
+                if (IDocRObject.ThvlCode != "")
+                {
+                    sql += string.Format(" and (ModeCode={0})", IDocRObject.ThvlCode);
+                }
+
+                sql += " order by DocNo ";
+
+                var listIDocR = UnitDatabase.db.Database.SqlQuery<Web_IDocR>(sql);
+                return Ok(listIDocR);
+            }
+            return null;
+        }
+
+
         // دریافت اطلاعات سطح دسترسی کاربر
         public class AccessUser
         {

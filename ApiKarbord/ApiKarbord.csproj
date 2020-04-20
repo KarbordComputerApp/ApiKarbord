@@ -225,6 +225,7 @@
     <Compile Include="Models\Public\Web_DocBDocCUser.cs" />
     <Compile Include="Models\Public\Web_ErjCust.cs" />
     <Compile Include="Models\Public\Web_ErjDocK.cs" />
+    <Compile Include="Models\Public\Web_IDocR.cs" />
     <Compile Include="Models\Public\Web_Khdt.cs" />
     <Compile Include="Models\Public\Web_TrzIKala.cs" />
     <Compile Include="Models\Public\AddMin.cs" />
