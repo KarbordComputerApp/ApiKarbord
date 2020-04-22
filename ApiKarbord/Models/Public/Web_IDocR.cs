@@ -1,5 +1,5 @@
 ﻿namespace ApiKarbord.Models
- {
+{
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -20,6 +20,7 @@
         [StringLength(250)]
         public string InvName { get; set; }
 
+
         [StringLength(250)]
         public string Spec { get; set; }
 
@@ -33,7 +34,7 @@
         public string Tasvib { get; set; }
 
         [StringLength(100)]
-        public string ThviName { get; set; }
+        public string ThvlName { get; set; }
 
         [StringLength(250)]
         public string MkzName { get; set; }

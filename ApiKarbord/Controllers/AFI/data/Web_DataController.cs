@@ -750,7 +750,7 @@ namespace ApiKarbord.Controllers.AFI.data
             public string ModeCode { get; set; }
             public string ThvlCode { get; set; }
         }
-        
+
         // Post: api/Web_Data/IDocR گزارش ريز گردش اسناد انبارداري
         // HE_Report_IDocR
         [Route("api/Web_Data/IDocR/{ace}/{sal}/{group}")]
@@ -855,9 +855,13 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  set @ace = '{0}'
                                                  set @group = {1}
                                                  set @username = '{2}'
-                                                 select 'TiKala'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'TiKala') as Trs
+                                                 select 'TrzIKala'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'TrzIKala') as Trs
                                                  union all
-                                                 select 'TiKalaMin'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'TiKalaMin') as Trs"
+                                                 select 'TrzIKalaExf'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'TrzIKalaExf') as Trs
+                                                 union all
+                                                 select 'IDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'IDocR') as Trs
+                                                 union all
+                                                 select 'FDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR') as Trs"
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
                     return Ok(listDB);
@@ -883,9 +887,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  set @ace = '{0}'
                                                  set @group = {1}
                                                  set @username = '{2}'
-                                                 select 'DocK'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'Fdoc') as Trs
+                                                 select 'ErjDocK'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'ErjDocK') as Trs
                                                  union all
-                                                 select 'FERJ'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FERJ') as Trs"
+                                                 select 'ErjDocErja'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'ErjDocErja') as Trs"
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReportErj>(sql).ToList();
                     return Ok(listDB);
@@ -1064,6 +1068,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class ErjDocKObject
         {
+            public string userName { get; set; }
+            public string userMode { get; set; }
             public string azTarikh { get; set; }
             public string taTarikh { get; set; }
             public string Status { get; set; }
@@ -1081,8 +1087,11 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_ErjDocK('{0}') AS ErjDocK where 1 = 1 ",
+                          @"select * FROM  Web_ErjDocK('{0}') AS ErjDocK where 1 = 1",
                           ErjDocKObject.SrchSt);
+
+                if (ErjDocKObject.userMode == "USER")
+                    sql += string.Format(" and Eghdam = '{0}' ", ErjDocKObject.userName);
 
                 if (ErjDocKObject.azTarikh != "")
                     sql += string.Format(" and DocDate >= '{0}' ", ErjDocKObject.azTarikh);
@@ -1377,7 +1386,7 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_ErjDocErja(string ace, string sal, string group, ErjDocErja ErjDocErja)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group)) 
+            if (UnitDatabase.CreateConection(ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 order by BandNo,DocBMode "
