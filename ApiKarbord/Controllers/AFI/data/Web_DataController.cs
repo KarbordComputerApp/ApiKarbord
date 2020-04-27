@@ -1398,6 +1398,42 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+        // GET: api/Web_Data/KGru لیست کالا گروه ها
+        [Route("api/Web_Data/KGru/{ace}/{sal}/{group}")]
+        public IQueryable<Web_KGru> GetWeb_KGru(string ace, string sal, string group)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                return UnitDatabase.db.Web_KGru;
+            }
+            return null;
+        }
+
+
+        // GET: api/Web_Data/Mkz لیست مراکز هزینه
+        [Route("api/Web_Data/Mkz/{ace}/{sal}/{group}")]
+        public IQueryable<Web_Mkz> GetWeb_Mkz(string ace, string sal, string group)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                return UnitDatabase.db.Web_Mkz;
+            }
+            return null;
+        }
+
+        // GET: api/Web_Data/Opr لیست پروژه ها
+        [Route("api/Web_Data/Opr/{ace}/{sal}/{group}")]
+        public IQueryable<Web_Opr> GetWeb_Opr(string ace, string sal, string group)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                return UnitDatabase.db.Web_Opr;
+            }
+            return null;
+        }
+
+
         //-------------------------------------------------------------------------------------------------------------------------------
     }
 }

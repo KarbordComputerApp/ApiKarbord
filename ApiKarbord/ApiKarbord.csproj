@@ -226,7 +226,10 @@
     <Compile Include="Models\Public\Web_ErjCust.cs" />
     <Compile Include="Models\Public\Web_ErjDocK.cs" />
     <Compile Include="Models\Public\Web_IDocR.cs" />
+    <Compile Include="Models\Public\Web_KGru.cs" />
     <Compile Include="Models\Public\Web_Khdt.cs" />
+    <Compile Include="Models\Public\Web_Mkz.cs" />
+    <Compile Include="Models\Public\Web_Opr.cs" />
     <Compile Include="Models\Public\Web_TrzIKala.cs" />
     <Compile Include="Models\Public\AddMin.cs" />
     <Compile Include="Models\Public\Web_IDocK.cs" />

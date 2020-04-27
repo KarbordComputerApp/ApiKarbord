@@ -26,7 +26,10 @@
         public virtual DbSet<Web_FDocHMini> Web_FDocHMini { get; set; }
         public virtual DbSet<Web_Payment> Web_Payment { get; set; }
         public virtual DbSet<Web_Status> Web_Status { get; set; }
+        public virtual DbSet<Web_Mkz> Web_Mkz { get; set; }
+        public virtual DbSet<Web_Opr> Web_Opr { get; set; }
 
+        public virtual DbSet<Web_KGru> Web_KGru { get; set; }
 
         // مدل های انبار مالی بازرگانی
 
