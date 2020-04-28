@@ -744,11 +744,23 @@ namespace ApiKarbord.Controllers.AFI.data
         public class IDocRObject
         {
             public string azTarikh { get; set; }
+
             public string taTarikh { get; set; }
-            public string InvCode { get; set; }
-            public string KalaCode { get; set; }
+
             public string ModeCode { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string KalaCode { get; set; }
+
             public string ThvlCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
+
         }
 
         // Post: api/Web_Data/IDocR گزارش ريز گردش اسناد انبارداري
