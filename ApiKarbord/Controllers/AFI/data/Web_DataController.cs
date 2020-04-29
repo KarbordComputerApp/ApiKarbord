@@ -747,7 +747,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string taTarikh { get; set; }
 
-            public string ModeCode { get; set; }
+            public string NoSanadAnbar { get; set; }
 
             public string InvCode { get; set; }
 
@@ -789,6 +789,20 @@ namespace ApiKarbord.Controllers.AFI.data
                     }
                 }
 
+                if (IDocRObject.KGruCode != "")
+                {
+                    sql += " and ( ";
+                    string[] KGruCode = IDocRObject.KGruCode.Split('*');
+
+                    for (int i = 0; i < KGruCode.Length; i++)
+                    {
+                        if (i < KGruCode.Length - 1)
+                            sql += string.Format(" KGruCode = {0} Or ", KGruCode[i]);
+                        else
+                            sql += string.Format(" KGruCode = {0} )", KGruCode[i]);
+                    }
+                }
+
 
                 if (IDocRObject.KalaCode != "")
                 {
@@ -804,15 +818,55 @@ namespace ApiKarbord.Controllers.AFI.data
                     }
                 }
 
-                if (IDocRObject.ModeCode != "")
-                {
-                    sql += string.Format(" and (ModeCode={0})", IDocRObject.ModeCode);
-                }
 
                 if (IDocRObject.ThvlCode != "")
                 {
-                    sql += string.Format(" and (ModeCode={0})", IDocRObject.ThvlCode);
+                    sql += " and ( ";
+                    string[] ThvlCode = IDocRObject.ThvlCode.Split('*');
+
+                    for (int i = 0; i < ThvlCode.Length; i++)
+                    {
+                        if (i < ThvlCode.Length - 1)
+                            sql += string.Format(" ThvlCode = {0} Or ", ThvlCode[i]);
+                        else
+                            sql += string.Format(" ThvlCode = {0} )", ThvlCode[i]);
+                    }
                 }
+
+                if (IDocRObject.OprCode != "")
+                {
+                    sql += " and ( ";
+                    string[] OprCode = IDocRObject.OprCode.Split('*');
+
+                    for (int i = 0; i < OprCode.Length; i++)
+                    {
+                        if (i < OprCode.Length - 1)
+                            sql += string.Format(" OprCode = {0} Or ", OprCode[i]);
+                        else
+                            sql += string.Format(" OprCode = {0} )", OprCode[i]);
+                    }
+                }
+
+                if (IDocRObject.MkzCode != "")
+                {
+                    sql += " and ( ";
+                    string[] MkzCode = IDocRObject.MkzCode.Split('*');
+
+                    for (int i = 0; i < MkzCode.Length; i++)
+                    {
+                        if (i < MkzCode.Length - 1)
+                            sql += string.Format(" MkzCode = {0} Or ", MkzCode[i]);
+                        else
+                            sql += string.Format(" MkzCode = {0} )", MkzCode[i]);
+                    }
+                }
+
+
+                if (IDocRObject.NoSanadAnbar != "1")
+                {
+                    sql += string.Format(" and (ModeCode={0})", IDocRObject.NoSanadAnbar);
+                }
+
 
                 sql += " order by DocNo ";
 
