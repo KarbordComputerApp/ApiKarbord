@@ -53,7 +53,7 @@
 
         public double? UnitPrice { get; set; }
 
-        public int? DocNo { get; set; }
+        public long? DocNo { get; set; }
 
         [StringLength(10)]
         public string DocDate { get; set; }
@@ -79,8 +79,8 @@
         [StringLength(10)]
         public string InvCode { get; set; }
 
-        [StringLength(10)]
-        public string ModeCode { get; set; }
+        //[StringLength(10)]
+       // public int ModeCode { get; set; }
 
         [StringLength(50)]
         public string ThvlCode { get; set; }
@@ -181,8 +181,6 @@
         [StringLength(50)]
         public string KalaUnitName3 { get; set; }
 
-        [StringLength(50)]
-        public string KalaGru { get; set; }
 
         [Key]
         [Column(Order = 5)]

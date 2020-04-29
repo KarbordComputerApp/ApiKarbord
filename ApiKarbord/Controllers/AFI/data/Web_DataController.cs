@@ -644,35 +644,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (TrzIObject.KGruCode != "0")
                     sql += string.Format(" and KGruCode = '{0}' ", TrzIObject.KGruCode);
 
-                if (TrzIObject.InvCode != "")
-                {
-                    sql += " and ( ";
-                    string[] InvCode = TrzIObject.InvCode.Split('*');
-
-                    for (int i = 0; i < InvCode.Length; i++)
-                    {
-                        if (i < InvCode.Length - 1)
-                            sql += string.Format("  InvCode = {0} Or ", InvCode[i]);
-                        else
-                            sql += string.Format("  InvCode = {0} )", InvCode[i]);
-                    }
-                }
-
-
-                if (TrzIObject.KalaCode != "")
-                {
-                    sql += " and ( ";
-                    string[] KalaCode = TrzIObject.KalaCode.Split('*');
-
-                    for (int i = 0; i < KalaCode.Length; i++)
-                    {
-                        if (i < KalaCode.Length - 1)
-                            sql += string.Format("  KalaCode = {0} Or ", KalaCode[i]);
-                        else
-                            sql += string.Format("  KalaCode = {0} )", KalaCode[i]);
-                    }
-                }
-
+                sql += UnitPublic.SpiltCode("InvCode", TrzIObject.InvCode);
+                sql += UnitPublic.SpiltCode("KalaCode", TrzIObject.KalaCode);
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_TrzIKala>(sql);
                 return Ok(listTrzI);
@@ -703,34 +676,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (TrzIExfObject.KGruCode != "0")
                     sql += string.Format(" and KGruCode = '{0}' ", TrzIExfObject.KGruCode);
 
-                if (TrzIExfObject.InvCode != "")
-                {
-                    sql += " and ( ";
-                    string[] InvCode = TrzIExfObject.InvCode.Split('*');
-
-                    for (int i = 0; i < InvCode.Length; i++)
-                    {
-                        if (i < InvCode.Length - 1)
-                            sql += string.Format(" InvCode = {0} Or ", InvCode[i]);
-                        else
-                            sql += string.Format(" InvCode = {0} )", InvCode[i]);
-                    }
-                }
-
-
-                if (TrzIExfObject.KalaCode != "")
-                {
-                    sql += " and ( ";
-                    string[] KalaCode = TrzIExfObject.KalaCode.Split('*');
-
-                    for (int i = 0; i < KalaCode.Length; i++)
-                    {
-                        if (i < KalaCode.Length - 1)
-                            sql += string.Format(" KalaCode = {0} Or ", KalaCode[i]);
-                        else
-                            sql += string.Format(" KalaCode = {0} )", KalaCode[i]);
-                    }
-                }
+                sql += UnitPublic.SpiltCode("InvCode", TrzIExfObject.InvCode);
+                sql += UnitPublic.SpiltCode("KalaCode", TrzIExfObject.KalaCode);
 
                 sql += " order by KalaCode ";
 
@@ -775,98 +722,17 @@ namespace ApiKarbord.Controllers.AFI.data
                           @"select * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
                           IDocRObject.azTarikh, IDocRObject.taTarikh);
 
-                if (IDocRObject.InvCode != "")
+                sql += UnitPublic.SpiltCode("InvCode", IDocRObject.InvCode);
+                sql += UnitPublic.SpiltCode("KGruCode", IDocRObject.KGruCode);
+                sql += UnitPublic.SpiltCode("KalaCode", IDocRObject.KalaCode);
+                sql += UnitPublic.SpiltCode("ThvlCode", IDocRObject.ThvlCode);
+                sql += UnitPublic.SpiltCode("OprCode", IDocRObject.OprCode);
+                sql += UnitPublic.SpiltCode("MkzCode", IDocRObject.MkzCode);
+
+                if (IDocRObject.NoSanadAnbar != "0")
                 {
-                    sql += " and ( ";
-                    string[] InvCode = IDocRObject.InvCode.Split('*');
-
-                    for (int i = 0; i < InvCode.Length; i++)
-                    {
-                        if (i < InvCode.Length - 1)
-                            sql += string.Format(" InvCode = {0} Or ", InvCode[i]);
-                        else
-                            sql += string.Format(" InvCode = {0} )", InvCode[i]);
-                    }
+                    sql += string.Format(" and (InOut = {0})", IDocRObject.NoSanadAnbar);
                 }
-
-                if (IDocRObject.KGruCode != "")
-                {
-                    sql += " and ( ";
-                    string[] KGruCode = IDocRObject.KGruCode.Split('*');
-
-                    for (int i = 0; i < KGruCode.Length; i++)
-                    {
-                        if (i < KGruCode.Length - 1)
-                            sql += string.Format(" KGruCode = {0} Or ", KGruCode[i]);
-                        else
-                            sql += string.Format(" KGruCode = {0} )", KGruCode[i]);
-                    }
-                }
-
-
-                if (IDocRObject.KalaCode != "")
-                {
-                    sql += " and ( ";
-                    string[] KalaCode = IDocRObject.KalaCode.Split('*');
-
-                    for (int i = 0; i < KalaCode.Length; i++)
-                    {
-                        if (i < KalaCode.Length - 1)
-                            sql += string.Format(" KalaCode = {0} Or ", KalaCode[i]);
-                        else
-                            sql += string.Format(" KalaCode = {0} )", KalaCode[i]);
-                    }
-                }
-
-
-                if (IDocRObject.ThvlCode != "")
-                {
-                    sql += " and ( ";
-                    string[] ThvlCode = IDocRObject.ThvlCode.Split('*');
-
-                    for (int i = 0; i < ThvlCode.Length; i++)
-                    {
-                        if (i < ThvlCode.Length - 1)
-                            sql += string.Format(" ThvlCode = {0} Or ", ThvlCode[i]);
-                        else
-                            sql += string.Format(" ThvlCode = {0} )", ThvlCode[i]);
-                    }
-                }
-
-                if (IDocRObject.OprCode != "")
-                {
-                    sql += " and ( ";
-                    string[] OprCode = IDocRObject.OprCode.Split('*');
-
-                    for (int i = 0; i < OprCode.Length; i++)
-                    {
-                        if (i < OprCode.Length - 1)
-                            sql += string.Format(" OprCode = {0} Or ", OprCode[i]);
-                        else
-                            sql += string.Format(" OprCode = {0} )", OprCode[i]);
-                    }
-                }
-
-                if (IDocRObject.MkzCode != "")
-                {
-                    sql += " and ( ";
-                    string[] MkzCode = IDocRObject.MkzCode.Split('*');
-
-                    for (int i = 0; i < MkzCode.Length; i++)
-                    {
-                        if (i < MkzCode.Length - 1)
-                            sql += string.Format(" MkzCode = {0} Or ", MkzCode[i]);
-                        else
-                            sql += string.Format(" MkzCode = {0} )", MkzCode[i]);
-                    }
-                }
-
-
-                if (IDocRObject.NoSanadAnbar != "1")
-                {
-                    sql += string.Format(" and (ModeCode={0})", IDocRObject.NoSanadAnbar);
-                }
-
 
                 sql += " order by DocNo ";
 
@@ -1169,34 +1035,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (ErjDocKObject.Status != "")
                     sql += string.Format(" and Status = '{0}' ", ErjDocKObject.Status);
 
-                if (ErjDocKObject.CustCode != "")
-                {
-                    sql += " and ( ";
-                    string[] CustCode = ErjDocKObject.CustCode.Split('*');
-                    for (int i = 0; i < CustCode.Length; i++)
-                    {
-                        if (i < CustCode.Length - 1)
-                            sql += string.Format("  CustCode = '{0}' Or ", CustCode[i]);
-                        else
-                            sql += string.Format("  CustCode = '{0}' )", CustCode[i]);
-                    }
-                    //sql += string.Format(" and CustCode = '{0}' ", ErjDocKObject.CustCode);
-                }
 
-                if (ErjDocKObject.KhdtCode != "")
-                {
-                    sql += " and ( ";
-                    string[] KhdtCode = ErjDocKObject.KhdtCode.Split('*');
-
-                    for (int i = 0; i < KhdtCode.Length; i++)
-                    {
-                        if (i < KhdtCode.Length - 1)
-                            sql += string.Format("  KhdtCode = {0} Or ", KhdtCode[i]);
-                        else
-                            sql += string.Format("  KhdtCode = {0} )", KhdtCode[i]);
-                    }
-
-                }
+                sql += UnitPublic.SpiltCode("CustCode", ErjDocKObject.CustCode);
+                sql += UnitPublic.SpiltCode("KhdtCode", ErjDocKObject.KhdtCode);
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_ErjDocK>(sql);
                 return Ok(listTrzI);
@@ -1378,39 +1219,19 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (ErjDocB_Last.status != "")
                     sql += string.Format(" and Status = '{0}' ", ErjDocB_Last.status);
 
-                if (ErjDocB_Last.khdtCode != "")
-                {
-                    sql += " and ( ";
-                    string[] KhdtCode = ErjDocB_Last.khdtCode.Split('*');
 
-                    for (int i = 0; i < KhdtCode.Length; i++)
-                    {
-                        if (i < KhdtCode.Length - 1)
-                            sql += string.Format("  KhdtCode = {0} Or ", KhdtCode[i]);
-                        else
-                            sql += string.Format("  KhdtCode = {0} )", KhdtCode[i]);
-                    }
-                }
-
-                if (ErjDocB_Last.custCode != "")
-                {
-                    sql += " and ( ";
-                    string[] CustCode = ErjDocB_Last.custCode.Split('*');
-                    for (int i = 0; i < CustCode.Length; i++)
-                    {
-                        if (i < CustCode.Length - 1)
-                            sql += string.Format("  CustCode = '{0}' Or ", CustCode[i]);
-                        else
-                            sql += string.Format("  CustCode = '{0}' )", CustCode[i]);
-                    }
-                    //sql += string.Format(" and CustCode = '{0}' ", ErjDocKObject.CustCode);
-                }
+                sql += UnitPublic.SpiltCode("KhdtCode", ErjDocB_Last.khdtCode);
+                sql += UnitPublic.SpiltCode("CustCode", ErjDocB_Last.custCode);
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
                 return Ok(listErjDocB_Last);
             }
             return null;
         }
+
+
+
+
 
 
         public class Web_ErjDocErja

@@ -180,7 +180,26 @@ namespace ApiKarbord.Controllers.Unit
             return data;
         }
 
-  public static List<SelectListItem> ListTypeAnbar()
+
+        public static string SpiltCode(string field, string code)
+        {
+            string sql = "";
+            if (code != "")
+            {
+                sql += " and ( ";
+                string[] Code = code.Split('*');
+                for (int i = 0; i < Code.Length; i++)
+                {
+                    if (i < Code.Length - 1)
+                        sql += string.Format("  {0} = '{1}' Or ", field, Code[i]);
+                    else
+                        sql += string.Format("  {0} = '{1}' )", field, Code[i]);
+                }
+            }
+            return sql;
+        }
+
+        public static List<SelectListItem> ListTypeAnbar()
 {
     List<SelectListItem> list = new List<SelectListItem>();
     list.Add(new SelectListItem { Value = "0", Text = "دارای گردش" });
