@@ -14,6 +14,8 @@
         public virtual DbSet<AFI_FDocHi> AFI_FDocHi { get; set; }
         public virtual DbSet<Web_Kala> Web_Kala { get; set; }
         public virtual DbSet<Web_Cust> Web_Cust { get; set; }
+        public virtual DbSet<Web_Acc> Web_Acc { get; set; }
+
         public virtual DbSet<Web_KalaPrice> Web_KalaPrice { get; set; }
 
         public virtual DbSet<Web_FDocB> Web_FDocB { get; set; }

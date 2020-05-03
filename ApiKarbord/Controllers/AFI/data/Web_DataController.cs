@@ -20,7 +20,7 @@ namespace ApiKarbord.Controllers.AFI.data
     public class Web_DataController : ApiController
     {
 
-        // GET: api/Web_Data/Cust لیست حسابها
+        // GET: api/Web_Data/Cust لیست اشخاص
         [Route("api/Web_Data/Cust/{ace}/{sal}/{group}/{forSale}")]
         public IQueryable<Web_Cust> GetWeb_Cust(string ace, string sal, string group, bool forSale)
         {
@@ -35,6 +35,18 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     return UnitDatabase.db.Web_Cust.Where(c => c.CustMode == 0 || c.CustMode == 2);
                 }
+            }
+            return null;
+        }
+
+
+        // GET: api/Web_Data/Acc لیست حساب ها
+        [Route("api/Web_Data/Acc/{ace}/{sal}/{group}")]
+        public IQueryable<Web_Acc> GetWeb_Acc(string ace, string sal, string group)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                return UnitDatabase.db.Web_Acc;
             }
             return null;
         }
@@ -793,7 +805,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  union all
                                                  select 'IDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'IDocR') as Trs
                                                  union all
-                                                 select 'FDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR') as Trs"
+                                                 select 'FDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR') as Trs
+                                                 union all
+                                                 select 'TrzAcc' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzAcc') as Trs"
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
                     return Ok(listDB);
