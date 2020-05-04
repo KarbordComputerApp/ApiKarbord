@@ -205,7 +205,9 @@
     <Compile Include="Controllers\AFI\data\AFI_FDocHiController.cs" />
     <Compile Include="Controllers\AFI\data\Web_DataController.cs" />
     <Compile Include="Controllers\AFI\data\Web_KalaController.cs" />
-    <Compile Include="Controllers\AFI\report\MojodiKalasController.cs" />
+    <Compile Include="Controllers\AFI\report\ReportAccController.cs" />
+    <Compile Include="Controllers\AFI\report\ReportFctController.cs" />
+    <Compile Include="Controllers\AFI\report\ReportInvController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Unit\IniFile.cs" />
     <Compile Include="Controllers\Unit\UnitDatabase.cs" />
@@ -219,6 +221,7 @@
     <Compile Include="Models\AFI\AFI_IDocHi.cs" />
     <Compile Include="Models\AFI\AFI_FDocHi.cs" />
     <Compile Include="Models\ApiModel.cs" />
+    <Compile Include="Models\Public\Web_TrzAcc.cs" />
     <Compile Include="Models\Public\Web_Acc.cs" />
     <Compile Include="Models\Public\Web_ErjDocErja.cs" />
     <Compile Include="Models\Public\Web_ErjDocB_Last.cs" />

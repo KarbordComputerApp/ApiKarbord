@@ -73,7 +73,6 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-
                 var list = UnitDatabase.db.Web_KalaPriceB.Where(c => c.Code == code && c.KalaCode == kalacode);
                 return list;
             }
@@ -753,6 +752,15 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return null;
         }
+
+
+
+
+
+
+
+
+
 
 
         // دریافت اطلاعات سطح دسترسی کاربر
