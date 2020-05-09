@@ -16,7 +16,7 @@
 
         public byte? InsertMode { get; set; }
 
-        public int? ModeCode { get; set; }
+        public string ModeCode { get; set; }
 
         public int? DocNo { get; set; }
 

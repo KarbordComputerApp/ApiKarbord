@@ -21,6 +21,17 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutAFI_FDocHi(string ace, string sal, string group, AFI_FDocHi aFI_FDocHi)
         {
+
+            byte forSale;
+
+
+            if (aFI_FDocHi.ModeCode == "51" || aFI_FDocHi.ModeCode == "52" || aFI_FDocHi.ModeCode == "53" ||
+                aFI_FDocHi.ModeCode == "SPFCT" || aFI_FDocHi.ModeCode == "SFCT" || aFI_FDocHi.ModeCode == "SRFCT")
+                forSale = 1;
+            else
+                forSale = 0;
+
+
             string value = "";
             if (!ModelState.IsValid)
             {
@@ -60,7 +71,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                            @MP9 = {22},
 		                                            @MP10 = {23} ",
                                                     aFI_FDocHi.SerialNumber,
-                                                    aFI_FDocHi.ModeCode < 54 ? 1 : 0,
+                                                    forSale,
                                                     aFI_FDocHi.CustCode ?? "null",
                                                     0,
                                                     aFI_FDocHi.AddMinSpec1,
@@ -119,7 +130,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             SELECT	'Return Value' = @return_value",
                             aFI_FDocHi.SerialNumber,
                             aFI_FDocHi.deghat,
-                            aFI_FDocHi.ModeCode < 54 ? 1 : 0,
+                            forSale,
                             aFI_FDocHi.AddMinPrice1,
                             aFI_FDocHi.AddMinPrice2,
                             aFI_FDocHi.AddMinPrice3,

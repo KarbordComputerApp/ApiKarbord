@@ -30,8 +30,12 @@
         public virtual DbSet<Web_Status> Web_Status { get; set; }
         public virtual DbSet<Web_Mkz> Web_Mkz { get; set; }
         public virtual DbSet<Web_Opr> Web_Opr { get; set; }
-
         public virtual DbSet<Web_KGru> Web_KGru { get; set; }
+
+        public virtual DbSet<Web_AMode> Web_AMode { get; set; }
+        public virtual DbSet<Web_FMode> Web_FMode { get; set; }
+        public virtual DbSet<Web_IMode> Web_IMode { get; set; }
+
 
         // مدل های انبار مالی بازرگانی
 
@@ -41,6 +45,7 @@
         public virtual DbSet<Web_IDocH> Web_IDocH { get; set; }
         public virtual DbSet<Web_IDocHMini> Web_IDocHMini { get; set; }
         public virtual DbSet<Web_Thvl> Web_Thvl { get; set; }
+
 
 
         // مدل های گزارشات انبار مالی بازرگانی

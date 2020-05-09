@@ -8,6 +8,7 @@
 
     public class Web_FDocHMini
     {
+
         [Key]
         public long SerialNumber { get; set; }
 
@@ -83,7 +84,8 @@
 
         public double? AddMinPrice10 { get; set; }
 
-        public int? ModeCode { get; set; }
+        [StringLength(30)]
+        public string ModeCode { get; set; }
 
         [StringLength(10)]
         public string Status { get; set; }

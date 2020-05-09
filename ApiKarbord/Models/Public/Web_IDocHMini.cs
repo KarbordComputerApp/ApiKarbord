@@ -11,6 +11,8 @@
         [Key]
         public long SerialNumber { get; set; }
 
+        public int? InOut { get; set; }
+
         public string DocNo { get; set; }
 
         public double? SortDocNo { get; set; }
@@ -34,7 +36,7 @@
         [StringLength(20)]
         public string InvCode { get; set; }
 
-        public int? ModeCode { get; set; }
+        public string ModeCode { get; set; }
 
         [StringLength(10)]
         public string Status { get; set; }

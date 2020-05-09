@@ -19,7 +19,7 @@
         [StringLength(250)]
         public string KalaName { get; set; }
 
-        public int? MainUnit { get; set; }
+        public Int16? MainUnit { get; set; }
 
         public string MainUnitName { get; set; }
 

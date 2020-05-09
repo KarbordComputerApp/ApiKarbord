@@ -31,7 +31,7 @@
         [StringLength(50)]
         public string OprCode { get; set; }
 
-        public int? MainUnit { get; set; }
+        public Int16? MainUnit { get; set; }
 
         [StringLength(250)]
         public string BandSpec { get; set; }

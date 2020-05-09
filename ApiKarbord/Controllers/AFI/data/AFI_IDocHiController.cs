@@ -43,7 +43,7 @@ namespace ApiKarbord.Controllers.AFI.data
                           EXEC	@return_value = [dbo].[Web_SaveIDoc_HU]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
-		                            @MODECODE = {2} ,
+		                            @MODECODE = '{2}' ,
 		                            @DOCNO = {3},
 		                            @STARTNO = {4},
 		                            @ENDNO = {5},
@@ -120,7 +120,7 @@ namespace ApiKarbord.Controllers.AFI.data
                           EXEC	@return_value = [dbo].[Web_SaveIDoc_HI]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
-		                            @MODECODE = {2} ,
+		                            @MODECODE = '{2}' ,
 		                            @DOCNO = {3},
 		                            @STARTNO = {4},
 		                            @ENDNO = {5},
