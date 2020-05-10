@@ -198,9 +198,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                 @BandNoFld = '{2}'
                                                            SELECT	'Return Value' = @return_value",
                                                            //ace == "Afi1" ? "Afi1IDocB" : "Inv5DocB",
-                                                           "Web_IDocB",
+                                                           ace == "AFI1" ? "Afi1IDocB" : "Inv5DocB",
                                                            SerialNumber,
-                                                           "BandNo");
+                                                           ace == "AFI1" ? "BandNo" : "Radif");
                     int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     //await UnitDatabase.db.SaveChangesAsync();
                 }

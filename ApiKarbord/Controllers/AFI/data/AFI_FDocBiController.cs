@@ -179,6 +179,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
 
+
+                    // Fct5: 'Fct5DocB'   'Radif'
+                    // Inv5: 'Inv5DocB'   'Radif'
+                    // Afi1: 'Afi1FDocB'  'BandNo'
+
+
                     //var list = UnitDatabase.db.AFI_FDocBi.First(c=>c.SerialNumber == SerialNumber && c.BandNo==BandNo);
                     //if (list == null)
                     //{
@@ -204,9 +210,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                 @SerialNumber = {1},
                                                                 @BandNoFld = '{2}'
                                                            SELECT	'Return Value' = @return_value",
-                                                           "Web_FDocB",
+                                                           ace == "AFI1" ? "Afi1FDocB" : "Fct5DocB",
                                                            SerialNumber,
-                                                           "BandNo");
+                                                           ace == "AFI1" ? "BandNo" : "Radif");
                     int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     //await UnitDatabase.db.SaveChangesAsync();
                 }

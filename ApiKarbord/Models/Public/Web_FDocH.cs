@@ -14,8 +14,8 @@
 
         public double? SortDocNo { get; set; }
 
-        [StringLength(10)]
-        public string Tasvib { get; set; }
+        //[StringLength(10)]
+        //public string Tasvib { get; set; }
 
         [StringLength(30)]
         public string ModeCode { get; set; }
