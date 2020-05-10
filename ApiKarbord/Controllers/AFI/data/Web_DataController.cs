@@ -384,7 +384,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += UnitPublic.SpiltCode("InvCode", TrzIExfObject.InvCode);
                 sql += UnitPublic.SpiltCode("KalaCode", TrzIExfObject.KalaCode);
 
-                sql += " order by KalaCode ";
+                sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag Desc ";
 
                 var listTrzIExf = UnitDatabase.db.Database.SqlQuery<Web_TrzIKalaExf>(sql);
                 return Ok(listTrzIExf);

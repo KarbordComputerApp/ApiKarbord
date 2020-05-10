@@ -191,7 +191,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Status = '{41}',
 									@PaymentType = {42},
                                     @Footer = '{43}',
-                                    @Taeed={44},
+                                    @Taeed='{44}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_FDocHi.DocNoMode,
@@ -238,7 +238,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.Status,
                             aFI_FDocHi.PaymentType,
                             UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer),
-                            aFI_FDocHi.Taeed
+                            aFI_FDocHi.Taeed == "null" ? "" : aFI_FDocHi.Taeed
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql2).Single();
 

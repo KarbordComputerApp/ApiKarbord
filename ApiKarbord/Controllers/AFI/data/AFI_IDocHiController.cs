@@ -61,7 +61,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @InvCode = '{17}',
                                     @Status = '{18}',
                                     @Footer = '{19}',
-                                    @Taeed={20},
+                                    @Taeed='{20}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_IDocHi.DocNoMode,
@@ -85,7 +85,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.Status,
                             //UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
                             aFI_IDocHi.Footer,
-                            aFI_IDocHi.Taeed
+                            aFI_IDocHi.Taeed == "null" ? "" : aFI_IDocHi.Taeed
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
 
