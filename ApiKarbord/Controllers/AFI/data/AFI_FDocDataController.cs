@@ -34,9 +34,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/FDocData/FDocH لیست فاکتور    
+
+
         [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}/top{select}/{userName}/{AccessSanad}")]
         public async Task<IHttpActionResult> GetAllWeb_FDocHMin(string ace, string sal, string group, string ModeCode, int select, string userName, bool accessSanad)
         {
+
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
 
