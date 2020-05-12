@@ -31,11 +31,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string MkzCode { get; set; }
 
-            public string ModeCode { get; set; }
+            public string AModeCode { get; set; }
 
-            public string Acc_Code { get; set; }
+            public string AccCode { get; set; }
 
             public int Level { get; set; }
+
+            public int Sath { get; set; }
 
         }
 
@@ -47,20 +49,26 @@ namespace ApiKarbord.Controllers.AFI.report
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
+                string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(TrzAccObject.AModeCode);
+
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  dbo.Web_TrzAcc('{0}', '{1}','{2}','{3}','{4}') AS TrzAcc where 1 = 1 ",
                           TrzAccObject.azTarikh,
                           TrzAccObject.taTarikh,
-                          TrzAccObject.OprCode,
-                          TrzAccObject.MkzCode,
-                          TrzAccObject.ModeCode);
+                          oprCode,
+                          mkzCode,
+                          aModeCode);
 
-                if (TrzAccObject.Level > 0)
+                if (TrzAccObject.Sath == 1)
                     sql += string.Format(" and (Level = {0})", TrzAccObject.Level);
+                else
+                    sql += string.Format(" and (Level <= {0})", TrzAccObject.Level);
 
-                sql += UnitPublic.SpiltCode("Acc_Code", TrzAccObject.Acc_Code);
+                sql += UnitPublic.SpiltCodeAnd("AccCode", TrzAccObject.AccCode);
 
-                sql += " order by Acc_Code ";
+                sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
 
                 var listTrzAcc = UnitDatabase.db.Database.SqlQuery<Web_TrzAcc>(sql);
                 return Ok(listTrzAcc);

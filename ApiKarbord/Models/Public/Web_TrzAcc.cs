@@ -8,31 +8,30 @@
 
     public class Web_TrzAcc
     {
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Level { get; set; }
+
+
+        public short? Level { get; set; }
 
         [StringLength(50)]
-        public string Acc_Code { get; set; }
+        public string AccCode { get; set; }
 
         [StringLength(100)]
-        public string Acc_Name { get; set; }
+        public string AccName { get; set; }
 
         [StringLength(9)]
-        public string Acc_Code1 { get; set; }
+        public string AccCode1 { get; set; }
 
         [StringLength(9)]
-        public string Acc_Code2 { get; set; }
+        public string AccCode2 { get; set; }
 
         [StringLength(9)]
-        public string Acc_Code3 { get; set; }
+        public string AccCode3 { get; set; }
 
         [StringLength(9)]
-        public string Acc_Code4 { get; set; }
+        public string AccCode4 { get; set; }
 
         [StringLength(9)]
-        public string Acc_Code5 { get; set; }
+        public string AccCode5 { get; set; }
 
         public double? Bede { get; set; }
 
@@ -42,8 +41,7 @@
 
         public double? MonBest { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        public double MonTotal { get; set; }
+        public double? MonTotal { get; set; }
+
     }
 }

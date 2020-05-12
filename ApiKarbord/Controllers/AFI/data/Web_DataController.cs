@@ -349,8 +349,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (TrzIObject.KGruCode != "0")
                     sql += string.Format(" and KGruCode = '{0}' ", TrzIObject.KGruCode);
 
-                sql += UnitPublic.SpiltCode("InvCode", TrzIObject.InvCode);
-                sql += UnitPublic.SpiltCode("KalaCode", TrzIObject.KalaCode);
+                sql += UnitPublic.SpiltCodeAnd("InvCode", TrzIObject.InvCode);
+                sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIObject.KalaCode);
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_TrzIKala>(sql);
                 return Ok(listTrzI);
@@ -374,15 +374,17 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
+                string invCode = UnitPublic.SpiltCodeCama(TrzIExfObject.InvCode);
+
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}') AS TrzIExf where 1 = 1 ",
-                          TrzIExfObject.azTarikh, TrzIExfObject.taTarikh);
+                          @"select * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}') AS TrzIExf where 1 = 1 ",
+                          TrzIExfObject.azTarikh, TrzIExfObject.taTarikh,invCode);
 
                 if (TrzIExfObject.KGruCode != "0")
                     sql += string.Format(" and KGruCode = '{0}' ", TrzIExfObject.KGruCode);
 
-                sql += UnitPublic.SpiltCode("InvCode", TrzIExfObject.InvCode);
-                sql += UnitPublic.SpiltCode("KalaCode", TrzIExfObject.KalaCode);
+               // sql += UnitPublic.SpiltCodeAnd("InvCode", TrzIExfObject.InvCode);
+                sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIExfObject.KalaCode);
 
                 sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag ";
 
@@ -427,12 +429,12 @@ namespace ApiKarbord.Controllers.AFI.data
                           @"select * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
                           IDocRObject.azTarikh, IDocRObject.taTarikh);
 
-                sql += UnitPublic.SpiltCode("InvCode", IDocRObject.InvCode);
-                sql += UnitPublic.SpiltCode("KGruCode", IDocRObject.KGruCode);
-                sql += UnitPublic.SpiltCode("KalaCode", IDocRObject.KalaCode);
-                sql += UnitPublic.SpiltCode("ThvlCode", IDocRObject.ThvlCode);
-                sql += UnitPublic.SpiltCode("OprCode", IDocRObject.OprCode);
-                sql += UnitPublic.SpiltCode("MkzCode", IDocRObject.MkzCode);
+                sql += UnitPublic.SpiltCodeAnd("InvCode", IDocRObject.InvCode);
+                sql += UnitPublic.SpiltCodeAnd("KGruCode", IDocRObject.KGruCode);
+                sql += UnitPublic.SpiltCodeAnd("KalaCode", IDocRObject.KalaCode);
+                sql += UnitPublic.SpiltCodeAnd("ThvlCode", IDocRObject.ThvlCode);
+                sql += UnitPublic.SpiltCodeAnd("OprCode", IDocRObject.OprCode);
+                sql += UnitPublic.SpiltCodeAnd("MkzCode", IDocRObject.MkzCode);
 
                 if (IDocRObject.NoSanadAnbar != "0")
                 {
@@ -752,8 +754,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     sql += string.Format(" and Status = '{0}' ", ErjDocKObject.Status);
 
 
-                sql += UnitPublic.SpiltCode("CustCode", ErjDocKObject.CustCode);
-                sql += UnitPublic.SpiltCode("KhdtCode", ErjDocKObject.KhdtCode);
+                sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocKObject.CustCode);
+                sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocKObject.KhdtCode);
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_ErjDocK>(sql);
                 return Ok(listTrzI);
@@ -936,8 +938,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     sql += string.Format(" and Status = '{0}' ", ErjDocB_Last.status);
 
 
-                sql += UnitPublic.SpiltCode("KhdtCode", ErjDocB_Last.khdtCode);
-                sql += UnitPublic.SpiltCode("CustCode", ErjDocB_Last.custCode);
+                sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocB_Last.khdtCode);
+                sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocB_Last.custCode);
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
                 return Ok(listErjDocB_Last);

@@ -181,7 +181,25 @@ namespace ApiKarbord.Controllers.Unit
         }
 
 
-        public static string SpiltCode(string field, string code)
+        public static string SpiltCodeCama(string code)
+        {
+            string sql = "";
+            if (code != "")
+            {
+                string[] Code = code.Split('*');
+                for (int i = 0; i < Code.Length; i++)
+                {
+                    if (i < Code.Length - 1)
+                        sql += string.Format("{0} ,", Code[i]);
+                    else
+                        sql += string.Format("{0}", Code[i]);
+                }
+            }
+            return sql;
+        }
+
+
+        public static string SpiltCodeAnd(string field, string code)
         {
             string sql = "";
             if (code != "")
