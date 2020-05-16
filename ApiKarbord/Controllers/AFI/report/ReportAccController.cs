@@ -41,7 +41,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
         }
 
-        // Post: api/Web_Data/TrzAcc گزارش تراز دفاتر
+        // Post: api/ReportAcc/TrzAcc گزارش تراز دفاتر
         // HE_Report_TrzAcc
         [Route("api/ReportAcc/TrzAcc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
