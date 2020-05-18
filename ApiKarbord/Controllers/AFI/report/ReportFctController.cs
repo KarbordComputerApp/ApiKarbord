@@ -26,7 +26,9 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string taTarikh { get; set; }
 
-            public string ModeCode { get; set; }
+            public string ModeCode1 { get; set; }
+
+            public string ModeCode2 { get; set; }
 
             public string InvCode { get; set; }
 
@@ -34,7 +36,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string KalaCode { get; set; }
 
-            public string ThvlCode { get; set; }
+            public string CustCode { get; set; }
 
             public string MkzCode { get; set; }
 
@@ -50,23 +52,23 @@ namespace ApiKarbord.Controllers.AFI.report
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
+
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  dbo.Web_FDocR('{0}', '{1}') AS FDocR where 1 = 1 ",
-                          FDocRObject.azTarikh, FDocRObject.taTarikh);
+                          FDocRObject.ModeCode1, FDocRObject.ModeCode2);
 
                 sql += UnitPublic.SpiltCodeAnd("InvCode", FDocRObject.InvCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", FDocRObject.KGruCode);
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", FDocRObject.KalaCode);
-                sql += UnitPublic.SpiltCodeAnd("ThvlCode", FDocRObject.ThvlCode);
+                sql += UnitPublic.SpiltCodeAnd("CustCode", FDocRObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("OprCode", FDocRObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", FDocRObject.MkzCode);
 
-                //if (FDocRObject.NoSanadAnbar != "0")
-                //{
-                //    sql += string.Format(" and (InOut = {0})", FDocRObject.NoSanadAnbar);
-                //}
+                if (FDocRObject.azTarikh != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", FDocRObject.azTarikh);
 
-                sql += " order by DocNo ";
+                if (FDocRObject.taTarikh != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", FDocRObject.taTarikh);
 
                 var listFDocR = UnitDatabase.db.Database.SqlQuery<Web_FDocR>(sql);
                 return Ok(listFDocR);

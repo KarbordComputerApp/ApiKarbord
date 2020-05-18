@@ -25,6 +25,9 @@
         [StringLength(50)]
         public string OprCode { get; set; }
 
+        [StringLength(10)]
+        public string InvCode { get; set; }
+
         public short? MainUnit { get; set; }
 
         public double? Amount1 { get; set; }
@@ -171,5 +174,11 @@
         [Column(Order = 4)]
         [StringLength(100)]
         public string OprName { get; set; }
+
+        [StringLength(250)]
+        public string InvName { get; set; }
+
+        [StringLength(50)]
+        public string MainUnitName { get; set; }
     }
 }

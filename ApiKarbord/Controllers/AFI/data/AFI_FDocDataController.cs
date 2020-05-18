@@ -20,6 +20,20 @@ namespace ApiKarbord.Controllers.AFI.data
     public class AFI_FDocDataController : ApiController
     {
 
+        // GET: api/FDocData/FMode اطلاعات نوع سند حسابداری   
+        [Route("api/FDocData/FMode/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_FMode(string ace, string sal, string group)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string sql = "SELECT * FROM Web_FMode";
+                var listFMode = UnitDatabase.db.Database.SqlQuery<Web_FMode>(sql);
+                return Ok(listFMode);
+            }
+            return null;
+        }
+
+
         // GET: api/FDocData/FDocH اطلاعات تکمیلی فاکتور    
         [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{serialNumber}/{ModeCode}")]
         public async Task<IQueryable<Web_FDocH>> GetWeb_FDocH(string ace, string sal, string group, long serialNumber, string ModeCode)

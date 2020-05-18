@@ -22,16 +22,19 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Cust لیست اشخاص
         [Route("api/Web_Data/Cust/{ace}/{sal}/{group}/{forSale}")]
-        public IQueryable<Web_Cust> GetWeb_Cust(string ace, string sal, string group, bool forSale)
+        public IQueryable<Web_Cust> GetWeb_Cust(string ace, string sal, string group, bool? forSale)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                if (forSale)
+                if (forSale == null)
                 {
-
+                    return UnitDatabase.db.Web_Cust;
+                }
+                else if (forSale == true)
+                {
                     return UnitDatabase.db.Web_Cust.Where(c => c.CustMode == 0 || c.CustMode == 1);
                 }
-                else
+                else if (forSale == false)
                 {
                     return UnitDatabase.db.Web_Cust.Where(c => c.CustMode == 0 || c.CustMode == 2);
                 }
@@ -251,7 +254,7 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        
+
 
         //انبار---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -319,7 +322,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-       
+
 
 
         // گزارشات -----------------------------------------------------------------------------------------------------------------------
@@ -378,12 +381,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}') AS TrzIExf where 1 = 1 ",
-                          TrzIExfObject.azTarikh, TrzIExfObject.taTarikh,invCode);
+                          TrzIExfObject.azTarikh, TrzIExfObject.taTarikh, invCode);
 
                 if (TrzIExfObject.KGruCode != "0")
                     sql += string.Format(" and KGruCode = '{0}' ", TrzIExfObject.KGruCode);
 
-               // sql += UnitPublic.SpiltCodeAnd("InvCode", TrzIExfObject.InvCode);
+                // sql += UnitPublic.SpiltCodeAnd("InvCode", TrzIExfObject.InvCode);
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIExfObject.KalaCode);
 
                 sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag ";
@@ -395,7 +398,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-       
+
         // دریافت اطلاعات سطح دسترسی کاربر
         public class AccessUser
         {
@@ -975,6 +978,18 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+        // GET: api/Web_Data/FldNames لیست ستونها
+      /*  [Route("api/Web_Data/FldNames/{ace}/{sal}/{group}")]
+        public IQueryable<Web_FldNames> GetWeb_FldNames(string ace, string sal, string group)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+              //  var list = UnitDatabase.db.Web_FldNames;
+                return list;
+            }
+            return null;
+        }
+        */
 
         //-------------------------------------------------------------------------------------------------------------------------------
     }
