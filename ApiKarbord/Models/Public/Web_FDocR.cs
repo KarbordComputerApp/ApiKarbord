@@ -25,7 +25,7 @@
         [StringLength(50)]
         public string OprCode { get; set; }
 
-        [StringLength(10)]
+        [StringLength(50)]
         public string InvCode { get; set; }
 
         public short? MainUnit { get; set; }
@@ -36,12 +36,33 @@
 
         public double? Amount3 { get; set; }
 
+        public double? AddMinPrice1 { get; set; }
+
+        public double? AddMinPrice2 { get; set; }
+
+        public double? AddMinPrice3 { get; set; }
+
+        public double? AddMinPrice4 { get; set; }
+
+        public double? AddMinPrice5 { get; set; }
+
+        public double? AddMinPrice6 { get; set; }
+
+        public double? AddMinPrice7 { get; set; }
+
+        public double? AddMinPrice8 { get; set; }
+
+        public double? AddMinPrice9 { get; set; }
+
+        public double? AddMinPrice10 { get; set; }
+
         [StringLength(250)]
         public string BandSpec { get; set; }
 
-        [Column(Order = 2)]
         [StringLength(4000)]
         public string Comm { get; set; }
+
+        public double? Discount { get; set; }
 
         public double? UnitPrice { get; set; }
 
@@ -167,11 +188,9 @@
         [StringLength(250)]
         public string CustName { get; set; }
 
-        [Column(Order = 3)]
         [StringLength(250)]
         public string MkzName { get; set; }
 
-        [Column(Order = 4)]
         [StringLength(100)]
         public string OprName { get; set; }
 

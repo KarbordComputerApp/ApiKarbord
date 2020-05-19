@@ -14,6 +14,7 @@
         [StringLength(10)]
         public string Prog { get; set; }
 
+        [Key]
         [StringLength(50)]
         public string Code { get; set; }
 

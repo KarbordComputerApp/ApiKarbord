@@ -979,17 +979,17 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/Web_Data/FldNames لیست ستونها
-      /*  [Route("api/Web_Data/FldNames/{ace}/{sal}/{group}")]
+        [Route("api/Web_Data/FldNames/{ace}/{sal}/{group}")]
         public IQueryable<Web_FldNames> GetWeb_FldNames(string ace, string sal, string group)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-              //  var list = UnitDatabase.db.Web_FldNames;
+                var list = UnitDatabase.db.Web_FldNames;
                 return list;
             }
             return null;
         }
-        */
+        
 
         //-------------------------------------------------------------------------------------------------------------------------------
     }
