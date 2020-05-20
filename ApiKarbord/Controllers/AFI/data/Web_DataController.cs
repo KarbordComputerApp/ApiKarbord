@@ -984,7 +984,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                string sql = "EXEC WEB_FldName";
+                string sql = "EXEC WEB_FldNames";
                 var list = UnitDatabase.db.Database.SqlQuery<Web_FldNames>(sql);
                 return Ok(list);
             }
