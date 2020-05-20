@@ -10,7 +10,7 @@
     {
         [Key]
         [Column(Order = 0)]
-        public long Serialnumber { get; set; }
+        public long SerialNumber { get; set; }
 
         [Key]
         [Column(Order = 1)]
@@ -145,6 +145,9 @@
 
         [StringLength(30)]
         public string ModeCode { get; set; }
+
+        [StringLength(100)]
+        public string ModeName { get; set; }
 
         [StringLength(50)]
         public string CustCode { get; set; }

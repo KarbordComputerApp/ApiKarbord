@@ -10,7 +10,7 @@
 
 
         public virtual DbSet<AccessSet> AccessSet { get; set; }
-        public virtual DbSet<Web_FldNames> Web_FldNames { get; set; }
+        //public virtual DbSet<Web_FldNames> Web_FldNames { get; set; }
         public virtual DbSet<MojodiKala> MojodiKala { get; set; }
         public virtual DbSet<AFI_FDocBi> AFI_FDocBi { get; set; }
         public virtual DbSet<AFI_FDocHi> AFI_FDocHi { get; set; }

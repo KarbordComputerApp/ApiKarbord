@@ -9,7 +9,7 @@
     public class Web_FldNames
     {
 
-        public int? Mode { get; set; }
+        public byte? Mode { get; set; }
 
         [StringLength(10)]
         public string Prog { get; set; }
@@ -24,9 +24,10 @@
         [StringLength(20)]
         public string RprtId { get; set; }
 
-        public int? InOut { get; set; }
+        [Key]
+        public byte InOut { get; set; }
 
-        public int? Visible { get; set; }
+        public byte? Visible { get; set; }
 
     }
 }
