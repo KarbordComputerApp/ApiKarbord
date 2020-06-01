@@ -978,18 +978,31 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        // GET: api/Web_Data/FldNames لیست ستونها
-        [Route("api/Web_Data/FldNames/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_FldNames(string ace, string sal, string group)
+        /*   // GET: api/Web_Data/FldNames لیست ستونها
+            [Route("api/Web_Data/FldNames/{ace}/{sal}/{group}")]
+            public async Task<IHttpActionResult> GetWeb_FldNames(string ace, string sal, string group)
+            {
+                if (UnitDatabase.CreateConection(ace, sal, group))
+                {
+                    string sql = "EXEC WEB_FldNames";
+                    var list = UnitDatabase.db.Database.SqlQuery<Web_FldNames>(sql);
+                    return Ok(list);
+                }
+                return null;
+            }
+            */
+
+        // GET: api/Web_Data/Web_RprtCols لیست ستونها
+        [Route("api/Web_Data/RprtCols/{ace}/{sal}/{group}/{RprtId}/{UserCode}")]
+        public IQueryable<Web_RprtCols> GetWeb_RprtCols(string ace, string sal, string group, string RprtId, string UserCode)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                string sql = "EXEC WEB_FldNames";
-                var list = UnitDatabase.db.Database.SqlQuery<Web_FldNames>(sql);
-                return Ok(list);
+                return UnitDatabase.db.Web_RprtCols.Where(c => c.RprtId == RprtId && c.UserCode == UserCode && c.Visible == 1);
             }
             return null;
         }
+
 
 
         //-------------------------------------------------------------------------------------------------------------------------------
