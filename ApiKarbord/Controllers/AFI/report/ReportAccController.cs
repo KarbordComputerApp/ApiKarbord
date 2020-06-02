@@ -76,5 +76,70 @@ namespace ApiKarbord.Controllers.AFI.report
             return null;
         }
 
+
+
+        public class DftrObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string azShomarh { get; set; }
+
+            public string taShomarh { get; set; }
+
+            public string DispBands { get; set; }
+
+            public string JamRooz { get; set; }
+
+            public string AccCode { get; set; }
+
+            public string Status { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+        }
+
+        // Post: api/ReportAcc/Web_Dftr گزارش دفتر حساب
+        // HE_Report_TrzAcc
+        [Route("api/ReportAcc/Dftr/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string accCode = UnitPublic.SpiltCodeCama(DftrObject.AccCode);
+                string status = UnitPublic.SpiltCodeCama(DftrObject.Status);
+                string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  Web_Dftr('{0}','{1}','{2}') AS Dftr where 1 = 1 ",
+                          accCode,
+                          DftrObject.DispBands,
+                          DftrObject.JamRooz);
+
+                sql += UnitPublic.SpiltCodeAnd("azTarikh", DftrObject.azTarikh);
+                sql += UnitPublic.SpiltCodeAnd("taTarikh", DftrObject.taTarikh);
+                sql += UnitPublic.SpiltCodeAnd("azShomarh", DftrObject.azShomarh);
+                sql += UnitPublic.SpiltCodeAnd("taShomarh", DftrObject.taShomarh);
+                sql += UnitPublic.SpiltCodeAnd("Status", DftrObject.Status);
+                sql += UnitPublic.SpiltCodeAnd("AModeCode", DftrObject.AModeCode);
+                sql += UnitPublic.SpiltCodeAnd("OprCode", DftrObject.OprCode);
+                sql += UnitPublic.SpiltCodeAnd("MkzCode", DftrObject.MkzCode);
+
+               // sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
+
+                var listDftr = UnitDatabase.db.Database.SqlQuery<Web_Dftr>(sql);
+                return Ok(listDftr);
+            }
+            return null;
+        }
+
     }
 }

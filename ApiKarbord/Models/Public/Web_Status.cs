@@ -11,5 +11,7 @@
         [Key]
         public int OrderFld { get; set; }
         public string Status { get; set; }
+        public string Prog { get; set; }
+
     }
 }

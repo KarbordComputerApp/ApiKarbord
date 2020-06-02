@@ -54,6 +54,9 @@
 
         // مدل های گزارشات انبار مالی بازرگانی
         public virtual DbSet<Web_TrzIKala> Web_TrzIKala { get; set; }
+
+        public virtual DbSet<Web_Dftr> Web_Dftr { get; set; }
+
         public virtual DbSet<Web_IDocR> Web_IDocR { get; set; }
 
 
