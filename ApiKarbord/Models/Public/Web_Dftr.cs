@@ -142,5 +142,30 @@
         public double? MonBede { get; set; }
 
         public double? MonBest { get; set; }
+
+        [StringLength(30)]
+        public string CheckNo { get; set; }
+
+        [StringLength(10)]
+        public string CheckDate { get; set; }
+
+        [StringLength(100)]
+        public string Bank { get; set; }
+
+        [StringLength(100)]
+        public string Shobe { get; set; }
+
+        [StringLength(100)]
+        public string Jari { get; set; }
+
+        [StringLength(50)]
+        public string TrafCode { get; set; }
+
+        [StringLength(100)]
+        public string TrafName { get; set; }
+
+        [StringLength(100)]
+        public string ModeName { get; set; }
+
     }
 }

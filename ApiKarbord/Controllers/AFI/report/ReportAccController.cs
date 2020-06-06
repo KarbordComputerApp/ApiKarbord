@@ -94,7 +94,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string AccCode { get; set; }
 
-            public string Status { get; set; }
+            public string StatusCode { get; set; }
 
             public string AModeCode { get; set; }
 
@@ -105,31 +105,40 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
         // Post: api/ReportAcc/Web_Dftr گزارش دفتر حساب
-        // HE_Report_TrzAcc
+        // HE_Report_Dftr
         [Route("api/ReportAcc/Dftr/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                string accCode = UnitPublic.SpiltCodeCama(DftrObject.AccCode);
-                string status = UnitPublic.SpiltCodeCama(DftrObject.Status);
+                string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  Web_Dftr('{0}','{1}','{2}') AS Dftr where 1 = 1 ",
-                          accCode,
+                          DftrObject.AccCode,
                           DftrObject.DispBands,
                           DftrObject.JamRooz);
 
-                sql += UnitPublic.SpiltCodeAnd("azTarikh", DftrObject.azTarikh);
-                sql += UnitPublic.SpiltCodeAnd("taTarikh", DftrObject.taTarikh);
-                sql += UnitPublic.SpiltCodeAnd("azShomarh", DftrObject.azShomarh);
-                sql += UnitPublic.SpiltCodeAnd("taShomarh", DftrObject.taShomarh);
-                sql += UnitPublic.SpiltCodeAnd("Status", DftrObject.Status);
-                sql += UnitPublic.SpiltCodeAnd("AModeCode", DftrObject.AModeCode);
+                if (DftrObject.azTarikh != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", DftrObject.azTarikh);
+
+                if (DftrObject.taTarikh != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", DftrObject.taTarikh);
+
+
+
+                if (DftrObject.azShomarh != "")
+                    sql += string.Format(" and DocNo >= '{0}' ", DftrObject.azShomarh);
+
+                if (DftrObject.taShomarh != "")
+                    sql += string.Format(" and DocNo <= '{0}' ", DftrObject.taShomarh);
+
+                sql += UnitPublic.SpiltCodeAnd("Status", DftrObject.StatusCode);
+                sql += UnitPublic.SpiltCodeAnd("ModeCode", DftrObject.AModeCode);
                 sql += UnitPublic.SpiltCodeAnd("OprCode", DftrObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", DftrObject.MkzCode);
 

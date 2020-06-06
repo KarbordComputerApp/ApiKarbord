@@ -140,12 +140,12 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/Web_Data/Status لیست وضعیت پرداخت  
-        [Route("api/Web_Data/Status/{ace}/{sal}/{group}")]
-        public IQueryable<Web_Status> GetWeb_Status(string ace, string sal, string group,string prog)
+        [Route("api/Web_Data/Status/{ace}/{sal}/{group}/{progname}")]
+        public IQueryable<Web_Status> GetWeb_Status(string ace, string sal, string group,string progname)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                var list = UnitDatabase.db.Web_Status.Where(c => c.Prog == prog);
+                var list = UnitDatabase.db.Web_Status.Where(c => c.Prog == progname);
                 return list;
             }
             return null;
