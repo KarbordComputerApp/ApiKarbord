@@ -450,9 +450,14 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  union all
                                                  select 'IDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'IDocR') as Trs
                                                  union all
-                                                 select 'FDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR') as Trs
+                                                 select 'FDocR_S'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR_S') as Trs
                                                  union all
-                                                 select 'TrzAcc' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzAcc') as Trs"
+                                                 select 'FDocR_P'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR_P') as Trs
+                                                 union all
+                                                 select 'TrzAcc' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzAcc') as Trs
+                                                 union all
+                                                 select 'Dftr' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'Dftr') as Trs
+"
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
                     return Ok(listDB);
@@ -460,6 +465,40 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return null;
         }
+
+
+
+        /*
+                 [Route("api/Web_Data/AccessUserReport/{ace}/{group}/{username}/{progName}")]
+        public async Task<IHttpActionResult> GetWeb_AccessUserReport(string ace, string group, string username , string progName)
+        {
+            if (UnitDatabase.CreateConection("Config", "", ""))
+            {
+                if (!string.IsNullOrEmpty(ace) || !string.IsNullOrEmpty(group) || !string.IsNullOrEmpty(username))
+                {
+                    string sql = string.Format(@"declare @ace nvarchar(5), @group int , @username nvarchar(20)
+                                                 set @ace = '{0}'
+                                                 set @group = {1}
+                                                 set @username = '{2}'
+                                                 select 'TrzIKala'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'TrzIKala') as Trs
+                                                 union all
+                                                 select 'TrzIKalaExf'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'TrzIKalaExf') as Trs
+                                                 union all
+                                                 select 'IDocR'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'IDocR') as Trs
+                                                 union all
+                                                 select 'FDocR_S'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR_S') as Trs
+                                                 union all
+                                                 select 'FDocR_P'as Code , [dbo].[Web_RprtTrs](@group,@ace,@username,'FDocR_P') as Trs
+                                                 union all
+                                                 select 'TrzAcc' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzAcc') as Trs"
+                                               , progName, group, username);
+                    var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
+                    return Ok(listDB);
+                }
+            }
+            return null;
+        }
+         */
 
         public class AccessUserReportErj
         {
