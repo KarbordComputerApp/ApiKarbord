@@ -217,6 +217,9 @@ namespace ApiKarbord.Controllers.Unit
             return sql;
         }
 
+       
+
+
         public static List<SelectListItem> ListTypeAnbar()
 {
     List<SelectListItem> list = new List<SelectListItem>();

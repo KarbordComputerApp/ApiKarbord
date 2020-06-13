@@ -142,10 +142,83 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("OprCode", DftrObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", DftrObject.MkzCode);
 
-               // sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
+                // sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
 
                 var listDftr = UnitDatabase.db.Database.SqlQuery<Web_Dftr>(sql);
                 return Ok(listDftr);
+            }
+            return null;
+        }
+
+
+
+
+        public class ADocRObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string azShomarh { get; set; }
+
+            public string taShomarh { get; set; }
+
+            public string DispBands { get; set; }
+
+            public string JamRooz { get; set; }
+
+            public string AccCode { get; set; }
+
+            public string StatusCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+        }
+
+        // Post: api/ReportAcc/Web_ADocR گزارش دفتر حساب
+        // HE_Report_ADocR
+        [Route("api/ReportAcc/ADocR/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
+                string oprCode = UnitPublic.SpiltCodeCama(ADocRObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(ADocRObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(ADocRObject.AModeCode);
+                string AccCode = UnitPublic.SpiltCodeCama(ADocRObject.AccCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  Web_ADocR(' ') AS ADocR where 1 = 1 ");
+
+                if (ADocRObject.azTarikh != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", ADocRObject.azTarikh);
+
+                if (ADocRObject.taTarikh != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", ADocRObject.taTarikh);
+
+
+
+                if (ADocRObject.azShomarh != "")
+                    sql += string.Format(" and DocNo >= '{0}' ", ADocRObject.azShomarh);
+
+                if (ADocRObject.taShomarh != "")
+                    sql += string.Format(" and DocNo <= '{0}' ", ADocRObject.taShomarh);
+
+                sql += UnitPublic.SpiltCodeAnd("Status", ADocRObject.StatusCode);
+                sql += UnitPublic.SpiltCodeAnd("ModeCode", ADocRObject.AModeCode);
+                sql += UnitPublic.SpiltCodeAnd("OprCode", ADocRObject.OprCode);
+                sql += UnitPublic.SpiltCodeAnd("MkzCode", ADocRObject.MkzCode);
+
+                sql += " order by DocNo,BandNo";
+
+                var listADocR = UnitDatabase.db.Database.SqlQuery<Web_ADocR>(sql);
+                return Ok(listADocR);
             }
             return null;
         }

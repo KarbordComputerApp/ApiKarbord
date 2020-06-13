@@ -457,6 +457,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  select 'TrzAcc' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzAcc') as Trs
                                                  union all
                                                  select 'Dftr' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'Dftr') as Trs
+                                                 union all
+                                                 select 'ADocR' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'ADocR') as Trs
+
 "
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
