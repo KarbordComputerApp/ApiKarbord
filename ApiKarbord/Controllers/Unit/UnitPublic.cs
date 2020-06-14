@@ -217,7 +217,24 @@ namespace ApiKarbord.Controllers.Unit
             return sql;
         }
 
-       
+        public static string SpiltCodeLike(string field, string code)
+        {
+            string sql = "";
+            if (code != "")
+            {
+                //(accCode like '110-01-%' or accCode = '110-01'
+                sql += " and ( ";
+                string[] Code = code.Split('*');
+                for (int i = 0; i < Code.Length; i++)
+                {
+                    if (i < Code.Length - 1)
+                        sql += string.Format(" ( {0} like '{1}-%' Or {0} = '{1}' ) or ", field, Code[i]);
+                    else
+                        sql += string.Format(" ( {0} like '{1}-%' Or {0} = '{1}' ) )", field, Code[i]);
+                }
+            }
+            return sql;
+        }
 
 
         public static List<SelectListItem> ListTypeAnbar()

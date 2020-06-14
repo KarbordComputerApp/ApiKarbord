@@ -128,20 +128,25 @@
         [StringLength(100)]
         public string AccName { get; set; }
 
-        [StringLength(9)]
-        public string AccCode1 { get; set; }
+        public int AccCode1 { get; set; }
 
-        [StringLength(9)]
-        public string AccCode2 { get; set; }
+        public int AccCode2 { get; set; }
 
-        [StringLength(9)]
-        public string AccCode3 { get; set; }
+        public int AccCode3 { get; set; }
 
-        [StringLength(9)]
-        public string AccCode4 { get; set; }
+        public int AccCode4 { get; set; }
 
-        [StringLength(9)]
-        public string AccCode5 { get; set; }
+        public int AccCode5 { get; set; }
+
+        public int MkzCode1 { get; set; }
+
+        public int MkzCode2 { get; set; }
+
+        public int MkzCode3 { get; set; }
+
+        public int? MkzCode4 { get; set; }
+
+        public int? MkzCode5 { get; set; }
 
         [Key]
         [StringLength(50)]
@@ -158,6 +163,24 @@
         [Key]
         [StringLength(100)]
         public string OprName { get; set; }
+
+        [StringLength(30)]
+        public string CheckNo { get; set; }
+
+        [StringLength(10)]
+        public string CheckDate { get; set; }
+
+        [StringLength(100)]
+        public string Bank { get; set; }
+
+        [StringLength(100)]
+        public string Shobe { get; set; }
+
+        [StringLength(100)]
+        public string Jari { get; set; }
+
+        [StringLength(50)]
+        public string TrafCode { get; set; }
 
         [Key]
         public string ModeName { get; set; }

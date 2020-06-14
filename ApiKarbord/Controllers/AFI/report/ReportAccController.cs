@@ -194,7 +194,9 @@ namespace ApiKarbord.Controllers.AFI.report
                 string AccCode = UnitPublic.SpiltCodeCama(ADocRObject.AccCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_ADocR(' ') AS ADocR where 1 = 1 ");
+                          @"select * FROM  Web_ADocR({0},{1}) AS ADocR where 1 = 1 ",
+                          ADocRObject.DispBands,
+                          ADocRObject.JamRooz);
 
                 if (ADocRObject.azTarikh != "")
                     sql += string.Format(" and DocDate >= '{0}' ", ADocRObject.azTarikh);
@@ -214,6 +216,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("ModeCode", ADocRObject.AModeCode);
                 sql += UnitPublic.SpiltCodeAnd("OprCode", ADocRObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", ADocRObject.MkzCode);
+
+                sql += UnitPublic.SpiltCodeLike("AccCode", ADocRObject.AccCode);
 
                 sql += " order by DocNo,BandNo";
 

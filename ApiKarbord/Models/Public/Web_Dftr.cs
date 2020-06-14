@@ -105,11 +105,32 @@
         [StringLength(100)]
         public string AccName { get; set; }
 
+        public int AccCode1 { get; set; }
+
+        public int AccCode2 { get; set; }
+
+        public int AccCode3 { get; set; }
+
+        public int AccCode4 { get; set; }
+
+        public int AccCode5 { get; set; }
+
         [StringLength(50)]
         public string MkzCode { get; set; }
 
         [StringLength(250)]
         public string MkzName { get; set; }
+
+        public int MkzCode1 { get; set; }
+
+        public int MkzCode2 { get; set; }
+
+        public int MkzCode3 { get; set; }
+
+        public int? MkzCode4 { get; set; }
+
+        public int? MkzCode5 { get; set; }
+
 
         [StringLength(50)]
         public string OprCode { get; set; }
