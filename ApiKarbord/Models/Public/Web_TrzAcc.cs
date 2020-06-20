@@ -9,6 +9,7 @@
     public class Web_TrzAcc
     {
 
+        public short? MainLevel { get; set; }
 
         public short? Level { get; set; }
 

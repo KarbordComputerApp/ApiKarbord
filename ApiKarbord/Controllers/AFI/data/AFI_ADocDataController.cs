@@ -32,5 +32,18 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return null;
         }
+
+        // GET: api/ADocData/CheckStatus اطلاعات نوع سند حسابداری   
+        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}")]
+
+        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                return UnitDatabase.db.Web_CheckStatus.Where(c => c.PDMode == PDMode);
+            }
+            return null;
+        }
+
     }
 }

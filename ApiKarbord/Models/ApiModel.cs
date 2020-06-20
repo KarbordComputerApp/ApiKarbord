@@ -20,6 +20,8 @@
         public virtual DbSet<Web_Cust> Web_Cust { get; set; }
         public virtual DbSet<Web_Acc> Web_Acc { get; set; }
 
+        public virtual DbSet<Web_CheckStatus> Web_CheckStatus { get; set; }
+
         public virtual DbSet<Web_KalaPrice> Web_KalaPrice { get; set; }
 
         public virtual DbSet<Web_FDocB> Web_FDocB { get; set; }
@@ -59,6 +61,7 @@
 
         public virtual DbSet<Web_IDocR> Web_IDocR { get; set; }
 
+        public virtual DbSet<Web_CheckInf> Web_CheckInf { get; set; }
 
 
 

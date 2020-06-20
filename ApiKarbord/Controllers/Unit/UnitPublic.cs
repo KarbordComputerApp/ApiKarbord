@@ -202,7 +202,7 @@ namespace ApiKarbord.Controllers.Unit
         public static string SpiltCodeAnd(string field, string code)
         {
             string sql = "";
-            if (code != "")
+            if (code != "" && code != null)
             {
                 sql += " and ( ";
                 string[] Code = code.Split('*');

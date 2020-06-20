@@ -54,7 +54,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 string aModeCode = UnitPublic.SpiltCodeCama(TrzAccObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_TrzAcc('{0}', '{1}','{2}','{3}','{4}') AS TrzAcc where 1 = 1 ",
+                          @"select * FROM  dbo.Web_TrzAcc({0}, '{1}','{2}','{3}','{4}', '{5}') AS TrzAcc where 1 = 1 ",
+                          TrzAccObject.Level,
                           TrzAccObject.azTarikh,
                           TrzAccObject.taTarikh,
                           oprCode,
@@ -226,6 +227,64 @@ namespace ApiKarbord.Controllers.AFI.report
             }
             return null;
         }
+
+
+
+        public class CheckInfObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string azShomarh { get; set; }
+
+            public string taShomarh { get; set; }
+
+            public string AccCode { get; set; }
+
+            public string PDMode { get; set; }
+
+            public string CheckStatus { get; set; }
+
+        }
+
+
+        // Post: api/ReportAcc/Web_CheckInf گزارش صورت ریز چک ها
+        // HE_Report_CheckInf
+        [Route("api/ReportAcc/CheckInf/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_CheckInf(string ace, string sal, string group, CheckInfObject CheckInfObject)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  Web_CheckInf('') AS CheckInf where 1 = 1");
+
+                if (CheckInfObject.azTarikh != "")
+                    sql += string.Format(" and CheckDate >= '{0}' ", CheckInfObject.azTarikh);
+
+                if (CheckInfObject.taTarikh != "")
+                    sql += string.Format(" and CheckDate <= '{0}' ", CheckInfObject.taTarikh);
+
+
+
+                if (CheckInfObject.azShomarh != "")
+                    sql += string.Format(" and CheckNo >= '{0}' ", CheckInfObject.azShomarh);
+
+                if (CheckInfObject.taShomarh != "")
+                    sql += string.Format(" and CheckNo <= '{0}' ", CheckInfObject.taShomarh);
+
+                sql += UnitPublic.SpiltCodeAnd("CheckStatus", CheckInfObject.CheckStatus);
+                sql += UnitPublic.SpiltCodeAnd("AccCode", CheckInfObject.AccCode);
+                sql += " order by CheckNo,Bank,Shobe";
+
+                var listCheckInf = UnitDatabase.db.Database.SqlQuery<Web_CheckInf>(sql);
+                return Ok(listCheckInf);
+            }
+            return null;
+        }
+
+
 
     }
 }
