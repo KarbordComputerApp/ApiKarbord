@@ -260,22 +260,22 @@ namespace ApiKarbord.Controllers.AFI.report
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  Web_CheckInf('') AS CheckInf where 1 = 1");
 
+                sql += string.Format(" and PDMode = {0} ", CheckInfObject.PDMode);
+
                 if (CheckInfObject.azTarikh != "")
                     sql += string.Format(" and CheckDate >= '{0}' ", CheckInfObject.azTarikh);
 
                 if (CheckInfObject.taTarikh != "")
                     sql += string.Format(" and CheckDate <= '{0}' ", CheckInfObject.taTarikh);
 
-
-
                 if (CheckInfObject.azShomarh != "")
-                    sql += string.Format(" and CheckNo >= '{0}' ", CheckInfObject.azShomarh);
+                    sql += string.Format(" and CheckNo >= {0} ", CheckInfObject.azShomarh);
 
                 if (CheckInfObject.taShomarh != "")
-                    sql += string.Format(" and CheckNo <= '{0}' ", CheckInfObject.taShomarh);
+                    sql += string.Format(" and CheckNo <= {0} ", CheckInfObject.taShomarh);
 
                 sql += UnitPublic.SpiltCodeAnd("CheckStatus", CheckInfObject.CheckStatus);
-                sql += UnitPublic.SpiltCodeAnd("AccCode", CheckInfObject.AccCode);
+                sql += UnitPublic.SpiltCodeLike("AccCode", CheckInfObject.AccCode);
                 sql += " order by CheckNo,Bank,Shobe";
 
                 var listCheckInf = UnitDatabase.db.Database.SqlQuery<Web_CheckInf>(sql);
