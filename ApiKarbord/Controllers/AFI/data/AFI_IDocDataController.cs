@@ -173,7 +173,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                string sql = string.Format(@"SELECT * FROM Web_IMode WHERE InOut = {0}", InOut);
+                string sql = string.Format(@"SELECT * FROM Web_IMode WHERE InOut = {0} order by OrderFld ", InOut);
                 var listIMode = UnitDatabase.db.Database.SqlQuery<Web_IMode>(sql);
                 return Ok(listIMode);
             }
