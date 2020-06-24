@@ -61,7 +61,7 @@
 
         public virtual DbSet<Web_IDocR> Web_IDocR { get; set; }
 
-        public virtual DbSet<Web_CheckInf> Web_CheckInf { get; set; }
+        public virtual DbSet<Web_TChk> Web_TChk { get; set; }
 
 
 

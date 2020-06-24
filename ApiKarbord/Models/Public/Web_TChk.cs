@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public class Web_CheckInf
+    public class Web_TChk
     {
         [StringLength(50)]
         public string AccCode { get; set; }

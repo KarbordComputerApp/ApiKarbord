@@ -230,7 +230,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
 
 
-        public class CheckInfObject
+        public class TChkObject
         {
             public string azTarikh { get; set; }
 
@@ -249,37 +249,37 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
 
-        // Post: api/ReportAcc/Web_CheckInf گزارش صورت ریز چک ها
-        // HE_Report_CheckInf
-        [Route("api/ReportAcc/CheckInf/{ace}/{sal}/{group}")]
+        // Post: api/ReportAcc/Web_TChk گزارش صورت ریز چک ها
+        // HE_Report_TChk
+        [Route("api/ReportAcc/TChk/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_CheckInf(string ace, string sal, string group, CheckInfObject CheckInfObject)
+        public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_CheckInf('') AS CheckInf where 1 = 1");
+                          @"select * FROM  Web_TChk('') AS TChk where 1 = 1");
 
-                sql += string.Format(" and PDMode = {0} ", CheckInfObject.PDMode);
+                sql += string.Format(" and PDMode = {0} ", TChkObject.PDMode);
 
-                if (CheckInfObject.azTarikh != "")
-                    sql += string.Format(" and CheckDate >= '{0}' ", CheckInfObject.azTarikh);
+                if (TChkObject.azTarikh != "")
+                    sql += string.Format(" and CheckDate >= '{0}' ", TChkObject.azTarikh);
 
-                if (CheckInfObject.taTarikh != "")
-                    sql += string.Format(" and CheckDate <= '{0}' ", CheckInfObject.taTarikh);
+                if (TChkObject.taTarikh != "")
+                    sql += string.Format(" and CheckDate <= '{0}' ", TChkObject.taTarikh);
 
-                if (CheckInfObject.azShomarh != "")
-                    sql += string.Format(" and CheckNo >= {0} ", CheckInfObject.azShomarh);
+                if (TChkObject.azShomarh != "")
+                    sql += string.Format(" and CheckNo >= {0} ", TChkObject.azShomarh);
 
-                if (CheckInfObject.taShomarh != "")
-                    sql += string.Format(" and CheckNo <= {0} ", CheckInfObject.taShomarh);
+                if (TChkObject.taShomarh != "")
+                    sql += string.Format(" and CheckNo <= {0} ", TChkObject.taShomarh);
 
-                sql += UnitPublic.SpiltCodeAnd("CheckStatus", CheckInfObject.CheckStatus);
-                sql += UnitPublic.SpiltCodeLike("AccCode", CheckInfObject.AccCode);
+                sql += UnitPublic.SpiltCodeAnd("CheckStatus", TChkObject.CheckStatus);
+                sql += UnitPublic.SpiltCodeLike("AccCode", TChkObject.AccCode);
                 sql += " order by CheckNo,Bank,Shobe";
 
-                var listCheckInf = UnitDatabase.db.Database.SqlQuery<Web_CheckInf>(sql);
-                return Ok(listCheckInf);
+                var listTChk = UnitDatabase.db.Database.SqlQuery<Web_TChk>(sql);
+                return Ok(listTChk);
             }
             return null;
         }

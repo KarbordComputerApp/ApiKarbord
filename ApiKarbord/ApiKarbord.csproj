@@ -225,7 +225,7 @@
     <Compile Include="Models\AFI\AFI_FDocHi.cs" />
     <Compile Include="Models\ApiModel.cs" />
     <Compile Include="Models\Public\Web_CheckStatus.cs" />
-    <Compile Include="Models\Public\Web_CheckInf.cs" />
+    <Compile Include="Models\Public\Web_TChk.cs" />
     <Compile Include="Models\Public\Web_ADocR.cs" />
     <Compile Include="Models\Public\Web_Dftr.cs" />
     <Compile Include="Models\Public\Web_RprtCols.cs" />
