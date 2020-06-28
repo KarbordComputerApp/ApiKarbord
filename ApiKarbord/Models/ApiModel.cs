@@ -18,12 +18,12 @@
         public virtual DbSet<AFI_FDocHi> AFI_FDocHi { get; set; }
         public virtual DbSet<Web_Kala> Web_Kala { get; set; }
         public virtual DbSet<Web_Cust> Web_Cust { get; set; }
+
+        public virtual DbSet<Web_CGru> Web_CGru { get; set; }
+
         public virtual DbSet<Web_Acc> Web_Acc { get; set; }
-
         public virtual DbSet<Web_CheckStatus> Web_CheckStatus { get; set; }
-
         public virtual DbSet<Web_KalaPrice> Web_KalaPrice { get; set; }
-
         public virtual DbSet<Web_FDocB> Web_FDocB { get; set; }
         public virtual DbSet<Web_Unit> Web_Unit { get; set; }
         public virtual DbSet<Web_Inv> Web_Inv { get; set; }
@@ -60,6 +60,8 @@
         public virtual DbSet<Web_Dftr> Web_Dftr { get; set; }
 
         public virtual DbSet<Web_IDocR> Web_IDocR { get; set; }
+
+        public virtual DbSet<Web_TrzFKala> Web_TrzFKala { get; set; }
 
         public virtual DbSet<Web_TChk> Web_TChk { get; set; }
 

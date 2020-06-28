@@ -43,6 +43,18 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // GET: api/Web_Data/CGru لیست گروه اشخاص
+        [Route("api/Web_Data/CGru/{ace}/{sal}/{group}/{mode}")]
+        public IQueryable<Web_CGru> GetWeb_CGru(string ace, string sal, string group , short mode)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                return UnitDatabase.db.Web_CGru.Where(c => c.Mode == 0 && c.Mode == mode);
+            }
+            return null;
+        }
+
+
         // GET: api/Web_Data/Acc لیست حساب ها
         [Route("api/Web_Data/Acc/{ace}/{sal}/{group}")]
         public IQueryable<Web_Acc> GetWeb_Acc(string ace, string sal, string group)
