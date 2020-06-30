@@ -105,7 +105,7 @@
 
         public double? Discount { get; set; }
 
-        public double? NoDiscountPrice { get; set; }
+        public double? OnlyDiscountPrice { get; set; }
 
         public double? FinalPrice { get; set; }
 
