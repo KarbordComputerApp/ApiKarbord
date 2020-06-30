@@ -473,7 +473,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  select 'ADocR' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'ADocR') as Trs
                                                  union all
                                                  select 'TChk' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TChk') as Trs
-
+                                                 union all
+                                                 select 'TrzFKala_S' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzFKala_S') as Trs
+                                                 union all
+                                                 select 'TrzFKala_P' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzFKala_P') as Trs
 "
                                                , ace, group, username);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
