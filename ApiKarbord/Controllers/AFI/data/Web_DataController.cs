@@ -49,7 +49,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
-                return UnitDatabase.db.Web_CGru.Where(c => c.Mode == 0 && c.Mode == mode);
+                return UnitDatabase.db.Web_CGru.Where(c => c.Mode == 0 || c.Mode == mode);
             }
             return null;
         }

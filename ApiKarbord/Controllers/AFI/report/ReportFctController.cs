@@ -75,5 +75,79 @@ namespace ApiKarbord.Controllers.AFI.report
             }
             return null;
         }
+
+
+        public class TrzFKalaObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string azShomarh { get; set; }
+
+            public string taShomarh { get; set; }
+
+            public string ZeroValue { get; set; }
+
+            public string ModeCode1 { get; set; }
+
+            public string ModeCode2 { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+            public string CustCode { get; set; }
+
+            public string CGruCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string StatusCode { get; set; }
+
+        }
+        // Post: api/ReportFct/TrzFKala گزارش تراز اسناد خرید و فروش
+        // HE_Report_TrzFKala
+        [Route("api/ReportFct/TrzFKala/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, TrzFKalaObject TrzFKalaObject)
+        {
+            if (UnitDatabase.CreateConection(ace, sal, group))
+            {
+                string oprCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.MkzCode);
+                string custCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.CustCode);
+                string cGruCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.CGruCode);
+                string invCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.InvCode);
+                string statusCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.StatusCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFKala where 1 = 1 ",
+                          TrzFKalaObject.ModeCode1,
+                          TrzFKalaObject.ModeCode2,
+                          TrzFKalaObject.azTarikh,
+                          TrzFKalaObject.taTarikh,
+                          TrzFKalaObject.azShomarh,
+                          TrzFKalaObject.taShomarh,
+                          custCode,
+                          cGruCode,
+                          mkzCode,
+                          oprCode,
+                          invCode,
+                          statusCode,
+                          TrzFKalaObject.ZeroValue);
+
+                sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzFKalaObject.KalaCode);
+                sql += UnitPublic.SpiltCodeAnd("KGruCode", TrzFKalaObject.KGruCode);
+
+                var listTrzFKala = UnitDatabase.db.Database.SqlQuery<Web_TrzFKala>(sql);
+                return Ok(listTrzFKala);
+            }
+            return null;
+        }
     }
 }
