@@ -51,6 +51,42 @@
         [StringLength(50)]
         public string KalaExf3 { get; set; }
 
+        [StringLength(50)]
+        public string KalaExf4 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf5 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf6 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf7 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf8 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf9 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf10 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf11 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf12 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf13 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf14 { get; set; }
+
+        [StringLength(50)]
+        public string KalaExf15 { get; set; }
+
         public double? UnitPrice { get; set; }
 
         public long? DocNo { get; set; }
