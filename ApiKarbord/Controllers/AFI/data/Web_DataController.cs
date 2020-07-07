@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -1056,6 +1058,19 @@ namespace ApiKarbord.Controllers.AFI.data
         [Route("api/Web_Data/RprtCols/{ace}/{sal}/{group}/{RprtId}/{UserCode}")]
         public IQueryable<Web_RprtCols> GetWeb_RprtCols(string ace, string sal, string group, string RprtId, string UserCode)
         {
+
+
+            /*         var encoder = new System.Text.UTF8Encoding();
+                System.Text.Decoder utf8Decode = encoder.GetDecoder();
+                byte[] todecodeByte = Convert.FromBase64String(ace);
+                int charCount = utf8Decode.GetCharCount(todecodeByte, 0, todecodeByte.Length);
+                char[] decodedChar = new char[charCount];
+                utf8Decode.GetChars(todecodeByte, 0, todecodeByte.Length, decodedChar, 0);
+                string result = new String(decodedChar);
+                */
+
+
+
             if (UnitDatabase.CreateConection(ace, sal, group))
             {
                 return UnitDatabase.db.Web_RprtCols.Where(c => c.RprtId == RprtId && c.UserCode == UserCode && c.Visible == 1);
