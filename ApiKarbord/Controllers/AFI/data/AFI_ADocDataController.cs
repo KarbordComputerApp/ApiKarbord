@@ -21,10 +21,10 @@ namespace ApiKarbord.Controllers.AFI.data
     public class AFI_ADocDataController : ApiController
     {
         // GET: api/ADocData/AMode اطلاعات نوع سند حسابداری   
-        [Route("api/ADocData/AMode/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_AMode(string ace, string sal, string group)
+        [Route("api/ADocData/AMode/{ace}/{sal}/{group}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_AMode(string ace, string sal, string group, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = "SELECT * FROM Web_AMode";
                 var listAMode = UnitDatabase.db.Database.SqlQuery<Web_AMode>(sql);
@@ -34,11 +34,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/CheckStatus اطلاعات نوع سند حسابداری   
-        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}")]
+        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}/{userName}/{password}")]
 
-        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode)
+        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 return UnitDatabase.db.Web_CheckStatus.Where(c => c.PDMode == PDMode);
             }

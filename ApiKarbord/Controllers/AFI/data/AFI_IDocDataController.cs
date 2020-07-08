@@ -21,10 +21,10 @@ namespace ApiKarbord.Controllers.AFI.data
     {
 
         // GET: api/IDocData/IDocH اطلاعات تکمیلی سند انبار  
-        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{serialNumber}")]
-        public IQueryable<Web_IDocH> GetWeb_IDocH(string ace, string sal, string group, long serialNumber)
+        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
+        public IQueryable<Web_IDocH> GetWeb_IDocH(string ace, string sal, string group, long serialNumber, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 var a = UnitDatabase.db.Web_IDocH.Where(c => c.SerialNumber == serialNumber);
                 return a;//UnitDatabase.db.Web_IDocH.Where(c => c.SerialNumber == serialNumber);
@@ -33,10 +33,10 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/IDocData/IDocH تعداد رکورد ها    
-        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/Count")]
-        public async Task<IHttpActionResult> GetWeb_IDocHCount(string ace, string sal, string group, byte InOut)
+        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/Count/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_IDocHCount(string ace, string sal, string group, byte InOut, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(@"SELECT count(SerialNumber) FROM Web_IDocH WHERE InOut = {0} ", InOut);
                 int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
@@ -45,10 +45,10 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
         // GET: api/IDocData/IDocH اخرین تاریخ    
-        [Route("api/IDocData/IDocH/LastDate/{ace}/{sal}/{group}/{InOut}")]
-        public async Task<IHttpActionResult> GetWeb_IDocHLastDate(string ace, string sal, string group, byte InOut)
+        [Route("api/IDocData/IDocH/LastDate/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_IDocHLastDate(string ace, string sal, string group, byte InOut, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string lastdate;
                 string sql = string.Format(@"SELECT count(DocDate) FROM Web_IDocH WHERE InOut = '{0}' ", InOut);
@@ -66,11 +66,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/IDocData/IDocH لیست سند انبار   
-        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/top{select}/{invSelect}/{userName}/{AccessSanad}")]
-        public async Task<IHttpActionResult> GetAllWeb_IDocHMin(string ace, string sal, string group, byte InOut, int select, long invSelect, string userName, bool accessSanad)
+        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/top{select}/{invSelect}/{user}/{AccessSanad}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetAllWeb_IDocHMin(string ace, string sal, string group, byte InOut, int select, long invSelect, string user, bool accessSanad, string userName, string password)
         {
 
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = "declare @enddate nvarchar(20) ";
                 //if (select == 1) // اگر انتخاب برای اخرین روز بود
@@ -107,7 +107,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     sql += " and DocDate like  @enddate + '%' ";
 
                 if (accessSanad == false)
-                    sql += " and Eghdam = '" + userName + "' ";
+                    sql += " and Eghdam = '" + user + "' ";
 
 
                 sql += " order by SortDocNo desc";
@@ -118,10 +118,10 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/IDocData/IDocB اطلاعات تکمیلی سند انبار   
-        [Route("api/IDocData/IDocB/{ace}/{sal}/{group}/{serialNumber}")]
-        public async Task<IHttpActionResult> GetWeb_IDocB(string ace, string sal, string group, long serialNumber)
+        [Route("api/IDocData/IDocB/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_IDocB(string ace, string sal, string group, long serialNumber, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,DeghatR1,DeghatR2,DeghatR3,DeghatM1,DeghatM2,DeghatM3,DeghatR
                                          FROM Web_IDocB WHERE SerialNumber = {0}", serialNumber);
@@ -131,15 +131,15 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        [Route("api/IDocData/UpdatePriceAnbar/{ace}/{sal}/{group}/{serialnumber}")]
+        [Route("api/IDocData/UpdatePriceAnbar/{ace}/{sal}/{group}/{serialnumber}/{userName}/{password}")]
         [ResponseType(typeof(AFI_IDocBi))]
-        public async Task<IHttpActionResult> PostWeb_UpdatePriceAnbar(string ace, string sal, string group, long serialnumber)
+        public async Task<IHttpActionResult> PostWeb_UpdatePriceAnbar(string ace, string sal, string group, long serialnumber, string userName, string password)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 try
                 {
@@ -168,10 +168,10 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/IDocData/IMode اطلاعات نوع سند انبار   
-        [Route("api/IDocData/IMode/{ace}/{sal}/{group}/{InOut}")]
-        public async Task<IHttpActionResult> GetWeb_IMode(string ace, string sal, string group, int InOut)
+        [Route("api/IDocData/IMode/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_IMode(string ace, string sal, string group, int InOut, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(@"SELECT * FROM Web_IMode WHERE InOut = {0} order by OrderFld ", InOut);
                 var listIMode = UnitDatabase.db.Database.SqlQuery<Web_IMode>(sql);

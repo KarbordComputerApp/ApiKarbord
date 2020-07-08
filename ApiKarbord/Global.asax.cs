@@ -19,22 +19,6 @@ namespace ApiKarbord
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            //GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
-
-
-            UnitPublic.Appddress = Server.MapPath("");
-            UnitPublic.MyIni = new IniFile(UnitPublic.Appddress + "\\Content\\ini\\SqlServerConfig.Ini");
-            //UnitPublic.MyIniServer = new IniFile(UnitPublic.Appddress + "\\Content\\ini\\SqlServerConfigServer.Ini");
-            //UnitPublic.MyIni = new IniFile(@"c:\test\Content\ini\SqlServerConfig.Ini");
-            //UnitPublic.MyIniServer = new IniFile(@"c:\test\Content\ini\SqlServerConfigServer.Ini");
-
-            //#if DEBUG
-            //UnitPublic.Appddress = Server.MapPath("");
-            //UnitPublic.MyIni = new IniFile(UnitPublic.Appddress + "\\Content\\ini\\SqlServerConfig.Ini");
-            //UnitPublic.MyIniServer = new IniFile(UnitPublic.Appddress + "\\Content\\ini\\SqlServerConfigServer.Ini");
-            //#endif
         }
     }
 }

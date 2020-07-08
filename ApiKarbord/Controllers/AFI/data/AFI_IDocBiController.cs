@@ -20,9 +20,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // PUT: api/AFI_IDocBi/5
-        [Route("api/AFI_IDocBi/{ace}/{sal}/{group}/{BandNo}")]
+        [Route("api/AFI_IDocBi/{ace}/{sal}/{group}/{BandNo}/{userName}/{password}")]
         [ResponseType(typeof(AFI_IDocBi))]
-        public async Task<IHttpActionResult> PutAFI_IDocBi(string ace, string sal, string group, long BandNo, AFI_IDocBi aFI_IDocBi)
+        public async Task<IHttpActionResult> PutAFI_IDocBi(string ace, string sal, string group, long BandNo, string userName, string password, AFI_IDocBi aFI_IDocBi)
         {
             if (!ModelState.IsValid)
             {
@@ -33,7 +33,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 try
                 {
@@ -84,16 +84,16 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // POST: api/AFI_IDocBi
-        [Route("api/AFI_IDocBi/{ace}/{sal}/{group}/{bandno}")]
+        [Route("api/AFI_IDocBi/{ace}/{sal}/{group}/{bandno}/{userName}/{password}")]
         [ResponseType(typeof(AFI_IDocBi))]
-        public async Task<IHttpActionResult> PostAFI_IDocBi(string ace, string sal, string group, long bandNo, AFI_IDocBi aFI_IDocBi)
+        public async Task<IHttpActionResult> PostAFI_IDocBi(string ace, string sal, string group, long bandNo, string userName, string password, AFI_IDocBi aFI_IDocBi)
         {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 try
                 {
@@ -170,11 +170,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // DELETE: api/AFI_IDocBi/5
-        [Route("api/AFI_IDocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}")]
+        [Route("api/AFI_IDocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}/{userName}/{password}")]
         [ResponseType(typeof(AFI_IDocBi))]
-        public async Task<IHttpActionResult> DeleteAFI_IDocBi(string ace, string sal, string group, long SerialNumber, int BandNo)
+        public async Task<IHttpActionResult> DeleteAFI_IDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string userName, string password)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 try
                 {

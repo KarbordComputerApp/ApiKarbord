@@ -207,7 +207,6 @@
     <Compile Include="Controllers\AFI\data\AFI_IDocHiController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_FDocHiController.cs" />
     <Compile Include="Controllers\AFI\data\Web_DataController.cs" />
-    <Compile Include="Controllers\AFI\data\Web_KalaController.cs" />
     <Compile Include="Controllers\AFI\report\ReportAccController.cs" />
     <Compile Include="Controllers\AFI\report\ReportFctController.cs" />
     <Compile Include="Controllers\AFI\report\ReportInvController.cs" />
@@ -219,6 +218,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Account\Access.cs" />
     <Compile Include="Models\AFI\AFI_IDocBi.cs" />
     <Compile Include="Models\AFI\AFI_FDocBi.cs" />
     <Compile Include="Models\AFI\AFI_IDocHi.cs" />

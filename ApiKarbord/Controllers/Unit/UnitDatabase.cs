@@ -5,6 +5,9 @@ using System.Web;
 using ApiKarbord.Models;
 using System.Data.SqlClient;
 using System.Web.Mvc;
+using System.Net.Http;
+using Newtonsoft.Json;
+
 
 namespace ApiKarbord.Controllers.Unit
 {
@@ -41,32 +44,35 @@ namespace ApiKarbord.Controllers.Unit
         }
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static string CreateConnectionString(string dataBaseName)
+        public static string CreateConnectionString(string userName, string password, string dataBaseName)
         {
             try
             {
-                string serverName;
-                string userName;
-                string password;
-                // خواندن اطلاعات اتصال به اس کیو ال
-                if (string.IsNullOrEmpty(dataBaseName))
+                List<Access> model = null;
+                var client = new HttpClient();
+                string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}", userName, password);
+                var task = client.GetAsync(address)
+                  .ContinueWith((taskwithresponse) =>
+                  {
+                      var response = taskwithresponse.Result;
+                      var jsonString = response.Content.ReadAsStringAsync();
+                      jsonString.Wait();
+                      model = JsonConvert.DeserializeObject<List<Access>>(jsonString.Result);
+                  });
+                task.Wait();
+
+                var list = model.First();
+
+                if (model.Count > 0)
                 {
-                    serverName = UnitPublic.MyIniServer.Read("serverName");
-                    userName = UnitPublic.MyIniServer.Read("userName");
-                    password = UnitPublic.MyIniServer.Read("password");
-                    dataBaseName = "guouhfgr_Report";
-                }
-                else
-                {
-                    serverName = UnitPublic.MyIni.Read("serverName");
-                    userName = UnitPublic.MyIni.Read("userName");
-                    password = UnitPublic.MyIni.Read("password");
-                }
-                string connection = String.Format(
+                    string connectionString = String.Format(
                                     //  @"data source = {0};initial catalog = {1};user id = {2}; password = {3}; MultipleActiveResultSets = True; App = EntityFramework",
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                 serverName, dataBaseName, userName, password);
-                return connection;
+                                    list.SqlServerName, dataBaseName, list.SqlUserName, list.SqlPassword);
+                    return connectionString;
+                }
+                else
+                    return "";
             }
             catch (Exception)
             {
@@ -107,11 +113,11 @@ namespace ApiKarbord.Controllers.Unit
         }
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static Boolean CreateConection(string ace, string sal, string group)
+        public static Boolean CreateConection(string userName, string password, string ace, string sal, string group)
         {
             try
             {
-                string conStr = CreateConnectionString(DatabaseName(ace, sal, group));
+                string conStr = CreateConnectionString(userName, password, DatabaseName(ace, sal, group));
                 if (string.IsNullOrEmpty(conStr))
                 {
                     return false;

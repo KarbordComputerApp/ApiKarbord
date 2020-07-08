@@ -12,15 +12,15 @@ namespace ApiKarbord.Controllers
         // GET: HomeApi
         public ActionResult Index()
         {
-            if (!UnitDatabase.TestSqlServer(true))
-            {
-                return JavaScript(UnitSweet2.ShowMessage(1, "خطا در اتصال", ""));
-            }
+            //if (!UnitDatabase.TestSqlServer(true))
+            //{
+            //    return JavaScript(UnitSweet2.ShowMessage(1, "خطا در اتصال", ""));
+            //}
             return View();
         }
 
 
-        //نمایش اطلاعات اتصال به دیتابیس 
+       /* //نمایش اطلاعات اتصال به دیتابیس 
         public ActionResult AddSqlServer()
         {
             ViewBag.serverName = UnitPublic.MyIni.Read("serverName");
@@ -54,6 +54,6 @@ namespace ApiKarbord.Controllers
                 return JavaScript(UnitSweet2.ShowMessage(1, "خطا در اتصال", "دوباره سعی کنید"));
                 throw;
             }
-        }
+        }*/
     }
 }

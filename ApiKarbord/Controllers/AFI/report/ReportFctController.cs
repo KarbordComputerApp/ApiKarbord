@@ -46,11 +46,11 @@ namespace ApiKarbord.Controllers.AFI.report
 
         // Post: api/ReportFct/FDocR گزارش ريز گردش اسناد خرید و فروش
         // HE_Report_FDocR
-        [Route("api/ReportFct/FDocR/{ace}/{sal}/{group}")]
+        [Route("api/ReportFct/FDocR/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_FDocR(string ace, string sal, string group, FDocRObject FDocRObject)
+        public async Task<IHttpActionResult> PostWeb_FDocR(string ace, string sal, string group, string userName, string password, FDocRObject FDocRObject)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
@@ -112,11 +112,11 @@ namespace ApiKarbord.Controllers.AFI.report
         }
         // Post: api/ReportFct/TrzFKala گزارش تراز اسناد خرید و فروش
         // HE_Report_TrzFKala
-        [Route("api/ReportFct/TrzFKala/{ace}/{sal}/{group}")]
+        [Route("api/ReportFct/TrzFKala/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, TrzFKalaObject TrzFKalaObject)
+        public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, string userName, string password, TrzFKalaObject TrzFKalaObject)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.MkzCode);

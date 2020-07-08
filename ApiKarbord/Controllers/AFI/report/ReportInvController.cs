@@ -44,11 +44,11 @@ namespace ApiKarbord.Controllers.AFI.report
 
         // Post: api/ReportInv/IDocR گزارش ريز گردش اسناد انبارداري
         // HE_Report_IDocR
-        [Route("api/ReportInv/IDocR/{ace}/{sal}/{group}")]
+        [Route("api/ReportInv/IDocR/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_IDocR(string ace, string sal, string group, IDocRObject IDocRObject)
+        public async Task<IHttpActionResult> PostWeb_IDocR(string ace, string sal, string group, string userName, string password, IDocRObject IDocRObject)
         {
-            if (UnitDatabase.CreateConection(ace, sal, group))
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
