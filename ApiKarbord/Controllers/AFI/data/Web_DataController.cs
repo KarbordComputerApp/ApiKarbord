@@ -24,7 +24,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Cust لیست اشخاص
         [Route("api/Web_Data/Cust/{ace}/{sal}/{group}/{forSale}/{userName}/{password}")]
-        public IQueryable<Web_Cust> GetWeb_Cust(string ace, string sal, string group, bool? forSale,string userName, string password)
+        public IQueryable<Web_Cust> GetWeb_Cust(string ace, string sal, string group, bool? forSale, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
@@ -47,7 +47,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/CGru لیست گروه اشخاص
         [Route("api/Web_Data/CGru/{ace}/{sal}/{group}/{mode}/{userName}/{password}")]
-        public IQueryable<Web_CGru> GetWeb_CGru(string ace, string sal, string group , short mode, string userName, string password)
+        public IQueryable<Web_CGru> GetWeb_CGru(string ace, string sal, string group, short mode, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
@@ -155,7 +155,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Status لیست وضعیت پرداخت  
         [Route("api/Web_Data/Status/{ace}/{sal}/{group}/{progname}/{userName}/{password}")]
-        public IQueryable<Web_Status> GetWeb_Status(string ace, string sal, string group,string progname, string userName, string password)
+        public IQueryable<Web_Status> GetWeb_Status(string ace, string sal, string group, string progname, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
@@ -290,8 +290,68 @@ namespace ApiKarbord.Controllers.AFI.data
         [Route("api/Web_Data/Login/{user}/{pass}/{param1}/{param2}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetWeb_Login(string user, string pass, string param1, string param2, string userName, string password)
         {
+            int temp;
+            string s;
+
+            if (userName != "" && userName != null)
+            {
+                string[] User = userName.Split(',');
+                int kk = Int32.Parse(User[User.Length-1]);
+                char[] c = new char[kk];
+                for (int i = 0; i < User.Length-1; i++)
+                {
+                    temp = Int32.Parse(User[i]) / 1024;
+                    c[i] = (Char)temp;
+                }
+
+                s = new string(c);
+            }
+
+
+
+
+
+
+
+
+
             if (UnitDatabase.CreateConection(userName, password, "Config", "", ""))
             {
+
+
+                /*
+                 for (var i = 0; i < userAccount.length; i++)
+                    if (i == userAccount.length - 1) {
+                        asciiuserAccount += (userAccount[i].charCodeAt(0) * 1024);
+                    }
+                    else
+                        asciiuserAccount += (userAccount[i].charCodeAt(0) * 1024) + ',';
+
+
+
+
+
+
+                public static string SpiltCodeAnd(string field, string code)
+        {
+            string sql = "";
+            if (code != "" && code != null)
+            {
+                sql += " and ( ";
+                string[] Code = code.Split('*');
+                for (int i = 0; i < Code.Length; i++)
+                {
+                    if (i < Code.Length - 1)
+                        sql += string.Format("  {0} = '{1}' Or ", field, Code[i]);
+                    else
+                        sql += string.Format("  {0} = '{1}' )", field, Code[i]);
+                }
+            }
+            return sql;
+        }
+
+                 */
+               
                 if (pass == "null")
                     pass = "";
                 string sql = string.Format(@" DECLARE  @return_value int
@@ -388,7 +448,7 @@ namespace ApiKarbord.Controllers.AFI.data
         // HE_Report_TrzIKalaExf
         [Route("api/Web_Data/TrzIExf/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TrzIKalaExf(string ace, string sal, string group, string userName, string password,TrzIExfObject TrzIExfObject)
+        public async Task<IHttpActionResult> PostWeb_TrzIKalaExf(string ace, string sal, string group, string userName, string password, TrzIExfObject TrzIExfObject)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
@@ -906,7 +966,7 @@ namespace ApiKarbord.Controllers.AFI.data
         // Post: api/Web_Data/Web_ErjDocB_Last گزارش فهرست ارجاعات  
         [Route("api/Web_Data/Web_ErjDocB_Last/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_ErjDocB_Last(string ace, string sal, string group, string userName, string password ,ErjDocB_Last ErjDocB_Last)
+        public async Task<IHttpActionResult> PostWeb_ErjDocB_Last(string ace, string sal, string group, string userName, string password, ErjDocB_Last ErjDocB_Last)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {

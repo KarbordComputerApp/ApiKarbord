@@ -42,6 +42,27 @@ namespace ApiKarbord.Controllers.Unit
                 return dbName;
             }
         }
+
+        public static string UnEncript(string value)
+        {
+            int temp;
+            if (value != "" && value != null)
+            {
+                string[] User = value.Split(',');
+                int count = Int32.Parse(User[User.Length - 1]);
+                char[] c = new char[count];
+                for (int i = 0; i < User.Length - 1; i++)
+                {
+                    temp = Int32.Parse(User[i]) / 1024;
+                    c[i] = (Char)temp;
+                }
+                return new string(c);
+            }
+            else
+                return null;
+        }
+
+
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static string CreateConnectionString(string userName, string password, string dataBaseName)
@@ -111,6 +132,7 @@ namespace ApiKarbord.Controllers.Unit
                 throw;
             }
         }
+
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static Boolean CreateConection(string userName, string password, string ace, string sal, string group)
