@@ -110,14 +110,14 @@ namespace ApiKarbord.Controllers.AFI.report
             public string StatusCode { get; set; }
 
         }
-        // Post: api/ReportFct/TrzFKala گزارش تراز اسناد خرید و فروش
+        // Post: api/ReportFct/TrzFKala   گزارش تراز خرید و  فروش کالا
         // HE_Report_TrzFKala
         [Route("api/ReportFct/TrzFKala/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, string userName, string password, TrzFKalaObject TrzFKalaObject)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
-            {
+            { 
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.MkzCode);
                 string custCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.CustCode);
@@ -149,5 +149,82 @@ namespace ApiKarbord.Controllers.AFI.report
             }
             return null;
         }
+
+
+
+
+        public class TrzFCustObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string azShomarh { get; set; }
+
+            public string taShomarh { get; set; }
+
+            public string ZeroValue { get; set; }
+
+            public string ModeCode1 { get; set; }
+
+            public string ModeCode2 { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+            public string CustCode { get; set; }
+
+            public string CGruCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string StatusCode { get; set; }
+
+        }
+        // Post: api/ReportFct/TrzFCust گزارش تراز خرید و  فروش مشتریان
+        // HE_Report_TrzFCust
+        [Route("api/ReportFct/TrzFCust/{ace}/{sal}/{group}/{userName}/{password}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrzFCust(string ace, string sal, string group, string userName, string password, TrzFCustObject TrzFCustObject)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string oprCode = UnitPublic.SpiltCodeCama(TrzFCustObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(TrzFCustObject.MkzCode);
+                string kalaCode = UnitPublic.SpiltCodeCama(TrzFCustObject.KalaCode);
+                string kGruCode = UnitPublic.SpiltCodeCama(TrzFCustObject.KGruCode);
+                string invCode = UnitPublic.SpiltCodeCama(TrzFCustObject.InvCode);
+                string statusCode = UnitPublic.SpiltCodeCama(TrzFCustObject.StatusCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFCust where 1 = 1 ",
+                          TrzFCustObject.ModeCode1,
+                          TrzFCustObject.ModeCode2,
+                          TrzFCustObject.azTarikh,
+                          TrzFCustObject.taTarikh,
+                          TrzFCustObject.azShomarh,
+                          TrzFCustObject.taShomarh,
+                          kalaCode,
+                          kGruCode,
+                          mkzCode,
+                          oprCode,
+                          invCode,
+                          statusCode,
+                          TrzFCustObject.ZeroValue);
+
+                sql += UnitPublic.SpiltCodeAnd("CustCode", TrzFCustObject.CustCode);
+                sql += UnitPublic.SpiltCodeAnd("CGruCode", TrzFCustObject.CGruCode);
+
+                var listTrzFCust = UnitDatabase.db.Database.SqlQuery<Web_TrzFCust>(sql);
+                return Ok(listTrzFCust);
+            }
+            return null;
+        }
+
     }
 }

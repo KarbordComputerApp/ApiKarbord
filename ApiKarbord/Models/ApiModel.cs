@@ -62,6 +62,7 @@
         public virtual DbSet<Web_IDocR> Web_IDocR { get; set; }
 
         public virtual DbSet<Web_TrzFKala> Web_TrzFKala { get; set; }
+        public virtual DbSet<Web_TrzFCust> Web_TrzFCust { get; set; }
 
         public virtual DbSet<Web_TChk> Web_TChk { get; set; }
 

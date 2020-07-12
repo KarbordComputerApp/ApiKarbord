@@ -22,7 +22,7 @@
         public string KalaF04 { get; set; }
 
         public string KalaF05 { get; set; }
-
+        
         public string KalaF06 { get; set; }
 
         public string KalaF07 { get; set; }
