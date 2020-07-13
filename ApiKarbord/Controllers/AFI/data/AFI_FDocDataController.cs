@@ -46,8 +46,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/FDocData/FDocH لیست فاکتور    
-
-
         [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}/top{select}/{user}/{AccessSanad}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetAllWeb_FDocHMin(string ace, string sal, string group, string ModeCode, int select, string user, bool accessSanad, string userName, string password)
         {

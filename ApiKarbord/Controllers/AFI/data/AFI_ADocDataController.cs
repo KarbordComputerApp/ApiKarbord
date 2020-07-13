@@ -45,5 +45,25 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+        // GET: api/ADocData/ADocH لیست فاکتور    
+        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/{ModeCode}/top{select}/{user}/{AccessSanad}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetAllWeb_ADocH(string ace, string sal, string group, string ModeCode, int select, string user, bool accessSanad, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = "select ";
+                if (select == 0)
+                    sql += " top(100) ";
+                sql += string.Format(@" * from Web_ADocH where ModeCode = '{0}' ",
+                                       ModeCode.ToString());
+                if (accessSanad == false)
+                    sql += " and Eghdam = '" + user + "' ";
+                sql += " order by SortDocNo desc ";
+                var listADocH = UnitDatabase.db.Database.SqlQuery<Web_ADocH>(sql);
+                return Ok(listADocH);
+            }
+            return null;
+        }
+
     }
 }

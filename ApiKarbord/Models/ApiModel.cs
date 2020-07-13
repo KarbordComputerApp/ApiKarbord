@@ -41,6 +41,7 @@
         public virtual DbSet<Web_AMode> Web_AMode { get; set; }
         public virtual DbSet<Web_FMode> Web_FMode { get; set; }
         public virtual DbSet<Web_IMode> Web_IMode { get; set; }
+        public virtual DbSet<Web_ADocH> Web_ADocH { get; set; }
 
 
         // مدل های انبار مالی بازرگانی
