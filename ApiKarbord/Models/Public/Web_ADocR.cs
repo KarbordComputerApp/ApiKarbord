@@ -38,7 +38,7 @@
 
         public long? SerialNumber { get; set; }
 
-        public int? DocNo { get; set; }
+        public long? DocNo { get; set; }
 
         [StringLength(10)]
         public string DocDate { get; set; }
@@ -128,25 +128,25 @@
         [StringLength(100)]
         public string AccName { get; set; }
 
-        public int AccCode1 { get; set; }
+        public long AccCode1 { get; set; }
 
-        public int AccCode2 { get; set; }
+        public long AccCode2 { get; set; }
 
-        public int AccCode3 { get; set; }
+        public long AccCode3 { get; set; }
 
-        public int AccCode4 { get; set; }
+        public long AccCode4 { get; set; }
 
-        public int AccCode5 { get; set; }
+        public long AccCode5 { get; set; }
 
-        public int MkzCode1 { get; set; }
+        public long MkzCode1 { get; set; }
 
-        public int MkzCode2 { get; set; }
+        public long MkzCode2 { get; set; }
 
-        public int MkzCode3 { get; set; }
+        public long MkzCode3 { get; set; }
 
-        public int? MkzCode4 { get; set; }
+        public long? MkzCode4 { get; set; }
 
-        public int? MkzCode5 { get; set; }
+        public long? MkzCode5 { get; set; }
 
         [Key]
         [StringLength(50)]
