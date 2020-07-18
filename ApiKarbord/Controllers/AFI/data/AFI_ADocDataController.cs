@@ -64,5 +64,18 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+        // GET: api/ADocData/ADocB اطلاعات تکمیلی فاکتور    
+        [Route("api/ADocData/ADocB/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_ADocB(string ace, string sal, string group, long serialNumber, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = string.Format(@"SELECT *  FROM Web_ADocB WHERE SerialNumber = {0}", serialNumber);
+                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
+                return Ok(listSanad);
+            }
+            return null;
+        }
+
     }
 }

@@ -18,6 +18,14 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string Spec { get; set; }
 
+        public Int16? Mkz { get; set; }
+
+        public Int16? Opr { get; set; }
+
+        public Int16? Arzi { get; set; }
+
+        public Int16? PDMode { get; set; }
+
         public Int16? Level { get; set; }
     }
 }
