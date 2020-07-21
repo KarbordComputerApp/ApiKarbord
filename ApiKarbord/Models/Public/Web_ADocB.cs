@@ -16,7 +16,7 @@
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int SerialNumber { get; set; }
+        public long? SerialNumber { get; set; }
 
         [StringLength(50)]
         public string AccCode { get; set; }
@@ -151,5 +151,8 @@
         [Column(Order = 25)]
         [StringLength(100)]
         public string OprName { get; set; }
+
+        [StringLength(250)]
+        public string BandSpec { get; set; }
     }
 }
