@@ -18,6 +18,12 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string Spec { get; set; }
 
+        public byte? HasChild { get; set; }
+
+        public byte? AutoCreate { get; set; }
+
+        public byte? NextLevelFromZAcc { get; set; }
+
         public Int16? Mkz { get; set; }
 
         public Int16? Opr { get; set; }
@@ -27,5 +33,7 @@ namespace ApiKarbord.Models
         public Int16? PDMode { get; set; }
 
         public Int16? Level { get; set; }
+
+
     }
 }

@@ -17,7 +17,7 @@ namespace ApiKarbord.Controllers.AFI.data
     public class AFI_ADocHiController : ApiController
     {
         // DELETE: api/AFI_ADocHi/5
-        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{SerialNumber}/{ModeCode}/{userName}/{password}")]
+        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{SerialNumber}/{userName}/{password}")]
         public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))

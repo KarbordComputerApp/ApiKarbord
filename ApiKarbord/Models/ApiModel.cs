@@ -43,6 +43,8 @@
         public virtual DbSet<Web_IMode> Web_IMode { get; set; }
         public virtual DbSet<Web_ADocH> Web_ADocH { get; set; }
         public virtual DbSet<Web_ADocB> Web_ADocB { get; set; }
+        public virtual DbSet<Web_ZAcc> Web_ZAcc { get; set; }
+        public virtual DbSet<Web_CheckList> Web_CheckList { get; set; }
 
 
         // مدل های انبار مالی بازرگانی
