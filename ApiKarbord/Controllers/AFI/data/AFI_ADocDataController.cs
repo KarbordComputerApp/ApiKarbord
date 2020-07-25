@@ -64,7 +64,7 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        // GET: api/ADocData/ADocB اطلاعات تکمیلی فاکتور    
+        // GET: api/ADocData/ADocB اطلاعات تکمیلی سند    
         [Route("api/ADocData/ADocB/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetWeb_ADocB(string ace, string sal, string group, long serialNumber, string userName, string password)
         {
@@ -73,6 +73,66 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(@"SELECT *  FROM Web_ADocB WHERE SerialNumber = {0}", serialNumber);
                 var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
                 return Ok(listSanad);
+            }
+            return null;
+        }
+
+        // GET: api/ADocData/CheckList اطلاعات چک    
+        [Route("api/ADocData/CheckList/{ace}/{sal}/{group}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_CheckList(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = string.Format(@"SELECT *  FROM Web_CheckList");
+                var listCheck = UnitDatabase.db.Database.SqlQuery<Web_CheckList>(sql);
+                return Ok(listCheck);
+            }
+            return null;
+        }
+
+
+
+        public class Web_ValueBank
+        {
+            public string Name { get; set; }
+
+        }
+
+        // GET: api/ADocData/Bank اطلاعات بانک    
+        [Route("api/ADocData/Bank/{ace}/{sal}/{group}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_Bank(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = string.Format(@"SELECT distinct bank as name FROM Web_CheckList  where bank <> ''");
+                var listBank = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
+                return Ok(listBank);
+            }
+            return null;
+        }
+
+        // GET: api/ADocData/Shobe اطلاعات شعبه    
+        [Route("api/ADocData/Shobe/{ace}/{sal}/{group}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_Shobe(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = string.Format(@"SELECT distinct Shobe as name FROM Web_CheckList  where Shobe <> ''");
+                var listShobe = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
+                return Ok(listShobe);
+            }
+            return null;
+        }
+
+        // GET: api/ADocData/Jari اطلاعات جاری    
+        [Route("api/ADocData/Jari/{ace}/{sal}/{group}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_Jari(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = string.Format(@"SELECT distinct Jari as name FROM Web_CheckList where Jari <> ''");
+                var listJari = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
+                return Ok(listJari);
             }
             return null;
         }
