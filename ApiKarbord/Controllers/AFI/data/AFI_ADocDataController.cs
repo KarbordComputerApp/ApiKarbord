@@ -77,6 +77,30 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+       
+        // GET: api/ADocData/ADocH اخرین تاریخ    
+        [Route("api/ADocData/ADocH/LastDate/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_ADocHLastDate(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string lastdate;
+                string sql = string.Format(@"SELECT count(DocDate) FROM Web_ADocH");
+                int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                if (count > 0)
+                {
+                    sql = string.Format(@"SELECT top(1) DocDate FROM Web_ADocH order by DocDate desc");
+                    lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                }
+                else
+                    lastdate = "";
+                return Ok(lastdate);
+            }
+            return null;
+        }
+
+
+
         // GET: api/ADocData/CheckList اطلاعات چک    
         [Route("api/ADocData/CheckList/{ace}/{sal}/{group}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetWeb_CheckList(string ace, string sal, string group, string userName, string password)

@@ -6,16 +6,15 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Web_ZAcc
+    public class Web_Arz
     {
         [Key]
-        public int Code { get; set; }
+        public string Code { get; set; }
 
         public string Name { get; set; }
 
         public string Spec { get; set; }
 
-        public string ZGruCode { get; set; }
-
+        public double? Rate { get; set; }
     }
 }

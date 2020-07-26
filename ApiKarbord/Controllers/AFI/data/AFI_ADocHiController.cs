@@ -40,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Spec { get; set; }
 
-            public DateTime mDocDate { get; set; }
+            public string mDocDate { get; set; }
 
             public string Tanzim { get; set; }
 
@@ -158,25 +158,25 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     string sql = string.Format(
-                         @" DECLARE	@return_value int,
+                         @" DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
 
                             EXEC	@return_value = [dbo].[Web_SaveADoc_HI]
 		                            @DocNoMode = {0},
 		                            @InsertMode = {1},
-		                            @ModeCode = N'{2}',
+		                            @ModeCode = '{2}',
 		                            @DocNo = {3},
 		                            @StartNo = {4},
 		                            @EndNo = {5},
 		                            @BranchCode = {6},
-		                            @UserCode = N'{7}',
+		                            @UserCode = '''{7}''',
 		                            @SerialNumber = {8},
-		                            @DocDate = N'{9}',
-		                            @Spec = N'{10}',
-		                            @mDocDate = N'{11}',
-		                            @Tanzim = N'{12}',
-		                            @TahieShode = N'{13}',
-		                            @Eghdam = N'{14}',
+		                            @DocDate = '{9}',
+		                            @Spec = '{10}',
+		                            @mDocDate = {11},
+		                            @Tanzim = '''{12}''',
+		                            @TahieShode = '{13}',
+		                            @Eghdam = '''{14}''',
 		                            @DocNo_Out = @DocNo_Out OUTPUT
                                     SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             AFI_ADocHi_i.DocNoMode,

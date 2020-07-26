@@ -18,6 +18,8 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string Spec { get; set; }
 
+        public string ZGru { get; set; }
+
         public byte? HasChild { get; set; }
 
         public byte? AutoCreate { get; set; }

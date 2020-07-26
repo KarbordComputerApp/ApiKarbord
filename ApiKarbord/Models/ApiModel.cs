@@ -36,6 +36,7 @@
         public virtual DbSet<Web_Status> Web_Status { get; set; }
         public virtual DbSet<Web_Mkz> Web_Mkz { get; set; }
         public virtual DbSet<Web_Opr> Web_Opr { get; set; }
+        public virtual DbSet<Web_Arz> Web_Arz { get; set; }
         public virtual DbSet<Web_KGru> Web_KGru { get; set; }
 
         public virtual DbSet<Web_AMode> Web_AMode { get; set; }

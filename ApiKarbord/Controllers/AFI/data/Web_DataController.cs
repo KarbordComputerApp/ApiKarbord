@@ -1104,6 +1104,18 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+        // GET: api/Web_Data/Arz لیست ارز ها
+        [Route("api/Web_Data/Arz/{ace}/{sal}/{group}/{userName}/{password}")]
+        public IQueryable<Web_Arz> GetWeb_Arz(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                return UnitDatabase.db.Web_Arz;
+            }
+            return null;
+        }
+
         /*   // GET: api/Web_Data/FldNames لیست ستونها
             [Route("api/Web_Data/FldNames/{ace}/{sal}/{group}")]
             public async Task<IHttpActionResult> GetWeb_FldNames(string ace, string sal, string group)
