@@ -34,13 +34,13 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/CheckStatus اطلاعات نوع سند حسابداری   
-        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}/{userName}/{password}")]
+        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}/{Report}/{userName}/{password}")]
 
-        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode, string userName, string password)
+        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode, int Report, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                return UnitDatabase.db.Web_CheckStatus.Where(c => c.PDMode == PDMode);
+                return UnitDatabase.db.Web_CheckStatus.Where(c => c.PDMode == PDMode && c.Report == Report);
             }
             return null;
         }
@@ -77,7 +77,7 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-       
+
         // GET: api/ADocData/ADocH اخرین تاریخ    
         [Route("api/ADocData/ADocH/LastDate/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetWeb_ADocHLastDate(string ace, string sal, string group, string userName, string password)

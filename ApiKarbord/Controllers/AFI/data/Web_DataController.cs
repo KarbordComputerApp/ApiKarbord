@@ -68,6 +68,17 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+        // GET: api/Web_Data/ZAcc لیست زیر حساب ها
+        [Route("api/Web_Data/ZAcc/{ace}/{sal}/{group}/{userName}/{password}")]
+        public IQueryable<Web_ZAcc> GetWeb_ZAcc(string ace, string sal, string group, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                return UnitDatabase.db.Web_ZAcc;
+            }
+            return null;
+        }
+
 
         // GET: api/Web_Data/KalaPrice لیست گروه قیمت خرید و فروش
         [Route("api/Web_Data/KalaPrice/{ace}/{sal}/{group}/{insert}/{userName}/{password}")]

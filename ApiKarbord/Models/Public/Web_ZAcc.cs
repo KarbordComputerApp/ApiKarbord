@@ -8,8 +8,11 @@
 
     public partial class Web_ZAcc
     {
+       
+        public int Mode { get; set; }
+
         [Key]
-        public int Code { get; set; }
+        public string Code { get; set; }
 
         public string Name { get; set; }
 

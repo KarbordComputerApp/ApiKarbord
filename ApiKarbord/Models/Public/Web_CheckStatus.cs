@@ -8,9 +8,12 @@
 
     public class Web_CheckStatus
     {
+        public int Report { get; set; }
+
         [Key]
         [Column(Order = 0)]
         public int PDMode { get; set; }
+
 
         [Key]
         [Column(Order = 1)]
@@ -20,6 +23,7 @@
         [Key]
         [Column(Order = 2)]
         public string Name { get; set; }
+
 
     }
 }
