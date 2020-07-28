@@ -30,25 +30,43 @@
 
         public int? CheckStatus { get; set; }
 
-        [StringLength(20)]
-        public string CheckStatusSt { get; set; }
-
         public int? CheckRadif { get; set; }
 
         [StringLength(250)]
         public string CheckComm { get; set; }
 
+        [StringLength(20)]
+        public string CheckStatusSt { get; set; }
+
         [StringLength(50)]
-        public string TrafCode { get; set; }
+        public string TrafFullCode { get; set; }
 
         [Key]
         [Column(Order = 0)]
         [StringLength(100)]
-        public string TrafName { get; set; }
+        public string TrafFullName { get; set; }
 
         [Key]
         [Column(Order = 1)]
+        [StringLength(15)]
+        public string TrafZCode { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [StringLength(100)]
+        public string TrafZName { get; set; }
+
+        [Key]
+        [Column(Order = 3)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int PDMode { get; set; }
+
+        [StringLength(50)]
+        public string TrafCode { get; set; }
+
+        [Key]
+        [Column(Order = 4)]
+        [StringLength(100)]
+        public string TrafName { get; set; }
     }
 }

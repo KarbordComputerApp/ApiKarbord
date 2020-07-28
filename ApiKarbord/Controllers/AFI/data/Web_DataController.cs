@@ -69,15 +69,18 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/Web_Data/ZAcc لیست زیر حساب ها
-        [Route("api/Web_Data/ZAcc/{ace}/{sal}/{group}/{userName}/{password}")]
-        public IQueryable<Web_ZAcc> GetWeb_ZAcc(string ace, string sal, string group, string userName, string password)
+        [Route("api/Web_Data/ZAcc/{ace}/{sal}/{group}/{filter}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_ZAcc(string ace, string sal, string group, string filter, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                return UnitDatabase.db.Web_ZAcc;
+                string sql = string.Format(@" select *  from Web_ZAcc where ZGruCode in ({0})", filter);
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_ZAcc>(sql).ToList();
+                return Ok(listDB);
             }
             return null;
         }
+
 
 
         // GET: api/Web_Data/KalaPrice لیست گروه قیمت خرید و فروش
