@@ -174,7 +174,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @DocDate = '{9}',
 		                            @Spec = '{10}',
 		                            @mDocDate = {11},
-		                            @Tanzim = '''{12}''',
+		                            @Tanzim = '{12}',
 		                            @TahieShode = '{13}',
 		                            @Eghdam = '''{14}''',
 		                            @DocNo_Out = @DocNo_Out OUTPUT

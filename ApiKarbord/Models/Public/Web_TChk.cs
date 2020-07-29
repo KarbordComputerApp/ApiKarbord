@@ -58,5 +58,9 @@
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int PDMode { get; set; }
+
+
+        [StringLength(10)]
+        public string CheckVosoolDate { get; set; }
     }
 }

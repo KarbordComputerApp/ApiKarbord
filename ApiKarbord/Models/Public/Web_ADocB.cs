@@ -78,8 +78,10 @@
 
         public int? CheckRadif { get; set; }
 
+
         [StringLength(10)]
         public string CheckVosoolDate { get; set; }
+
 
         public double? Bede { get; set; }
 

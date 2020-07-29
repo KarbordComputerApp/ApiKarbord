@@ -19,15 +19,15 @@ namespace ApiKarbord.Controllers.AFI.data
     {
           public class AFI_ADocBi
         {
-            public long SerialNumber { get; set; }
+            public long? SerialNumber { get; set; }
 
-            public int BandNo { get; set; }
+            public int? BandNo { get; set; }
 
             public string AccCode { get; set; }
 
-            public double Bede { get; set; }
+            public double? Bede { get; set; }
 
-            public double Best { get; set; }
+            public double? Best { get; set; }
 
             public string Comm { get; set; }
 
@@ -47,7 +47,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string TrafCode { get; set; }
 
-            public int CheckRadif { get; set; }
+            public int? CheckRadif { get; set; }
 
             public string CheckComm { get; set; }
 
@@ -59,9 +59,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ArzCode { get; set; }
 
-            public double ArzRate { get; set; }
+            public double? ArzRate { get; set; }
 
-            public double ArzValue { get; set; }
+            public double? ArzValue { get; set; }
           
         }
 
@@ -88,32 +88,32 @@ namespace ApiKarbord.Controllers.AFI.data
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BU]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
-		                            @AccCode = N'{2}',
+		                            @AccCode = '{2}',
 		                            @Bede = {3},
 		                            @Best = {4},
-		                            @Comm = N'{5}',
-		                            @BandSpec = N'{6}',
-		                            @CheckNo = N'{7}',
-		                            @CheckDate = N'{8}',
-		                            @Bank = N'{9}',
-		                            @Shobe = N'{10}',
-		                            @Jari = N'{11}',
-		                            @BaratNo = N'{12}',
-		                            @TrafCode = N'{13}',
+		                            @Comm = '{5}',
+		                            @BandSpec = '{6}',
+		                            @CheckNo = '{7}',
+		                            @CheckDate = '{8}',
+		                            @Bank = '{9}',
+		                            @Shobe = '{10}',
+		                            @Jari = '{11}',
+		                            @BaratNo = '{12}',
+		                            @TrafCode = '{13}',
 		                            @CheckRadif = {14},
-		                            @CheckComm = N'{15}',
-		                            @CheckVosoolDate = N'{16}',
-		                            @OprCode = N'{17}',
-		                            @MkzCode = N'{18}',
-		                            @ArzCode = N'{19}',
+		                            @CheckComm = '{15}',
+		                            @CheckVosoolDate = '{16}',
+		                            @OprCode = '{17}',
+		                            @MkzCode = '{18}',
+		                            @ArzCode = '{19}',
 		                            @ArzRate = {20},
 		                            @ArzValue = {21}
                              SELECT	'Return Value' = @return_value",
                         aFI_ADocBi.SerialNumber,
                         aFI_ADocBi.BandNo,
                         aFI_ADocBi.AccCode,
-                        aFI_ADocBi.Bede,
-                        aFI_ADocBi.Best,
+                        aFI_ADocBi.Bede ?? 0,
+                        aFI_ADocBi.Best ?? 0,
                         aFI_ADocBi.Comm,
                         aFI_ADocBi.BandSpec,
                         aFI_ADocBi.CheckNo,
@@ -123,14 +123,14 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.Jari,
                         aFI_ADocBi.BaratNo,
                         aFI_ADocBi.TrafCode,
-                        aFI_ADocBi.CheckRadif,
+                        aFI_ADocBi.CheckRadif ?? 0,
                         aFI_ADocBi.CheckComm,
                         aFI_ADocBi.CheckVosoolDate,
                         aFI_ADocBi.OprCode,
                         aFI_ADocBi.MkzCode,
                         aFI_ADocBi.ArzCode,
-                        aFI_ADocBi.ArzRate,
-                        aFI_ADocBi.ArzValue);
+                        aFI_ADocBi.ArzRate ?? 0,
+                        aFI_ADocBi.ArzValue ?? 0);
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
@@ -181,49 +181,49 @@ namespace ApiKarbord.Controllers.AFI.data
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BI]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
-		                            @AccCode = N'{2}',
+		                            @AccCode = '{2}',
 		                            @Bede = {3},
 		                            @Best = {4},
-		                            @Comm = N'{5}',
-		                            @BandSpec = N'{6}',
-		                            @CheckNo = N'{7}',
-		                            @CheckDate = N'{8}',
-		                            @Bank = N'{9}',
-		                            @Shobe = N'{10}',
-		                            @Jari = N'{11}',
-		                            @BaratNo = N'{12}',
-		                            @TrafCode = N'{13}',
+		                            @Comm = '{5}',
+		                            @BandSpec = '{6}',
+		                            @CheckNo = '{7}',
+		                            @CheckDate = '{8}',
+		                            @Bank = '{9}',
+		                            @Shobe = '{10}',
+		                            @Jari = '{11}',
+		                            @BaratNo = '{12}',
+		                            @TrafCode = '{13}',
 		                            @CheckRadif = {14},
-		                            @CheckComm = N'{15}',
-		                            @CheckVosoolDate = N'{16}',
-		                            @OprCode = N'{17}',
-		                            @MkzCode = N'{18}',
-		                            @ArzCode = N'{19}',
+		                            @CheckComm = '{15}',
+		                            @CheckVosoolDate = '{16}',
+		                            @OprCode = '{17}',
+		                            @MkzCode = '{18}',
+		                            @ArzCode = '{19}',
 		                            @ArzRate = {20},
 		                            @ArzValue = {21}
                              SELECT	'Return Value' = @return_value",
                       aFI_ADocBi.SerialNumber,
                       aFI_ADocBi.BandNo,
                       aFI_ADocBi.AccCode,
-                      aFI_ADocBi.Bede,
-                      aFI_ADocBi.Best,
+                      aFI_ADocBi.Bede ?? 0,
+                      aFI_ADocBi.Best ?? 0,
                       aFI_ADocBi.Comm,
                       aFI_ADocBi.BandSpec,
-                      aFI_ADocBi.CheckNo,
+                      aFI_ADocBi.CheckNo ,
                       aFI_ADocBi.CheckDate,
                       aFI_ADocBi.Bank,
                       aFI_ADocBi.Shobe,
                       aFI_ADocBi.Jari,
                       aFI_ADocBi.BaratNo,
                       aFI_ADocBi.TrafCode,
-                      aFI_ADocBi.CheckRadif,
+                      aFI_ADocBi.CheckRadif ?? 0,
                       aFI_ADocBi.CheckComm,
                       aFI_ADocBi.CheckVosoolDate,
                       aFI_ADocBi.OprCode,
                       aFI_ADocBi.MkzCode,
                       aFI_ADocBi.ArzCode,
-                      aFI_ADocBi.ArzRate,
-                      aFI_ADocBi.ArzValue);
+                      aFI_ADocBi.ArzRate ?? 0,
+                      aFI_ADocBi.ArzValue ?? 0);
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {

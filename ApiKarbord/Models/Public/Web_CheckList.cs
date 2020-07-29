@@ -35,6 +35,9 @@
         [StringLength(250)]
         public string CheckComm { get; set; }
 
+        [StringLength(10)]
+        public string CheckVosoolDate { get; set; }
+
         [StringLength(20)]
         public string CheckStatusSt { get; set; }
 

@@ -74,7 +74,11 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                string sql = string.Format(@" select *  from Web_ZAcc where ZGruCode in ({0})", filter);
+                string sql;
+                if (filter == "null")
+                    sql = string.Format(@" select *  from Web_ZAcc");
+                else
+                    sql = string.Format(@" select *  from Web_ZAcc where ZGruCode in ({0})", filter);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ZAcc>(sql).ToList();
                 return Ok(listDB);
             }
@@ -310,9 +314,9 @@ namespace ApiKarbord.Controllers.AFI.data
             if (userName != "" && userName != null)
             {
                 string[] User = userName.Split(',');
-                int kk = Int32.Parse(User[User.Length-1]);
+                int kk = Int32.Parse(User[User.Length - 1]);
                 char[] c = new char[kk];
-                for (int i = 0; i < User.Length-1; i++)
+                for (int i = 0; i < User.Length - 1; i++)
                 {
                     temp = Int32.Parse(User[i]) / 1024;
                     c[i] = (Char)temp;
@@ -365,7 +369,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
                  */
-               
+
                 if (pass == "null")
                     pass = "";
                 string sql = string.Format(@" DECLARE  @return_value int
