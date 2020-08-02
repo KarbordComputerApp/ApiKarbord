@@ -1173,6 +1173,18 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // GET: api/Web_Data/ExtraFields لیست گروه اشخاص
+        [Route("api/Web_Data/ExtraFields/{ace}/{sal}/{group}/{modeCode}/{userName}/{password}")]
+        public IQueryable<Web_ExtraFields> GetWeb_ExtraFields(string ace, string sal, string group, string modeCode, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                return UnitDatabase.db.Web_ExtraFields.Where(c => c.ModeCode == modeCode).OrderBy(c => c.BandNo);
+            }
+            return null;
+        }
+
+
 
         //-------------------------------------------------------------------------------------------------------------------------------
     }
