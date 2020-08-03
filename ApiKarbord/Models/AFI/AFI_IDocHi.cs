@@ -30,11 +30,7 @@
 
         public string DocDate { get; set; }
 
-        public string DocTime { get; set; }
-
         public string Spec { get; set; }
-
-        public string mDocDate { get; set; }
 
         public string Tanzim { get; set; }
 

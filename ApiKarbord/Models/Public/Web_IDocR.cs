@@ -94,8 +94,6 @@
         [StringLength(10)]
         public string DocDate { get; set; }
 
-        public DateTime? mDocDate { get; set; }
-
         [StringLength(250)]
         public string Spec { get; set; }
 

@@ -45,7 +45,7 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        // GET: api/ADocData/ADocH لیست فاکتور    
+        // GET: api/ADocData/ADocH لیست سند    
         [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/top{select}/{user}/{AccessSanad}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetAllWeb_ADocH(string ace, string sal, string group, int select, string user, bool accessSanad, string userName, string password)
         {
@@ -63,6 +63,19 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return null;
         }
+
+        // GET: api/ADocData/ADocH اطلاعات تکمیلی فاکتور    
+        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
+        public async Task<IQueryable<Web_ADocH>> GetWeb_ADocH(string ace, string sal, string group, long serialNumber, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                var a = UnitDatabase.db.Web_ADocH.Where(c => c.SerialNumber == serialNumber);
+                return a;
+            }
+            return null;
+        }
+
 
         // GET: api/ADocData/ADocB اطلاعات تکمیلی سند    
         [Route("api/ADocData/ADocB/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
@@ -102,18 +115,16 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/ADocData/CheckList اطلاعات چک    
-        [Route("api/ADocData/CheckList/{ace}/{sal}/{group}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_CheckList(string ace, string sal, string group, string userName, string password)
+        [Route("api/ADocData/CheckList/{ace}/{sal}/{group}/{PDMode}/{userName}/{password}")]
+
+        public IQueryable<Web_CheckList> GetWeb_CheckList(string ace, string sal, string group, int PDMode, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                string sql = string.Format(@"SELECT *  FROM Web_CheckList");
-                var listCheck = UnitDatabase.db.Database.SqlQuery<Web_CheckList>(sql);
-                return Ok(listCheck);
+                return UnitDatabase.db.Web_CheckList.Where(c => c.PDMode == PDMode);
             }
             return null;
         }
-
 
 
         public class Web_ValueBank

@@ -40,7 +40,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Spec { get; set; }
 
-            public string mDocDate { get; set; }
 
             public string Tanzim { get; set; }
 
@@ -160,7 +159,6 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @" DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-
                             EXEC	@return_value = [dbo].[Web_SaveADoc_HI]
 		                            @DocNoMode = {0},
 		                            @InsertMode = {1},
@@ -173,10 +171,9 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @SerialNumber = {8},
 		                            @DocDate = '{9}',
 		                            @Spec = '{10}',
-		                            @mDocDate = {11},
-		                            @Tanzim = '{12}',
-		                            @TahieShode = '{13}',
-		                            @Eghdam = '''{14}''',
+		                            @Tanzim = '{11}',
+		                            @TahieShode = '{12}',
+		                            @Eghdam = '''{13}''',
 		                            @DocNo_Out = @DocNo_Out OUTPUT
                                     SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             AFI_ADocHi_i.DocNoMode,
@@ -190,7 +187,6 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_i.SerialNumber,
                             AFI_ADocHi_i.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
                             AFI_ADocHi_i.Spec,
-                            AFI_ADocHi_i.mDocDate, 
                             AFI_ADocHi_i.Tanzim,
                             AFI_ADocHi_i.TahieShode,
                             AFI_ADocHi_i.Eghdam);

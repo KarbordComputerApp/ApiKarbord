@@ -63,7 +63,6 @@
         [StringLength(100)]
         public string AddMinSpec10 { get; set; }
 
-
         public double? AddMinPrice1 { get; set; }
 
         public double? AddMinPrice2 { get; set; }

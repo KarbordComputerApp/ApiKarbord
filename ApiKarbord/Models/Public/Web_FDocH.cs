@@ -31,7 +31,6 @@
         [StringLength(10)]
         public string DocDate { get; set; }
 
-        public DateTime? mDocDate { get; set; }
 
         [StringLength(250)]
         public string Spec { get; set; }
@@ -233,10 +232,7 @@
         [StringLength(10)]
         public string DocDate { get; set; }
 
-        public DateTime? mDocDate { get; set; }
 
-        //[StringLength(8)]
-       // public string DocTime { get; set; }
 
        // public long? RSerialNumber { get; set; }
 

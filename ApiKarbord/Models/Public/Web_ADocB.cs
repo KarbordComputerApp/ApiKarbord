@@ -76,103 +76,122 @@
         [StringLength(4000)]
         public string CheckComm { get; set; }
 
-        public int? CheckRadif { get; set; }
+        [Key]
+        [Column(Order = 12)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public short CheckMode { get; set; }
 
+        public int? CheckRadif { get; set; }
 
         [StringLength(10)]
         public string CheckVosoolDate { get; set; }
-
 
         public double? Bede { get; set; }
 
         public double? Best { get; set; }
 
         [Key]
-        [Column(Order = 12)]
+        [Column(Order = 13)]
         public double Amount { get; set; }
 
         [Key]
-        [Column(Order = 13)]
+        [Column(Order = 14)]
         [StringLength(50)]
         public string ArzCode { get; set; }
 
         [Key]
-        [Column(Order = 14)]
+        [Column(Order = 15)]
         public double ArzValue { get; set; }
 
         [Key]
-        [Column(Order = 15)]
+        [Column(Order = 16)]
         public double ArzRate { get; set; }
+
+        [StringLength(10)]
+        public string CheckStatus { get; set; }
 
         public long? SerialNumber { get; set; }
 
         [Key]
-        [Column(Order = 16)]
+        [Column(Order = 17)]
         [StringLength(100)]
         public string AccFullName { get; set; }
 
         [Key]
-        [Column(Order = 17)]
+        [Column(Order = 18)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long AccCode1 { get; set; }
 
         [Key]
-        [Column(Order = 18)]
+        [Column(Order = 19)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long AccCode2 { get; set; }
 
         [Key]
-        [Column(Order = 19)]
+        [Column(Order = 20)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long AccCode3 { get; set; }
 
         [Key]
-        [Column(Order = 20)]
+        [Column(Order = 21)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long AccCode4 { get; set; }
 
         [Key]
-        [Column(Order = 21)]
+        [Column(Order = 22)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long AccCode5 { get; set; }
 
         [Key]
-        [Column(Order = 22)]
+        [Column(Order = 23)]
         [StringLength(15)]
         public string AccZCode { get; set; }
 
         [Key]
-        [Column(Order = 23)]
+        [Column(Order = 24)]
+        [StringLength(250)]
+        public string ZGru { get; set; }
+
+        public short? Mkz { get; set; }
+
+        public short? Opr { get; set; }
+
+        public short? Arzi { get; set; }
+
+        public short? PDMode { get; set; }
+
+        [Key]
+        [Column(Order = 25)]
         [StringLength(50)]
         public string ArzName { get; set; }
 
         [Key]
-        [Column(Order = 24)]
+        [Column(Order = 26)]
         [StringLength(100)]
         public string TrafFullName { get; set; }
 
         [Key]
-        [Column(Order = 25)]
+        [Column(Order = 27)]
         [StringLength(15)]
         public string TrafZCode { get; set; }
 
         [Key]
-        [Column(Order = 26)]
+        [Column(Order = 28)]
         [StringLength(250)]
         public string MkzName { get; set; }
 
         [Key]
-        [Column(Order = 27)]
+        [Column(Order = 29)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long MkzCode1 { get; set; }
 
         [Key]
-        [Column(Order = 28)]
+        [Column(Order = 30)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long MkzCode2 { get; set; }
 
         [Key]
-        [Column(Order = 29)]
+        [Column(Order = 31)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long MkzCode3 { get; set; }
 
@@ -181,17 +200,17 @@
         public long? MkzCode5 { get; set; }
 
         [Key]
-        [Column(Order = 30)]
+        [Column(Order = 32)]
         [StringLength(100)]
         public string OprName { get; set; }
 
         [Key]
-        [Column(Order = 31)]
+        [Column(Order = 33)]
         [StringLength(100)]
         public string AccZName { get; set; }
 
         [Key]
-        [Column(Order = 32)]
+        [Column(Order = 34)]
         [StringLength(100)]
         public string TrafZName { get; set; }
 
@@ -202,12 +221,12 @@
         public string TrafCode { get; set; }
 
         [Key]
-        [Column(Order = 33)]
+        [Column(Order = 35)]
         [StringLength(100)]
         public string AccName { get; set; }
 
         [Key]
-        [Column(Order = 34)]
+        [Column(Order = 36)]
         [StringLength(100)]
         public string TrafName { get; set; }
     }
