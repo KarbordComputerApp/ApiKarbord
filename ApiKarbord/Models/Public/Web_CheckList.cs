@@ -8,17 +8,21 @@
 
     public class Web_CheckList
     {
+        
         public double? Value { get; set; }
 
+        [Key]
         [StringLength(20)]
         public string CheckNo { get; set; }
 
         [StringLength(10)]
         public string CheckDate { get; set; }
 
+        [Key]
         [StringLength(20)]
         public string Bank { get; set; }
 
+        [Key]
         [StringLength(20)]
         public string Shobe { get; set; }
 
@@ -44,20 +48,21 @@
         [StringLength(50)]
         public string TrafFullCode { get; set; }
 
-        [Key]
+
         [Column(Order = 0)]
         [StringLength(100)]
         public string TrafFullName { get; set; }
 
-        [Key]
+
         [Column(Order = 1)]
         [StringLength(15)]
         public string TrafZCode { get; set; }
 
-        [Key]
+
         [Column(Order = 2)]
         [StringLength(100)]
         public string TrafZName { get; set; }
+
 
         [Key]
         [Column(Order = 3)]
@@ -67,7 +72,7 @@
         [StringLength(50)]
         public string TrafCode { get; set; }
 
-        [Key]
+
         [Column(Order = 4)]
         [StringLength(100)]
         public string TrafName { get; set; }
