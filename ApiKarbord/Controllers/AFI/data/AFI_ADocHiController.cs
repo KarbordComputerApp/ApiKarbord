@@ -30,25 +30,71 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public int EndNo { get; set; }
 
-            public byte BranchCode { get; set; }
-
-            public string UserCode { get; set; }
-
             public long SerialNumber { get; set; }
 
             public string DocDate { get; set; }
 
-            public string Spec { get; set; }
+            public byte BranchCode { get; set; }
 
+            public string UserCode { get; set; }
 
             public string Tanzim { get; set; }
+
+            public string Taeed { get; set; }
+
+            public string Tasvib { get; set; }
 
             public string TahieShode { get; set; }
 
             public string Eghdam { get; set; }
 
-            public int DocNo_Out { get; set; }
+            public string Status { get; set; }
 
+            public string Spec { get; set; }
+
+            public string Footer { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+            public int DocNo_Out { get; set; }
         }
 
 
@@ -60,23 +106,66 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public int DocNo { get; set; }
 
+            public string DocDate { get; set; }
+
             public byte BranchCode { get; set; }
 
             public string UserCode { get; set; }
-
-            public string DocDate { get; set; }
-
-            public string Spec { get; set; }
-
-            public string Eghdam { get; set; }
 
             public string Tanzim { get; set; }
 
             public string Taeed { get; set; }
 
+            public string Tasvib { get; set; }
+
             public string TahieShode { get; set; }
 
             public string Status { get; set; }
+
+            public string Spec { get; set; }
+
+            public string Footer { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
         }
 
 
@@ -102,33 +191,76 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     string sql = string.Format(
-                         @" DECLARE	@return_value int
+                         @" DECLARE	@return_value nvarchar(50)
                             EXEC	@return_value = [dbo].[Web_SaveADoc_HU]
 		                            @SerialNumber = {0},
-		                            @ModeCode = N'{1}',
+		                            @ModeCode = '{1}',
 		                            @DocNo = {2},
-		                            @BranchCode = {3},
-		                            @UserCode = N'{4}',
-		                            @DocDate = N'{5}',
-		                            @Spec = N'{6}',
-		                            @Eghdam = N'{7}',
-		                            @Tanzim = N'{8}',
-		                            @Taeed = N'{9}',
-		                            @TahieShode = N'{10}',
-		                            @Status = N'{11}'
+		                            @DocDate = '{3}',
+		                            @BranchCode = {4},
+		                            @UserCode = '''{5}''',
+		                            @Tanzim = '{6}',
+		                            @Taeed = '{7}',
+		                            @Tasvib = '{8}',
+		                            @TahieShode = '{9}',
+		                            @Status = '{10}',
+		                            @Spec = '{11}',
+		                            @Footer = '{12}',
+		                            @F01 = '{13}',
+		                            @F02 = '{14}',
+		                            @F03 = '{15}',
+		                            @F04 = '{16}',
+		                            @F05 = '{17}',
+		                            @F06 = '{18}',
+		                            @F07 = '{19}',
+		                            @F08 = '{20}',
+		                            @F09 = '{21}',
+		                            @F10 = '{22}',
+		                            @F11 = '{23}',
+		                            @F12 = '{24}',
+		                            @F13 = '{25}',
+		                            @F14 = '{26}',
+		                            @F15 = '{27}',
+		                            @F16 = '{28}',
+		                            @F17 = '{29}',
+		                            @F18 = '{30}',
+		                            @F19 = '{31}',
+		                            @F20 = '{32}'
                             SELECT	'Return Value' = @return_value",
                             AFI_ADocHi_u.SerialNumber,
                             AFI_ADocHi_u.ModeCode,
                             AFI_ADocHi_u.DocNo,
+                            AFI_ADocHi_u.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
                             AFI_ADocHi_u.BranchCode,
                             AFI_ADocHi_u.UserCode,
-                            AFI_ADocHi_u.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
-                            AFI_ADocHi_u.Spec,
-                            AFI_ADocHi_u.Eghdam,
                             AFI_ADocHi_u.Tanzim,
                             AFI_ADocHi_u.Taeed == "null" ? "" : AFI_ADocHi_u.Taeed,
+                            AFI_ADocHi_u.Tasvib,
                             AFI_ADocHi_u.TahieShode,
-                            AFI_ADocHi_u.Status);
+                            AFI_ADocHi_u.Status,
+                            AFI_ADocHi_u.Spec,
+                            AFI_ADocHi_u.Footer,
+                            AFI_ADocHi_u.F01,
+                            AFI_ADocHi_u.F02,
+                            AFI_ADocHi_u.F03,
+                            AFI_ADocHi_u.F04,
+                            AFI_ADocHi_u.F05,
+                            AFI_ADocHi_u.F06,
+                            AFI_ADocHi_u.F07,
+                            AFI_ADocHi_u.F08,
+                            AFI_ADocHi_u.F09,
+                            AFI_ADocHi_u.F10,
+                            AFI_ADocHi_u.F11,
+                            AFI_ADocHi_u.F12,
+                            AFI_ADocHi_u.F13,
+                            AFI_ADocHi_u.F14,
+                            AFI_ADocHi_u.F15,
+                            AFI_ADocHi_u.F16,
+                            AFI_ADocHi_u.F17,
+                            AFI_ADocHi_u.F18,
+                            AFI_ADocHi_u.F19,
+                            AFI_ADocHi_u.F20
+                            );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
 
                     await UnitDatabase.db.SaveChangesAsync();
@@ -166,30 +298,78 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @DocNo = {3},
 		                            @StartNo = {4},
 		                            @EndNo = {5},
-		                            @BranchCode = {6},
-		                            @UserCode = '''{7}''',
-		                            @SerialNumber = {8},
-		                            @DocDate = '{9}',
-		                            @Spec = '{10}',
-		                            @Tanzim = '{11}',
-		                            @TahieShode = '{12}',
-		                            @Eghdam = '''{13}''',
+		                            @SerialNumber = {6},
+                                    @DocDate = '{7}',
+		                            @BranchCode = {8},
+		                            @UserCode = '''{9}''',
+		                            @Tanzim = '{10}',
+		                            @Taeed = '{11}',
+		                            @Tasvib = '{12}',
+		                            @TahieShode = '{13}',
+		                            @Eghdam = '''{14}''',
+		                            @Status = '{15}',
+		                            @Spec = '{16}',
+		                            @Footer = '{17}',
+		                            @F01 = '{18}',
+		                            @F02 = '{19}',
+		                            @F03 = '{20}',
+		                            @F04 = '{21}',
+		                            @F05 = '{22}',
+		                            @F06 = '{23}',
+		                            @F07 = '{24}',
+		                            @F08 = '{25}',
+		                            @F09 = '{26}',
+		                            @F10 = '{27}',
+		                            @F11 = '{28}',
+		                            @F12 = '{29}',
+		                            @F13 = '{30}',
+		                            @F14 = '{31}',
+		                            @F15 = '{32}',
+		                            @F16 = '{33}',
+		                            @F17 = '{34}',
+		                            @F18 = '{35}',
+		                            @F19 = '{36}',
+		                            @F20 = '{37}',		                            
 		                            @DocNo_Out = @DocNo_Out OUTPUT
-                                    SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
+                            SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             AFI_ADocHi_i.DocNoMode,
                             AFI_ADocHi_i.InsertMode,
                             AFI_ADocHi_i.ModeCode,
                             AFI_ADocHi_i.DocNo,
                             AFI_ADocHi_i.StartNo,
                             AFI_ADocHi_i.EndNo,
-                            AFI_ADocHi_i.BranchCode,
-                            AFI_ADocHi_i.UserCode,
                             AFI_ADocHi_i.SerialNumber,
                             AFI_ADocHi_i.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
-                            AFI_ADocHi_i.Spec,
+                            AFI_ADocHi_i.BranchCode,
+                            AFI_ADocHi_i.UserCode,
                             AFI_ADocHi_i.Tanzim,
+                            AFI_ADocHi_i.Taeed == "null" ? "" : AFI_ADocHi_i.Taeed,
+                            AFI_ADocHi_i.Tasvib,
                             AFI_ADocHi_i.TahieShode,
-                            AFI_ADocHi_i.Eghdam);
+                            AFI_ADocHi_i.Eghdam,
+                            AFI_ADocHi_i.Status,
+                            AFI_ADocHi_i.Spec,
+                            AFI_ADocHi_i.Footer,
+                            AFI_ADocHi_i.F01,
+                            AFI_ADocHi_i.F02,
+                            AFI_ADocHi_i.F03,
+                            AFI_ADocHi_i.F04,
+                            AFI_ADocHi_i.F05,
+                            AFI_ADocHi_i.F06,
+                            AFI_ADocHi_i.F07,
+                            AFI_ADocHi_i.F08,
+                            AFI_ADocHi_i.F09,
+                            AFI_ADocHi_i.F10,
+                            AFI_ADocHi_i.F11,
+                            AFI_ADocHi_i.F12,
+                            AFI_ADocHi_i.F13,
+                            AFI_ADocHi_i.F14,
+                            AFI_ADocHi_i.F15,
+                            AFI_ADocHi_i.F16,
+                            AFI_ADocHi_i.F17,
+                            AFI_ADocHi_i.F18,
+                            AFI_ADocHi_i.F19,
+                            AFI_ADocHi_i.F20);
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {

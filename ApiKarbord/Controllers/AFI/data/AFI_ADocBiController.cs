@@ -71,9 +71,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // PUT: api/AFI_ADocBi/5
-        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{BandNo}/{userName}/{password}")]
+        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{userName}/{password}")]
         [ResponseType(typeof(AFI_ADocBi))]
-        public async Task<IHttpActionResult> PutAFI_ADocBi(string ace, string sal, string group, long BandNo, string userName, string password, AFI_ADocBi aFI_ADocBi)
+        public async Task<IHttpActionResult> PutAFI_ADocBi(string ace, string sal, string group, string userName, string password, AFI_ADocBi aFI_ADocBi)
         {
             if (!ModelState.IsValid)
             {
@@ -161,7 +161,7 @@ namespace ApiKarbord.Controllers.AFI.data
         // POST: api/AFI_ADocBi
         [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{bandno}/{userName}/{password}")]
         [ResponseType(typeof(AFI_ADocBi))]
-        public async Task<IHttpActionResult> PostAFI_ADocBi(string ace, string sal, string group, long bandNo, string userName, string password, AFI_ADocBi aFI_ADocBi)
+        public async Task<IHttpActionResult> PostAFI_ADocBi(string ace, string sal, string group, int bandNo, string userName, string password, AFI_ADocBi aFI_ADocBi)
         {
 
             if (!ModelState.IsValid)
@@ -172,7 +172,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-                    /*  if (bandNo > 0)
+                     if (bandNo > 0)
                       {
                           string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
                                                                  EXEC	@return_value = [dbo].[Web_Doc_BShift]
@@ -181,12 +181,12 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                       @BandNo = {2},
                                                                       @BandNoFld = '{3}'
                                                                  SELECT	'Return Value' = @return_value",
-                                                                 tableName,
+                                                                 ace == "AFI1" ? "Afi1ADocB" : "Acc5DocB",
                                                                  aFI_ADocBi.SerialNumber,
                                                                  bandNo,
-                                                                 fieldBandNo);
+                                                                 "BandNo");
                           int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
-                      }*/
+                      }
                     string sql = string.Format(CultureInfo.InvariantCulture,
                         @" DECLARE	@return_value int
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BI]
@@ -217,7 +217,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzValue = {24}
                              SELECT	'Return Value' = @return_value",
                         aFI_ADocBi.SerialNumber,
-                        aFI_ADocBi.BandNo,
+                        bandNo == 0 ? aFI_ADocBi.BandNo : bandNo,
                         aFI_ADocBi.AccCode,
                         aFI_ADocBi.AccZCode,
                         aFI_ADocBi.Bede ?? 0,
@@ -279,18 +279,17 @@ namespace ApiKarbord.Controllers.AFI.data
                         await UnitDatabase.db.SaveChangesAsync();
                     }
 
-                    /*  string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
+                    string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
                                                              EXEC	@return_value = [dbo].[Web_Doc_BOrder]
                                                                   @TableName = '{0}',
                                                                   @SerialNumber = {1},
                                                                   @BandNoFld = '{2}'
                                                              SELECT	'Return Value' = @return_value",
-                                                             //ace == "Afi1" ? "Afi1ADocB" : "Inv5DocB",
-                                                             ace == "AFI1" ? "Afi1ADocB" : "Inv5DocB",
+                                                             ace == "AFI1" ? "Afi1ADocB" : "Acc5DocB",
                                                              SerialNumber,
-                                                             ace == "AFI1" ? "BandNo" : "Radif");
-                      int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();*/
-                    //await UnitDatabase.db.SaveChangesAsync();
+                                                             "BandNo");
+                    int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                    await UnitDatabase.db.SaveChangesAsync();
                 }
                 catch (Exception e)
                 {
