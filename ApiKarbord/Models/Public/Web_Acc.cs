@@ -9,6 +9,7 @@ namespace ApiKarbord.Models
     public partial class Web_Acc
     {
         [Key]
+        [Column(Order = 0)]
         [StringLength(50)]
         public string Code { get; set; }
 
@@ -18,7 +19,25 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string Spec { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        [StringLength(250)]
         public string ZGru { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [StringLength(250)]
+        public string MkzName { get; set; }
+
+        [Key]
+        [Column(Order = 3)]
+        [StringLength(100)]
+        public string OprName { get; set; }
+
+        [Key]
+        [Column(Order = 4)]
+        [StringLength(50)]
+        public string ArzName { get; set; }
 
         public byte? HasChild { get; set; }
 
@@ -26,15 +45,24 @@ namespace ApiKarbord.Models
 
         public byte? NextLevelFromZAcc { get; set; }
 
-        public Int16? Mkz { get; set; }
+        [StringLength(50)]
+        public string MkzCode { get; set; }
 
-        public Int16? Opr { get; set; }
+        [StringLength(50)]
+        public string OprCode { get; set; }
 
-        public Int16? Arzi { get; set; }
+        [StringLength(50)]
+        public string ArzCode { get; set; }
 
-        public Int16? PDMode { get; set; }
+        public short? Mkz { get; set; }
 
-        public Int16? Level { get; set; }
+        public short? Opr { get; set; }
+
+        public short? Arzi { get; set; }
+
+        public short? PDMode { get; set; }
+
+        public short? Level { get; set; }
 
 
     }
