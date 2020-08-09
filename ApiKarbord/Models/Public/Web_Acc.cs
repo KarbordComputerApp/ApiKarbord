@@ -39,6 +39,9 @@ namespace ApiKarbord.Models
         [StringLength(50)]
         public string ArzName { get; set; }
 
+        public double ArzRate { get; set; }
+        
+
         public byte? HasChild { get; set; }
 
         public byte? AutoCreate { get; set; }

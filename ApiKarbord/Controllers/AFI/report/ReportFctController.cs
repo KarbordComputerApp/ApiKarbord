@@ -54,7 +54,7 @@ namespace ApiKarbord.Controllers.AFI.report
             {
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_FDocR('{0}', '{1}') AS FDocR where 1 = 1 ",
+                          @"select top(5000)  * FROM  dbo.Web_FDocR('{0}', '{1}') AS FDocR where 1 = 1 ",
                           FDocRObject.ModeCode1, FDocRObject.ModeCode2);
 
                 sql += UnitPublic.SpiltCodeAnd("InvCode", FDocRObject.InvCode);
@@ -126,7 +126,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFKala where 1 = 1 ",
+                          @"select  top (5000) * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFKala where 1 = 1 ",
                           TrzFKalaObject.ModeCode1,
                           TrzFKalaObject.ModeCode2,
                           TrzFKalaObject.azTarikh,
@@ -202,7 +202,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFCustObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFCust where 1 = 1 ",
+                          @"select  top (5000)  * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFCust where 1 = 1 ",
                           TrzFCustObject.ModeCode1,
                           TrzFCustObject.ModeCode2,
                           TrzFCustObject.azTarikh,

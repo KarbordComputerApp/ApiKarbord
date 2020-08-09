@@ -51,7 +51,7 @@ namespace ApiKarbord.Controllers.AFI.report
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
+                          @"select top (5000) * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
                           IDocRObject.azTarikh, IDocRObject.taTarikh);
 
                 sql += UnitPublic.SpiltCodeAnd("InvCode", IDocRObject.InvCode);

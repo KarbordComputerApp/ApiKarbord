@@ -119,7 +119,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_Dftr('{0}','{1}','{2}') AS Dftr where 1 = 1 ",
+                          @"select top(5000) * FROM  Web_Dftr('{0}','{1}','{2}') AS Dftr where 1 = 1 ",
                           DftrObject.AccCode,
                           DftrObject.DispBands,
                           DftrObject.JamRooz);
@@ -195,7 +195,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string AccCode = UnitPublic.SpiltCodeCama(ADocRObject.AccCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_ADocR({0},{1}) AS ADocR where 1 = 1 ",
+                          @"select top(5000) * FROM  Web_ADocR({0},{1}) AS ADocR where 1 = 1 ",
                           ADocRObject.DispBands,
                           ADocRObject.JamRooz);
 
@@ -258,7 +258,7 @@ namespace ApiKarbord.Controllers.AFI.report
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_TChk('') AS TChk where 1 = 1");
+                          @"select top(5000) * FROM  Web_TChk('') AS TChk where 1 = 1");
 
                 sql += string.Format(" and PDMode = {0} ", TChkObject.PDMode);
 

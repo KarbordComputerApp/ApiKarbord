@@ -186,7 +186,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ADDMINPRICE9 = '{36}',
 		                            @ADDMINPRICE10 = '{37}',
                                     @InvCode = '{38}',
-                                    @Status = '{39}',
+                                    @Status = N'{39}',
 									@PaymentType = {40},
                                     @Footer = '{41}',
                                     @Taeed='{42}',

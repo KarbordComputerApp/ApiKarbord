@@ -57,7 +57,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @CUSTCODE = '{13}',
 		                            @KALAPRICECODE = {14},
                                     @InvCode = '{15}',
-                                    @Status = '{16}',
+                                    @Status = N'{16}',
                                     @Footer = '{17}',
                                     @Taeed='{18}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
