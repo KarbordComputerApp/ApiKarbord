@@ -8,6 +8,9 @@
 
     public class Web_ADocH
     {
+        
+        public byte? Balance { get; set; }
+
         public long? SerialNumber { get; set; }
 
         public long? DocNo { get; set; }

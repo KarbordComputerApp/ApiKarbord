@@ -22,7 +22,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/FDocData/FMode اطلاعات نوع سند خرید و فروش   
         [Route("api/FDocData/FMode/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
-        public IQueryable<Web_FMode> GetWeb_FMode(string ace, string sal, string group,int InOut,string userName, string password)
+        public IQueryable<Web_FMode> GetWeb_FMode(string ace, string sal, string group, int InOut, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
@@ -205,6 +205,94 @@ namespace ApiKarbord.Controllers.AFI.data
                                           FROM Web_FDocB WHERE SerialNumber = {0}", serialnumber);
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
             return Ok(listFactor);
+        }
+
+
+        public class AFI_Move
+        {
+            public byte? DocNoMode { get; set; }
+
+            public byte? InsertMode { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public int? DocNo { get; set; }
+
+            public int? StartNo { get; set; }
+
+            public int? EndNo { get; set; }
+
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string TahieShode { get; set; }
+
+            public long? SerialNumber { get; set; }
+
+            public string DocDate { get; set; }
+
+            public long? oSerialNumber { get; set; }
+        }
+
+
+
+        [Route("api/FDocData/MoveFactor/{ace}/{sal}/{group}/{userName}/{password}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_MoveFactor(string ace, string sal, string group, string userName, string password, AFI_Move AFI_Move)
+        {
+            long value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"DECLARE	@return_value int,
+		                            @oSerialNumber bigint
+
+                            EXEC	@return_value = [dbo].[Web_SaveFDoc_Move]
+		                            @DocNoMode = {0},
+		                            @InsertMode = {1},
+		                            @ModeCode = N'{2}',
+		                            @DocNo = {3},
+		                            @StartNo = {4},
+		                            @EndNo = {5},
+		                            @BranchCode = {6},
+		                            @UserCode = '''{7}''',
+		                            @TahieShode = '{8}',
+		                            @SerialNumber = {9},
+		                            @DocDate = '{10}',
+		                            @oSerialNumber = @oSerialNumber OUTPUT
+                            SELECT	@oSerialNumber as N'@oSerialNumber'",
+                          AFI_Move.DocNoMode,
+                          AFI_Move.InsertMode,
+                          AFI_Move.ModeCode,
+                          AFI_Move.DocNo,
+                          AFI_Move.StartNo,
+                          AFI_Move.EndNo,
+                          AFI_Move.BranchCode,
+                          AFI_Move.UserCode,
+                          AFI_Move.TahieShode,
+                          AFI_Move.SerialNumber,
+                          AFI_Move.DocDate);
+
+                    value = UnitDatabase.db.Database.SqlQuery<long>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            var list = UnitDatabase.db.Web_FDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode);
+            return Ok(list);
         }
 
     }
