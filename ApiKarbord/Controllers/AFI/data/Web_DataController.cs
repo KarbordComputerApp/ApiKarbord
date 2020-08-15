@@ -1184,8 +1184,28 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-
-
         //-------------------------------------------------------------------------------------------------------------------------------
+
+        // GET: api/Web_Data/CountTable تعداد رکورد ها    
+        [Route("api/Web_Data/CountTable/{ace}/{sal}/{group}/{tableName}/{modeCode}/{inOut}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_CountTable(string ace, string sal, string group, string tableName, string modeCode,string inOut, string userName, string password)
+        {
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql = string.Format(@"SELECT count(SerialNumber) FROM Web_{0}", tableName);
+                if (modeCode != "null" && inOut == "null")
+                    sql += string.Format(@" WHERE ModeCode = '{0}'", modeCode);
+                else if (modeCode == "null" && inOut != "null")
+                    sql += string.Format(@" WHERE InOut = '{0}'", inOut);
+
+                int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                return Ok(count);
+            }
+            return null;
+        }
+
+
+
+
     }
 }
