@@ -121,7 +121,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                return UnitDatabase.db.Web_CheckList.Where(c => c.PDMode == PDMode);
+                return UnitDatabase.db.Web_CheckList.Where(c => c.PDMode == PDMode && c.CheckStatus != 2 && c.CheckStatus != 4);
             }
             return null;
         }
