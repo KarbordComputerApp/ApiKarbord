@@ -1167,7 +1167,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                return UnitDatabase.db.Web_RprtCols.Where(c => c.RprtId == RprtId && c.UserCode == UserCode && c.Visible == 1);
+                var list = UnitDatabase.db.Web_RprtCols.Where(c => c.RprtId == RprtId && c.UserCode == UserCode);// && c.Visible == 1);
+                return list;
             }
             return null;
         }
