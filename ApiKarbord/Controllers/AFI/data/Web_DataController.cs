@@ -1150,28 +1150,94 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Web_RprtCols لیست ستونها
         [Route("api/Web_Data/RprtCols/{ace}/{sal}/{group}/{RprtId}/{UserCode}/{userName}/{password}")]
-        public IQueryable<Web_RprtCols> GetWeb_RprtCols(string ace, string sal, string group, string RprtId, string UserCode, string userName, string password)
+        public async Task<IHttpActionResult> GetWeb_RprtCols(string ace, string sal, string group, string RprtId, string UserCode, string userName, string password)
         {
+            string sql;
+
+            /*
+             declare @count int,
+            @countDefault int
+            select @count = count(row) from Web_RprtCols where RprtId = 'ADocH' and UserCode = 'ACE' and Name<> ''
+            select @countDefault = count(row) from Web_RprtCols where RprtId = 'ADocH' and UserCode = '*Default*' and Name<> ''
+            if @count = @countDefault
+	            select* from Web_RprtCols where RprtId = 'ADocH' and UserCode = 'ACE' and Name<> ''
+            else
+	            select* from Web_RprtCols where RprtId = 'ADocH' and UserCode = '*Default*' and Name <> ''
+             */
+
+            sql = string.Format(@"declare @count int
+                                         select @count = count(row) from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}'
+                                         if @count > 0
+                                           select* from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}' and Name<> ''
+                                         else
+                                           select* from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''",
+                                        RprtId, UserCode);
+
+            var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
+            return Ok(list);
+        }
 
 
-            /*         var encoder = new System.Text.UTF8Encoding();
-                System.Text.Decoder utf8Decode = encoder.GetDecoder();
-                byte[] todecodeByte = Convert.FromBase64String(ace);
-                int charCount = utf8Decode.GetCharCount(todecodeByte, 0, todecodeByte.Length);
-                char[] decodedChar = new char[charCount];
-                utf8Decode.GetChars(todecodeByte, 0, todecodeByte.Length, decodedChar, 0);
-                string result = new String(decodedChar);
-                */
+        public class RprtColsSave
+        {
+            public string UserCode { get; set; }
+
+            public string RprtId { get; set; }
+
+            public string Code { get; set; }
+
+            public byte? Visible { get; set; }
+        }
 
 
 
+        // POST: api/RprtColsSave
+        [Route("api/Web_Data/RprtColsSave/{ace}/{sal}/{group}/{userName}/{password}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostRprtColsSave(string ace, string sal, string group, string userName, string password, [FromBody]List<RprtColsSave> RprtColsSave)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
-                var list = UnitDatabase.db.Web_RprtCols.Where(c => c.RprtId == RprtId && c.UserCode == UserCode);// && c.Visible == 1);
-                return list;
+                string sql;
+                int value;
+                try
+                {
+                    foreach (var item in RprtColsSave)
+                    {
+                        sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int
+                                                EXEC	@return_value = [dbo].[Web_RprtColsSave]
+		                                                @UserCode = '{0}',
+		                                                @RprtId = '{1}',
+		                                                @Code = '{2}',
+		                                                @Visible = {3}
+                                                SELECT	'Return Value' = @return_value ",
+
+                        item.UserCode,
+                        item.RprtId,
+                        item.Code,
+                        item.Visible ?? 0
+                        );
+                        value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    }
+                    await UnitDatabase.db.SaveChangesAsync();
+                }
+                catch (Exception)
+                {
+                    return Ok('0');
+                    throw;
+                }
             }
-            return null;
+            return Ok('1');
         }
+
+
+
+
 
 
         // GET: api/Web_Data/ExtraFields لیست گروه اشخاص
@@ -1189,7 +1255,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/CountTable تعداد رکورد ها    
         [Route("api/Web_Data/CountTable/{ace}/{sal}/{group}/{tableName}/{modeCode}/{inOut}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_CountTable(string ace, string sal, string group, string tableName, string modeCode,string inOut, string userName, string password)
+        public async Task<IHttpActionResult> GetWeb_CountTable(string ace, string sal, string group, string tableName, string modeCode, string inOut, string userName, string password)
         {
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
