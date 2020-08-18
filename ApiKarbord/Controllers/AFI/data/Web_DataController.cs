@@ -1153,18 +1153,6 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_RprtCols(string ace, string sal, string group, string RprtId, string UserCode, string userName, string password)
         {
             string sql;
-
-            /*
-             declare @count int,
-            @countDefault int
-            select @count = count(row) from Web_RprtCols where RprtId = 'ADocH' and UserCode = 'ACE' and Name<> ''
-            select @countDefault = count(row) from Web_RprtCols where RprtId = 'ADocH' and UserCode = '*Default*' and Name<> ''
-            if @count = @countDefault
-	            select* from Web_RprtCols where RprtId = 'ADocH' and UserCode = 'ACE' and Name<> ''
-            else
-	            select* from Web_RprtCols where RprtId = 'ADocH' and UserCode = '*Default*' and Name <> ''
-             */
-
             sql = string.Format(@"declare @count int
                                          select @count = count(row) from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}'
                                          if @count > 0
@@ -1173,6 +1161,16 @@ namespace ApiKarbord.Controllers.AFI.data
                                            select* from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''",
                                         RprtId, UserCode);
 
+            var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
+            return Ok(list);
+        }
+
+        // GET: api/Web_Data/Web_RprtColsDefult لیست ستون های پیش فرض
+        [Route("api/Web_Data/RprtColsDefult/{ace}/{sal}/{group}/{RprtId}/{userName}/{password}")]
+        public async Task<IHttpActionResult> GetWeb_RprtColsDefult(string ace, string sal, string group, string RprtId, string password)
+        {
+            string sql;
+            sql = string.Format(@"  select* from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''", RprtId);
             var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
             return Ok(list);
         }
