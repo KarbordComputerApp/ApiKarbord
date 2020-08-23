@@ -8,9 +8,6 @@
 
     public class Web_RprtCols
     {
-
-        public long? Row { get; set; }
-
         [StringLength(50)]
         public string RprtId { get; set; }
 

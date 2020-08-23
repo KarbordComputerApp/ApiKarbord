@@ -1148,31 +1148,40 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             */
 
+
         // GET: api/Web_Data/Web_RprtCols لیست ستونها
         [Route("api/Web_Data/RprtCols/{ace}/{sal}/{group}/{RprtId}/{UserCode}/{userName}/{password}")]
         public async Task<IHttpActionResult> GetWeb_RprtCols(string ace, string sal, string group, string RprtId, string UserCode, string userName, string password)
         {
-            string sql;
-            sql = string.Format(@"declare @count int
-                                         select @count = count(row) from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}'
-                                         if @count > 0
-                                           select* from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}' and Name<> ''
-                                         else
-                                           select* from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''",
-                                        RprtId, UserCode);
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql;
+                sql = string.Format(@"
+                                  if (select count(code) from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}') > 0
+                                     select * from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}' and Name<> ''
+                                  else
+                                     select * from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''",
+                                      RprtId, UserCode);
 
-            var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
-            return Ok(list);
+                var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
+                return Ok(list);
+            }
+            return null;
         }
+
 
         // GET: api/Web_Data/Web_RprtColsDefult لیست ستون های پیش فرض
         [Route("api/Web_Data/RprtColsDefult/{ace}/{sal}/{group}/{RprtId}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_RprtColsDefult(string ace, string sal, string group, string RprtId, string password)
+        public async Task<IHttpActionResult> GetWeb_RprtColsDefult(string ace, string sal, string group, string RprtId, string userName, string password)
         {
-            string sql;
-            sql = string.Format(@"  select* from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''", RprtId);
-            var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
-            return Ok(list);
+            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            {
+                string sql;
+                sql = string.Format(@"  select* from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''", RprtId);
+                var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
+                return Ok(list);
+            }
+            return null;
         }
 
 
