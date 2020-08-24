@@ -437,7 +437,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (5000) * FROM  dbo.Web_TrzIKala('{0}', '{1}') AS TrzI where 1 = 1 ",
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKala('{0}', '{1}') AS TrzI where 1 = 1 ",
                           TrzIObject.azTarikh, TrzIObject.taTarikh);
                 //if (TrzIObject.InvCode != "0")
                 //    sql += string.Format(" and InvCode = '{0}' ", TrzIObject.InvCode);
@@ -473,7 +473,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string invCode = UnitPublic.SpiltCodeCama(TrzIExfObject.InvCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (5000) * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}') AS TrzIExf where 1 = 1 ",
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}') AS TrzIExf where 1 = 1 ",
                           TrzIExfObject.azTarikh, TrzIExfObject.taTarikh, invCode);
 
                 if (TrzIExfObject.KGruCode != "0")
@@ -821,7 +821,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (5000)  * FROM  Web_ErjDocK('{0}') AS ErjDocK where 1 = 1",
+                          @"select top (10000)  * FROM  Web_ErjDocK('{0}') AS ErjDocK where 1 = 1",
                           ErjDocKObject.SrchSt);
 
                 if (ErjDocKObject.userMode == "USER")
@@ -993,7 +993,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (5000) * FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}') AS ErjDocK where 1 = 1 "
+                          @"select  top (10000) * FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}') AS ErjDocK where 1 = 1 "
                           , ErjDocB_Last.erjaMode
                           , ErjDocB_Last.docBMode
                           , ErjDocB_Last.fromUserCode
@@ -1078,7 +1078,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (5000)  * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 order by BandNo,DocBMode "
+                          @"select top (10000)  * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 order by BandNo,DocBMode "
                           , ErjDocErja.SerialNumber);
 
                 var listErjDocErja = UnitDatabase.db.Database.SqlQuery<Web_ErjDocErja>(sql);
