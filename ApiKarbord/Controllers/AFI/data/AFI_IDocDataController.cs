@@ -87,9 +87,47 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (select == 0)
                     sql += " top(100) ";
 
-                sql += string.Format(@"SerialNumber,InOut,DocNo,SortDocNo,DocDate,ThvlCode,thvlname,Spec,KalaPriceCode,InvCode,ModeCode," +
-                       "Status,PaymentType,Footer,Tanzim,Taeed,FinalPrice,Eghdam,ModeName,InvName " +
-                       "from Web_IDocH where InOut = {0} ", InOut);
+                sql += string.Format(@"SerialNumber,
+                                       InOut,
+                                       DocNo,
+                                       SortDocNo,
+                                       DocDate,
+                                       ThvlCode,
+                                       thvlname,
+                                       Spec,
+                                       KalaPriceCode,
+                                       InvCode,
+                                       ModeCode,
+                                       Status,
+                                       PaymentType,
+                                       Footer,
+                                       Tanzim,
+                                       Taeed,
+                                       FinalPrice,
+                                       Eghdam,
+                                       ModeName,
+                                       InvName,
+                                       F01,
+                                       F02,
+                                       F03,
+                                       F04,
+                                       F05,
+                                       F06,
+                                       F07,
+                                       F08,
+                                       F09,
+                                       F10,
+                                       F11,
+                                       F12,
+                                       F13,
+                                       F14,
+                                       F15,
+                                       F16,
+                                       F17,
+                                       F18,
+                                       F19,
+                                       F20 
+                                       from Web_IDocH where InOut = {0} ", InOut);
 
                 //if (ModeCode == "in")
                 //   sql += " (101,102,103,106,108,110) ";
