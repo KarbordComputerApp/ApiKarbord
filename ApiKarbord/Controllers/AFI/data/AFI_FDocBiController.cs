@@ -22,15 +22,16 @@ namespace ApiKarbord.Controllers.AFI.data
         // GET: api/AFI_FDocBi
 
         // PUT: api/AFI_FDocBi/5
-        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{BandNo}/{userName}/{password}")]
+        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{BandNo}")]
         [ResponseType(typeof(AFI_FDocBi))]
-        public async Task<IHttpActionResult> PutAFI_FDocBi(string ace, string sal, string group, long BandNo, string userName, string password, AFI_FDocBi aFI_FDocBi)
+        public async Task<IHttpActionResult> PutAFI_FDocBi(string ace, string sal, string group, long BandNo, AFI_FDocBi aFI_FDocBi)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
@@ -81,16 +82,17 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // POST: api/AFI_FDocBi
-        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{bandno}/{userName}/{password}")]
+        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{bandno}")]
         [ResponseType(typeof(AFI_FDocBi))]
-        public async Task<IHttpActionResult> PostAFI_FDocBi(string ace, string sal, string group, long bandNo, string userName, string password, AFI_FDocBi aFI_FDocBi)
+        public async Task<IHttpActionResult> PostAFI_FDocBi(string ace, string sal, string group, long bandNo, AFI_FDocBi aFI_FDocBi)
         {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
@@ -170,11 +172,12 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // DELETE: api/AFI_FDocBi/5
-        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}/{userName}/{password}")]
+        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}")]
         [ResponseType(typeof(AFI_FDocBi))]
-        public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string userName, string password)
+        public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {

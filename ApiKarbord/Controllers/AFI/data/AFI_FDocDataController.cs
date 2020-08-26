@@ -21,10 +21,11 @@ namespace ApiKarbord.Controllers.AFI.data
     {
 
         // GET: api/FDocData/FMode اطلاعات نوع سند خرید و فروش   
-        [Route("api/FDocData/FMode/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
-        public IQueryable<Web_FMode> GetWeb_FMode(string ace, string sal, string group, int InOut, string userName, string password)
+        [Route("api/FDocData/FMode/{ace}/{sal}/{group}/{InOut}")]
+        public IQueryable<Web_FMode> GetWeb_FMode(string ace, string sal, string group, int InOut)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 return UnitDatabase.db.Web_FMode.Where(c => c.InOut == InOut);
             }
@@ -33,10 +34,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/FDocData/FDocH اطلاعات تکمیلی فاکتور    
-        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{serialNumber}/{ModeCode}/{userName}/{password}")]
-        public async Task<IQueryable<Web_FDocH>> GetWeb_FDocH(string ace, string sal, string group, long serialNumber, string ModeCode, string userName, string password)
+        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{serialNumber}/{ModeCode}")]
+        public async Task<IQueryable<Web_FDocH>> GetWeb_FDocH(string ace, string sal, string group, long serialNumber, string ModeCode)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 var a = UnitDatabase.db.Web_FDocH.Where(c => c.SerialNumber == serialNumber && c.ModeCode == ModeCode);
                 return a;
@@ -46,11 +48,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/FDocData/FDocH لیست فاکتور    
-        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}/top{select}/{user}/{AccessSanad}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetAllWeb_FDocHMin(string ace, string sal, string group, string ModeCode, int select, string user, bool accessSanad, string userName, string password)
+        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}/top{select}/{user}/{AccessSanad}")]
+        public async Task<IHttpActionResult> GetAllWeb_FDocHMin(string ace, string sal, string group, string ModeCode, int select, string user, bool accessSanad)
         {
 
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
 
                 string sql = "select ";
@@ -125,10 +128,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/FDocData/FDocH تعداد رکورد ها    
-        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_FDocHCount(string ace, string sal, string group, string ModeCode, string userName, string password)
+        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}")]
+        public async Task<IHttpActionResult> GetWeb_FDocHCount(string ace, string sal, string group, string ModeCode)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"SELECT count(SerialNumber) FROM Web_FDocH WHERE ModeCode = '{0}'", ModeCode);
                 int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
@@ -138,10 +142,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/FDocData/FDocH آخرین تاریخ فاکتور    
-        [Route("api/FDocData/FDocH/LastDate/{ace}/{sal}/{group}/{ModeCode}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_FDocHLastDate(string ace, string sal, string group, string ModeCode, string userName, string password)
+        [Route("api/FDocData/FDocH/LastDate/{ace}/{sal}/{group}/{ModeCode}")]
+        public async Task<IHttpActionResult> GetWeb_FDocHLastDate(string ace, string sal, string group, string ModeCode)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string lastdate;
                 string sql = string.Format(@"SELECT count(DocDate) FROM Web_FDocH WHERE ModeCode = '{0}' ", ModeCode);
@@ -159,10 +164,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/FDocData/FDocB اطلاعات تکمیلی فاکتور    
-        [Route("api/FDocData/FDocB/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_FDocB(string ace, string sal, string group, long serialNumber, string userName, string password)
+        [Route("api/FDocData/FDocB/{ace}/{sal}/{group}/{serialNumber}")]
+        public async Task<IHttpActionResult> GetWeb_FDocB(string ace, string sal, string group, long serialNumber)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,DeghatR1,DeghatR2,DeghatR3,DeghatM1,DeghatM2,DeghatM3,DeghatR
                                          FROM Web_FDocB WHERE SerialNumber = {0}", serialNumber);
@@ -172,15 +178,16 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        [Route("api/FDocData/UpdatePrice/{ace}/{sal}/{group}/{serialnumber}/{userName}/{password}")]
+        [Route("api/FDocData/UpdatePrice/{ace}/{sal}/{group}/{serialnumber}")]
         [ResponseType(typeof(AFI_FDocBi))]
-        public async Task<IHttpActionResult> PostWeb_UpdatePrice(string ace, string sal, string group, long serialnumber, string userName, string password)
+        public async Task<IHttpActionResult> PostWeb_UpdatePrice(string ace, string sal, string group, long serialnumber)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
@@ -237,16 +244,17 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        [Route("api/FDocData/MoveFactor/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/FDocData/MoveFactor/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_MoveFactor(string ace, string sal, string group, string userName, string password, AFI_Move AFI_Move)
+        public async Task<IHttpActionResult> PostWeb_MoveFactor(string ace, string sal, string group, AFI_Move AFI_Move)
         {
             long value = 0;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {

@@ -21,10 +21,11 @@ namespace ApiKarbord.Controllers.AFI.data
     public class AFI_ADocDataController : ApiController
     {
         // GET: api/ADocData/AMode اطلاعات نوع سند حسابداری   
-        [Route("api/ADocData/AMode/{ace}/{sal}/{group}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_AMode(string ace, string sal, string group, string userName, string password)
+        [Route("api/ADocData/AMode/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_AMode(string ace, string sal, string group)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = "SELECT * FROM Web_AMode";
                 var listAMode = UnitDatabase.db.Database.SqlQuery<Web_AMode>(sql);
@@ -34,11 +35,12 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/CheckStatus اطلاعات نوع سند حسابداری   
-        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}/{Report}/{userName}/{password}")]
+        [Route("api/ADocData/CheckStatus/{ace}/{sal}/{group}/{PDMode}/{Report}")]
 
-        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode, int Report, string userName, string password)
+        public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode, int Report)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 return UnitDatabase.db.Web_CheckStatus.Where(c => c.PDMode == PDMode && c.Report == Report);
             }
@@ -46,10 +48,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/ADocH لیست سند    
-        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/top{select}/{user}/{AccessSanad}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetAllWeb_ADocH(string ace, string sal, string group, int select, string user, bool accessSanad, string userName, string password)
+        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/top{select}/{user}/{AccessSanad}")]
+        public async Task<IHttpActionResult> GetAllWeb_ADocH(string ace, string sal, string group, int select, string user, bool accessSanad)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = "select ";
                 if (select == 0)
@@ -65,10 +68,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/ADocH اطلاعات تکمیلی فاکتور    
-        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
-        public async Task<IQueryable<Web_ADocH>> GetWeb_ADocH(string ace, string sal, string group, long serialNumber, string userName, string password)
+        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/{serialNumber}")]
+        public async Task<IQueryable<Web_ADocH>> GetWeb_ADocH(string ace, string sal, string group, long serialNumber)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 var a = UnitDatabase.db.Web_ADocH.Where(c => c.SerialNumber == serialNumber);
                 return a;
@@ -78,10 +82,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/ADocData/ADocB اطلاعات تکمیلی سند    
-        [Route("api/ADocData/ADocB/{ace}/{sal}/{group}/{serialNumber}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_ADocB(string ace, string sal, string group, long serialNumber, string userName, string password)
+        [Route("api/ADocData/ADocB/{ace}/{sal}/{group}/{serialNumber}")]
+        public async Task<IHttpActionResult> GetWeb_ADocB(string ace, string sal, string group, long serialNumber)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"SELECT *  FROM Web_ADocB WHERE SerialNumber = {0}", serialNumber);
                 var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
@@ -92,10 +97,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/ADocData/ADocH اخرین تاریخ    
-        [Route("api/ADocData/ADocH/LastDate/{ace}/{sal}/{group}/{InOut}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_ADocHLastDate(string ace, string sal, string group, string userName, string password)
+        [Route("api/ADocData/ADocH/LastDate/{ace}/{sal}/{group}/{InOut}")]
+        public async Task<IHttpActionResult> GetWeb_ADocHLastDate(string ace, string sal, string group)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string lastdate;
                 string sql = string.Format(@"SELECT count(DocDate) FROM Web_ADocH");
@@ -115,11 +121,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/ADocData/CheckList اطلاعات چک    
-        [Route("api/ADocData/CheckList/{ace}/{sal}/{group}/{PDMode}/{userName}/{password}")]
+        [Route("api/ADocData/CheckList/{ace}/{sal}/{group}/{PDMode}")]
 
-        public IQueryable<Web_CheckList> GetWeb_CheckList(string ace, string sal, string group, int PDMode, string userName, string password)
+        public IQueryable<Web_CheckList> GetWeb_CheckList(string ace, string sal, string group, int PDMode)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 return UnitDatabase.db.Web_CheckList.Where(c => c.PDMode == PDMode && c.CheckStatus != 2 && c.CheckStatus != 4);
             }
@@ -134,10 +141,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/Bank اطلاعات بانک    
-        [Route("api/ADocData/Bank/{ace}/{sal}/{group}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_Bank(string ace, string sal, string group, string userName, string password)
+        [Route("api/ADocData/Bank/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Bank(string ace, string sal, string group)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"SELECT distinct bank as name FROM Web_CheckList  where bank <> ''");
                 var listBank = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
@@ -147,10 +155,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/Shobe اطلاعات شعبه    
-        [Route("api/ADocData/Shobe/{ace}/{sal}/{group}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_Shobe(string ace, string sal, string group, string userName, string password)
+        [Route("api/ADocData/Shobe/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Shobe(string ace, string sal, string group)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"SELECT distinct Shobe as name FROM Web_CheckList  where Shobe <> ''");
                 var listShobe = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
@@ -160,10 +169,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/ADocData/Jari اطلاعات جاری    
-        [Route("api/ADocData/Jari/{ace}/{sal}/{group}/{userName}/{password}")]
-        public async Task<IHttpActionResult> GetWeb_Jari(string ace, string sal, string group, string userName, string password)
+        [Route("api/ADocData/Jari/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Jari(string ace, string sal, string group)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"SELECT distinct Jari as name FROM Web_CheckList where Jari <> ''");
                 var listJari = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);

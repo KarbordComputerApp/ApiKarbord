@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Web.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
-
+using System.Net.Http.Headers;
 
 namespace ApiKarbord.Controllers.Unit
 {
@@ -179,6 +179,33 @@ namespace ApiKarbord.Controllers.Unit
                 throw;
             }
         }
+
+
+
+
+        public static List<string> ReadUserPassHeader(HttpRequestHeaders header)
+        {
+            List<string> list = new List<string>();
+
+            string userName = string.Empty;
+            string password = string.Empty;
+
+            if (header.Contains("userName"))
+            {
+                userName = header.GetValues("userName").First();
+            }
+            if (header.Contains("password"))
+            {
+                password = header.GetValues("password").First();
+            }
+            list.Add(userName);
+            list.Add(password);
+
+            return (list);
+        }
+
+
+
 
     }
 }

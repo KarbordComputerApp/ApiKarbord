@@ -71,9 +71,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // PUT: api/AFI_ADocBi/5
-        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}")]
         [ResponseType(typeof(AFI_ADocBi))]
-        public async Task<IHttpActionResult> PutAFI_ADocBi(string ace, string sal, string group, string userName, string password, AFI_ADocBi aFI_ADocBi)
+        public async Task<IHttpActionResult> PutAFI_ADocBi(string ace, string sal, string group, AFI_ADocBi aFI_ADocBi)
         {
             if (!ModelState.IsValid)
             {
@@ -84,7 +84,8 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
@@ -159,34 +160,35 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // POST: api/AFI_ADocBi
-        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{bandno}/{userName}/{password}")]
+        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{bandno}")]
         [ResponseType(typeof(AFI_ADocBi))]
-        public async Task<IHttpActionResult> PostAFI_ADocBi(string ace, string sal, string group, int bandNo, string userName, string password, AFI_ADocBi aFI_ADocBi)
+        public async Task<IHttpActionResult> PostAFI_ADocBi(string ace, string sal, string group, int bandNo, AFI_ADocBi aFI_ADocBi)
         {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
-                     if (bandNo > 0)
-                      {
-                          string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
+                    if (bandNo > 0)
+                    {
+                        string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
                                                                  EXEC	@return_value = [dbo].[Web_Doc_BShift]
                                                                       @TableName = '{0}',
                                                                       @SerialNumber = {1},
                                                                       @BandNo = {2},
                                                                       @BandNoFld = '{3}'
                                                                  SELECT	'Return Value' = @return_value",
-                                                                 ace == "AFI1" ? "Afi1ADocB" : "Acc5DocB",
-                                                                 aFI_ADocBi.SerialNumber,
-                                                                 bandNo,
-                                                                 "BandNo");
-                          int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
-                      }
+                                                               ace == "AFI1" ? "Afi1ADocB" : "Acc5DocB",
+                                                               aFI_ADocBi.SerialNumber,
+                                                               bandNo,
+                                                               "BandNo");
+                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                    }
                     string sql = string.Format(CultureInfo.InvariantCulture,
                         @" DECLARE	@return_value int
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BI]
@@ -258,11 +260,12 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // DELETE: api/AFI_ADocBi/5
-        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}/{userName}/{password}")]
+        [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}")]
         [ResponseType(typeof(AFI_ADocBi))]
-        public async Task<IHttpActionResult> DeleteAFI_ADocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string userName, string password)
+        public async Task<IHttpActionResult> DeleteAFI_ADocBi(string ace, string sal, string group, long SerialNumber, int BandNo)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {

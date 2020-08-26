@@ -171,9 +171,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // PUT: api/AFI_ADocHi/5
-        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutAFI_ADocHi(string ace, string sal, string group, string userName, string password, AFI_ADocHi_u AFI_ADocHi_u)
+        public async Task<IHttpActionResult> PutAFI_ADocHi(string ace, string sal, string group, AFI_ADocHi_u AFI_ADocHi_u)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -186,7 +186,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
 
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
@@ -274,9 +275,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // POST: api/AFI_ADocHi
-        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostAFI_ADocHi(string ace, string sal, string group, string userName, string password, AFI_ADocHi_i AFI_ADocHi_i)
+        public async Task<IHttpActionResult> PostAFI_ADocHi(string ace, string sal, string group, AFI_ADocHi_i AFI_ADocHi_i)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -284,7 +285,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
 
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 try
                 {
@@ -387,10 +389,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // DELETE: api/AFI_ADocHi/5
-        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{SerialNumber}/{userName}/{password}")]
-        public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber, string userName, string password)
+        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{SerialNumber}")]
+        public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(@"DECLARE	@return_value int
                                                  EXEC	@return_value = [dbo].[Web_SaveADoc_Del]
