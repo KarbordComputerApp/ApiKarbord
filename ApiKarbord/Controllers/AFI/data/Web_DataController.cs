@@ -400,6 +400,19 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                               @Psw = N'{3}'
                                               SELECT   'Return Value' = @return_value",
                                               param1, user, param2, pass);
+
+                // تغییر پروسجور
+                /* DECLARE @return_value int, @name nvarchar(100)
+                EXEC @return_value = [dbo].[Web_Login]
+                                                       @Code1 = 'u-Xe',
+		                                               @UserCode = N'jjj',
+                                                       @Code2 = 'zqQ3',
+		                                               @Psw = N'',
+													   @Name = @name OUTPUT
+                                              SELECT   'Return Value' = @return_value
+
+
+                                              print @name*/
                 int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
 
                 if (value == 1)
@@ -1318,6 +1331,361 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(count);
             }
             return null;
+        }
+
+
+
+
+        public class AFI_SaveCust
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+
+            public string MelliCode { get; set; }
+
+            public string EcoCode { get; set; }
+
+            public string City { get; set; }
+
+            public string Street { get; set; }
+
+            public string Alley { get; set; }
+
+            public string Plack { get; set; }
+
+            public string ZipCode { get; set; }
+
+            public string Tel { get; set; }
+
+            public string Mobile { get; set; }
+
+            public string Fax { get; set; }
+
+            public string CGruCode { get; set; }
+
+            public double? EtebarNaghd { get; set; }
+
+            public double? EtebarCheck { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+        // post: api/AFI_SaveCust
+        [Route("api/AFI_SaveCust/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveCust(string ace, string sal, string group, AFI_SaveCust aFI_SaveCust)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string value;
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                     @" DECLARE	@return_value int,
+		                        @oCode nvarchar(50)
+
+                        EXEC	@return_value = [dbo].[Web_SaveCust]
+		                        @BranchCode = {0},
+		                        @UserCode = '{1}',
+		                        @Code = '{2}',
+		                        @Name = '{3}',
+		                        @Spec = '{4}',
+		                        @MelliCode = '{5}',
+		                        @EcoCode = '{6}',
+		                        @City = '{7}',
+		                        @Street = '{8}',
+		                        @Alley = '{9}',
+		                        @Plack = '{10}',
+		                        @ZipCode = '{11}',
+		                        @Tel = '{12}',
+		                        @Mobile = '{13}',
+		                        @Fax = '{14}',
+		                        @CGruCode = '{15}',
+		                        @EtebarNaghd = {16},
+		                        @EtebarCheck = {17},
+		                        @F01 = '{18}',
+		                        @F02 = '{19}',
+		                        @F03 = '{20}',
+		                        @F04 = '{21}',
+		                        @F05 = '{22}',
+		                        @F06 = '{23}',
+		                        @F07 = '{24}',
+		                        @F08 = '{25}',
+		                        @F09 = '{26}',
+		                        @F10 = '{27}',
+		                        @F11 = '{28}',
+		                        @F12 = '{29}',
+		                        @F13 = '{30}',
+		                        @F14 = '{31}',
+		                        @F15 = '{32}',
+		                        @F16 = '{33}',
+		                        @F17 = '{34}',
+		                        @F18 = '{35}',
+		                        @F19 = '{36}',
+		                        @F20 = '{37}',
+		                        @oCode = @oCode OUTPUT
+
+                        SELECT	@oCode as N'@oCode'",
+                        aFI_SaveCust.BranchCode ?? 0,
+                        aFI_SaveCust.UserCode,
+                        aFI_SaveCust.Code,
+                        aFI_SaveCust.Name,
+                        aFI_SaveCust.Spec,
+                        aFI_SaveCust.MelliCode,
+                        aFI_SaveCust.EcoCode,
+                        aFI_SaveCust.City,
+                        aFI_SaveCust.Street,
+                        aFI_SaveCust.Alley,
+                        aFI_SaveCust.Plack,
+                        aFI_SaveCust.ZipCode,
+                        aFI_SaveCust.Tel,
+                        aFI_SaveCust.Mobile,
+                        aFI_SaveCust.Fax,
+                        aFI_SaveCust.CGruCode,
+                        aFI_SaveCust.EtebarNaghd ?? 0,
+                        aFI_SaveCust.EtebarCheck ?? 0,
+                        aFI_SaveCust.F01,
+                        aFI_SaveCust.F02,
+                        aFI_SaveCust.F03,
+                        aFI_SaveCust.F04,
+                        aFI_SaveCust.F05,
+                        aFI_SaveCust.F06,
+                        aFI_SaveCust.F07,
+                        aFI_SaveCust.F08,
+                        aFI_SaveCust.F09,
+                        aFI_SaveCust.F10,
+                        aFI_SaveCust.F11,
+                        aFI_SaveCust.F12,
+                        aFI_SaveCust.F13,
+                        aFI_SaveCust.F14,
+                        aFI_SaveCust.F15,
+                        aFI_SaveCust.F16,
+                        aFI_SaveCust.F17,
+                        aFI_SaveCust.F18,
+                        aFI_SaveCust.F19,
+                        aFI_SaveCust.F20);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+                    return Ok(value);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Ok(0);
+        }
+
+
+
+
+
+        public class AFI_SaveKala
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string FanniNo { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+        // post: api/AFI_SaveKala
+        [Route("api/AFI_SaveKala/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveKala(string ace, string sal, string group, AFI_SaveKala aFI_SaveKala)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string value;
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                     @" DECLARE	@return_value int,
+		                        @oCode nvarchar(50)
+
+                        EXEC	@return_value = [dbo].[Web_SaveCust]
+		                        @BranchCode = {0},
+		                        @UserCode = '{1}',
+		                        @Code = '{2}',
+		                        @Name = '{3}',
+		                        @Spec = '{4}',
+		                        @KGruCode = '{5}',
+		                        @FanniNo = '{6}',
+		                        @F01 = '{18}',
+		                        @F02 = '{19}',
+		                        @F03 = '{20}',
+		                        @F04 = '{21}',
+		                        @F05 = '{22}',
+		                        @F06 = '{23}',
+		                        @F07 = '{24}',
+		                        @F08 = '{25}',
+		                        @F09 = '{26}',
+		                        @F10 = '{27}',
+		                        @F11 = '{28}',
+		                        @F12 = '{29}',
+		                        @F13 = '{30}',
+		                        @F14 = '{31}',
+		                        @F15 = '{32}',
+		                        @F16 = '{33}',
+		                        @F17 = '{34}',
+		                        @F18 = '{35}',
+		                        @F19 = '{36}',
+		                        @F20 = '{37}',
+		                        @oCode = @oCode OUTPUT
+
+                        SELECT	@oCode as N'@oCode'",
+                        aFI_SaveKala.BranchCode ?? 0,
+                        aFI_SaveKala.UserCode,
+                        aFI_SaveKala.Code,
+                        aFI_SaveKala.Name,
+                        aFI_SaveKala.Spec,
+                        aFI_SaveKala.KGruCode,
+                        aFI_SaveKala.FanniNo,
+                        aFI_SaveKala.F01,
+                        aFI_SaveKala.F02,
+                        aFI_SaveKala.F03,
+                        aFI_SaveKala.F04,
+                        aFI_SaveKala.F05,
+                        aFI_SaveKala.F06,
+                        aFI_SaveKala.F07,
+                        aFI_SaveKala.F08,
+                        aFI_SaveKala.F09,
+                        aFI_SaveKala.F10,
+                        aFI_SaveKala.F11,
+                        aFI_SaveKala.F12,
+                        aFI_SaveKala.F13,
+                        aFI_SaveKala.F14,
+                        aFI_SaveKala.F15,
+                        aFI_SaveKala.F16,
+                        aFI_SaveKala.F17,
+                        aFI_SaveKala.F18,
+                        aFI_SaveKala.F19,
+                        aFI_SaveKala.F20);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+                    return Ok(value);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Ok(0);
         }
 
 

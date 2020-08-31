@@ -43,11 +43,12 @@ namespace ApiKarbord.Controllers.AFI.report
 
         // Post: api/ReportAcc/TrzAcc گزارش تراز دفاتر
         // HE_Report_TrzAcc
-        [Route("api/ReportAcc/TrzAcc/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/ReportAcc/TrzAcc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group,  string userName, string password,TrzAccObject TrzAccObject)
+        public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group,TrzAccObject TrzAccObject)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
@@ -107,11 +108,12 @@ namespace ApiKarbord.Controllers.AFI.report
 
         // Post: api/ReportAcc/Web_Dftr گزارش دفتر حساب
         // HE_Report_Dftr
-        [Route("api/ReportAcc/Dftr/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/ReportAcc/Dftr/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, string userName, string password, DftrObject DftrObject)
+        public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
@@ -182,11 +184,12 @@ namespace ApiKarbord.Controllers.AFI.report
 
         // Post: api/ReportAcc/Web_ADocR گزارش دفتر حساب
         // HE_Report_ADocR
-        [Route("api/ReportAcc/ADocR/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/ReportAcc/ADocR/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, string userName, string password,ADocRObject ADocRObject)
+        public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group,ADocRObject ADocRObject)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(ADocRObject.OprCode);
@@ -251,11 +254,12 @@ namespace ApiKarbord.Controllers.AFI.report
 
         // Post: api/ReportAcc/Web_TChk گزارش صورت ریز چک ها
         // HE_Report_TChk
-        [Route("api/ReportAcc/TChk/{ace}/{sal}/{group}/{userName}/{password}")]
+        [Route("api/ReportAcc/TChk/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group ,string userName, string password, TChkObject TChkObject)
+        public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group , TChkObject TChkObject)
         {
-            if (UnitDatabase.CreateConection(userName, password, ace, sal, group))
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000) * FROM  Web_TChk('') AS TChk where 1 = 1");
