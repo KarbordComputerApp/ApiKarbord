@@ -392,31 +392,20 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (pass == "null")
                     pass = "";
-                string sql = string.Format(@" DECLARE  @return_value int
+                string sql = string.Format(@" DECLARE  @return_value int, @name nvarchar(100)
                                               EXEC     @return_value = [dbo].[Web_Login]
                                                        @Code1 = '{0}',
 		                                               @UserCode = N'{1}',
                                                        @Code2 = '{2}',
-		                                               @Psw = N'{3}'
-                                              SELECT   'Return Value' = @return_value",
+		                                               @Psw = N'{3}',
+                                                       @Name = @name OUTPUT
+                                              SELECT   'Return Value' = CONVERT(nvarchar, @return_value) + '-' +  @Name ",
                                               param1, user, param2, pass);
 
-                // تغییر پروسجور
-                /* DECLARE @return_value int, @name nvarchar(100)
-                EXEC @return_value = [dbo].[Web_Login]
-                                                       @Code1 = 'u-Xe',
-		                                               @UserCode = N'jjj',
-                                                       @Code2 = 'zqQ3',
-		                                               @Psw = N'',
-													   @Name = @name OUTPUT
-                                              SELECT   'Return Value' = @return_value
-
-
-                                              print @name*/
-                int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
-
-                if (value == 1)
-                    return Ok(1);
+                string value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                string[] values = value.Split('-');
+                if (values[0] == "1")
+                    return Ok(value);
                 else
                     return Ok(0);
             }
@@ -1417,7 +1406,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // post: api/AFI_SaveCust
-        [Route("api/AFI_SaveCust/{ace}/{sal}/{group}")]
+        [Route("api/Web_Data/AFI_SaveCust/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostAFI_SaveCust(string ace, string sal, string group, AFI_SaveCust aFI_SaveCust)
         {
             if (!ModelState.IsValid)
@@ -1595,7 +1584,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // post: api/AFI_SaveKala
-        [Route("api/AFI_SaveKala/{ace}/{sal}/{group}")]
+        [Route("api/Web_Data/AFI_SaveKala/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostAFI_SaveKala(string ace, string sal, string group, AFI_SaveKala aFI_SaveKala)
         {
             if (!ModelState.IsValid)
@@ -1625,26 +1614,26 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @Spec = '{4}',
 		                        @KGruCode = '{5}',
 		                        @FanniNo = '{6}',
-		                        @F01 = '{18}',
-		                        @F02 = '{19}',
-		                        @F03 = '{20}',
-		                        @F04 = '{21}',
-		                        @F05 = '{22}',
-		                        @F06 = '{23}',
-		                        @F07 = '{24}',
-		                        @F08 = '{25}',
-		                        @F09 = '{26}',
-		                        @F10 = '{27}',
-		                        @F11 = '{28}',
-		                        @F12 = '{29}',
-		                        @F13 = '{30}',
-		                        @F14 = '{31}',
-		                        @F15 = '{32}',
-		                        @F16 = '{33}',
-		                        @F17 = '{34}',
-		                        @F18 = '{35}',
-		                        @F19 = '{36}',
-		                        @F20 = '{37}',
+		                        @F01 = '{7}',
+		                        @F02 = '{8}',
+		                        @F03 = '{9}',
+		                        @F04 = '{10}',
+		                        @F05 = '{11}',
+		                        @F06 = '{12}',
+		                        @F07 = '{13}',
+		                        @F08 = '{14}',
+		                        @F09 = '{15}',
+		                        @F10 = '{16}',
+		                        @F11 = '{17}',
+		                        @F12 = '{18}',
+		                        @F13 = '{19}',
+		                        @F14 = '{20}',
+		                        @F15 = '{21}',
+		                        @F16 = '{22}',
+		                        @F17 = '{23}',
+		                        @F18 = '{24}',
+		                        @F19 = '{25}',
+		                        @F20 = '{26}',
 		                        @oCode = @oCode OUTPUT
 
                         SELECT	@oCode as N'@oCode'",
