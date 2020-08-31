@@ -99,7 +99,7 @@ namespace ApiKarbord.Controllers.AFI.data
         // POST: api/AFI_IDocHi
         [Route("api/AFI_IDocHi/{ace}/{sal}/{group}")]
         [ResponseType(typeof(AFI_IDocHi))]
-        public async Task<IHttpActionResult> PostAFI_IDocHi(string ace, string sal, string group,  string userName, string password,AFI_IDocHi aFI_IDocHi)
+        public async Task<IHttpActionResult> PostAFI_IDocHi(string ace, string sal, string group,AFI_IDocHi aFI_IDocHi)
         {
             string value = "";
             if (!ModelState.IsValid)
