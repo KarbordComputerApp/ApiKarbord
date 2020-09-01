@@ -83,7 +83,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql;
-                if (filter == "null")
+                if (filter == "null" || filter == "0")
                     sql = string.Format(@" select *  from Web_ZAcc");
                 else
                     sql = string.Format(@" select *  from Web_ZAcc where ZGruCode in ({0})", filter);
@@ -1673,6 +1673,18 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+            }
+            return Ok(0);
+        }
+
+
+        // post: api/AFI_SaveKala
+        [Route("api/Web_Data/AFI_UpdateKala/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_UpdateKala(string ace, string sal, string group, AFI_SaveKala aFI_SaveKala)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
             return Ok(0);
         }
