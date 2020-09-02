@@ -1522,6 +1522,34 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // post: api/AFI_DelCust
+        [Route("api/Web_Data/AFI_DelCust/{ace}/{sal}/{group}/{CustCode}")]
+        public async Task<IHttpActionResult> PostAFI_DelCust(string ace, string sal, string group, string CustCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                try
+                {
+                    string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelCust]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                                                CustCode);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(0);
+        }
+
 
 
 
@@ -1678,19 +1706,33 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // post: api/AFI_SaveKala
-        [Route("api/Web_Data/AFI_UpdateKala/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostAFI_UpdateKala(string ace, string sal, string group, AFI_SaveKala aFI_SaveKala)
+        // post: api/AFI_DelKala
+        [Route("api/Web_Data/AFI_DelKala/{ace}/{sal}/{group}/{KalaCode}")]
+        public async Task<IHttpActionResult> PostAFI_DelKala(string ace, string sal, string group, string KalaCode)
         {
-            if (!ModelState.IsValid)
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                return BadRequest(ModelState);
+                try
+                {
+                    string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelKala]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                                                KalaCode);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
             }
             return Ok(0);
         }
-
-
-
 
     }
 }
