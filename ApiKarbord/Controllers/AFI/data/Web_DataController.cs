@@ -588,6 +588,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  select 'TrzFCust_S' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzFCust_S') as Trs
                                                  union all
                                                  select 'TrzFCust_P' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzFCust_P') as Trs
+                                                 union all
+                                                 select 'Krdx' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'Krdx') as Trs
 "
                                                , ace, group, user);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
