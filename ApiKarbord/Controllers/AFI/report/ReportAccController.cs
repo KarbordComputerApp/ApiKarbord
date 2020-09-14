@@ -68,7 +68,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 else
                     sql += string.Format(" and (Level <= {0})", TrzAccObject.Level);
 
-                sql += UnitPublic.SpiltCodeAnd("AccCode", TrzAccObject.AccCode);
+                sql += UnitPublic.SpiltCodeLike("AccCode", TrzAccObject.AccCode);
 
                 sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
 
