@@ -29,42 +29,26 @@ namespace ApiKarbord.Models
 
         public string SqlPassword { get; set; }
 
-
-
         [StringLength(10)]
         public string fromDate { get; set; }
 
         [StringLength(10)]
-        public string untilDate { get; set; }
+        public string toDate { get; set; }
 
         public byte? userCount { get; set; }
+      
+        public string AFI1_Group { get; set; }
 
-        public string ACC_Group { get; set; }
+        public string AFI1_Access { get; set; }
 
-        public string ACC_Access { get; set; }
+        public string AFI8_Group { get; set; }
 
-        public string INV_Group { get; set; }
-
-        public string INV_Access { get; set; }
-
-        public string FCT_Group { get; set; }
-
-        public string FCT_Access { get; set; }
-
-        public string AFI_Group { get; set; }
-
-        public string AFI_Access { get; set; }
-
-        public string CSH_Group { get; set; }
-
-        public string MVL_Group { get; set; }
-
-        public string PAY_Group { get; set; }
+        public string AFI8_Access { get; set; }
 
         public string ERJ_Group { get; set; }
 
         public string ERJ_Access { get; set; }
 
-        public bool active { get; set; }
+        public bool? active { get; set; }
     }
 }
