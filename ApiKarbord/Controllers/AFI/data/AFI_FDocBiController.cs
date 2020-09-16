@@ -98,7 +98,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string fieldBandNo;
                     string tableName;
-                    if (ace == "AFI1")
+                    if (ace == "Web1")
                     {
                         fieldBandNo = "BandNo";
                         tableName = "Afi1FDocB";
@@ -213,9 +213,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                 @SerialNumber = {1},
                                                                 @BandNoFld = '{2}'
                                                            SELECT	'Return Value' = @return_value",
-                                                           ace == "AFI1" ? "Afi1FDocB" : "Fct5DocB",
+                                                           ace == "Web1" ? "Afi1FDocB" : "Fct5DocB",
                                                            SerialNumber,
-                                                           ace == "AFI1" ? "BandNo" : "Radif");
+                                                           ace == "Web1" ? "BandNo" : "Radif");
                     int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     //await UnitDatabase.db.SaveChangesAsync();
                 }

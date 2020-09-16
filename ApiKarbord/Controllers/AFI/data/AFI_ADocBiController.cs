@@ -183,7 +183,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                       @BandNo = {2},
                                                                       @BandNoFld = '{3}'
                                                                  SELECT	'Return Value' = @return_value",
-                                                               ace == "AFI1" ? "Afi1ADocB" : "Acc5DocB",
+                                                               ace == "Web1" ? "Afi1ADocB" : "Acc5DocB",
                                                                aFI_ADocBi.SerialNumber,
                                                                bandNo,
                                                                "BandNo");
@@ -288,7 +288,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                   @SerialNumber = {1},
                                                                   @BandNoFld = '{2}'
                                                              SELECT	'Return Value' = @return_value",
-                                                             ace == "AFI1" ? "Afi1ADocB" : "Acc5DocB",
+                                                             ace == "Web1" ? "Afi1ADocB" : "Acc5DocB",
                                                              SerialNumber,
                                                              "BandNo");
                     int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
