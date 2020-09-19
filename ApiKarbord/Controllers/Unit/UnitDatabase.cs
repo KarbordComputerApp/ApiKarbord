@@ -28,7 +28,7 @@ namespace ApiKarbord.Controllers.Unit
             {
                 if (ace == "Config")
                 {
-                    return "Ace_Config";
+                    return "Ace_WebConfig";
                 }
                 else
                     return null;
