@@ -68,27 +68,34 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        // GET: api/IDocData/IDocH لیست سند انبار   
-        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/top{select}/{invSelect}/{user}/{AccessSanad}")]
-        public async Task<IHttpActionResult> GetAllWeb_IDocHMin(string ace, string sal, string group, byte InOut, int select, string invSelect, string user, bool accessSanad)
+
+
+        public class IDocHMinObject
+        {
+            public byte InOut { get; set; }
+
+            public int select { get; set; }
+
+            public string invSelect { get; set; }
+
+            public string user { get; set; }
+
+            public bool accessSanad { get; set; }
+
+        }
+
+        // Post: api/IDocData/IDocH لیست سند انبار   
+        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostAllWeb_IDocHMin(string ace, string sal, string group, IDocHMinObject IDocHMinObject)
         {
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = "declare @enddate nvarchar(20) ";
-                //if (select == 1) // اگر انتخاب برای اخرین روز بود
-                //    sql += string.Format(@" select @enddate = max(DocDate) from Web_IDocH where InOut = {0}", InOut);
-                // else if (select == 2) // اگر انتخاب برای اخرین ماه بود
-                //    sql += string.Format(@" select @enddate = substring(max(DocDate), 1, 7) from Web_IDocH where InOut = {0}", InOut);
-
-                //if (ModeCode == "in" && (select == 1 || select == 2))
-                //    sql += " (101,102,103,106,108,110) ";
-                //else if (ModeCode == "out" && (select == 1 || select == 2))
-                //    sql += " (104,105,107,109,111)";
-
                 sql += "select ";
-                if (select == 0)
+                if (IDocHMinObject.select == 0)
                     sql += " top(100) ";
 
                 sql += string.Format(@"SerialNumber,
@@ -131,25 +138,25 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F18,
                                        F19,
                                        F20 
-                                       from Web_IDocH where InOut = {0} ", InOut);
+                                       from Web_IDocH where InOut = {0} ", IDocHMinObject.InOut);
 
                 //if (ModeCode == "in")
                 //   sql += " (101,102,103,106,108,110) ";
                 //else if (ModeCode == "out")
                 //    sql += " (104,105,107,109,111)";
 
-                if (invSelect == "*~*!")
+                if (IDocHMinObject.invSelect != "")
                 {
-                    sql += " and InvCode = '" + invSelect + "' ";
+                    sql += " and InvCode = '" + IDocHMinObject.invSelect + "' ";
                 }
 
-                if (select == 1)
+                if (IDocHMinObject.select == 1)
                     sql += " and DocDate =  @enddate ";
-                else if (select == 2)
+                else if (IDocHMinObject.select == 2)
                     sql += " and DocDate like  @enddate + '%' ";
 
-                if (accessSanad == false)
-                    sql += " and Eghdam = '" + user + "' ";
+                if (IDocHMinObject.accessSanad == false)
+                    sql += " and Eghdam = '" + IDocHMinObject.user + "' ";
 
 
                 sql += " order by SortDocNo desc";
