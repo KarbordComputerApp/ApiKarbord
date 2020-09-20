@@ -182,5 +182,91 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+
+        public class AFI_Move
+        {
+            public byte? DocNoMode { get; set; }
+
+            public byte? InsertMode { get; set; }
+
+            public int? DocNo { get; set; }
+
+            public int? StartNo { get; set; }
+
+            public int? EndNo { get; set; }
+
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string TahieShode { get; set; }
+
+            public long? SerialNumber { get; set; }
+
+            public string DocDate { get; set; }
+
+            public long? oSerialNumber { get; set; }
+        }
+
+
+
+        [Route("api/ADocData/MoveSanad/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_MoveSanad(string ace, string sal, string group, AFI_Move AFI_Move)
+        {
+            long value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"DECLARE	@return_value int,
+		                            @oSerialNumber bigint
+
+                            EXEC	@return_value = [dbo].[Web_SaveADoc_Move]
+		                            @DocNoMode = {0},
+		                            @InsertMode = {1},
+		                            @DocNo = {2},
+		                            @StartNo = {3},
+		                            @EndNo = {4},
+		                            @BranchCode = {5},
+		                            @UserCode = '''{6}''',
+		                            @TahieShode = '{7}',
+		                            @SerialNumber = {8},
+		                            @DocDate = '{9}',
+		                            @oSerialNumber = @oSerialNumber OUTPUT
+                            SELECT	@oSerialNumber as N'@oSerialNumber'",
+                          AFI_Move.DocNoMode,
+                          AFI_Move.InsertMode,
+                          AFI_Move.DocNo,
+                          AFI_Move.StartNo,
+                          AFI_Move.EndNo,
+                          AFI_Move.BranchCode,
+                          AFI_Move.UserCode,
+                          AFI_Move.TahieShode,
+                          AFI_Move.SerialNumber,
+                          AFI_Move.DocDate);
+
+                    value = UnitDatabase.db.Database.SqlQuery<long>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            var list = UnitDatabase.db.Web_ADocH.Where(c => c.SerialNumber == value);
+            return Ok(list);
+        }
+
     }
 }

@@ -51,6 +51,67 @@
         public string Footer { get; set; }
 
         public int? DocNo_Out { get; set; }
+
+
+        [StringLength(250)]
+        public string F01 { get; set; }
+
+        [StringLength(250)]
+        public string F02 { get; set; }
+
+        [StringLength(250)]
+        public string F03 { get; set; }
+
+        [StringLength(250)]
+        public string F04 { get; set; }
+
+        [StringLength(250)]
+        public string F05 { get; set; }
+
+        [StringLength(250)]
+        public string F06 { get; set; }
+
+        [StringLength(250)]
+        public string F07 { get; set; }
+
+        [StringLength(250)]
+        public string F08 { get; set; }
+
+        [StringLength(250)]
+        public string F09 { get; set; }
+
+        [StringLength(250)]
+        public string F10 { get; set; }
+
+        [StringLength(250)]
+        public string F11 { get; set; }
+
+        [StringLength(250)]
+        public string F12 { get; set; }
+
+        [StringLength(250)]
+        public string F13 { get; set; }
+
+        [StringLength(250)]
+        public string F14 { get; set; }
+
+        [StringLength(250)]
+        public string F15 { get; set; }
+
+        [StringLength(250)]
+        public string F16 { get; set; }
+
+        [StringLength(250)]
+        public string F17 { get; set; }
+
+        [StringLength(250)]
+        public string F18 { get; set; }
+
+        [StringLength(250)]
+        public string F19 { get; set; }
+
+        [StringLength(250)]
+        public string F20 { get; set; }
     }
 }
 

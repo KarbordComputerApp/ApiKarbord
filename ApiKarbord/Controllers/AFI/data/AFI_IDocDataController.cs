@@ -70,7 +70,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/IDocData/IDocH لیست سند انبار   
         [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/top{select}/{invSelect}/{user}/{AccessSanad}")]
-        public async Task<IHttpActionResult> GetAllWeb_IDocHMin(string ace, string sal, string group, byte InOut, int select, long invSelect, string user, bool accessSanad)
+        public async Task<IHttpActionResult> GetAllWeb_IDocHMin(string ace, string sal, string group, byte InOut, int select, string invSelect, string user, bool accessSanad)
         {
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -138,9 +138,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 //else if (ModeCode == "out")
                 //    sql += " (104,105,107,109,111)";
 
-                if (invSelect > 0)
+                if (invSelect == "*~*!")
                 {
-                    sql += " and InvCode = '" + invSelect.ToString() + "' ";
+                    sql += " and InvCode = '" + invSelect + "' ";
                 }
 
                 if (select == 1)
@@ -225,6 +225,99 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+
+        public class AFI_Move
+        {
+            public byte? DocNoMode { get; set; }
+
+            public byte? InsertMode { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string InvCode { get; set; }
+
+            public int? DocNo { get; set; }
+
+            public int? StartNo { get; set; }
+
+            public int? EndNo { get; set; }
+
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string TahieShode { get; set; }
+
+            public long? SerialNumber { get; set; }
+
+            public string DocDate { get; set; }
+
+            public long? oSerialNumber { get; set; }
+        }
+
+
+
+        [Route("api/IDocData/MoveSanad/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_MoveSanad(string ace, string sal, string group, AFI_Move AFI_Move)
+        {
+            long value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"DECLARE	@return_value int,
+		                            @oSerialNumber bigint
+
+                            EXEC	@return_value = [dbo].[Web_SaveIDoc_Move]
+		                            @DocNoMode = {0},
+		                            @InsertMode = {1},
+		                            @ModeCode = N'{2}',
+                                    @InvCode = N'{3}',
+		                            @DocNo = {4},
+		                            @StartNo = {5},
+		                            @EndNo = {6},
+		                            @BranchCode = {7},
+		                            @UserCode = '''{8}''',
+		                            @TahieShode = '{9}',
+		                            @SerialNumber = {10},
+		                            @DocDate = '{11}',
+		                            @oSerialNumber = @oSerialNumber OUTPUT
+                            SELECT	@oSerialNumber as N'@oSerialNumber'",
+                          AFI_Move.DocNoMode,
+                          AFI_Move.InsertMode,
+                          AFI_Move.ModeCode,
+                          AFI_Move.InvCode,
+                          AFI_Move.DocNo,
+                          AFI_Move.StartNo,
+                          AFI_Move.EndNo,
+                          AFI_Move.BranchCode,
+                          AFI_Move.UserCode,
+                          AFI_Move.TahieShode,
+                          AFI_Move.SerialNumber,
+                          AFI_Move.DocDate);
+
+                    value = UnitDatabase.db.Database.SqlQuery<long>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            var list = UnitDatabase.db.Web_IDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode && c.InvCode == AFI_Move.InvCode);
+            return Ok(list);
+        }
 
     }
 
