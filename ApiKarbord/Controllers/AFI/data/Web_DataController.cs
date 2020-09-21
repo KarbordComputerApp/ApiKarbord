@@ -150,6 +150,8 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+
         // GET: api/Web_Data/Inv لیست انبار ها
         [Route("api/Web_Data/Inv/{ace}/{sal}/{group}")]
         public IQueryable<Web_Inv> GetWeb_Inv(string ace, string sal, string group)

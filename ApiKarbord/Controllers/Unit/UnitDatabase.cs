@@ -72,7 +72,7 @@ namespace ApiKarbord.Controllers.Unit
                 List<Access> model = null;
                 var client = new HttpClient();
                 string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}", userName, password);
-               // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}", userName, password);
+                //string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}", userName, password);
                 var task = client.GetAsync(address)
                   .ContinueWith((taskwithresponse) =>
                   {
