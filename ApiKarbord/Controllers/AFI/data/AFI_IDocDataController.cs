@@ -225,7 +225,11 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                string sql = string.Format(@"SELECT * FROM Web_IMode WHERE InOut = {0} order by OrderFld ", InOut);
+                string sql;
+                if (InOut == 0)
+                    sql = string.Format(@"SELECT * FROM Web_IMode order by OrderFld ");
+                else
+                    sql = string.Format(@"SELECT * FROM Web_IMode WHERE InOut = {0} order by OrderFld ", InOut);
                 var listIMode = UnitDatabase.db.Database.SqlQuery<Web_IMode>(sql);
                 return Ok(listIMode);
             }
