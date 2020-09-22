@@ -115,10 +115,10 @@ namespace ApiKarbord.Controllers.AFI.report
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
-                string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
-                string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
-                string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
+               // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
+                //string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
+               // string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
+                //string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000) * FROM  Web_Dftr('{0}','{1}','{2}') AS Dftr where 1 = 1 ",

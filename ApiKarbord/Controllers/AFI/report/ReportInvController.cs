@@ -75,5 +75,74 @@ namespace ApiKarbord.Controllers.AFI.report
             return null;
         }
 
+        public class KrdxObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string NoSanadAnbar { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+            public string ThvlCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string StatusCode { get; set; }
+
+            public string naghlAzGhabl { get; set; }
+
+            public string byKalaExf { get; set; }
+
+        }
+
+        // Post: api/ReportInv/Krdx گزارش کاردکس کالا
+        // HE_Report_Krdx
+        [Route("api/ReportInv/Krdx/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_Krdx(string ace, string sal, string group, KrdxObject KrdxObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+
+                string invCode = UnitPublic.SpiltCodeCama(KrdxObject.InvCode);
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}') AS Krdx where 1 = 1 ",
+                          KrdxObject.KalaCode, invCode);
+
+                sql += UnitPublic.SpiltCodeAnd("KGruCode", KrdxObject.KGruCode);
+                sql += UnitPublic.SpiltCodeAnd("ThvlCode", KrdxObject.ThvlCode);
+                sql += UnitPublic.SpiltCodeAnd("OprCode", KrdxObject.OprCode);
+                sql += UnitPublic.SpiltCodeAnd("MkzCode", KrdxObject.MkzCode);
+                sql += UnitPublic.SpiltCodeAnd("Status", KrdxObject.StatusCode);
+
+                if (KrdxObject.azTarikh != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", KrdxObject.azTarikh);
+
+                if (KrdxObject.taTarikh != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", KrdxObject.taTarikh);
+
+
+                if (KrdxObject.NoSanadAnbar != "0")
+                {
+                    sql += string.Format(" and (InOut = {0})", KrdxObject.NoSanadAnbar);
+                }
+
+                sql += " order by DocNo ";
+
+                var listKrdx = UnitDatabase.db.Database.SqlQuery<Web_Krdx>(sql);
+                return Ok(listKrdx);
+            }
+            return null;
+        }
+
     }
 }
