@@ -22,12 +22,19 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/FDocData/FMode اطلاعات نوع سند خرید و فروش   
         [Route("api/FDocData/FMode/{ace}/{sal}/{group}/{InOut}")]
-        public IQueryable<Web_FMode> GetWeb_FMode(string ace, string sal, string group, int InOut)
+        public async Task<IHttpActionResult> GetWeb_FMode(string ace, string sal, string group, int InOut)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                return UnitDatabase.db.Web_FMode.Where(c => c.InOut == InOut);
+                string sql;
+                if (InOut == 0)
+                    sql = string.Format(@"SELECT * FROM Web_FMode order by OrderFld ");
+                else
+                    sql = string.Format(@"SELECT * FROM Web_FMode WHERE InOut = {0} order by OrderFld ", InOut);
+
+                var listFMode = UnitDatabase.db.Database.SqlQuery<Web_FMode>(sql);
+                return Ok(listFMode);
             }
             return null;
         }
