@@ -115,7 +115,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 string invCode = UnitPublic.SpiltCodeCama(KrdxObject.InvCode);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}') AS Krdx where 1 = 1 ",
+                          @"select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}') AS Krdx where 1 = 1 and Status <> '' ",
                           KrdxObject.KalaCode, invCode);
 
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", KrdxObject.KGruCode);
