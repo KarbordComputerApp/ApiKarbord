@@ -13,7 +13,7 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long SerialNumber { get; set; }
 
-        public long? OrderNumber { get; set; }
+        public long OrderNumber { get; set; }
 
         public int? InOut { get; set; }
 
