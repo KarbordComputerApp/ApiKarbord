@@ -63,6 +63,8 @@
 
         public string InvName { get; set; }
 
+        public DateTime? UpdateDate { get; set; }
+
         [StringLength(250)]
         public string F01 { get; set; }
 

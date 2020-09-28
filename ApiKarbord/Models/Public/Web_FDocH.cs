@@ -31,6 +31,10 @@
         [StringLength(10)]
         public string DocDate { get; set; }
 
+        public string UpdateUser { get; set; }
+
+        public DateTime? UpdateDate { get; set; }
+
 
         [StringLength(250)]
         public string Spec { get; set; }
@@ -179,11 +183,6 @@
         public int? KalaPriceCode { get; set; }
 
         public double? PishDaryaft { get; set; }
-
-        [StringLength(20)]
-        public string UpdateUser { get; set; }
-
-        public DateTime? UpdateDate { get; set; }
 
         public short? Branch { get; set; }
 

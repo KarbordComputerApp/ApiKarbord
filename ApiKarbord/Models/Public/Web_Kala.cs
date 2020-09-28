@@ -18,6 +18,14 @@
         [StringLength(250)]
         public string Spec { get; set; }
 
+        public string Eghdam { get; set; }
+
+        public DateTime? EghdamDate { get; set; }
+
+        public string UpdateUser { get; set; }
+
+        public DateTime? UpdateDate { get; set; }
+
         [StringLength(30)]
         public string UnitName1 { get; set; }
 

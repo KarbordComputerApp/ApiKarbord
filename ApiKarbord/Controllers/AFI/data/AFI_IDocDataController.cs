@@ -82,6 +82,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public bool accessSanad { get; set; }
 
+            public string updatedate { get; set; }
+
         }
 
         // Post: api/IDocData/IDocH لیست سند انبار   
@@ -118,6 +120,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        Eghdam,
                                        ModeName,
                                        InvName,
+                                       UpdateDate,
                                        F01,
                                        F02,
                                        F03,
@@ -158,6 +161,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (IDocHMinObject.accessSanad == false)
                     sql += " and Eghdam = '" + IDocHMinObject.user + "' ";
 
+                if (IDocHMinObject.updatedate != null)
+                    sql += " and updatedate >= CAST('" + IDocHMinObject.updatedate + "' AS DATETIME2)";
 
                 sql += " order by SortDocNo desc";
                 var listIDocH = UnitDatabase.db.Database.SqlQuery<Web_IDocHMini>(sql);

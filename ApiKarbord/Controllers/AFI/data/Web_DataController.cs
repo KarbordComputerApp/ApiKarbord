@@ -24,26 +24,73 @@ namespace ApiKarbord.Controllers.AFI.data
     public class Web_DataController : ApiController
     {
 
-        // GET: api/Web_Data/Cust لیست اشخاص
-        [Route("api/Web_Data/Cust/{ace}/{sal}/{group}/{forSale}")]
-        public IQueryable<Web_Cust> GetWeb_Cust(string ace, string sal, string group, bool? forSale)
+
+        public class CustObject
+        {
+            public string updatedate { get; set; }
+            public bool? forSale { get; set; }
+        }
+
+        // Post: api/Web_Data/Cust لیست اشخاص
+        [Route("api/Web_Data/Cust/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Cust(string ace, string sal, string group, CustObject custObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                if (forSale == null)
+                string sql = "";
+                if (custObject.forSale == null)
                 {
-                    return UnitDatabase.db.Web_Cust;
+                    sql = "select  * FROM  dbo.Web_Cust where 1 = 1 ";
                 }
-                else if (forSale == true)
+                else if (custObject.forSale == true)
                 {
-                    return UnitDatabase.db.Web_Cust.Where(c => c.CustMode == 0 || c.CustMode == 1);
+                    sql = "select * FROM  dbo.Web_Cust where CustMode = 0 or CustMode = 1 ";
                 }
-                else if (forSale == false)
+                else if (custObject.forSale == false)
                 {
-                    return UnitDatabase.db.Web_Cust.Where(c => c.CustMode == 0 || c.CustMode == 2);
+                    sql = "select  * FROM  dbo.Web_Cust where CustMode = 0 or CustMode = 2 ";
                 }
+                
+                if (custObject.updatedate != null)
+                    sql += " and updatedate >= CAST('"+ custObject.updatedate + "' AS DATETIME2)";
+
+                var listCust = UnitDatabase.db.Database.SqlQuery<Web_Cust>(sql);
+                return Ok(listCust);
+            }
+            return null;
+        }
+
+        public class KalaObject
+        {
+            public bool? withimage { get; set; }
+            public string updatedate { get; set; }
+        }
+
+        // Post: api/Web_Data/Kala لیست کالا ها
+        [Route("api/Web_Data/Kala/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Kala(string ace, string sal, string group , KalaObject kalaObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = "";
+                if (kalaObject.withimage == true)
+                {
+                    sql = "select * FROM  dbo.Web_Kala ";
+                }
+                else 
+                {
+                    sql = "select * FROM  dbo.Web_Kala ";
+                }
+
+                if (kalaObject.updatedate != null)
+                    sql += " where updatedate >= CAST('" + kalaObject.updatedate + "' AS DATETIME2)";
+
+                var listKala = UnitDatabase.db.Database.SqlQuery<Web_Kala>(sql);
+                return Ok(listKala);
+
             }
             return null;
         }
@@ -138,17 +185,6 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
-        // GET: api/Web_Data/Kala لیست کالا ها
-        [Route("api/Web_Data/Kala/{ace}/{sal}/{group}")]
-        public IQueryable<Web_Kala> GetWeb_Kala(string ace, string sal, string group)
-        {
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
-            {
-                return UnitDatabase.db.Web_Kala;
-            }
-            return null;
-        }
 
 
 

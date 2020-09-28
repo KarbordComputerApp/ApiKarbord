@@ -12,6 +12,15 @@
         public string Code { get; set; }
         public string Name { get; set; }
         public string Spec { get; set; }
+
+        public string Eghdam { get; set; }
+
+        public DateTime? EghdamDate { get; set; }
+
+        public string UpdateUser { get; set; }
+
+        public DateTime? UpdateDate { get; set; }
+
         public int CustMode { get; set; }
         public string SAddMin1 { get; set; }
         public string SAddMin2 { get; set; }
