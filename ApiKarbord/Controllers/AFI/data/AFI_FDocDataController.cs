@@ -54,9 +54,24 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // GET: api/FDocData/FDocH لیست فاکتور    
-        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}/top{select}/{user}/{AccessSanad}")]
-        public async Task<IHttpActionResult> GetAllWeb_FDocHMin(string ace, string sal, string group, string ModeCode, int select, string user, bool accessSanad)
+
+        public class FDocHMinObject
+        {
+            public string ModeCode { get; set; }
+
+            public int select { get; set; }
+
+            public string user { get; set; }
+
+            public bool AccessSanad { get; set; }
+
+            public string updatedate { get; set; }
+
+        }
+
+        // Post: api/FDocData/FDocH لیست فاکتور    
+        [Route("api/FDocData/FDocH/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAllWeb_FDocHMin(string ace, string sal, string group, FDocHMinObject FDocHMinObject)
         {
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -64,7 +79,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
 
                 string sql = "select ";
-                if (select == 0)
+                if (FDocHMinObject.select == 0)
                     sql += " top(100) ";
                 sql += string.Format(@"SerialNumber,                                   
                                        DocNo,
@@ -122,11 +137,16 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F17,
                                        F18,
                                        F19,
-                                       F20
+                                       F20, 
+                                       UpdateDate
                                        from Web_FDocH where ModeCode = '{0}' ",
-                                       ModeCode.ToString());
-                if (accessSanad == false)
-                    sql += " and Eghdam = '" + user + "' ";
+                                       FDocHMinObject.ModeCode.ToString());
+                if (FDocHMinObject.AccessSanad == false)
+                    sql += " and Eghdam = '" + FDocHMinObject.user + "' ";
+
+                if (FDocHMinObject.updatedate != null)
+                    sql += " and UpdateDate >= CAST('" + FDocHMinObject.updatedate + "' AS DATETIME2)";
+
                 sql += " order by SortDocNo desc ";
                 var listFDocH = UnitDatabase.db.Database.SqlQuery<Web_FDocHMini>(sql);
                 return Ok(listFDocH);

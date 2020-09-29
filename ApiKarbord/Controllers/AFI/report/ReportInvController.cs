@@ -26,6 +26,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string taTarikh { get; set; }
 
+            public string ModeCode { get; set; }
+
             public string NoSanadAnbar { get; set; }
 
             public string InvCode { get; set; }
@@ -39,6 +41,8 @@ namespace ApiKarbord.Controllers.AFI.report
             public string MkzCode { get; set; }
 
             public string OprCode { get; set; }
+
+            public string StatusCode { get; set; }
 
         }
 
@@ -61,11 +65,9 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("ThvlCode", IDocRObject.ThvlCode);
                 sql += UnitPublic.SpiltCodeAnd("OprCode", IDocRObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", IDocRObject.MkzCode);
+                sql += UnitPublic.SpiltCodeAnd("Status", IDocRObject.StatusCode);
+                sql += UnitPublic.SpiltCodeAnd("ModeCode", IDocRObject.ModeCode);
 
-                if (IDocRObject.NoSanadAnbar != "0")
-                {
-                    sql += string.Format(" and (InOut = {0})", IDocRObject.NoSanadAnbar);
-                }
 
                 sql += " order by DocNo ";
 

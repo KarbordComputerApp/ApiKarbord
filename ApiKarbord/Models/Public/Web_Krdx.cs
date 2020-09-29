@@ -58,64 +58,64 @@
         public string ThvlName { get; set; }
 
         [StringLength(250)]
-        public string F01 { get; set; }
+        public string IDocF01 { get; set; }
 
         [StringLength(250)]
-        public string F02 { get; set; }
+        public string IDocF02 { get; set; }
 
         [StringLength(250)]
-        public string F03 { get; set; }
+        public string IDocF03 { get; set; }
 
         [StringLength(250)]
-        public string F04 { get; set; }
+        public string IDocF04 { get; set; }
 
         [StringLength(250)]
-        public string F05 { get; set; }
+        public string IDocF05 { get; set; }
 
         [StringLength(250)]
-        public string F06 { get; set; }
+        public string IDocF06 { get; set; }
 
         [StringLength(250)]
-        public string F07 { get; set; }
+        public string IDocF07 { get; set; }
 
         [StringLength(250)]
-        public string F08 { get; set; }
+        public string IDocF08 { get; set; }
 
         [StringLength(250)]
-        public string F09 { get; set; }
+        public string IDocF09 { get; set; }
 
         [StringLength(250)]
-        public string F10 { get; set; }
+        public string IDocF10 { get; set; }
 
         [StringLength(250)]
-        public string F11 { get; set; }
+        public string IDocF11 { get; set; }
 
         [StringLength(250)]
-        public string F12 { get; set; }
+        public string IDocF12 { get; set; }
 
         [StringLength(250)]
-        public string F13 { get; set; }
+        public string IDocF13 { get; set; }
 
         [StringLength(250)]
-        public string F14 { get; set; }
+        public string IDocF14 { get; set; }
 
         [StringLength(250)]
-        public string F15 { get; set; }
+        public string IDocF15 { get; set; }
 
         [StringLength(250)]
-        public string F16 { get; set; }
+        public string IDocF16 { get; set; }
 
         [StringLength(250)]
-        public string F17 { get; set; }
+        public string IDocF17 { get; set; }
 
         [StringLength(250)]
-        public string F18 { get; set; }
+        public string IDocF18 { get; set; }
 
         [StringLength(250)]
-        public string F19 { get; set; }
+        public string IDocF19 { get; set; }
 
         [StringLength(250)]
-        public string F20 { get; set; }
+        public string IDocF20 { get; set; }
 
         public int? BandNo { get; set; }
 

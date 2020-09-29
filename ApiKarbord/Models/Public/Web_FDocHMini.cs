@@ -166,5 +166,7 @@
         [StringLength(250)]
         public string F20 { get; set; }
 
+        public DateTime? UpdateDate { get; set; }
+
     }
 }
