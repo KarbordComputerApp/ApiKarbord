@@ -269,7 +269,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string DocDate { get; set; }
 
+            public byte? MoveMode { get; set; }
+
             public long? oSerialNumber { get; set; }
+
         }
 
 
@@ -305,6 +308,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @TahieShode = '{9}',
 		                            @SerialNumber = {10},
 		                            @DocDate = '{11}',
+                                    @MoveMode = {12} ,
 		                            @oSerialNumber = @oSerialNumber OUTPUT
                             SELECT	@oSerialNumber as N'@oSerialNumber'",
                           AFI_Move.DocNoMode,
@@ -318,7 +322,8 @@ namespace ApiKarbord.Controllers.AFI.data
                           AFI_Move.UserCode,
                           AFI_Move.TahieShode,
                           AFI_Move.SerialNumber,
-                          AFI_Move.DocDate);
+                          AFI_Move.DocDate,
+                          AFI_Move.MoveMode);
 
                     value = UnitDatabase.db.Database.SqlQuery<long>(sql).Single();
                     if (value == 0)
