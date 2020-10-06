@@ -20,6 +20,146 @@ namespace ApiKarbord.Controllers.AFI.report
     public class ReportInvController : ApiController
     {
 
+
+
+        // گزارشات -----------------------------------------------------------------------------------------------------------------------
+        public class TrzIObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+            public string ThvlCode { get; set; }
+
+            public string ThvlGru { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string StatusCode { get; set; }
+        }
+
+        // Post: api/ReportInv/TrzI گزارش موجودی انبار  
+        // HE_Report_TrzIKala
+        [Route("api/ReportInv/TrzI/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrzIKala(string ace, string sal, string group, TrzIObject TrzIObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+
+                string modeCode = UnitPublic.SpiltCodeCama(TrzIObject.ModeCode);
+                string kGruCode = UnitPublic.SpiltCodeCama(TrzIObject.KGruCode);
+                string thvlCode = UnitPublic.SpiltCodeCama(TrzIObject.ThvlCode);
+                string thvlGru = UnitPublic.SpiltCodeCama(TrzIObject.ThvlGru);
+                string oprCode = UnitPublic.SpiltCodeCama(TrzIObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(TrzIObject.MkzCode);
+                string invCode = UnitPublic.SpiltCodeCama(TrzIObject.InvCode);
+                string statusCode = UnitPublic.SpiltCodeCama(TrzIObject.StatusCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKala('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}') AS TrzI where 1 = 1 ",
+                          TrzIObject.azTarikh,
+                          TrzIObject.taTarikh,
+                          modeCode,
+                          kGruCode,
+                          thvlCode,
+                          thvlGru,
+                          mkzCode,
+                          oprCode,
+                          invCode,
+                          statusCode
+                          );
+
+                var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_TrzIKala>(sql);
+                return Ok(listTrzI);
+            }
+            return null;
+        }
+
+        public class TrzIExfObject
+        {
+
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KGruCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+            public string ThvlCode { get; set; }
+
+            public string ThvlGru { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string StatusCode { get; set; }
+
+        }
+        // Post: api/ReportInv/TrzIExf گزارش موجودی انبار  
+        // HE_Report_TrzIKalaExf
+        [Route("api/ReportInv/TrzIExf/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrzIKalaExf(string ace, string sal, string group, TrzIExfObject TrzIExfObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+
+
+                string modeCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ModeCode);
+                string kGruCode = UnitPublic.SpiltCodeCama(TrzIExfObject.KGruCode);
+                string thvlCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ThvlCode);
+                string thvlGru = UnitPublic.SpiltCodeCama(TrzIExfObject.ThvlGru);
+                string oprCode = UnitPublic.SpiltCodeCama(TrzIExfObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(TrzIExfObject.MkzCode);
+                string invCode = UnitPublic.SpiltCodeCama(TrzIExfObject.InvCode);
+                string statusCode = UnitPublic.SpiltCodeCama(TrzIExfObject.StatusCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}') AS TrzIExf where 1 = 1 ",
+                          TrzIExfObject.azTarikh,
+                          TrzIExfObject.taTarikh,
+                          modeCode,
+                          kGruCode,
+                          thvlCode,
+                          thvlGru,
+                          mkzCode,
+                          oprCode,
+                          invCode,
+                          statusCode
+                          );
+
+                sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag ";
+
+                var listTrzIExf = UnitDatabase.db.Database.SqlQuery<Web_TrzIKalaExf>(sql);
+                return Ok(listTrzIExf);
+            }
+            return null;
+        }
+
+
+
+
+
+
         public class IDocRObject
         {
             public string azTarikh { get; set; }
@@ -140,6 +280,11 @@ namespace ApiKarbord.Controllers.AFI.report
             }
             return null;
         }
+
+
+
+
+
 
     }
 }

@@ -89,7 +89,9 @@
         public virtual DbSet<Web_IDocHMini> Web_IDocHMini { get; set; }
 
         public virtual DbSet<Web_Thvl> Web_Thvl { get; set; }
-        
+
+        public virtual DbSet<Web_TGru> Web_TGru { get; set; }
+
         // مدل های گزارشات انبار مالی بازرگانی
         public virtual DbSet<Web_TrzIKala> Web_TrzIKala { get; set; }
 
