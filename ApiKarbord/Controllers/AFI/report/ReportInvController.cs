@@ -39,7 +39,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string ThvlCode { get; set; }
 
-            public string ThvlGru { get; set; }
+            public string TGruCode { get; set; }
 
             public string MkzCode { get; set; }
 
@@ -61,7 +61,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string modeCode = UnitPublic.SpiltCodeCama(TrzIObject.ModeCode);
                 string kGruCode = UnitPublic.SpiltCodeCama(TrzIObject.KGruCode);
                 string thvlCode = UnitPublic.SpiltCodeCama(TrzIObject.ThvlCode);
-                string thvlGru = UnitPublic.SpiltCodeCama(TrzIObject.ThvlGru);
+                string tGruCode = UnitPublic.SpiltCodeCama(TrzIObject.TGruCode);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzIObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzIObject.MkzCode);
                 string invCode = UnitPublic.SpiltCodeCama(TrzIObject.InvCode);
@@ -74,7 +74,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           modeCode,
                           kGruCode,
                           thvlCode,
-                          thvlGru,
+                          tGruCode,
                           mkzCode,
                           oprCode,
                           invCode,
@@ -104,7 +104,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string ThvlCode { get; set; }
 
-            public string ThvlGru { get; set; }
+            public string TGruCode { get; set; }
 
             public string MkzCode { get; set; }
 
@@ -127,7 +127,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string modeCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ModeCode);
                 string kGruCode = UnitPublic.SpiltCodeCama(TrzIExfObject.KGruCode);
                 string thvlCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ThvlCode);
-                string thvlGru = UnitPublic.SpiltCodeCama(TrzIExfObject.ThvlGru);
+                string tGruCode = UnitPublic.SpiltCodeCama(TrzIExfObject.TGruCode);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzIExfObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzIExfObject.MkzCode);
                 string invCode = UnitPublic.SpiltCodeCama(TrzIExfObject.InvCode);
@@ -140,7 +140,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           modeCode,
                           kGruCode,
                           thvlCode,
-                          thvlGru,
+                          tGruCode,
                           mkzCode,
                           oprCode,
                           invCode,
