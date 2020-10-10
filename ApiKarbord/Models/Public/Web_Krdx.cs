@@ -13,6 +13,8 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long SerialNumber { get; set; }
 
+        public byte? BodyTag { get; set; }
+
         public long OrderNumber { get; set; }
 
         public int? InOut { get; set; }

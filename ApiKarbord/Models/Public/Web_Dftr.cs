@@ -8,7 +8,10 @@
 
     public class Web_Dftr
     {
+
         public long? SerialNumber { get; set; }
+
+        public byte? BodyTag { get; set; }
 
         public long? DocNo { get; set; }
 
@@ -150,13 +153,13 @@
 
         public double? Best { get; set; }
 
-        public double Amount { get; set; }
+        public double? Amount { get; set; }
 
-        public double ArzValue { get; set; }
+        public double? ArzValue { get; set; }
 
-        public double? SumBede { get; set; }
+        //public double? SumBede { get; set; }
 
-        public double? SumBest { get; set; }
+        //public double? SumBest { get; set; }
 
         public double? MonTotal { get; set; }
 

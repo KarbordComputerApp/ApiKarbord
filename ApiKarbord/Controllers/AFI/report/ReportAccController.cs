@@ -45,7 +45,7 @@ namespace ApiKarbord.Controllers.AFI.report
         // HE_Report_TrzAcc
         [Route("api/ReportAcc/TrzAcc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group,TrzAccObject TrzAccObject)
+        public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
@@ -104,6 +104,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string MkzCode { get; set; }
 
+            public byte Naghl { get; set; }
+
         }
 
         // Post: api/ReportAcc/Web_Dftr گزارش دفتر حساب
@@ -115,24 +117,19 @@ namespace ApiKarbord.Controllers.AFI.report
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-               // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
+                // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 //string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
-               // string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
+                // string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
                 //string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}','{2}') AS Dftr where 1 = 1 ",
+                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}',{4},{5}) AS Dftr where 1 = 1 ",
+                          DftrObject.azTarikh,
+                          DftrObject.taTarikh,
+                          DftrObject.Naghl,
                           DftrObject.AccCode,
                           DftrObject.DispBands,
                           DftrObject.JamRooz);
-
-                if (DftrObject.azTarikh != "")
-                    sql += string.Format(" and DocDate >= '{0}' ", DftrObject.azTarikh);
-
-                if (DftrObject.taTarikh != "")
-                    sql += string.Format(" and DocDate <= '{0}' ", DftrObject.taTarikh);
-
-
 
                 if (DftrObject.azShomarh != "")
                     sql += string.Format(" and DocNo >= '{0}' ", DftrObject.azShomarh);
@@ -186,7 +183,7 @@ namespace ApiKarbord.Controllers.AFI.report
         // HE_Report_ADocR
         [Route("api/ReportAcc/ADocR/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group,ADocRObject ADocRObject)
+        public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
@@ -256,7 +253,7 @@ namespace ApiKarbord.Controllers.AFI.report
         // HE_Report_TChk
         [Route("api/ReportAcc/TChk/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group , TChkObject TChkObject)
+        public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
