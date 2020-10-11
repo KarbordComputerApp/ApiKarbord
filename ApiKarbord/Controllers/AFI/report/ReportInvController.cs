@@ -80,6 +80,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           invCode,
                           statusCode
                           );
+                sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIObject.KalaCode);
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_TrzIKala>(sql);
                 return Ok(listTrzI);
@@ -146,6 +147,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           invCode,
                           statusCode
                           );
+                sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIExfObject.KalaCode);
 
                 sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag ";
 
@@ -257,7 +259,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 string invCode = UnitPublic.SpiltCodeCama(KrdxObject.InvCode);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}',{2},'{3}','{4}') AS Krdx where 1 = 1 and Status <> '' ",
+                          @"select * from (select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}',{2},'{3}','{4}') AS Krdx where 1 = 1 ",
                           KrdxObject.azTarikh,
                           KrdxObject.taTarikh,
                           KrdxObject.Naghl,
@@ -271,7 +273,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("ModeCode", KrdxObject.ModeCode);
 
 
-                sql += " order by DocNo ";
+                sql += "or BodyTag = 0  order by BodyTag,DocNo ";
+                sql += " ) as a where VAmount1 is not null";
 
                 var listKrdx = UnitDatabase.db.Database.SqlQuery<Web_Krdx>(sql);
                 return Ok(listKrdx);

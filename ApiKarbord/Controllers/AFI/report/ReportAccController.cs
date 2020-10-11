@@ -123,7 +123,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 //string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}',{4},{5}) AS Dftr where 1 = 1 ",
+                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}',{4},{5}) AS Dftr where 1 = 1 and best >= 0 ",
                           DftrObject.azTarikh,
                           DftrObject.taTarikh,
                           DftrObject.Naghl,
@@ -142,7 +142,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("OprCode", DftrObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", DftrObject.MkzCode);
 
-                // sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
+                 sql += " order by bodytag";
 
                 var listDftr = UnitDatabase.db.Database.SqlQuery<Web_Dftr>(sql);
                 return Ok(listDftr);
