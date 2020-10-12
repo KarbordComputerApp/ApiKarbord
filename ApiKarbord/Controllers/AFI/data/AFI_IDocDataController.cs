@@ -164,7 +164,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (IDocHMinObject.updatedate != null)
                     sql += " and updatedate >= CAST('" + IDocHMinObject.updatedate + "' AS DATETIME2)";
 
-                sql += " order by SortDocNo desc";
+                sql += " order by docdate desc, SortDocNo desc";
                 var listIDocH = UnitDatabase.db.Database.SqlQuery<Web_IDocHMini>(sql);
                 return Ok(listIDocH);
             }
