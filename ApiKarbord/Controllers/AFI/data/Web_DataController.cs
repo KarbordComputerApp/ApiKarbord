@@ -1104,6 +1104,7 @@ namespace ApiKarbord.Controllers.AFI.data
                           @"select top (10000)  * FROM  Web_ErjDocErja({0}) AS ErjDocErja where 1 = 1 order by BandNo,DocBMode "
                           , ErjDocErja.SerialNumber);
 
+
                 var listErjDocErja = UnitDatabase.db.Database.SqlQuery<Web_ErjDocErja>(sql);
                 return Ok(listErjDocErja);
             }
