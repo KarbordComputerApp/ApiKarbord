@@ -822,13 +822,23 @@ namespace ApiKarbord.Controllers.AFI.data
         public class ErjDocKObject
         {
             public string userName { get; set; }
+
             public string userMode { get; set; }
+
             public string azTarikh { get; set; }
+
             public string taTarikh { get; set; }
+
             public string Status { get; set; }
+
             public string CustCode { get; set; }
+
             public string KhdtCode { get; set; }
+
             public string SrchSt { get; set; } // جستجو برای
+
+            public long SerialNumber { get; set; }
+
         }
 
 
@@ -860,6 +870,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocKObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocKObject.KhdtCode);
+
+                if (ErjDocKObject.SerialNumber > 0)
+                    sql += " and SerialNumber = " + ErjDocKObject.SerialNumber;
 
                 var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_ErjDocK>(sql);
                 return Ok(listTrzI);
@@ -928,13 +941,13 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string MhltDate { get; set; }
 
-            public string EghdamComm { get; set; }
+           // public string EghdamComm { get; set; }
 
-            public string SpecialComm { get; set; }
+           // public string SpecialComm { get; set; }
 
-            public string FinalComm { get; set; }
+           // public string FinalComm { get; set; }
 
-            public string DocDesc { get; set; }
+           // public string DocDesc { get; set; }
 
             public int? DocBStep { get; set; }
 
@@ -944,7 +957,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public int? DocBMode { get; set; }
 
-            public string RjComm { get; set; }
+            //public string RjComm { get; set; }
 
             public string RjDate { get; set; }
 
