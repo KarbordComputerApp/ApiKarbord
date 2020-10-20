@@ -923,6 +923,54 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+
+        public partial class Web_Mahramaneh
+        {
+            public int Code { get; set; }
+
+            public string Name { get; set; }
+        }
+
+        // GET: api/Web_Data/Web_Mahramaneh   محرمانه یا نوع در اتوماسیون
+        [Route("api/Web_Data/Web_Mahramaneh/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Mahramaneh(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(@"Select * from Web_Mahramaneh");
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_Mahramaneh>(sql).ToList();
+                return Ok(listDB);
+            }
+            return null;
+        }
+
+
+
+        public partial class Web_ErjResult
+        {
+            public long SerialNumber { get; set; }
+
+            public string RjResult { get; set; }
+        }
+
+        // GET: api/Web_Data/Web_ErjResult   نتیجه در اتوماسیون
+        [Route("api/Web_Data/Web_ErjResult/{ace}/{sal}/{group}/{SerialNumber}")]
+        public async Task<IHttpActionResult> GetWeb_ErjResult(string ace, string sal, string group, string SerialNumber)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = " + SerialNumber);
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjResult>(sql).ToList();
+                return Ok(listDB);
+            }
+            return null;
+        }
+
+
+
         public partial class Web_ErjDocB_Last
         {
             public long? DocNo { get; set; }
