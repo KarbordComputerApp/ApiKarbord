@@ -13,10 +13,23 @@
         [StringLength(50)]
         public string Code { get; set; }
 
+
         [StringLength(100)]
         public string Name { get; set; }
 
         [StringLength(250)]
         public string Spec { get; set; }
+
+        public int Level { get; set; }
+        public int? Code1 { get; set; }
+        public int? Code2 { get; set; }
+        public int? Code3 { get; set; }
+        public int? Code4 { get; set; }
+        public int? Code5 { get; set; }
+
+        public string Eghdam { get; set; }
+        public DateTime? EghdamDate { get; set; }
+        public string UpdateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
     }
 }
