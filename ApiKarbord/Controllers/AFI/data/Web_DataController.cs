@@ -52,9 +52,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     sql = "select  * FROM  dbo.Web_Cust where CustMode = 0 or CustMode = 2 ";
                 }
-                
+
                 if (custObject.updatedate != null)
-                    sql += " and updatedate >= CAST('"+ custObject.updatedate + "' AS DATETIME2)";
+                    sql += " and updatedate >= CAST('" + custObject.updatedate + "' AS DATETIME2)";
 
                 var listCust = UnitDatabase.db.Database.SqlQuery<Web_Cust>(sql);
                 return Ok(listCust);
@@ -70,7 +70,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // Post: api/Web_Data/Kala لیست کالا ها
         [Route("api/Web_Data/Kala/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostWeb_Kala(string ace, string sal, string group , KalaObject kalaObject)
+        public async Task<IHttpActionResult> PostWeb_Kala(string ace, string sal, string group, KalaObject kalaObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
@@ -85,7 +85,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                    , PAddMin7, PAddMin8, PAddMin9, PAddMin10, KalaImage
                             FROM Web_Kala";
                 }
-                else 
+                else
                 {
                     sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
                                    , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
@@ -363,7 +363,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                return  UnitDatabase.db.Web_Thvl;
+                return UnitDatabase.db.Web_Thvl;
 
             }
             return null;
@@ -503,7 +503,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-               // دریافت اطلاعات سطح دسترسی کاربر
+        // دریافت اطلاعات سطح دسترسی کاربر
         public class AccessUser
         {
             //public string Code { get; set; }
@@ -989,13 +989,13 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string MhltDate { get; set; }
 
-           // public string EghdamComm { get; set; }
+            // public string EghdamComm { get; set; }
 
-           // public string SpecialComm { get; set; }
+            // public string SpecialComm { get; set; }
 
-           // public string FinalComm { get; set; }
+            // public string FinalComm { get; set; }
 
-           // public string DocDesc { get; set; }
+            // public string DocDesc { get; set; }
 
             public int? DocBStep { get; set; }
 
@@ -1171,6 +1171,141 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return null;
         }
+
+
+
+        public class Web_ErjDocB_I
+        {
+            public long SerialNumber { get; set; }
+            public string Natijeh { get; set; }
+            public string FromUserCode { get; set; }
+            public string ToUserCode { get; set; }
+            public string RjDate { get; set; }
+            public string RjEndDate { get; set; }
+            public double RjTime { get; set; }
+            public string RjMhltDate { get; set; }
+        }
+
+
+        // POST: api/Web_Data/ErjDocB_I
+        [Route("api/Web_Data/ErjDocB_I/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjDocB_I(string ace, string sal, string group, Web_ErjDocB_I Web_ErjDocB_I)
+        {
+            string value = "";
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                try
+                {
+                    
+                    string sql = string.Format(
+                         @" DECLARE	@return_value int,
+		                            @BandNo nvarchar(10)
+                            Select @BandNo = 1
+                            EXEC	@return_value = [dbo].[Web_ErjDocB_I]
+		                            @SerialNumber = {0},
+		                            @BandNo = @BandNo OUTPUT,
+		                            @Natijeh = N'{1}',
+		                            @FromUserCode = N'{2}',
+		                            @ToUserCode = N'{3}',
+		                            @RjDate = N'{4}',
+		                            @RjEndDate = N'{5}',
+		                            @RjTime = {6},
+		                            @RjMhltDate = N'{7}'
+
+                            SELECT	@BandNo as N'@BandNo' ",
+                         Web_ErjDocB_I.SerialNumber,
+                         Web_ErjDocB_I.Natijeh,
+                         Web_ErjDocB_I.FromUserCode,
+                         Web_ErjDocB_I.ToUserCode,
+                         Web_ErjDocB_I.RjDate,
+                         Web_ErjDocB_I.RjEndDate,
+                         Web_ErjDocB_I.RjTime,
+                         Web_ErjDocB_I.RjMhltDate);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(value);
+        }
+
+
+
+
+        public class Web_ErjDocC_I
+        {
+            public long SerialNumber { get; set; }
+            public string Natijeh { get; set; }
+            public string ToUserCode { get; set; }
+            public string RjEndDate { get; set; }
+        }
+
+
+        // POST: api/ErjDocC_I
+        [Route("api/ErjDocC_I/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjDocC_I(string ace, string sal, string group, Web_ErjDocC_I Web_ErjDocC_I)
+        {
+            string value = "";
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                try
+                {
+                    string sql = string.Format(
+                         @" DECLARE	@return_value int,
+		                            @BandNo nvarchar(10)
+                            Select @BandNo = 1
+                            EXEC	@return_value = [dbo].[Web_ErjDocC_I]
+		                            @SerialNumber = {0},
+		                            @BandNo = @BandNo OUTPUT,
+		                            @Natijeh = N'{1}',
+		                            @ToUserCode = N'{2}',
+		                            @RjEndDate = N'{3}'
+                            SELECT	@BandNo as N'@BandNo' ",
+                        
+                         Web_ErjDocC_I.SerialNumber,
+                         Web_ErjDocC_I.Natijeh,
+                         Web_ErjDocC_I.ToUserCode,
+                         Web_ErjDocC_I.RjEndDate);
+
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(value);
+        }
+
+
+
+
+
+
+
+
 
 
         // GET: api/Web_Data/KGru لیست کالا گروه ها
