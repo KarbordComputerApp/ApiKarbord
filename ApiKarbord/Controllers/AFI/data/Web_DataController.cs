@@ -952,7 +952,10 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public long SerialNumber { get; set; }
 
+            public int? BandNo { get; set; }
+
             public string RjResult { get; set; }
+
         }
 
         // GET: api/Web_Data/Web_ErjResult   نتیجه در اتوماسیون
@@ -1174,22 +1177,22 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class Web_ErjDocB_I
+        public class Web_ErjSaveDocB_S
         {
             public long SerialNumber { get; set; }
             public string Natijeh { get; set; }
             public string FromUserCode { get; set; }
             public string ToUserCode { get; set; }
             public string RjDate { get; set; }
-            public string RjEndDate { get; set; }
-            public double RjTime { get; set; }
+            public string RjTime { get; set; }
             public string RjMhltDate { get; set; }
+            public int BandNo { get; set; }
         }
 
 
-        // POST: api/Web_Data/ErjDocB_I
-        [Route("api/Web_Data/ErjDocB_I/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostErjDocB_I(string ace, string sal, string group, Web_ErjDocB_I Web_ErjDocB_I)
+        // POST: api/Web_Data/ErjSaveDocB_S
+        [Route("api/Web_Data/ErjSaveDocB_S/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDocB_S(string ace, string sal, string group, Web_ErjSaveDocB_S Web_ErjSaveDocB_S)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -1202,31 +1205,29 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-                    
+
                     string sql = string.Format(
                          @" DECLARE	@return_value int,
 		                            @BandNo nvarchar(10)
-                            Select @BandNo = 1
-                            EXEC	@return_value = [dbo].[Web_ErjDocB_I]
+                            EXEC	@return_value = [dbo].[Web_ErjSaveDocB_S]
 		                            @SerialNumber = {0},
-		                            @BandNo = @BandNo OUTPUT,
-		                            @Natijeh = N'{1}',
-		                            @FromUserCode = N'{2}',
-		                            @ToUserCode = N'{3}',
-		                            @RjDate = N'{4}',
-		                            @RjEndDate = N'{5}',
+		                            @BandNo = {1} ,
+		                            @Natijeh = N'{2}',
+		                            @FromUserCode = N'{3}',
+		                            @ToUserCode = N'{4}',
+		                            @RjDate = N'{5}',
 		                            @RjTime = {6},
 		                            @RjMhltDate = N'{7}'
 
                             SELECT	@BandNo as N'@BandNo' ",
-                         Web_ErjDocB_I.SerialNumber,
-                         Web_ErjDocB_I.Natijeh,
-                         Web_ErjDocB_I.FromUserCode,
-                         Web_ErjDocB_I.ToUserCode,
-                         Web_ErjDocB_I.RjDate,
-                         Web_ErjDocB_I.RjEndDate,
-                         Web_ErjDocB_I.RjTime,
-                         Web_ErjDocB_I.RjMhltDate);
+                         Web_ErjSaveDocB_S.SerialNumber,
+                         Web_ErjSaveDocB_S.BandNo,
+                         Web_ErjSaveDocB_S.Natijeh,
+                         Web_ErjSaveDocB_S.FromUserCode,
+                         Web_ErjSaveDocB_S.ToUserCode,
+                         Web_ErjSaveDocB_S.RjDate,
+                         Web_ErjSaveDocB_S.RjTime,
+                         Web_ErjSaveDocB_S.RjMhltDate);
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
@@ -1244,18 +1245,22 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class Web_ErjDocC_I
+        public class Web_ErjSaveDocC_S
         {
             public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
             public string Natijeh { get; set; }
+
             public string ToUserCode { get; set; }
-            public string RjEndDate { get; set; }
+
+            public string RjDate { get; set; }
         }
 
-
-        // POST: api/ErjDocC_I
-        [Route("api/ErjDocC_I/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostErjDocC_I(string ace, string sal, string group, Web_ErjDocC_I Web_ErjDocC_I)
+        // POST: api/Web_Data/ErjSaveDocC_S
+        [Route("api/Web_Data/ErjSaveDocC_S/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDocC_S(string ace, string sal, string group, [FromBody]List<Web_ErjSaveDocC_S> Web_ErjSaveDocC_S)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -1266,26 +1271,32 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
+                
                 try
                 {
-                    string sql = string.Format(
-                         @" DECLARE	@return_value int,
-		                            @BandNo nvarchar(10)
-                            Select @BandNo = 1
-                            EXEC	@return_value = [dbo].[Web_ErjDocC_I]
+                    string sql = "";
+                    foreach (var item in Web_ErjSaveDocC_S)
+                    {
+                        sql = string.Format(CultureInfo.InvariantCulture,
+                             @" DECLARE	@return_value int,
+                                        @BandNo nvarchar(10)
+                               EXEC	@return_value = [dbo].[Web_ErjSaveDocC_S]
 		                            @SerialNumber = {0},
-		                            @BandNo = @BandNo OUTPUT,
-		                            @Natijeh = N'{1}',
-		                            @ToUserCode = N'{2}',
-		                            @RjEndDate = N'{3}'
-                            SELECT	@BandNo as N'@BandNo' ",
-                        
-                         Web_ErjDocC_I.SerialNumber,
-                         Web_ErjDocC_I.Natijeh,
-                         Web_ErjDocC_I.ToUserCode,
-                         Web_ErjDocC_I.RjEndDate);
+		                            @BandNo = {1},
+		                            @Natijeh = N'{2}',
+		                            @ToUserCode = N'{3}',
+		                            @RjDate = N'{4}'
+                               SELECT	@BandNo as N'@BandNo'",
 
-                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                            item.SerialNumber,
+                            item.BandNo,
+                            item.Natijeh,
+                            item.ToUserCode,
+                            item.RjDate);
+                        value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                    }
+                    await UnitDatabase.db.SaveChangesAsync();
+
                     if (!string.IsNullOrEmpty(value))
                     {
                         await UnitDatabase.db.SaveChangesAsync();
