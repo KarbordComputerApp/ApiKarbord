@@ -950,22 +950,30 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public partial class Web_ErjResult
         {
+            public int DocBMode { get; set; }
+
+            public string ToUserCode { get; set; }
+
             public long SerialNumber { get; set; }
 
             public int? BandNo { get; set; }
 
             public string RjResult { get; set; }
-
         }
 
         // GET: api/Web_Data/Web_ErjResult   نتیجه در اتوماسیون
-        [Route("api/Web_Data/Web_ErjResult/{ace}/{sal}/{group}/{SerialNumber}")]
-        public async Task<IHttpActionResult> GetWeb_ErjResult(string ace, string sal, string group, string SerialNumber)
+        [Route("api/Web_Data/Web_ErjResult/{ace}/{sal}/{group}/{SerialNumber}/{DocBMode}/{ToUserCode}")]
+        public async Task<IHttpActionResult> GetWeb_ErjResult(string ace, string sal, string group, string SerialNumber, string DocBMode , string ToUserCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = " + SerialNumber);
+                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = {0} 
+                                             and DocBMode = {1}  and ToUserCode = '{2}'",
+                                            SerialNumber,
+                                            DocBMode,
+                                            DocBMode == "0" ? "" : ToUserCode);
+
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjResult>(sql).ToList();
                 return Ok(listDB);
             }
