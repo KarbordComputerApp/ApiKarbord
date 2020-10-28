@@ -106,6 +106,14 @@
         public virtual DbSet<Web_TChk> Web_TChk { get; set; }
 
 
+        public virtual DbSet<Web_ADocP> Web_ADocP { get; set; }
+        public virtual DbSet<Web_FDocP> Web_FDocP { get; set; }
+        public virtual DbSet<Web_IDocP> Web_IDocP { get; set; }
+
+
+
+
+
         public ApiModel(string connectionString) : base(connectionString)
         {
 

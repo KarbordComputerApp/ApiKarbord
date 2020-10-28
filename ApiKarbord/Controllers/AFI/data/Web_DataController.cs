@@ -199,13 +199,17 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/Web_Data/Inv لیست انبار ها
-        [Route("api/Web_Data/Inv/{ace}/{sal}/{group}")]
-        public IQueryable<Web_Inv> GetWeb_Inv(string ace, string sal, string group)
+        [Route("api/Web_Data/Inv/{ace}/{sal}/{group}/{Mode}/{UserCode}")]
+        public async Task<IHttpActionResult> GetWeb_Inv(string ace, string sal, string group, int Mode, string UserCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                return UnitDatabase.db.Web_Inv;
+                string sql = string.Format(@"select * from Web_Inv_F({0},'{1}')",
+                                           Mode,
+                                           UserCode);
+                var listInv = UnitDatabase.db.Database.SqlQuery<Web_Inv>(sql);
+                return Ok(listInv);
             }
             return null;
         }
@@ -963,7 +967,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Web_ErjResult   نتیجه در اتوماسیون
         [Route("api/Web_Data/Web_ErjResult/{ace}/{sal}/{group}/{SerialNumber}/{DocBMode}/{ToUserCode}")]
-        public async Task<IHttpActionResult> GetWeb_ErjResult(string ace, string sal, string group, string SerialNumber, string DocBMode , string ToUserCode)
+        public async Task<IHttpActionResult> GetWeb_ErjResult(string ace, string sal, string group, string SerialNumber, string DocBMode, string ToUserCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
@@ -1279,7 +1283,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                
+
                 try
                 {
                     string sql = "";

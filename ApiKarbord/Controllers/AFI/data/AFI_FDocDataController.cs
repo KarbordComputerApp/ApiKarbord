@@ -335,5 +335,20 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(list);
         }
 
+
+        // GET: api/FDocData/FDocP لیست سند    
+        [Route("api/FDocData/FDocP/{ace}/{sal}/{group}/{SerialNumber}")]
+        public async Task<IHttpActionResult> GetAllWeb_FDocP(string ace, string sal, string group, long SerialNumber)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(@"select * from Web_FDocP where SerialNumber = {0} order by BandNo", SerialNumber);
+                var listFDocP = UnitDatabase.db.Database.SqlQuery<Web_FDocP>(sql);
+                return Ok(listFDocP);
+            }
+            return null;
+        }
+
     }
 }

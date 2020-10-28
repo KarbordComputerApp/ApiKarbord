@@ -340,6 +340,21 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(list);
         }
 
+
+        // GET: api/IDocData/IDocP لیست سند    
+        [Route("api/IDocData/IDocP/{ace}/{sal}/{group}/{SerialNumber}")]
+        public async Task<IHttpActionResult> GetAllWeb_IDocP(string ace, string sal, string group, long SerialNumber)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(@"select * from Web_IDocP where SerialNumber = {0} order by BandNo", SerialNumber);
+                var listIDocP = UnitDatabase.db.Database.SqlQuery<Web_IDocP>(sql);
+                return Ok(listIDocP);
+            }
+            return null;
+        }
+
     }
 
 }

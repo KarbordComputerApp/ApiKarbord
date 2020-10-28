@@ -272,5 +272,22 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(list);
         }
 
+
+
+
+        // GET: api/ADocData/ADocP لیست سند    
+        [Route("api/ADocData/ADocP/{ace}/{sal}/{group}/{SerialNumber}")]
+        public async Task<IHttpActionResult> GetAllWeb_ADocP(string ace, string sal, string group, long SerialNumber)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(@"select * from Web_ADocP where SerialNumber = {0} order by BandNo", SerialNumber);
+                var listADocP = UnitDatabase.db.Database.SqlQuery<Web_ADocP>(sql);
+                return Ok(listADocP);
+            }
+            return null;
+        }
+
     }
 }
