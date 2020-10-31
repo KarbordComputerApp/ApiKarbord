@@ -972,11 +972,15 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = {0} 
-                                             and DocBMode = {1}  and ToUserCode = '{2}'",
-                                            SerialNumber,
-                                            DocBMode,
-                                            DocBMode == "0" ? "" : ToUserCode);
+
+                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = {0}", SerialNumber);
+
+                if(DocBMode != "null")
+                    sql += string.Format(@" and  DocBMode = {0} and ToUserCode = '{1}'",
+                         DocBMode,
+                         DocBMode == "0" ? "" : ToUserCode
+                        );
+               
 
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjResult>(sql).ToList();
                 return Ok(listDB);
