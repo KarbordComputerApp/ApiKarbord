@@ -26,7 +26,7 @@
 
 
         [StringLength(100)]
-        public string thvlname { get; set; }
+        public string ThvlName { get; set; }
 
         [StringLength(250)]
         public string Spec { get; set; }

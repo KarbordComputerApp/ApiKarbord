@@ -151,5 +151,6 @@ namespace ApiKarbord.Models
 
         [StringLength(100)]
         public string AddMinSpec10 { get; set; }
+
     }
 }

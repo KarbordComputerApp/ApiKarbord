@@ -105,5 +105,20 @@ namespace ApiKarbord.Models
 
         [StringLength(100)]
         public string ThvlName { get; set; }
+
+        [StringLength(50)]
+        public string InvCode { get; set; }
+
+        [StringLength(250)]
+        public string InvName { get; set; }
+
+        [StringLength(30)]
+        public string ModeCode { get; set; }
+
+        [StringLength(250)]
+        public string ModeName { get; set; }
+
+        [StringLength(4000)]
+        public string Footer { get; set; }
     }
 }

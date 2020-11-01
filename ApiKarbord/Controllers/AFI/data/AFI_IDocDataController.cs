@@ -106,7 +106,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        SortDocNo,
                                        DocDate,
                                        ThvlCode,
-                                       thvlname,
+                                       ThvlName,
                                        Spec,
                                        KalaPriceCode,
                                        InvCode,
