@@ -735,6 +735,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public partial class Web_ErjDocK
         {
+
             public long SerialNumber { get; set; }
 
             public long? DocNo { get; set; }
@@ -820,6 +821,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string MahramanehName { get; set; }
 
             public double? RjTime { get; set; }
+
+            public string RelatedDocs { get; set; }
 
         }
 
@@ -957,6 +960,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public int DocBMode { get; set; }
 
             public string ToUserCode { get; set; }
+
+            public string ToUserName { get; set; }
 
             public long SerialNumber { get; set; }
 
