@@ -8,6 +8,9 @@ namespace ApiKarbord.Models
 
     public partial class Web_ADocP
     {
+        [StringLength(250)]
+        public string CoName { get; set; }
+
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -237,5 +240,20 @@ namespace ApiKarbord.Models
 
         [StringLength(250)]
         public string Spec { get; set; }
+
+        [Key]
+        [Column(Order = 37)]
+        [StringLength(50)]
+        public string EghdamName { get; set; }
+
+        [Key]
+        [Column(Order = 38)]
+        [StringLength(50)]
+        public string TanzimName { get; set; }
+
+        [Key]
+        [Column(Order = 39)]
+        [StringLength(50)]
+        public string TaeedName { get; set; }
     }
 }

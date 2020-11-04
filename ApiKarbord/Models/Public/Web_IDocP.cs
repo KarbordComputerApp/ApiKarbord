@@ -8,6 +8,9 @@ namespace ApiKarbord.Models
 
     public partial class Web_IDocP
     {
+        [StringLength(250)]
+        public string CoName { get; set; }
+
         public double? Amount1 { get; set; }
 
         public double? Amount2 { get; set; }
@@ -100,6 +103,8 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string Spec { get; set; }
 
+        public int? InOut { get; set; }
+
         [StringLength(50)]
         public string ThvlCode { get; set; }
 
@@ -120,5 +125,25 @@ namespace ApiKarbord.Models
 
         [StringLength(4000)]
         public string Footer { get; set; }
+
+        [StringLength(50)]
+        public string UnitName { get; set; }
+
+        public double? Amount { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [StringLength(50)]
+        public string EghdamName { get; set; }
+
+        [Key]
+        [Column(Order = 3)]
+        [StringLength(50)]
+        public string TanzimName { get; set; }
+
+        [Key]
+        [Column(Order = 4)]
+        [StringLength(50)]
+        public string TaeedName { get; set; }
     }
 }

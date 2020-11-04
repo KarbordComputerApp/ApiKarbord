@@ -8,6 +8,9 @@ namespace ApiKarbord.Models
 
     public partial class Web_FDocP
     {
+        [StringLength(250)]
+        public string CoName { get; set; }
+
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -152,5 +155,24 @@ namespace ApiKarbord.Models
         [StringLength(100)]
         public string AddMinSpec10 { get; set; }
 
+        [StringLength(50)]
+        public string UnitName { get; set; }
+
+        public double? Amount { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [StringLength(50)]
+        public string EghdamName { get; set; }
+
+        [Key]
+        [Column(Order = 3)]
+        [StringLength(50)]
+        public string TanzimName { get; set; }
+
+        [Key]
+        [Column(Order = 4)]
+        [StringLength(50)]
+        public string TaeedName { get; set; }
     }
 }

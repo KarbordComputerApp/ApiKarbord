@@ -141,7 +141,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F18,
                                        F19,
                                        F20 
-                                       from Web_IDocH_F(2,'{0}') where InOut = {1} ", IDocHMinObject.user, IDocHMinObject.InOut);
+                                       from Web_IDocH_F(3,'{0}') where InOut = {1} ", IDocHMinObject.user, IDocHMinObject.InOut);
 
                 //if (ModeCode == "in")
                 //   sql += " (101,102,103,106,108,110) ";
