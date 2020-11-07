@@ -211,6 +211,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F18 = '{60}',
                                     @F19 = '{61}',
                                     @F20 = '{62}',
+                                    @Tasvib = '{63}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_FDocHi.DocNoMode,
@@ -275,7 +276,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F17,
                             aFI_FDocHi.F18,
                             aFI_FDocHi.F19,
-                            aFI_FDocHi.F20
+                            aFI_FDocHi.F20,
+                            aFI_FDocHi.Tasvib
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql2).Single();
 

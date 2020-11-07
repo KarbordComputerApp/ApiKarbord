@@ -112,6 +112,8 @@
 
         [StringLength(250)]
         public string F20 { get; set; }
+
+        public string Tasvib { get; set; }
     }
 }
 
