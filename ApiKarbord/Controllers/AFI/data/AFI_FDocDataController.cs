@@ -299,7 +299,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @StartNo = {4},
 		                            @EndNo = {5},
 		                            @BranchCode = {6},
-		                            @UserCode = '{7}',
+		                            @UserCode = '''{7}''',
 		                            @TahieShode = '{8}',
 		                            @SerialNumber = {9},
 		                            @DocDate = '{10}',

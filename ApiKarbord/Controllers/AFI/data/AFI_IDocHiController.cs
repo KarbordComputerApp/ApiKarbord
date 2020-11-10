@@ -154,6 +154,7 @@ namespace ApiKarbord.Controllers.AFI.data
             { 
                 try
                 {
+                    // به دلیل اشکال در تبدیل sql کتیشن های یوز کد اینجوریه
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
@@ -165,7 +166,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @STARTNO = {4},
 		                            @ENDNO = {5},
 		                            @BRANCHCODE = {6},
-		                            @USERCODE = '{7}',
+		                            @USERCODE = '''{7}''', 
 		                            @SERIALNUMBER = {8},
 		                            @DOCDATE = '{9}',
 		                            @SPEC = '{10}',
@@ -174,7 +175,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @CUSTCODE = '{13}',
 		                            @KALAPRICECODE = {14},
                                     @InvCode = '{15}',
-                                    @Eghdam = N'{16}',
+                                    @Eghdam = N'''{16}''',
                                     @F01 = '{17}',
                                     @F02 = '{18}',
                                     @F03 = '{19}',
