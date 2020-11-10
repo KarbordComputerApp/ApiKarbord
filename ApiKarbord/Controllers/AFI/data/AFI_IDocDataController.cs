@@ -341,6 +341,63 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+
+
+
+
+
+        public class AFI_StatusChange
+        {
+            public byte DMode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public string Status { get; set; }
+        }
+
+        [Route("api/IDocData/ChangeStatus/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ChangeStatus(string ace, string sal, string group, AFI_StatusChange AFI_StatusChange)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[Web_SaveIDoc_Status]
+		                            @DMode = {0},
+		                            @UserCode = N'{1}',
+		                            @SerialNumber = {2},
+		                            @Status = N'{3}'
+                            SELECT	'Return Value' = @return_value",
+                          AFI_StatusChange.DMode,
+                          AFI_StatusChange.UserCode,
+                          AFI_StatusChange.SerialNumber,
+                          AFI_StatusChange.Status);
+
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Ok(200);
+        }
+
         // GET: api/IDocData/IDocP لیست سند    
         [Route("api/IDocData/IDocP/{ace}/{sal}/{group}/{SerialNumber}")]
         public async Task<IHttpActionResult> GetAllWeb_IDocP(string ace, string sal, string group, long SerialNumber)
