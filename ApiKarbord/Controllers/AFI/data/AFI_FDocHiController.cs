@@ -155,7 +155,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @STARTNO = {4},
 		                            @ENDNO = {5},
 		                            @BRANCHCODE = {6},
-		                            @USERCODE = '''{7}''',
+		                            @USERCODE = '{7}',
 		                            @SERIALNUMBER = {8},
 		                            @DOCDATE = '{9}',
 		                            @SPEC = '{10}',
