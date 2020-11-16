@@ -78,7 +78,7 @@ namespace ApiKarbord.Controllers.Unit
 
                 //string address = String.Format(@"http://192.168.6.204:902/api/Account/InformationSql/{0}/{1}", userName, password); //  Canada
                 //string address = String.Format(@"http://192.168.0.109:902/api/Account/InformationSql/{0}/{1}", userName, password); //  Office 109
-                //string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}", userName, password);//  Interanet
+               // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}", userName, password);//  Interanet
 
                 var task = client.GetAsync(address)
                   .ContinueWith((taskwithresponse) =>
