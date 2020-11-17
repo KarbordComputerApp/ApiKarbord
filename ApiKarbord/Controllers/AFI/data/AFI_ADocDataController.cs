@@ -328,6 +328,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+
         // GET: api/ADocData/ADocP لیست سند    
         [Route("api/ADocData/ADocP/{ace}/{sal}/{group}/{SerialNumber}")]
         public async Task<IHttpActionResult> GetAllWeb_ADocP(string ace, string sal, string group, long SerialNumber)
@@ -340,6 +342,51 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(listADocP);
             }
             return null;
+        }
+
+
+
+
+        public class AFI_TestADocB
+        {
+            public long SerialNumber { get; set; }
+
+            public byte svTestOpr { get; set; }
+
+            public byte svTestMkz { get; set; }
+        }
+
+
+        [Route("api/ADocData/TestADocB/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_TestADocB(string ace, string sal, string group, AFI_TestADocB AFI_TestADocB)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"EXEC	[dbo].[Web_TestADocB]
+		                            @serialNumber = {0},
+		                            @svTestOpr = {1},
+		                            @svTestMkz = {2}",
+                      AFI_TestADocB.SerialNumber,
+                      AFI_TestADocB.svTestOpr,
+                      AFI_TestADocB.svTestMkz);
+
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+                
+            }
+            return null;
+
         }
 
     }

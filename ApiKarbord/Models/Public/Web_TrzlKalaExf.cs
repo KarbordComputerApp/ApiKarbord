@@ -39,11 +39,18 @@
         [StringLength(50)]
         public string KGruName { get; set; }
 
-        public byte? KalaDeghat1 { get; set; }
+        public byte? KalaDeghatM1 { get; set; }
 
-        public byte? KalaDeghat2 { get; set; }
+        public byte? KalaDeghatM2 { get; set; }
 
-        public byte? KalaDeghat3 { get; set; }
+        public byte? KalaDeghatM3 { get; set; }
+
+        public byte? KalaDeghatR1 { get; set; }
+
+        public byte? KalaDeghatR2 { get; set; }
+
+        public byte? KalaDeghatR3 { get; set; }
+
 
         public double? AAmount1 { get; set; }
 

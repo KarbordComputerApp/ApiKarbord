@@ -226,6 +226,7 @@
     <Compile Include="Models\AFI\AFI_IDocHi.cs" />
     <Compile Include="Models\AFI\AFI_FDocHi.cs" />
     <Compile Include="Models\ApiModel.cs" />
+    <Compile Include="Models\Public\TestDocB.cs" />
     <Compile Include="Models\Public\Web_ADocP.cs" />
     <Compile Include="Models\Public\Web_FDocP.cs" />
     <Compile Include="Models\Public\Web_IDocP.cs" />

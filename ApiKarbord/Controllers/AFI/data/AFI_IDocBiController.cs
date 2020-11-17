@@ -78,7 +78,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
-            string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,DeghatR1,DeghatR2,DeghatR3,DeghatM1,DeghatM2,DeghatM3,DeghatR
+            string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
                                           FROM Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
             return Ok(listFactor);
@@ -165,7 +165,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
-            string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,DeghatR1,DeghatR2,DeghatR3,DeghatM1,DeghatM2,DeghatM3,DeghatR
+            string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
                                          FROM Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
             return Ok(listFactor);
@@ -212,7 +212,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
-            string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,DeghatR1,DeghatR2,DeghatR3,DeghatM1,DeghatM2,DeghatM3,DeghatR
+            string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
                                          FROM Web_IDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
             return Ok(listFactor);

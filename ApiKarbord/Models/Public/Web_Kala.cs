@@ -43,17 +43,17 @@
 
         public string FanniNo { get; set; }
 
-        public int? DeghatR1 { get; set; }
-
-        public int? DeghatR2 { get; set; }
-
-        public int? DeghatR3 { get; set; }
-
         public int? DeghatM1 { get; set; }
 
         public int? DeghatM2 { get; set; }
 
         public int? DeghatM3 { get; set; }
+
+        public int? DeghatR1 { get; set; }
+
+        public int? DeghatR2 { get; set; }
+
+        public int? DeghatR3 { get; set; }
 
         public double? PPrice1 { get; set; }
 

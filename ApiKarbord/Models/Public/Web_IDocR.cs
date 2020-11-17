@@ -188,17 +188,17 @@
         [Column(Order = 4)]
         public string KalaFanniNo { get; set; }
 
-        public int? DeghatM1 { get; set; }
+        public byte? KalaDeghatM1 { get; set; }
 
-        public int? DeghatM2 { get; set; }
+        public byte? KalaDeghatM2 { get; set; }
 
-        public int? DeghatM3 { get; set; }
+        public byte? KalaDeghatM3 { get; set; }
 
-        public int? DeghatR1 { get; set; }
+        public byte? KalaDeghatR1 { get; set; }
 
-        public int? DeghatR2 { get; set; }
+        public byte? KalaDeghatR2 { get; set; }
 
-        public int? DeghatR3 { get; set; }
+        public byte? KalaDeghatR3 { get; set; }
 
         public double? KalaZarib1 { get; set; }
 
