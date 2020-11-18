@@ -66,7 +66,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public double? ArzRate { get; set; }
 
-            public double? ArzValue { get; set; }
+            public double? arzValue { get; set; }
 
         }
 
@@ -142,7 +142,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.MkzCode,
                         aFI_ADocBi.ArzCode,
                         aFI_ADocBi.ArzRate ?? 0,
-                        aFI_ADocBi.ArzValue ?? 0);
+                        aFI_ADocBi.arzValue ?? 0);
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
@@ -242,7 +242,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.MkzCode,
                         aFI_ADocBi.ArzCode,
                         aFI_ADocBi.ArzRate ?? 0,
-                        aFI_ADocBi.ArzValue ?? 0);
+                        aFI_ADocBi.arzValue ?? 0);
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {

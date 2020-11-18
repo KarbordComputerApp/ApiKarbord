@@ -403,5 +403,42 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+        public class AFI_TestFDocB
+        {
+            public long SerialNumber { get; set; }
+            public string ModeCode { get; set; }
+
+        }
+
+
+        [Route("api/FDocData/TestFDocB/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_TestFDocB(string ace, string sal, string group, AFI_TestFDocB AFI_TestFDocB)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestFDocB] @serialNumber = {0} , @modeCode = '{1}'",
+                                           AFI_TestFDocB.SerialNumber,
+                                           AFI_TestFDocB.ModeCode
+                                           );
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return null;
+
+        }
+
     }
 }

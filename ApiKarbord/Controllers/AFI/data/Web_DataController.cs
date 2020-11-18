@@ -127,7 +127,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
-                return UnitDatabase.db.Web_Acc;
+                return UnitDatabase.db.Web_Acc.OrderBy(c => c.SortCode);
             }
             return null;
         }
