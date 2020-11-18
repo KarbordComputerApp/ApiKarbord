@@ -21,12 +21,7 @@
         public string Spec { get; set; }
 
         public int Level { get; set; }
-        public int? Code1 { get; set; }
-        public int? Code2 { get; set; }
-        public int? Code3 { get; set; }
-        public int? Code4 { get; set; }
-        public int? Code5 { get; set; }
-
+        
         public string Eghdam { get; set; }
         public DateTime? EghdamDate { get; set; }
         public string UpdateUser { get; set; }

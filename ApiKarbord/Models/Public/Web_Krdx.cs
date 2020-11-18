@@ -131,25 +131,7 @@
         [StringLength(250)]
         public string MkzName { get; set; }
 
-        [Key]
-        [Column(Order = 6)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long MkzCode1 { get; set; }
-
-        [Key]
-        [Column(Order = 7)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long MkzCode2 { get; set; }
-
-        [Key]
-        [Column(Order = 8)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long MkzCode3 { get; set; }
-
-        public long? MkzCode4 { get; set; }
-
-        public long? MkzCode5 { get; set; }
-
+        
         [Key]
         [Column(Order = 9)]
         [StringLength(50)]

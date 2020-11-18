@@ -117,30 +117,6 @@
         [StringLength(100)]
         public string AccFullName { get; set; }
 
-        [Key]
-        [Column(Order = 18)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long AccCode1 { get; set; }
-
-        [Key]
-        [Column(Order = 19)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long AccCode2 { get; set; }
-
-        [Key]
-        [Column(Order = 20)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long AccCode3 { get; set; }
-
-        [Key]
-        [Column(Order = 21)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long AccCode4 { get; set; }
-
-        [Key]
-        [Column(Order = 22)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long AccCode5 { get; set; }
 
         [Key]
         [Column(Order = 23)]
@@ -180,25 +156,7 @@
         [StringLength(250)]
         public string MkzName { get; set; }
 
-        [Key]
-        [Column(Order = 29)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long MkzCode1 { get; set; }
-
-        [Key]
-        [Column(Order = 30)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long MkzCode2 { get; set; }
-
-        [Key]
-        [Column(Order = 31)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long MkzCode3 { get; set; }
-
-        public long? MkzCode4 { get; set; }
-
-        public long? MkzCode5 { get; set; }
-
+       
         [Key]
         [Column(Order = 32)]
         [StringLength(100)]

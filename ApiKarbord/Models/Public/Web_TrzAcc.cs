@@ -21,21 +21,6 @@
         [StringLength(100)]
         public string AccName { get; set; }
 
-        [StringLength(9)]
-        public string AccCode1 { get; set; }
-
-        [StringLength(9)]
-        public string AccCode2 { get; set; }
-
-        [StringLength(9)]
-        public string AccCode3 { get; set; }
-
-        [StringLength(9)]
-        public string AccCode4 { get; set; }
-
-        [StringLength(9)]
-        public string AccCode5 { get; set; }
-
         public double? Bede { get; set; }
 
         public double? Best { get; set; }

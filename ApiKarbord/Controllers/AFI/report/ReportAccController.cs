@@ -70,7 +70,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += UnitPublic.SpiltCodeLike("AccCode", TrzAccObject.AccCode);
 
-                sql += " order by AccCode1,AccCode2,AccCode3,AccCode4,AccCode5";
+                sql += " order by  SortAccCode";
 
                 var listTrzAcc = UnitDatabase.db.Database.SqlQuery<Web_TrzAcc>(sql);
                 return Ok(listTrzAcc);
