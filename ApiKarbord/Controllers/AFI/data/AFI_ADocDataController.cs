@@ -351,9 +351,6 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public long SerialNumber { get; set; }
 
-            public byte svTestOpr { get; set; }
-
-            public byte svTestMkz { get; set; }
         }
 
 
@@ -365,14 +362,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                      @"EXEC	[dbo].[Web_TestADocB]
-		                            @serialNumber = {0},
-		                            @svTestOpr = {1},
-		                            @svTestMkz = {2}",
-                      AFI_TestADocB.SerialNumber,
-                      AFI_TestADocB.svTestOpr,
-                      AFI_TestADocB.svTestMkz);
-
+                      @"EXEC	[dbo].[Web_TestADocB] @serialNumber = {0}", AFI_TestADocB.SerialNumber);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
