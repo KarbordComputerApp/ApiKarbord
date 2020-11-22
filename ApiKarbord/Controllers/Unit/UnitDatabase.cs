@@ -65,20 +65,20 @@ namespace ApiKarbord.Controllers.Unit
 
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static string CreateConnectionString(string userName, string password, string dataBaseName)
+        public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, int act)
         {
             try
             {
                 List<Access> model = null;
                 var client = new HttpClient();
-                
+
                 //Debug
-                string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}", userName, password);
+                //string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act);
+                string address = String.Format(@"http://localhost:49961/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password, userKarbord, ace, group, sal, serialNumber, act);
 
-
-                //string address = String.Format(@"http://192.168.6.204:902/api/Account/InformationSql/{0}/{1}", userName, password); //  Canada
-                //string address = String.Format(@"http://192.168.0.109:902/api/Account/InformationSql/{0}/{1}", userName, password); //  Office 109
-               // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}", userName, password);//  Interanet
+                //string address = String.Format(@"http://192.168.6.204:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act); //  Canada
+                // string address = String.Format(@"http://192.168.0.109:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act); //  Office 109
+                // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act);//  Interanet
 
                 var task = client.GetAsync(address)
                   .ContinueWith((taskwithresponse) =>
@@ -97,13 +97,13 @@ namespace ApiKarbord.Controllers.Unit
                     string connectionString = String.Format(
                                     //  @"data source = {0};initial catalog = {1};user id = {2}; password = {3}; MultipleActiveResultSets = True; App = EntityFramework",
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                    list.SqlServerName, dataBaseName, list.SqlUserName, list.SqlPassword);
+                                    list.SqlServerName, DatabaseName(ace, sal, group), list.SqlUserName, list.SqlPassword);
                     return connectionString;
                 }
                 else
                     return "";
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
                 throw;
@@ -143,11 +143,11 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static Boolean CreateConection(string userName, string password, string ace, string sal, string group)
+        public static Boolean CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, int act)
         {
             try
             {
-                string conStr = CreateConnectionString(userName, password, DatabaseName(ace, sal, group));
+                string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, act);
                 if (string.IsNullOrEmpty(conStr))
                 {
                     return false;
@@ -196,6 +196,8 @@ namespace ApiKarbord.Controllers.Unit
 
             string userName = string.Empty;
             string password = string.Empty;
+            string userKarbord = string.Empty;
+
 
             if (header.Contains("userName"))
             {
@@ -205,8 +207,14 @@ namespace ApiKarbord.Controllers.Unit
             {
                 password = header.GetValues("password").First();
             }
+            if (header.Contains("userKarbord"))
+            {
+                userKarbord = header.GetValues("userKarbord").First();
+            }
+
             list.Add(userName);
             list.Add(password);
+            list.Add(userKarbord);
 
             return (list);
         }

@@ -48,7 +48,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
@@ -115,7 +115,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
             {
                 // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 //string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
@@ -186,7 +186,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
             {
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(ADocRObject.OprCode);
@@ -256,7 +256,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], ace, sal, group))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000) * FROM  Web_TChk('') AS TChk where 1 = 1");

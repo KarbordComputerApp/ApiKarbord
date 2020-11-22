@@ -101,6 +101,9 @@
         [StringLength(10)]
         public string Taeed { get; set; }
 
+        [StringLength(10)]
+        public string Tasvib { get; set; }
+
         public double? FinalPrice { get; set; }
 
         [StringLength(20)]
