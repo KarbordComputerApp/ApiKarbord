@@ -25,7 +25,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_AMode(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
             {
                 string sql = "SELECT * FROM Web_AMode";
                 var listAMode = UnitDatabase.db.Database.SqlQuery<Web_AMode>(sql);
@@ -40,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public IQueryable<Web_CheckStatus> GetWeb_CheckStatus(string ace, string sal, string group, int PDMode, int Report)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
             {
                 return UnitDatabase.db.Web_CheckStatus.Where(c => c.PDMode == PDMode && c.Report == Report);
             }
@@ -52,7 +52,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetAllWeb_ADocH(string ace, string sal, string group, int select, string user, bool accessSanad)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0, "", 0))
             {
                 string sql = "select ";
                 if (select == 0)
@@ -72,7 +72,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IQueryable<Web_ADocH>> GetWeb_ADocH(string ace, string sal, string group, long serialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,serialNumber,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,serialNumber, "", 0))
             {
                 var a = UnitDatabase.db.Web_ADocH.Where(c => c.SerialNumber == serialNumber);
                 return a;
@@ -86,7 +86,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_ADocB(string ace, string sal, string group, long serialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,serialNumber,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,serialNumber, "", 0))
             {
                 string sql = string.Format(@"SELECT *  FROM Web_ADocB WHERE SerialNumber = {0}", serialNumber);
                 var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
@@ -101,7 +101,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_ADocHLastDate(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
             {
                 string lastdate;
                 string sql = string.Format(@"SELECT count(DocDate) FROM Web_ADocH");
@@ -126,7 +126,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public IQueryable<Web_CheckList> GetWeb_CheckList(string ace, string sal, string group, int PDMode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
             {
                 return UnitDatabase.db.Web_CheckList.Where(c => c.PDMode == PDMode && c.CheckStatus != 2 && c.CheckStatus != 4);
             }
@@ -145,7 +145,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_Bank(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0, "", 0))
             {
                 string sql = string.Format(@"SELECT distinct bank as name FROM Web_CheckList  where bank <> ''");
                 var listBank = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
@@ -159,7 +159,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_Shobe(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0, "", 0))
             {
                 string sql = string.Format(@"SELECT distinct Shobe as name FROM Web_CheckList  where Shobe <> ''");
                 var listShobe = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
@@ -173,7 +173,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_Jari(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group,0, "", 0))
             {
                 string sql = string.Format(@"SELECT distinct Jari as name FROM Web_CheckList where Jari <> ''");
                 var listJari = UnitDatabase.db.Database.SqlQuery<Web_ValueBank>(sql);
@@ -223,7 +223,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group, AFI_Move.SerialNumber ?? 0, 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2],  ace, sal, group, AFI_Move.SerialNumber ?? 0, "", 0))
             {
                 try
                 {
@@ -295,7 +295,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, "", 0))
             {
                 try
                 {
@@ -335,7 +335,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetAllWeb_ADocP(string ace, string sal, string group, long SerialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,SerialNumber,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,SerialNumber, "", 0))
             {
                 string sql = string.Format(@"select * from Web_ADocP where SerialNumber = {0} order by BandNo", SerialNumber);
                 var listADocP = UnitDatabase.db.Database.SqlQuery<Web_ADocP>(sql);
@@ -359,7 +359,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestADocB(string ace, string sal, string group, AFI_TestADocB AFI_TestADocB)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                       @"EXEC	[dbo].[Web_TestADocB] @serialNumber = {0}", AFI_TestADocB.SerialNumber);

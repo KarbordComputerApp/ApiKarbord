@@ -65,7 +65,7 @@ namespace ApiKarbord.Controllers.Unit
 
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, int act)
+        public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act)
         {
             try
             {
@@ -73,12 +73,12 @@ namespace ApiKarbord.Controllers.Unit
                 var client = new HttpClient();
 
                 //Debug
-                //string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act);
-                string address = String.Format(@"http://localhost:49961/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password, userKarbord, ace, group, sal, serialNumber, act);
+                //string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
+                string address = String.Format(@"http://localhost:49961/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
 
-                //string address = String.Format(@"http://192.168.6.204:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act); //  Canada
-                // string address = String.Format(@"http://192.168.0.109:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act); //  Office 109
-                // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/{7}", userName, password,userKarbord, ace, group, sal,serialNumber, act);//  Interanet
+                //string address = String.Format(@"http://192.168.6.204:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act); //  Canada
+                // string address = String.Format(@"http://192.168.0.109:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act); //  Office 109
+                // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);//  Interanet
 
                 var task = client.GetAsync(address)
                   .ContinueWith((taskwithresponse) =>
@@ -143,11 +143,11 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static Boolean CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, int act)
+        public static Boolean CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act)
         {
             try
             {
-                string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, act);
+                string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act);
                 if (string.IsNullOrEmpty(conStr))
                 {
                     return false;

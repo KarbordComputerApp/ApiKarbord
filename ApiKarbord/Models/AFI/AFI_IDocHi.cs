@@ -114,6 +114,9 @@
         public string F20 { get; set; }
 
         public string Tasvib { get; set; }
+
+        public int InOut { get; set; }
+
     }
 }
 
