@@ -282,10 +282,5 @@ namespace ApiKarbord.Controllers.AFI.report
             return null;
         }
 
-
-
-
-
-
     }
 }

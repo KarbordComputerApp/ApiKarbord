@@ -354,15 +354,15 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        [Route("api/ADocData/TestADocB/{ace}/{sal}/{group}")]
+        [Route("api/ADocData/TestADoc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(TestDocB))]
-        public async Task<IHttpActionResult> PostWeb_TestADocB(string ace, string sal, string group, AFI_TestADocB AFI_TestADocB)
+        public async Task<IHttpActionResult> PostWeb_TestADoc(string ace, string sal, string group, AFI_TestADocB AFI_TestADocB)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                      @"EXEC	[dbo].[Web_TestADocB] @serialNumber = {0}", AFI_TestADocB.SerialNumber);
+                      @"EXEC	[dbo].[Web_TestADoc] @serialNumber = {0}", AFI_TestADocB.SerialNumber);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();

@@ -417,23 +417,19 @@ namespace ApiKarbord.Controllers.AFI.data
         public class AFI_TestIDocB
         {
             public long SerialNumber { get; set; }
-            public byte InOut { get; set; }
 
         }
 
 
-        [Route("api/IDocData/TestIDocB/{ace}/{sal}/{group}")]
+        [Route("api/IDocData/TestIDoc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(TestDocB))]
-        public async Task<IHttpActionResult> PostWeb_TestIDocB(string ace, string sal, string group, AFI_TestIDocB AFI_TestIDocB)
+        public async Task<IHttpActionResult> PostWeb_TestIDoc(string ace, string sal, string group, AFI_TestIDocB AFI_TestIDocB)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestIDocB] @serialNumber = {0} , @InOut = {1}",
-                                           AFI_TestIDocB.SerialNumber,
-                                           AFI_TestIDocB.InOut
-                                           );
+                                           @"EXEC	[dbo].[Web_TestIDoc] @serialNumber = {0} ", AFI_TestIDocB.SerialNumber);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();

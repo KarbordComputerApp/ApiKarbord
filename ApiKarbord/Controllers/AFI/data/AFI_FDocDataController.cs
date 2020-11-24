@@ -45,7 +45,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IQueryable<Web_FDocH>> GetWeb_FDocH(string ace, string sal, string group, long serialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,serialNumber, "", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "", 0))
             {
                 var a = UnitDatabase.db.Web_FDocH.Where(c => c.SerialNumber == serialNumber && c.ModeCode == ModeCode);
                 return a;
@@ -75,7 +75,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0))
             {
 
                 string sql = "select ";
@@ -160,7 +160,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_FDocHCount(string ace, string sal, string group, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0))
             {
                 string sql = string.Format(@"SELECT count(SerialNumber) FROM Web_FDocH WHERE ModeCode = '{0}'", ModeCode);
                 int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
@@ -174,7 +174,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_FDocHLastDate(string ace, string sal, string group, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0, "", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0))
             {
                 string lastdate;
                 string sql = string.Format(@"SELECT count(DocDate) FROM Web_FDocH WHERE ModeCode = '{0}' ", ModeCode);
@@ -215,7 +215,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,serialnumber, "", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialnumber, "", 0))
             {
                 try
                 {
@@ -408,23 +408,18 @@ namespace ApiKarbord.Controllers.AFI.data
         public class AFI_TestFDocB
         {
             public long SerialNumber { get; set; }
-            public string ModeCode { get; set; }
-
         }
 
 
-        [Route("api/FDocData/TestFDocB/{ace}/{sal}/{group}")]
+        [Route("api/FDocData/TestFDoc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(TestDocB))]
-        public async Task<IHttpActionResult> PostWeb_TestFDocB(string ace, string sal, string group, AFI_TestFDocB AFI_TestFDocB)
+        public async Task<IHttpActionResult> PostWeb_TestFDoc(string ace, string sal, string group, AFI_TestFDocB AFI_TestFDocB)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_TestFDocB.SerialNumber, "", 0))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestFDocB] @serialNumber = {0} , @modeCode = '{1}'",
-                                           AFI_TestFDocB.SerialNumber,
-                                           AFI_TestFDocB.ModeCode
-                                           );
+                                           @"EXEC	[dbo].[Web_TestFDoc] @serialNumber = {0} ", AFI_TestFDocB.SerialNumber);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
