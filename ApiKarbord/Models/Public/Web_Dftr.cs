@@ -108,7 +108,9 @@
         [StringLength(100)]
         public string AccName { get; set; }
 
-     
+
+        //public string SortMkzCode { get; set; }
+
         [StringLength(50)]
         public string MkzCode { get; set; }
 

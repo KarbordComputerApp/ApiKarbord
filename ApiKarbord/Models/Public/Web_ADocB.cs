@@ -25,6 +25,8 @@
         [StringLength(50)]
         public string TrafFullCode { get; set; }
 
+
+
         [StringLength(50)]
         public string MkzCode { get; set; }
 
