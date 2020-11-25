@@ -1360,7 +1360,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0))
             {
-                return UnitDatabase.db.Web_Mkz;
+                return UnitDatabase.db.Web_Mkz.OrderBy(c => c.SortCode);
             }
             return null;
         }
