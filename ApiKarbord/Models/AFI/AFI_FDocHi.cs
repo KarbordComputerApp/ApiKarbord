@@ -161,5 +161,8 @@
         public string F20 { get; set; }
 
         public string Tasvib { get; set; }
+
+        public string flagLog { get; set; }
+
     }
 }

@@ -135,6 +135,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, aFI_IDocHi.flagLog);
             return Ok(value);
         }
 
@@ -246,6 +247,9 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            string[] serials = value.Split('-');
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocHi.flagLog);
+
             return Ok(value);
         }
 
@@ -287,6 +291,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             sql1 += " order by DocNo desc";
             var listIDocH = UnitDatabase.db.Database.SqlQuery<Web_IDocHMini>(sql1);*/
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc", 3, "Y");
             return Ok(1);
         }
 

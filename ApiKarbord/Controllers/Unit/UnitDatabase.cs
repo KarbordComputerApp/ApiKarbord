@@ -63,22 +63,26 @@ namespace ApiKarbord.Controllers.Unit
         }
 
 
+        //Debug
+        //static string addressApiAccounting = "http://127.0.0.1:902/"
+        static string addressApiAccounting = "http://localhost:49961/";
+
+        // static string addressApiAccounting = "http://192.168.6.204:902/"; //  Canada
+        // static string addressApiAccounting = "http://192.168.0.109:902/"; //  Office 109
+        // static string addressApiAccounting = "http://185.208.174.64:902/";//  Interanet
+
+
+
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act)
         {
             try
             {
+                string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
+
                 List<Access> model = null;
                 var client = new HttpClient();
-
-                //Debug
-                //string address = String.Format(@"http://127.0.0.1:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
-                string address = String.Format(@"http://localhost:49961/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
-
-                //string address = String.Format(@"http://192.168.6.204:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act); //  Canada
-                // string address = String.Format(@"http://192.168.0.109:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act); //  Office 109
-                // string address = String.Format(@"http://185.208.174.64:902/api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);//  Interanet
 
                 var task = client.GetAsync(address)
                   .ContinueWith((taskwithresponse) =>
@@ -217,6 +221,35 @@ namespace ApiKarbord.Controllers.Unit
             list.Add(userKarbord);
 
             return (list);
+        }
+
+
+
+        // ذخیره لاگ
+        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act,string ins)
+        {
+            try
+            {
+                if (ins == "Y")
+                {
+                    var client = new HttpClient();
+
+                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
+
+                    var task = client.GetAsync(address)
+                      .ContinueWith((taskwithresponse) =>
+                      {
+                          var response = taskwithresponse.Result;
+                          var jsonString = response.Content.ReadAsStringAsync();
+                          jsonString.Wait();
+                      });
+                    task.Wait();
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

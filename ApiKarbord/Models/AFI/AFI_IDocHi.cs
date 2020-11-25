@@ -117,6 +117,8 @@
 
         public int InOut { get; set; }
 
+        public string flagLog { get; set; }
+
     }
 }
 

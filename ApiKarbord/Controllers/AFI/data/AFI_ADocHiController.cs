@@ -95,6 +95,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string F20 { get; set; }
 
             public int DocNo_Out { get; set; }
+
+            public string flagLog { get; set; }
         }
 
 
@@ -165,6 +167,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string F19 { get; set; }
 
             public string F20 { get; set; }
+
+            public string flagLog { get; set; }
 
         }
 
@@ -271,6 +275,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, AFI_ADocHi_u.flagLog);
             return Ok(value);
         }
 
@@ -383,6 +388,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            string[] serials = value.Split('-');
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog);
             return Ok(value);
         }
 
@@ -406,6 +413,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     await UnitDatabase.db.SaveChangesAsync();
                 }
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y");
             }
             return Ok(1);
         }

@@ -288,6 +288,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, aFI_FDocHi.flagLog);
             return Ok(value);
         }
 
@@ -444,6 +445,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            string[] serials = value.Split('-');
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_FDocHi.ModeCode, 2, aFI_FDocHi.flagLog);
             return Ok(value);
         }
 
@@ -508,6 +511,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         sql1 += " order by DocNo desc ";
 
                         var listFDocH = UnitDatabase.db.Database.SqlQuery<Web_FDocHMini>(sql1); */
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y");
             return Ok(1);
         }
 
