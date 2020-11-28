@@ -126,6 +126,8 @@
         [StringLength(50)]
         public string MkzCode { get; set; }
 
+        public string SortMkzCode { get; set; }
+
         [Key]
         [Column(Order = 5)]
         [StringLength(250)]

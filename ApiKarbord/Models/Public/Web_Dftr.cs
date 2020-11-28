@@ -102,6 +102,9 @@
         [Key]
         public int BandNo { get; set; }
 
+
+        public string SortAccCode { get; set; }
+
         [StringLength(50)]
         public string AccCode { get; set; }
 
@@ -109,7 +112,7 @@
         public string AccName { get; set; }
 
 
-        //public string SortMkzCode { get; set; }
+        public string SortMkzCode { get; set; }
 
         [StringLength(50)]
         public string MkzCode { get; set; }

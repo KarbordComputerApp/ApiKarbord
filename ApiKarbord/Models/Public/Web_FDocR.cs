@@ -19,7 +19,7 @@
         [StringLength(100)]
         public string KalaCode { get; set; }
 
-       // public string SortMkzCode { get; set; }
+        public string SortMkzCode { get; set; }
 
 
         [StringLength(50)]
@@ -121,6 +121,9 @@
 
         [StringLength(50)]
         public string KalaExf15 { get; set; }
+
+
+        public double? SortDocNo { get; set; }
 
         [StringLength(10)]
         public string DocNo { get; set; }

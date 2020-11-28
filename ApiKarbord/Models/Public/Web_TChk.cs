@@ -8,6 +8,8 @@
 
     public class Web_TChk
     {
+        public string SortAccCode { get; set; }
+
         [StringLength(50)]
         public string AccCode { get; set; }
 

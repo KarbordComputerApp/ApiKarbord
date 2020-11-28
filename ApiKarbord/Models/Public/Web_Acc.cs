@@ -54,6 +54,7 @@ namespace ApiKarbord.Models
         [StringLength(50)]
         public string MkzCode { get; set; }
 
+
         [StringLength(50)]
         public string OprCode { get; set; }
 

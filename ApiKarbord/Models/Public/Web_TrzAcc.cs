@@ -13,10 +13,12 @@
 
         public short? Level { get; set; }
 
+
+        public string SortAccCode { get; set; }
+
         [StringLength(50)]
         public string AccCode { get; set; }
 
-        public string SortAccCode { get; set; }
 
         [StringLength(100)]
         public string AccName { get; set; }
