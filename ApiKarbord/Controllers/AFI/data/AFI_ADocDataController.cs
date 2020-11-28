@@ -295,7 +295,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, "", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, "Adoc", 0))
             {
                 try
                 {
@@ -323,6 +323,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, "ADoc", 1, "Y");
             return Ok(200);
         }
 

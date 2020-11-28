@@ -31,7 +31,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, "F", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 4))
             {
                 try
                 {
@@ -78,6 +78,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
                                           FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog);
             return Ok(listFactor);
         }
 
@@ -92,7 +93,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, "F", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 5))
             {
                 try
                 {
@@ -168,16 +169,17 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
                                          FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog);
             return Ok(listFactor);
         }
 
         // DELETE: api/AFI_FDocBi/5
-        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}")]
+        [Route("api/AFI_FDocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}/{ModeCode}/{FlagLog}")]
         [ResponseType(typeof(AFI_FDocBi))]
-        public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo)
+        public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string ModeCode, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "F", 0))
+            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 6))
             {
                 try
                 {
@@ -227,6 +229,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
                                          FROM Web_FDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
             var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog);
             return Ok(listFactor);
         }
 

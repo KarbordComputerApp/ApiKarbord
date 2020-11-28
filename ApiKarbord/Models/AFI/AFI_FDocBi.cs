@@ -33,5 +33,9 @@
         public string Comm { get; set; }
 
         public bool Up_Flag { get; set; }
+
+        public string ModeCode { get; set; }
+
+        public string flagLog { get; set; }
     }
 }

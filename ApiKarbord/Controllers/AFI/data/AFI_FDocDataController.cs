@@ -346,6 +346,9 @@ namespace ApiKarbord.Controllers.AFI.data
             public long SerialNumber { get; set; }
 
             public string Status { get; set; }
+
+            public string ModeCode { get; set; }
+
         }
 
         [Route("api/FDocData/ChangeStatus/{ace}/{sal}/{group}")]
@@ -386,6 +389,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.ModeCode, 1, "Y");
             return Ok(200);
         }
 

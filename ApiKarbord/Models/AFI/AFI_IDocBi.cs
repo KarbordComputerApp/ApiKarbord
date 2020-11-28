@@ -33,6 +33,10 @@
         public string Comm { get; set; }
 
         public bool Up_Flag { get; set; }
+
+        public int InOut { get; set; }
+
+        public string flagLog { get; set; }
     }
 }
 

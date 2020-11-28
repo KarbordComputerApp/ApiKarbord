@@ -356,6 +356,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public long SerialNumber { get; set; }
 
             public string Status { get; set; }
+
+            public int InOut { get; set; }
         }
 
         [Route("api/IDocData/ChangeStatus/{ace}/{sal}/{group}")]
@@ -396,6 +398,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? "IIDoc" : "IODoc", 1, "Y");
             return Ok(200);
         }
 
