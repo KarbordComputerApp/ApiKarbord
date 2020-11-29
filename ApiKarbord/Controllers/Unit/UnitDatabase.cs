@@ -75,11 +75,11 @@ namespace ApiKarbord.Controllers.Unit
 
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act)
+        public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
         {
             try
             {
-                string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
+                string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/{9}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, bandNo);
 
                 List<Access> model = null;
                 var client = new HttpClient();
@@ -147,11 +147,11 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static Boolean CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act)
+        public static Boolean CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
         {
             try
             {
-                string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act);
+                string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act, bandNo);
                 if (string.IsNullOrEmpty(conStr))
                 {
                     return false;
@@ -226,7 +226,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
         // ذخیره لاگ
-        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act,string ins)
+        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act,string ins, int bandNo)
         {
             try
             {
@@ -234,7 +234,7 @@ namespace ApiKarbord.Controllers.Unit
                 {
                     var client = new HttpClient();
 
-                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/1", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act);
+                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/1/{9}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, bandNo);
 
                     var task = client.GetAsync(address)
                       .ContinueWith((taskwithresponse) =>
