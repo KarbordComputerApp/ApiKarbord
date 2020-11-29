@@ -10,8 +10,8 @@
     {
         [Key]
         public int id { get; set; }
-        public byte? SvTest { get; set; }
-        public string SvTestName { get; set; }
+        public byte? Test { get; set; }
+        public string TestName { get; set; }
         public int? BandNo { get; set; }
         public string AccCode { get; set; }
     }
