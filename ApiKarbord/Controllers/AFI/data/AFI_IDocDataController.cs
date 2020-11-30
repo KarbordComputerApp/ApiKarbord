@@ -400,7 +400,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
             }
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? "IIDoc" : "IODoc", 1, "Y", 0);
+            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? "IIDoc" : "IODoc", 7, "Y", 0);
             return Ok(200);
         }
 

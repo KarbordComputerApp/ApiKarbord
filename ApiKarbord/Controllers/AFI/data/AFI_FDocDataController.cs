@@ -246,20 +246,28 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        [Route("api/FDocData/TestMoveFactor/{ace}/{sal}/{group}/{serialNumber}")]
+        [Route("api/FDocData/TestMoveFactor/{ace}/{sal}/{group}/{serialNumber}/{ModeCode}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TestMoveFactor(string ace, string sal, string group, long serialNumber)
+        public async Task<IHttpActionResult> PostWeb_TestMoveFactor(string ace, string sal, string group, long serialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "", 0, 0))
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestFDoc_Move] @serialNumber = {0} ", serialNumber);
+                                           @"DECLARE	@retval nvarchar(250)
+                                            EXEC	[dbo].[Web_TestFDoc_Move]
+		                                            @serialNumber = {0},
+		                                            @MoveToModeCode = '{1}',
+		                                            @retval = @retval OUTPUT
+
+                                            SELECT	@retval as N'@retval'", 
+                                           serialNumber,
+                                           ModeCode);
                 try
                 {
-                    var result = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
-                    return Ok(result);
-                    // return Ok("");
+                   var result = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                   return Ok(result);
+                   // return Ok("");
                 }
                 catch (Exception e)
                 {
@@ -301,6 +309,9 @@ namespace ApiKarbord.Controllers.AFI.data
             public byte? MoveMode { get; set; }
 
             public long? oSerialNumber { get; set; }
+
+            public double Per { get; set; }
+
         }
 
 
@@ -338,6 +349,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @SerialNumber = {9},
 		                            @DocDate = '{10}',
                                     @MoveMode = {11} ,
+                                    @Per = {12} ,
 		                            @oSerialNumber = @oSerialNumber OUTPUT
                             SELECT	@oSerialNumber as N'@oSerialNumber'",
                           AFI_Move.DocNoMode,
@@ -351,7 +363,8 @@ namespace ApiKarbord.Controllers.AFI.data
                           AFI_Move.TahieShode,
                           AFI_Move.SerialNumber,
                           AFI_Move.DocDate,
-                          AFI_Move.MoveMode
+                          AFI_Move.MoveMode,
+                          AFI_Move.Per
                           );
 
                     value = UnitDatabase.db.Database.SqlQuery<long>(sql).Single();
