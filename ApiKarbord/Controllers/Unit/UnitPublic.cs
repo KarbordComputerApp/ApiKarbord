@@ -209,9 +209,9 @@ namespace ApiKarbord.Controllers.Unit
                 for (int i = 0; i < Code.Length; i++)
                 {
                     if (i < Code.Length - 1)
-                        sql += string.Format("  {0} = '{1}' Or ", field, Code[i]);
+                        sql += string.Format("  {0} = N'{1}' Or ", field, Code[i]);
                     else
-                        sql += string.Format("  {0} = '{1}' )", field, Code[i]);
+                        sql += string.Format("  {0} = N'{1}' )", field, Code[i]);
                 }
             }
             return sql;
@@ -228,9 +228,9 @@ namespace ApiKarbord.Controllers.Unit
                 for (int i = 0; i < Code.Length; i++)
                 {
                     if (i < Code.Length - 1)
-                        sql += string.Format(" ( {0} like '{1}-%' Or {0} = '{1}' ) or ", field, Code[i]);
+                        sql += string.Format(" ( {0} like N'{1}-%' Or {0} = N'{1}' ) or ", field, Code[i]);
                     else
-                        sql += string.Format(" ( {0} like '{1}-%' Or {0} = '{1}' ) )", field, Code[i]);
+                        sql += string.Format(" ( {0} like N'{1}-%' Or {0} = N'{1}' ) )", field, Code[i]);
                 }
             }
             return sql;

@@ -64,8 +64,8 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //Debug
-        //static string addressApiAccounting = "http://127.0.0.1:902/"
-        static string addressApiAccounting = "http://localhost:49961/";
+        static string addressApiAccounting = "http://127.0.0.1:902/";
+        //static string addressApiAccounting = "http://localhost:49961/";
 
         // static string addressApiAccounting = "http://192.168.6.204:902/"; //  Canada
         // static string addressApiAccounting = "http://192.168.0.109:902/"; //  Office 109
