@@ -11,6 +11,54 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string CoName { get; set; }
 
+        [StringLength(20)]
+        public string CoRegNo { get; set; }
+
+        [StringLength(20)]
+        public string CoMelliCode { get; set; }
+
+        [StringLength(20)]
+        public string CoEcoCode { get; set; }
+
+        [StringLength(30)]
+        public string CoTel { get; set; }
+
+        [StringLength(30)]
+        public string CoFax { get; set; }
+
+        [StringLength(30)]
+        public string CoMobile { get; set; }
+
+        [StringLength(100)]
+        public string CoEMail { get; set; }
+
+        [StringLength(50)]
+        public string CoCountry { get; set; }
+
+        [StringLength(50)]
+        public string CoOstan { get; set; }
+
+        [StringLength(20)]
+        public string CoCity { get; set; }
+
+        [StringLength(250)]
+        public string CoStreet { get; set; }
+
+        [StringLength(30)]
+        public string CoAlley { get; set; }
+
+        [StringLength(10)]
+        public string CoPlack { get; set; }
+
+        [StringLength(10)]
+        public string CoZipCode { get; set; }
+
+        [StringLength(50)]
+        public string CoActivity { get; set; }
+
+        [StringLength(250)]
+        public string CoAddress { get; set; }
+
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -120,15 +168,13 @@ namespace ApiKarbord.Models
         [StringLength(100)]
         public string AccFullName { get; set; }
 
-       
-
         [Key]
-        [Column(Order = 23)]
+        [Column(Order = 18)]
         [StringLength(15)]
         public string AccZCode { get; set; }
 
         [Key]
-        [Column(Order = 24)]
+        [Column(Order = 19)]
         [StringLength(250)]
         public string ZGru { get; set; }
 
@@ -141,39 +187,37 @@ namespace ApiKarbord.Models
         public short? PDMode { get; set; }
 
         [Key]
-        [Column(Order = 25)]
+        [Column(Order = 20)]
         [StringLength(50)]
         public string ArzName { get; set; }
 
         [Key]
-        [Column(Order = 26)]
+        [Column(Order = 21)]
         [StringLength(100)]
         public string TrafFullName { get; set; }
 
         [Key]
-        [Column(Order = 27)]
+        [Column(Order = 22)]
         [StringLength(15)]
         public string TrafZCode { get; set; }
 
         [Key]
-        [Column(Order = 28)]
+        [Column(Order = 23)]
         [StringLength(250)]
         public string MkzName { get; set; }
 
-        
-
         [Key]
-        [Column(Order = 32)]
+        [Column(Order = 24)]
         [StringLength(100)]
         public string OprName { get; set; }
 
         [Key]
-        [Column(Order = 33)]
+        [Column(Order = 25)]
         [StringLength(100)]
         public string AccZName { get; set; }
 
         [Key]
-        [Column(Order = 34)]
+        [Column(Order = 26)]
         [StringLength(100)]
         public string TrafZName { get; set; }
 
@@ -184,12 +228,12 @@ namespace ApiKarbord.Models
         public string TrafCode { get; set; }
 
         [Key]
-        [Column(Order = 35)]
+        [Column(Order = 27)]
         [StringLength(100)]
         public string AccName { get; set; }
 
         [Key]
-        [Column(Order = 36)]
+        [Column(Order = 28)]
         [StringLength(100)]
         public string TrafName { get; set; }
 
@@ -201,18 +245,12 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string Spec { get; set; }
 
-        [Key]
-        [Column(Order = 37)]
         [StringLength(50)]
         public string EghdamName { get; set; }
 
-        [Key]
-        [Column(Order = 38)]
         [StringLength(50)]
         public string TanzimName { get; set; }
 
-        [Key]
-        [Column(Order = 39)]
         [StringLength(50)]
         public string TaeedName { get; set; }
     }

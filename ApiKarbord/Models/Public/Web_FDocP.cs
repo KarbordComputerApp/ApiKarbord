@@ -11,6 +11,95 @@ namespace ApiKarbord.Models
         [StringLength(250)]
         public string CoName { get; set; }
 
+        [StringLength(20)]
+        public string CoRegNo { get; set; }
+
+        [StringLength(20)]
+        public string CoMelliCode { get; set; }
+
+        [StringLength(20)]
+        public string CoEcoCode { get; set; }
+
+        [StringLength(30)]
+        public string CoTel { get; set; }
+
+        [StringLength(30)]
+        public string CoFax { get; set; }
+
+        [StringLength(30)]
+        public string CoMobile { get; set; }
+
+        [StringLength(100)]
+        public string CoEMail { get; set; }
+
+        [StringLength(50)]
+        public string CoCountry { get; set; }
+
+        [StringLength(50)]
+        public string CoOstan { get; set; }
+
+        [StringLength(20)]
+        public string CoCity { get; set; }
+
+        [StringLength(250)]
+        public string CoStreet { get; set; }
+
+        [StringLength(30)]
+        public string CoAlley { get; set; }
+
+        [StringLength(10)]
+        public string CoPlack { get; set; }
+
+        [StringLength(10)]
+        public string CoZipCode { get; set; }
+
+        [StringLength(50)]
+        public string CoActivity { get; set; }
+
+        [StringLength(250)]
+        public string CoAddress { get; set; }
+
+        [StringLength(20)]
+        public string CustTel { get; set; }
+
+        [StringLength(20)]
+        public string CustFax { get; set; }
+
+        [StringLength(20)]
+        public string CustMobile { get; set; }
+
+        [StringLength(50)]
+        public string CustEmail { get; set; }
+
+        [StringLength(20)]
+        public string CustMelliCode { get; set; }
+
+        [StringLength(20)]
+        public string CustEcoCode { get; set; }
+
+        [StringLength(30)]
+        public string CustCity { get; set; }
+
+        [StringLength(250)]
+        public string CustStreet { get; set; }
+
+        [StringLength(30)]
+        public string CustAlley { get; set; }
+
+        [StringLength(10)]
+        public string CustPlack { get; set; }
+
+        [StringLength(10)]
+        public string CustZipCode { get; set; }
+
+        [StringLength(250)]
+        public string CustAddress { get; set; }
+
+        public double? FinalPrice { get; set; }
+
+        [StringLength(20)]
+        public string PaymentTypeSt { get; set; }
+
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -70,18 +159,17 @@ namespace ApiKarbord.Models
         [StringLength(50)]
         public string KalaFanniNo { get; set; }
 
-        public byte? KalaDeghatM1 { get; set; }
-
-        public byte? KalaDeghatM2 { get; set; }
-
-        public byte? KalaDeghatM3 { get; set; }
-
         public byte? KalaDeghatR1 { get; set; }
 
         public byte? KalaDeghatR2 { get; set; }
 
         public byte? KalaDeghatR3 { get; set; }
 
+        public byte? KalaDeghatM1 { get; set; }
+
+        public byte? KalaDeghatM2 { get; set; }
+
+        public byte? KalaDeghatM3 { get; set; }
 
         [StringLength(50)]
         public string KGruCode { get; set; }
@@ -161,19 +249,17 @@ namespace ApiKarbord.Models
 
         public double? Amount { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
         [StringLength(50)]
         public string EghdamName { get; set; }
 
-        [Key]
-        [Column(Order = 3)]
         [StringLength(50)]
         public string TanzimName { get; set; }
 
-        [Key]
-        [Column(Order = 4)]
         [StringLength(50)]
         public string TaeedName { get; set; }
+
+        [StringLength(50)]
+        public string TasvibName { get; set; }
+
     }
 }
