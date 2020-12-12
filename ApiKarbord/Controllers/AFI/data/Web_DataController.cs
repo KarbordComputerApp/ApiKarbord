@@ -299,7 +299,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, calcAddmin.serialNumber, "", 0,0))
 
             {
-                string sql = string.Format(@"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
+                string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
 		                                            @serialNumber = {0},
                                                     @forSale = {1},
                                                     @custCode = {2},
@@ -314,7 +314,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                     @Spec8 = '{11}',
                                                     @Spec9 = '{12}',
                                                     @Spec10 = '{13}',                                                    
-                                                    @MP1 = {14},
+                                                    @MP1 = '{14}',
                                                     @MP2 = {15},
                                                     @MP3 = {16},
 		                                            @MP4 = {17},

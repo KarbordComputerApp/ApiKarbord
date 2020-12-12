@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -46,7 +47,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-                    string sql = string.Format(@"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
+                    string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
 		                                            @serialNumber = {0},
                                                     @forSale = {1},
                                                     @custCode = '{2}',
@@ -85,16 +86,16 @@ namespace ApiKarbord.Controllers.AFI.data
                                                     aFI_FDocHi.AddMinSpec8,
                                                     aFI_FDocHi.AddMinSpec9,
                                                     aFI_FDocHi.AddMinSpec10,
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice1 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice2 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice3 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice4 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice5 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice6 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice7 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice8 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice9 ?? 0).ToString(),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice10 ?? 0).ToString());
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice1 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice2 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice3 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice4 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice5 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice6 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice7 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice8 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice9 ?? 0),
+                                                    Math.Abs(aFI_FDocHi.AddMinPrice10 ?? 0));
                     var result = UnitDatabase.db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
 
 
@@ -113,21 +114,21 @@ namespace ApiKarbord.Controllers.AFI.data
                         if (item.Code == 10) aFI_FDocHi.AddMinPrice10 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
                     }
 
-                    var sql1 = string.Format(@"DECLARE	@return_value int
+                    var sql1 = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
                             EXEC	@return_value = [dbo].[Web_FDocB_CalcAddMin]
 		                                @serialNumber = {0},
 		                                @deghat = {1},
                                         @forSale = {2},
-		                                @MP1 = '{3}',
-		                                @MP2 = '{4}',
-		                                @MP3 = '{5}',
-		                                @MP4 = '{6}',
-		                                @MP5 = '{7}',
-		                                @MP6 = '{8}',
-		                                @MP7 = '{9}',
-		                                @MP8 = '{10}',
-		                                @MP9 = '{11}',
-		                                @MP10 = '{12}'
+		                                @MP1 = {3},
+		                                @MP2 = {4},
+		                                @MP3 = {5},
+		                                @MP4 = {6},
+		                                @MP5 = {7},
+		                                @MP6 = {8},
+		                                @MP7 = {9},
+		                                @MP8 = {10},
+		                                @MP9 = {11},
+		                                @MP10 = {12}
                             SELECT	'Return Value' = @return_value",
                             aFI_FDocHi.SerialNumber,
                             aFI_FDocHi.deghat,
@@ -144,7 +145,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.AddMinPrice10);
                     int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
 
-                    string sql2 = string.Format(
+                    string sql2 = string.Format(CultureInfo.InvariantCulture,
                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
                           EXEC	@return_value = [dbo].[Web_SaveFDoc_HU]
@@ -176,16 +177,16 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ADDMINSPEC8 = '{25}',
 		                            @ADDMINSPEC9 = '{26}',
 		                            @ADDMINSPEC10 = '{27}',
-		                            @ADDMINPRICE1 = '{28}',
-		                            @ADDMINPRICE2 = '{29}',
-		                            @ADDMINPRICE3 = '{30}',
-		                            @ADDMINPRICE4 = '{31}',
-		                            @ADDMINPRICE5 = '{32}',
-		                            @ADDMINPRICE6 = '{33}',
-		                            @ADDMINPRICE7 = '{34}',
-		                            @ADDMINPRICE8 = '{35}',
-		                            @ADDMINPRICE9 = '{36}',
-		                            @ADDMINPRICE10 = '{37}',
+		                            @ADDMINPRICE1 = {28},
+		                            @ADDMINPRICE2 = {29},
+		                            @ADDMINPRICE3 = {30},
+		                            @ADDMINPRICE4 = {31},
+		                            @ADDMINPRICE5 = {32},
+		                            @ADDMINPRICE6 = {33},
+		                            @ADDMINPRICE7 = {34},
+		                            @ADDMINPRICE8 = {35},
+		                            @ADDMINPRICE9 = {36},
+		                            @ADDMINPRICE10 = {37},
                                     @InvCode = '{38}',
                                     @Status = N'{39}',
 									@PaymentType = {40},
