@@ -108,7 +108,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                 if (count > 0)
                 {
-                    sql = string.Format(@"SELECT top(1) DocDate FROM Web_ADocH order by DocDate desc");
+                    sql = string.Format(@"SELECT max(DocDate) FROM Web_ADocH");
                     lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                 }
                 else
