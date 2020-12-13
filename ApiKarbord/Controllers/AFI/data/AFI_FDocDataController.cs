@@ -81,7 +81,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = "select ";
                 if (FDocHMinObject.select == 0)
                     sql += " top(100) ";
-                sql += string.Format(@"SerialNumber,                                   
+                sql += string.Format(CultureInfo.InvariantCulture, @"SerialNumber,                                   
                                        DocNo,
                                        SortDocNo,
                                        DocDate,

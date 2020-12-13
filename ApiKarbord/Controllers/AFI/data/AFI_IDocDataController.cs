@@ -224,24 +224,35 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(listIDocB);
         }
 
-        // GET: api/IDocData/IMode اطلاعات نوع سند انبار   
-        [Route("api/IDocData/IMode/{ace}/{sal}/{group}/{InOut}")]
-        public async Task<IHttpActionResult> GetWeb_IMode(string ace, string sal, string group, int InOut)
+
+
+        public class IModeObject
+        {
+            public byte Mode { get; set; }
+
+            public int InOut { get; set; }
+
+            public string UserCode { get; set; }
+        }
+
+        // Post: api/IDocData/IMode اطلاعات نوع سند انبار   
+        [Route("api/IDocData/IMode/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_IMode(string ace, string sal, string group, IModeObject iModeObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
             if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0))
             {
                 string sql;
-                if (InOut == 0)
-                    sql = string.Format(@"SELECT * FROM Web_IMode order by OrderFld ");
+                if (iModeObject.InOut == 0)
+                    sql = string.Format(@"SELECT * FROM Web_IMode_F({0},'{1}') order by OrderFld ", iModeObject.Mode, iModeObject.UserCode);
                 else
-                    sql = string.Format(@"SELECT * FROM Web_IMode WHERE InOut = {0} order by OrderFld ", InOut);
+                    sql = string.Format(@"SELECT * FROM Web_IMode_F({0},'{1}') WHERE InOut = {2} order by OrderFld ", iModeObject.Mode, iModeObject.UserCode, iModeObject.InOut);
                 var listIMode = UnitDatabase.db.Database.SqlQuery<Web_IMode>(sql);
                 return Ok(listIMode);
             }
             return null;
         }
-
 
 
         public class AFI_Move

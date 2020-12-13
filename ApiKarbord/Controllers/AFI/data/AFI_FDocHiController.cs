@@ -27,7 +27,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
             if (aFI_FDocHi.ModeCode == "51" || aFI_FDocHi.ModeCode == "52" || aFI_FDocHi.ModeCode == "53" ||
-                aFI_FDocHi.ModeCode == "SPFCT" || aFI_FDocHi.ModeCode == "SFCT" || aFI_FDocHi.ModeCode == "SRFCT")
+                aFI_FDocHi.ModeCode == "SPFCT" || aFI_FDocHi.ModeCode == "SFCT" || aFI_FDocHi.ModeCode == "SRFCT" || aFI_FDocHi.ModeCode == "SORD")
                 forSale = 1;
             else
                 forSale = 0;

@@ -120,7 +120,6 @@
             Database.SetInitializer<ApiModel>(null);
             // Database.SetInitializer<ApiModel>(new CreateDatabaseIfNotExists<ApiModel>());
             SetConnectionString(connectionString);
-
             //Configuration.ProxyCreationEnabled = false;
         }
 
