@@ -52,7 +52,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
                 else if (custObject.forSale == true)
                 {
-                    sql = string.Format("select * FROM  Web_Cust_F({0},'{1}') CustMode = 0 or CustMode = 1 ", custObject.Mode, custObject.UserCode);
+                    sql = string.Format("select * FROM  Web_Cust_F({0},'{1}') where CustMode = 0 or CustMode = 1 ", custObject.Mode, custObject.UserCode);
                 }
                 else if (custObject.forSale == false)
                 {
