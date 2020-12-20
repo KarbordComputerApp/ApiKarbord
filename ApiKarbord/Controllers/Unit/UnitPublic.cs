@@ -12,6 +12,8 @@ using ApiKarbord.Models;
 
 namespace ApiKarbord.Controllers.Unit
 {
+
+
     public class UnitPublic
     {
         //Server.MapPath("ini/SqlServerConfig.Ini");
@@ -59,7 +61,7 @@ namespace ApiKarbord.Controllers.Unit
                     string[] accTemp = acc.Split('-');
                     foreach (string accs in accTemp)
                     {
-                        accList.Add(new SelectListItem { Value = accs, Text = accs});
+                        accList.Add(new SelectListItem { Value = accs, Text = accs });
                     }
 
                     var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_ACC5%' order by name");
@@ -236,178 +238,31 @@ namespace ApiKarbord.Controllers.Unit
             return sql;
         }
 
+        public static int GetPersianDaysDiffDate(string Date1, string Date2)
+        {
+            try
+            {
+                int year1 = Convert.ToInt16(Date1.Substring(0, 4));
+                int month1 = Convert.ToInt16(Date1.Substring(5, 2));
+                int day1 = Convert.ToInt16(Date1.Substring(8, 2));
 
-        public static List<SelectListItem> ListTypeAnbar()
-{
-    List<SelectListItem> list = new List<SelectListItem>();
-    list.Add(new SelectListItem { Value = "0", Text = "دارای گردش" });
-    list.Add(new SelectListItem { Value = "1", Text = "دارای گردش با موجودی مخالف صفر" });
-    list.Add(new SelectListItem { Value = "2", Text = "دارای گردش با موجودی صفر" });
-    list.Add(new SelectListItem { Value = "3", Text = "دارای گردش با موجودی مثبت" });
-    list.Add(new SelectListItem { Value = "4", Text = "دارای گردش با موجودی منفی" });
-    list.Add(new SelectListItem { Value = "5", Text = "بدون گردش طی دوره" });
-    list.Add(new SelectListItem { Value = "6", Text = "بدون گردش و یا موجودی صفر" });
-    list.Add(new SelectListItem { Value = "7", Text = "دارای گردش منفی طی دوره" });
-    return list;
-}
+                int year2 = Convert.ToInt16(Date2.Substring(0, 4));
+                int month2 = Convert.ToInt16(Date2.Substring(5, 2));
+                int day2 = Convert.ToInt16(Date2.Substring(8, 2));
 
-public static List<SelectListItem> type1()
-{
-    List<SelectListItem> list = new List<SelectListItem>();
-    list.Add(new SelectListItem { Value = "0", Text = "موجودی اول دوره" });
-    list.Add(new SelectListItem { Value = "1", Text = "رسید ورود به انبار" });
-    list.Add(new SelectListItem { Value = "2", Text = "برگشت فروش به انبار" });
-    list.Add(new SelectListItem { Value = "3", Text = "انتقال به انبار" });
-    list.Add(new SelectListItem { Value = "4", Text = "رسید خرید" });
-    list.Add(new SelectListItem { Value = "5", Text = "حواله خروج از انبار" });
-    list.Add(new SelectListItem { Value = "6", Text = "برگشت خرید از انبار" });
-    list.Add(new SelectListItem { Value = "7", Text = "انتقال از انبار" });
-    list.Add(new SelectListItem { Value = "8", Text = "حواله فروش" });
-    return list;
-}
+                System.Globalization.PersianCalendar calendar = new System.Globalization.PersianCalendar();
+                DateTime dt1 = calendar.ToDateTime(year1, month1, day1, 0, 0, 0, 0);
+                DateTime dt2 = calendar.ToDateTime(year2, month2, day2, 0, 0, 0, 0);
+                TimeSpan ts = dt2.Subtract(dt1);
 
-public static List<SelectListItem> type2()
-{
-    List<SelectListItem> list = new List<SelectListItem>();
-    list.Add(new SelectListItem { Value = "0", Text = "وارده به انبار" });
-    list.Add(new SelectListItem { Value = "1", Text = "صادره از انبار" });
-    return list;
-}
-
-public static List<SelectListItem> type3()
-{
-    List<SelectListItem> list = new List<SelectListItem>();
-    list.Add(new SelectListItem { Value = "0", Text = "فعال" });
-    list.Add(new SelectListItem { Value = "1", Text = "باطل" });
-    list.Add(new SelectListItem { Value = "1", Text = "پایان یافته" });
-    return list;
-}
-
-public static List<SelectListItem> type4()
-{
-    List<SelectListItem> list = new List<SelectListItem>();
-    list.Add(new SelectListItem { Value = "0", Text = "پیش فاکتور فروش" });
-    list.Add(new SelectListItem { Value = "1", Text = "فاکتور فروش" });
-    list.Add(new SelectListItem { Value = "2", Text = "برگشت از فروش" });
-    list.Add(new SelectListItem { Value = "3", Text = "پیش فاکتور خرید" });
-    list.Add(new SelectListItem { Value = "4", Text = "فاکتور خرید" });
-    list.Add(new SelectListItem { Value = "5", Text = "برگشت از خرید" });
-    return list;
-}
-
-public static List<SelectListItem> type5()
-{
-    List<SelectListItem> list = new List<SelectListItem>();
-    list.Add(new SelectListItem { Value = "0", Text = "پیش فاکتور فروش" });
-    list.Add(new SelectListItem { Value = "1", Text = "فاکتور فروش" });
-    list.Add(new SelectListItem { Value = "2", Text = "برگشت از فروش" });
-    list.Add(new SelectListItem { Value = "3", Text = "سفارش فروش" });
-    list.Add(new SelectListItem { Value = "4", Text = "حواله فروش" });
-    list.Add(new SelectListItem { Value = "5", Text = "برگه خروج" });
-    list.Add(new SelectListItem { Value = "6", Text = "پیش فاکتور خرید" });
-    list.Add(new SelectListItem { Value = "7", Text = "فاکتور خرید" });
-    list.Add(new SelectListItem { Value = "8", Text = "برگشت از خرید" });
-    list.Add(new SelectListItem { Value = "9", Text = "سفارش خرید" });
-    return list;
-}
-
-        
-         public static List<SelectListItem> type()
-                {
-                    List<SelectListItem> list = new List<SelectListItem>();
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    list.Add(new SelectListItem { Value = "", Text = "" });
-                    return list;
-
-                }
-        /*            { "NoeTarazTypes", new Dictionary<string, string> {
-                            { "تراز در سطح", "1" },
-                            { "تراز تا سطح", "2" }
-                        }
-                    },
-
-                    { "SathTarazTypes", new Dictionary<string, string> {
-                            { "کل", "1" },
-                            { "معین", "2" },
-                            { "تفصیلی 1", "3" },
-                            { "تفصیلی 2", "4" },
-                            { "تفصیلی 3", "5" }
-                        }
-                    },
-
-
-                    ////////////
-                    {"CheckTypes", new Dictionary<string, string> {
-                            { "اسناد پرداختی", "1" },
-                            { "اسناد دریافتی", "2" }
-                        }
-                    },
-
-                    {"BaravatAcc", new Dictionary<string, string> {
-                            { "تمام چک ها", "1" },
-                            { "بروات", "2" },
-                            { "غیر بروات", "3" }
-                        }
-                    },
-
-                    {"VaziyatCheckAccP", new Dictionary<string, string> {
-                            { "تمام چک ها", "" },
-                            { "صادر شده", "1" },
-                            { "پاس شده", "2" },
-                            { "برگشتی", "6" },
-                            { "واگذار شده", "7" },
-                            { "نامشخص", "8" },
-                            { "عودت", "9" }
-                        }
-                    },
-
-
-                    {"VaziyatCheckAccD", new Dictionary<string, string> {
-                            { "تمام چک ها", "" },
-                            { "نزد صندوق", "3" },
-                            { "وصول شده", "4" },
-                            { "در جریان وصول", "5" },
-                            { "برگشتی", "6" },
-                            { "واگذار شده", "7" },
-                            { "نامشخص", "8" },
-                            { "عودت", "9" }
-                        }
-                    },
-
-
-
-                    {"VaziyatCheckAfiP", new Dictionary<string, string> {
-                            { "تمام چک ها", "" },
-                            { "صادر شده", "1" },
-                            { "پاس شده", "2" },
-                            { "برگشتی", "11" },
-                            { "عودت", "13" },
-                            { "نامشخص", "14" }
-                        }
-                    },
-
-
-                    {"VaziyatCheckAfiD", new Dictionary<string, string> {
-                            { "تمام چک ها", "" },
-                            { "نزد صندوق", "3" },
-                            { "وصول شده", "4" },
-                            { "در جریان وصول", "5" },
-                            { "برگشتی", "6" },
-                            { "واگذار شده", "7" },
-                            { "عودت", "9" },
-                            { "نامشخص", "8" }
-                        }
-                    },
-
-                    */
+                return ts.Days;
+            }
+            catch (Exception e)
+            {
+                return 1;
+                throw;
+            }
+        }
 
     }
 }

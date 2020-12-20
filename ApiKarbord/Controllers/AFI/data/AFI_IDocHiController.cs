@@ -34,7 +34,8 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -101,7 +102,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.KalaPriceCode ?? 0,
                             aFI_IDocHi.InvCode,
                             aFI_IDocHi.Status,
-                            //UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
+                             //UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
                              UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
                             aFI_IDocHi.Taeed == "null" ? "" : aFI_IDocHi.Taeed,
                             aFI_IDocHi.F01,
@@ -134,9 +135,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, aFI_IDocHi.flagLog, 0);
+                return Ok(value);
             }
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, aFI_IDocHi.flagLog, 0);
-            return Ok(value);
+            return Ok(con);
         }
 
         // POST: api/AFI_IDocHi
@@ -151,8 +154,9 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, 0))
-            { 
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, 0);
+            if (con == "ok")
+            {
                 try
                 {
                     // به دلیل اشکال در تبدیل sql کتیشن های یوز کد اینجوریه
@@ -246,11 +250,13 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-            }
-            string[] serials = value.Split('-');
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocHi.flagLog, 0);
 
-            return Ok(value);
+                string[] serials = value.Split('-');
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocHi.flagLog, 0);
+
+                return Ok(value);
+            }
+            return Ok(con);
         }
 
         // DELETE: api/AFI_IDocHi/5
@@ -259,7 +265,8 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_IDocHi(string ace, string sal, string group, long SerialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc" , 3, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc", 3, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -279,20 +286,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc", 3, "Y", 0);
+                return Ok(1);
             }
-
-            /*string sql1 = @"select top(100) SerialNumber,DocNo,DocDate,ThvlCode,thvlname,Spec,KalaPriceCode,InvCode,ModeCode,
-                   Status,PaymentType,Footer,Tanzim,Taeed,FinalPrice,Eghdam,ModeName,InvName  
-                   from Web_IDocH where ModeCode in ";
-            if (ModeCode == "in")
-                sql1 += " (101,102,103,106,108,110) ";
-            else if (ModeCode == "out")
-                sql1 += " (104,105,107,109,111)";
-
-            sql1 += " order by DocNo desc";
-            var listIDocH = UnitDatabase.db.Database.SqlQuery<Web_IDocHMini>(sql1);*/
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc", 3, "Y", 0);
-            return Ok(1);
+            return Ok(con);
         }
 
     }

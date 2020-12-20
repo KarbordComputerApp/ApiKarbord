@@ -191,7 +191,8 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1,0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -274,9 +275,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, AFI_ADocHi_u.flagLog, 0);
+                return Ok(value);
             }
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, AFI_ADocHi_u.flagLog, 0);
-            return Ok(value);
+            return Ok(con);
+
         }
 
         // POST: api/AFI_ADocHi
@@ -291,7 +294,8 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_i.SerialNumber, "ADoc", 2, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_i.SerialNumber, "ADoc", 2, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -387,10 +391,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+                string[] serials = value.Split('-');
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
+                return Ok(value);
             }
-            string[] serials = value.Split('-');
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
-            return Ok(value);
+            return Ok(con);
+
         }
 
 
@@ -400,7 +406,8 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, 0);
+            if (con == "ok")
             {
                 string sql = string.Format(@"DECLARE	@return_value int
                                                  EXEC	@return_value = [dbo].[Web_SaveADoc_Del]
@@ -416,7 +423,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
             }
-            return Ok(1);
+            return Ok(con);
         }
 
     }

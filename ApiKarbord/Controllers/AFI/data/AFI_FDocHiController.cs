@@ -43,7 +43,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode , 1,0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -288,9 +289,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, aFI_FDocHi.flagLog, 0);
+                return Ok(value);
             }
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, aFI_FDocHi.flagLog, 0);
-            return Ok(value);
+            return Ok(con);
         }
 
         // POST: api/AFI_FDocHi
@@ -305,7 +308,8 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -445,10 +449,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
+                string[] serials = value.Split('-');
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_FDocHi.ModeCode, 2, aFI_FDocHi.flagLog, 0);
+                return Ok(value);
             }
-            string[] serials = value.Split('-');
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_FDocHi.ModeCode, 2, aFI_FDocHi.flagLog, 0);
-            return Ok(value);
+            return Ok(con);
         }
 
         // DELETE: api/AFI_FDocHi/5
@@ -457,7 +463,8 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocHi(string ace, string sal, string group, long SerialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, 0);
+            if (con == "ok")
             {
                 try
                 {
@@ -477,43 +484,13 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
+
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y", 0);
+                return Ok(1);
             }
-
-            /*
-                        string sql1 = string.Format(@" select top(100)
-                                                            SerialNumber,
-                                                            DocNo,
-                                                            DocDate,
-                                                            CustCode,
-                                                            CustName,
-                                                            Spec,
-                                                            KalaPriceCode,
-                                                            InvCode,
-                                                            AddMinPrice1,
-                                                            AddMinPrice2,
-                                                            AddMinPrice3,
-                                                            AddMinPrice4,
-                                                            AddMinPrice5,
-                                                            AddMinPrice6,
-                                                            AddMinPrice7,
-                                                            AddMinPrice8,
-                                                            AddMinPrice9,
-                                                            AddMinPrice10,
-                                                            ModeCode,
-                                                            Status,
-                                                            PaymentType,
-                                                            Footer,
-                                                            Tanzim,
-                                                            Taeed,
-                                                            FinalPrice,
-                                                            Eghdam
-                                                          from Web_FDocH where ModeCode = {0} ",
-                                                     ModeCode.ToString());
-                        sql1 += " order by DocNo desc ";
-
-                        var listFDocH = UnitDatabase.db.Database.SqlQuery<Web_FDocHMini>(sql1); */
-            UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y", 0);
-            return Ok(1);
+            return Ok(con);
         }
 
     }

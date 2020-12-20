@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Globalization;
 
 namespace ApiKarbord.Controllers.Unit
 {
@@ -64,8 +65,8 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //Debug
-        static string addressApiAccounting = "http://127.0.0.1:902/";
-        //static string addressApiAccounting = "http://localhost:49961/";
+        //static string addressApiAccounting = "http://127.0.0.1:902/";
+        static string addressApiAccounting = "http://localhost:49961/";
 
         // static string addressApiAccounting = "http://192.168.6.204:902/"; //  Canada
         // static string addressApiAccounting = "http://192.168.0.109:902/"; //  Office 109
@@ -73,10 +74,14 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
+
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
         {
+            PersianCalendar pc = new System.Globalization.PersianCalendar();
+            string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
+
             try
             {
                 string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/{9}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, bandNo);
@@ -90,11 +95,22 @@ namespace ApiKarbord.Controllers.Unit
                       var response = taskwithresponse.Result;
                       var jsonString = response.Content.ReadAsStringAsync();
                       jsonString.Wait();
+
                       model = JsonConvert.DeserializeObject<List<Access>>(jsonString.Result);
                   });
                 task.Wait();
 
                 var list = model.First();
+
+                if ( UnitPublic.GetPersianDaysDiffDate(list.toDate, PDate) > 0 )
+                {
+                    return "Expire Account";
+                }
+
+                if (list.active == false) 
+                {
+                    return "Disable Account";
+                }
 
                 if (model.Count > 0)
                 {
@@ -104,6 +120,7 @@ namespace ApiKarbord.Controllers.Unit
                                     list.SqlServerName, DatabaseName(ace, sal, group), list.SqlUserName, list.SqlPassword);
                     return connectionString;
                 }
+
                 else
                     return "";
             }
@@ -147,22 +164,23 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static Boolean CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
+        public static string CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
         {
             try
             {
                 string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act, bandNo);
-                if (string.IsNullOrEmpty(conStr))
+                if (conStr.Length > 100)
                 {
-                    return false;
+                    db = new ApiModel(conStr);
+                    //db.Configuration.ProxyCreationEnabled = false;
+                    return "ok";
                 }
-                db = new ApiModel(conStr);
-                //db.Configuration.ProxyCreationEnabled = false;
-                return true;
+                else
+                    return conStr;
             }
             catch (Exception)
             {
-                return false;
+                return "error";
                 throw;
             }
         }
@@ -226,7 +244,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
         // ذخیره لاگ
-        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act,string ins, int bandNo)
+        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, string ins, int bandNo)
         {
             try
             {

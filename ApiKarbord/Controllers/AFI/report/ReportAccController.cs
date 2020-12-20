@@ -48,7 +48,8 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
@@ -75,7 +76,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 var listTrzAcc = UnitDatabase.db.Database.SqlQuery<Web_TrzAcc>(sql);
                 return Ok(listTrzAcc);
             }
-            return null;
+            return Ok(con);
         }
 
 
@@ -115,7 +116,8 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
             {
                 // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 //string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
@@ -147,7 +149,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 var listDftr = UnitDatabase.db.Database.SqlQuery<Web_Dftr>(sql);
                 return Ok(listDftr);
             }
-            return null;
+            return Ok(con);
         }
 
 
@@ -186,7 +188,8 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
             {
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(ADocRObject.OprCode);
@@ -225,7 +228,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 var listADocR = UnitDatabase.db.Database.SqlQuery<Web_ADocR>(sql);
                 return Ok(listADocR);
             }
-            return null;
+            return Ok(con);
         }
 
 
@@ -256,7 +259,8 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            if (UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0))
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000) * FROM  Web_TChk('') AS TChk where 1 = 1");
@@ -282,7 +286,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 var listTChk = UnitDatabase.db.Database.SqlQuery<Web_TChk>(sql);
                 return Ok(listTChk);
             }
-            return null;
+            return Ok(con);
         }
 
 
