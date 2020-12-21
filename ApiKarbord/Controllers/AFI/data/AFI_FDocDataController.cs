@@ -143,8 +143,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F19,
                                        F20, 
                                        UpdateDate
-                                       from Web_FDocH where ModeCode = '{0}' ",
-                                       FDocHMinObject.ModeCode.ToString());
+                                       from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' ",
+                                       0,
+                                        FDocHMinObject.user
+                                       , FDocHMinObject.ModeCode.ToString());
                 if (FDocHMinObject.AccessSanad == false)
                     sql += " and Eghdam = '" + FDocHMinObject.user + "' ";
 
@@ -181,16 +183,10 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string lastdate;
-                string sql = string.Format(@"SELECT count(DocDate) FROM Web_FDocH WHERE ModeCode = '{0}' ", ModeCode);
-                int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
-                if (count > 0)
-                {
-                    sql = string.Format(@"SELECT max(DocDate) FROM Web_FDocH WHERE ModeCode = '{0}'", ModeCode);
-                    lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
-                }
-                else
-                    lastdate = "";
+                string sql = string.Format(@"EXEC[dbo].[Web_Doc_Dates]
+                                             @TableName = '{0}',
+		                                     @Mode = '''{1}'''", "fct5doch", ModeCode);
+                string lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                 return Ok(lastdate);
             }
             return Ok(con);

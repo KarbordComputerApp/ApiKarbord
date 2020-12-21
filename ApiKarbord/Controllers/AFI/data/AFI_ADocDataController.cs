@@ -112,16 +112,10 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string lastdate;
-                string sql = string.Format(@"SELECT count(DocDate) FROM Web_ADocH");
-                int count = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
-                if (count > 0)
-                {
-                    sql = string.Format(@"SELECT max(DocDate) FROM Web_ADocH");
-                    lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
-                }
-                else
-                    lastdate = "";
+                string sql = string.Format(@"EXEC[dbo].[Web_Doc_Dates]
+                                             @TableName = '{0}',
+		                                     @Mode = '''{1}'''", "Acc5doch", "");
+                string lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                 return Ok(lastdate);
             }
             return Ok(con);
