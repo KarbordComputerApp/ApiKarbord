@@ -125,13 +125,14 @@ namespace ApiKarbord.Controllers.AFI.report
                 //string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}',{4},{5}) AS Dftr where 1 = 1 and best >= 0 ",
+                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}',{4},{5},'{6}') AS Dftr where 1 = 1 and best >= 0 ",
                           DftrObject.azTarikh,
                           DftrObject.taTarikh,
                           DftrObject.Naghl,
                           DftrObject.AccCode,
                           DftrObject.DispBands,
-                          DftrObject.JamRooz);
+                          DftrObject.JamRooz,
+                          dataAccount[2]);
 
                 if (DftrObject.azShomarh != "")
                     sql += string.Format(" and DocNo >= '{0}' ", DftrObject.azShomarh);

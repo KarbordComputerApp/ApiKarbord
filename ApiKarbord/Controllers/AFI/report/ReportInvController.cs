@@ -201,8 +201,8 @@ namespace ApiKarbord.Controllers.AFI.report
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (10000) * FROM  dbo.Web_IDocR('{0}', '{1}') AS IDocR where 1 = 1 ",
-                          IDocRObject.azTarikh, IDocRObject.taTarikh);
+                          @"select top (10000) * FROM  dbo.Web_IDocR('{0}', '{1}','{2}') AS IDocR where 1 = 1 ",
+                          IDocRObject.azTarikh, IDocRObject.taTarikh, dataAccount[2]);
 
                 sql += UnitPublic.SpiltCodeAnd("InvCode", IDocRObject.InvCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", IDocRObject.KGruCode);
