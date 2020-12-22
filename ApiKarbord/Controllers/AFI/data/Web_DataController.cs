@@ -576,6 +576,54 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+
+
+
+        public class LogOutObject
+        {
+            public string MachineId { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string ProgName { get; set; }
+        }
+
+
+
+
+        // Post: api/Web_Data/ خروج کاربر    
+        [Route("api/Web_Data/LogOut")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_LogOut(LogOutObject LogOutObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value =[dbo].[Web_LogOut]
+                                                            @MachineId = N'{0}',
+		                                                    @UserCode = N'{1}',
+		                                                    @ProgName = N'{2}'
+                                                 SELECT	'Return Value' = @return_value",
+                                                  LogOutObject.MachineId,
+                                                  LogOutObject.UserCode,
+                                                  LogOutObject.ProgName
+                                                 );
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    return Ok("Ok");
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
         // دریافت اطلاعات سالهای موجود در اس کیو ال متصل به ای پی ای
         public class DatabseSal
         {
