@@ -248,6 +248,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public byte Naghl { get; set; }
 
+
         }
 
         // Post: api/ReportInv/Krdx گزارش کاردکس کالا
