@@ -56,8 +56,8 @@ namespace ApiKarbord.Controllers.AFI.report
             {
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000)  * FROM  dbo.Web_FDocR('{0}', '{1}') AS FDocR where 1 = 1 ",
-                          FDocRObject.ModeCode1, FDocRObject.ModeCode2);
+                          @"select top(10000)  * FROM  dbo.Web_FDocR('{0}', '{1}','{2}') AS FDocR where 1 = 1 ",
+                          FDocRObject.ModeCode1, FDocRObject.ModeCode2, dataAccount[2]);
 
                 sql += UnitPublic.SpiltCodeAnd("InvCode", FDocRObject.InvCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", FDocRObject.KGruCode);

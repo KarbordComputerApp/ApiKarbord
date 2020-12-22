@@ -198,9 +198,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 string AccCode = UnitPublic.SpiltCodeCama(ADocRObject.AccCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_ADocR({0},{1}) AS ADocR where 1 = 1 ",
+                          @"select top(10000) * FROM  Web_ADocR({0},{1},'{2}') AS ADocR where 1 = 1 ",
                           ADocRObject.DispBands,
-                          ADocRObject.JamRooz);
+                          ADocRObject.JamRooz,
+                          dataAccount[2]);
 
                 if (ADocRObject.azTarikh != "")
                     sql += string.Format(" and DocDate >= '{0}' ", ADocRObject.azTarikh);

@@ -485,6 +485,97 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class LoginTestObject
+        {
+            public string MachineId { get; set; }
+            public string IPWan { get; set; }
+            public string Country { get; set; }
+            public string City { get; set; }
+            public string UserCode { get; set; }
+            //public string LoginTimeas { get; set; }
+            //public string LoginDate { get; set; }
+            public string ProgName { get; set; }
+            public string ProgVer { get; set; }
+            public string ProgCaption { get; set; }
+            public Boolean FlagTest { get; set; }
+        }
+
+        public class Web_LoginTestObject
+        {
+            public int? ID { get; set; }
+
+            public string CompName { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string LoginTime { get; set; }
+
+            public string LoginDate { get; set; }
+
+            public string ProgName { get; set; }
+
+            public string ProgVer { get; set; }
+
+            public string ProgCaption { get; set; }
+        }
+
+
+
+        // Post: api/Web_Data/ تست وجود کاربر    
+        [Route("api/Web_Data/LoginTest")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_LoginTest(LoginTestObject LoginTestObject)
+        {
+
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+
+                    PersianCalendar pc = new System.Globalization.PersianCalendar();
+                    string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
+                    string Time = DateTime.Now.ToString("HH:mm");
+                    string sql = string.Format(@" EXEC	[dbo].[Web_TestLogin]
+		                                            @MachineId = N'{0}',
+		                                            @IPWan = N'{1}',
+		                                            @Country = N'{2}',
+		                                            @City = N'{3}',
+		                                            @UserCode = N'{4}',
+		                                            @LoginTimeas = N'{5}',
+		                                            @LoginDate = N'{6}',
+		                                            @ProgName = N'{7}',
+		                                            @ProgVer = N'{8}',
+		                                            @ProgCaption = N'{9}',
+		                                            @FlagTest = {10}",
+                                                  LoginTestObject.MachineId,
+                                                  LoginTestObject.IPWan,
+                                                  LoginTestObject.Country,
+                                                  LoginTestObject.City,
+                                                  LoginTestObject.UserCode,
+                                                  Time,
+                                                  PDate,
+                                                  LoginTestObject.ProgName,
+                                                  LoginTestObject.ProgVer,
+                                                  LoginTestObject.ProgCaption,
+                                                  LoginTestObject.FlagTest
+                                                 );
+
+                    var value = UnitDatabase.db.Database.SqlQuery<Web_LoginTestObject>(sql).Single();
+                    return Ok(value);
+
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
         // دریافت اطلاعات سالهای موجود در اس کیو ال متصل به ای پی ای
         public class DatabseSal
         {
