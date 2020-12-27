@@ -56,13 +56,14 @@ namespace ApiKarbord.Controllers.AFI.report
                 string aModeCode = UnitPublic.SpiltCodeCama(TrzAccObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_TrzAcc({0}, '{1}','{2}','{3}','{4}', '{5}') AS TrzAcc where 1 = 1 ",
+                          @"select * FROM  dbo.Web_TrzAcc({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS TrzAcc where 1 = 1 ",
                           TrzAccObject.Level,
                           TrzAccObject.azTarikh,
                           TrzAccObject.taTarikh,
                           oprCode,
                           mkzCode,
-                          aModeCode);
+                          aModeCode,
+                          dataAccount[2]);
 
                 if (TrzAccObject.Sath == 1)
                     sql += string.Format(" and (Level = {0})", TrzAccObject.Level);

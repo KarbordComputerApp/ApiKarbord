@@ -130,7 +130,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFKala where 1 = 1 ",
+                          @"select  top (10000) * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFKala where 1 = 1 ",
                           TrzFKalaObject.ModeCode1,
                           TrzFKalaObject.ModeCode2,
                           TrzFKalaObject.azTarikh,
@@ -143,7 +143,9 @@ namespace ApiKarbord.Controllers.AFI.report
                           oprCode,
                           invCode,
                           statusCode,
-                          TrzFKalaObject.ZeroValue);
+                          TrzFKalaObject.ZeroValue,
+                          dataAccount[2]
+                          );
 
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzFKalaObject.KalaCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", TrzFKalaObject.KGruCode);
@@ -208,7 +210,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFCustObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000)  * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12}) AS TrzFCust where 1 = 1 ",
+                          @"select  top (10000)  * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFCust where 1 = 1 ",
                           TrzFCustObject.ModeCode1,
                           TrzFCustObject.ModeCode2,
                           TrzFCustObject.azTarikh,
@@ -221,7 +223,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           oprCode,
                           invCode,
                           statusCode,
-                          TrzFCustObject.ZeroValue);
+                          TrzFCustObject.ZeroValue,
+                           dataAccount[2]);
 
                 sql += UnitPublic.SpiltCodeAnd("CustCode", TrzFCustObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("CGruCode", TrzFCustObject.CGruCode);

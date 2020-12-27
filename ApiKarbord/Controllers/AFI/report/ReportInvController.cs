@@ -69,7 +69,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzIObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  dbo.Web_TrzIKala('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}') AS TrzI where 1 = 1 ",
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKala('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}') AS TrzI where 1 = 1 ",
                           TrzIObject.azTarikh,
                           TrzIObject.taTarikh,
                           modeCode,
@@ -79,7 +79,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           mkzCode,
                           oprCode,
                           invCode,
-                          statusCode
+                          statusCode,
+                          dataAccount[2]
                           );
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIObject.KalaCode);
 
@@ -137,7 +138,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzIExfObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}') AS TrzIExf where 1 = 1 ",
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKalaExf('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}') AS TrzIExf where 1 = 1 ",
                           TrzIExfObject.azTarikh,
                           TrzIExfObject.taTarikh,
                           modeCode,
@@ -147,7 +148,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           mkzCode,
                           oprCode,
                           invCode,
-                          statusCode
+                          statusCode,
+                          dataAccount[2]
                           );
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIExfObject.KalaCode);
 
