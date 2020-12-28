@@ -266,7 +266,7 @@ namespace ApiKarbord.Controllers.AFI.report
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_TChk('') AS TChk where 1 = 1");
+                          @"select top(10000) * FROM  Web_TChk('{0}') AS TChk where 1 = 1", dataAccount[2]);
 
                 sql += string.Format(" and PDMode = {0} ", TChkObject.PDMode);
 

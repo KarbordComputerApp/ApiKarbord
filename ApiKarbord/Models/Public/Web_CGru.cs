@@ -11,12 +11,14 @@
         [Key]
 
         public string Code { get; set; }
+
+        public string SortCode { get; set; }
+
         public string Name { get; set; }
 
         public string Spec { get; set; }
 
         public int Level { get; set; }
-
        
         public short? Mode { get; set; }
     }

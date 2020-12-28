@@ -266,11 +266,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 string invCode = UnitPublic.SpiltCodeCama(KrdxObject.InvCode);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * from (select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}',{2},'{3}','{4}') AS Krdx where 1 = 1 ",
+                          @"select * from (select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}',{2},'{3}','{4}','{5}') AS Krdx where 1 = 1 ",
                           KrdxObject.azTarikh,
                           KrdxObject.taTarikh,
                           KrdxObject.Naghl,
-                          KrdxObject.KalaCode, invCode);
+                          KrdxObject.KalaCode,
+                          invCode,
+                          dataAccount[2]);
 
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", KrdxObject.KGruCode);
                 sql += UnitPublic.SpiltCodeAnd("ThvlCode", KrdxObject.ThvlCode);

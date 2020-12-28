@@ -13,6 +13,7 @@
         [StringLength(50)]
         public string Code { get; set; }
 
+        public string SortCode { get; set; }
 
         [StringLength(100)]
         public string Name { get; set; }
