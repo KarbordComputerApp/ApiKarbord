@@ -944,6 +944,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string RelatedDocs { get; set; }
 
+            public byte? FinalCommTrs { get; set; }
+
         }
 
         public class ErjDocKObject
@@ -979,10 +981,10 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (10000)  * FROM  Web_ErjDocK('{0}') AS ErjDocK where 1 = 1",
-                          ErjDocKObject.SrchSt);
+                          @"select top (10000)  * FROM  Web_ErjDocK('{0}','{1}') AS ErjDocK where 1 = 1",
+                          ErjDocKObject.SrchSt, dataAccount[2]);
 
-                if (ErjDocKObject.userMode == "USER")
+                if (ErjDocKObject.userMode == "USER")  // بعدا باید درست شود
                     sql += string.Format(" and Eghdam = '{0}' ", ErjDocKObject.userName);
 
                 if (ErjDocKObject.azTarikh != "")
@@ -1181,6 +1183,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string RjReadSt { get; set; }
 
+            public byte? FinalCommTrs { get; set; }
+
+
         }
 
 
@@ -1225,12 +1230,13 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}') AS ErjDocK where 1 = 1 "
+                          @"select  top (10000) * FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}','{5}') AS ErjDocB_Last where 1 = 1 "
                           , ErjDocB_Last.erjaMode
                           , ErjDocB_Last.docBMode
                           , ErjDocB_Last.fromUserCode
                           , ErjDocB_Last.toUserCode
-                          , ErjDocB_Last.srchSt);
+                          , ErjDocB_Last.srchSt
+                          , dataAccount[2]);
 
                 if (ErjDocB_Last.azDocDate != "")
                     sql += string.Format(" and DocDate >= '{0}' ", ErjDocB_Last.azDocDate);
