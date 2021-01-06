@@ -1016,27 +1016,11 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public string Code { get; set; }
 
-            //public int? GroupNo { get; set; }
-
-            //public string Trs { get; set; }
-
-            //public string ProgName { get; set; }
 
             public string Name { get; set; }
 
-            //public string Psw { get; set; }
-
-            //public image Emza { get; set; }
-
-            //public byte Version { get; set; }
-
-            //public string LtnName { get; set; }
-
-            //public string TrsRprt { get; set; }
 
             public string Spec { get; set; }
-
-            //public string VstrCode { get; set; }
         }
 
         // GET: api/Web_Data/Web_ErjUsers   ارجاع شونده/ارجاع دهنده
@@ -1049,6 +1033,31 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(@"Select * from Web_ErjUsers('{0}')", userCode);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjUsers>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
+        public partial class Web_ErjRepUsers
+        {
+            public int Tag { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+        }
+
+        // GET: api/Web_Data/Web_ErjRepUsers   ارجاع شونده/ارجاع دهنده
+        [Route("api/Web_Data/Web_ErjRepUsers/{ace}/{sal}/{group}/{UserCode}")]
+        public async Task<IHttpActionResult> GetWeb_ErjRepUsers(string ace, string sal, string group, string userCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select * from Web_ErjRepUsers('{0}')", userCode);
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjRepUsers>(sql).ToList();
                 return Ok(listDB);
             }
             return Ok(con);
