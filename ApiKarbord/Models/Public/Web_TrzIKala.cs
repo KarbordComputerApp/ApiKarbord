@@ -15,6 +15,8 @@
 
         public string KalaName { get; set; }
 
+        public string SortKalaName { get; set; }
+
         public string KalaFanniNo { get; set; }
 
         public string InvCode { get; set; }

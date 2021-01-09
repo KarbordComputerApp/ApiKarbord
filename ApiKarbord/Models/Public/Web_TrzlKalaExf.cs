@@ -12,8 +12,12 @@
         [StringLength(100)]
         public string KalaCode { get; set; }
 
+        public string SortKalaCode { get; set; }
+
         [StringLength(250)]
         public string KalaName { get; set; }
+
+        public string SortKalaName { get; set; }
 
         [StringLength(50)]
         public string KalaFanniNo { get; set; }
