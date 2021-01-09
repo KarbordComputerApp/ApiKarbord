@@ -196,6 +196,14 @@
         [StringLength(50)]
         public string VGruCode { get; set; }
 
+        public string MkzCode { get; set; }
+
+        public string MkzName { get; set; }
+
+        public string OprCode { get; set; }
+
+        public string OprName { get; set; }
+
         public double? Amount1 { get; set; }
 
         public double? Amount2 { get; set; }

@@ -11,6 +11,8 @@
         [Key]
         public string KalaCode { get; set; }
 
+        public string SortKalaCode { get; set; }
+
         public string KalaName { get; set; }
 
         public string KalaFanniNo { get; set; }

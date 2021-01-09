@@ -170,6 +170,14 @@
         [StringLength(250)]
         public string F20 { get; set; }
 
+        public string MkzCode { get; set; }
+
+        public string MkzName { get; set; }
+
+        public string OprCode { get; set; }
+
+        public string OprName { get; set; }
+
         public DateTime? UpdateDate { get; set; }
 
     }

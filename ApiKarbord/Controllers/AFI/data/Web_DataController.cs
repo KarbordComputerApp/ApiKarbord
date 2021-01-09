@@ -1039,7 +1039,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        public partial class Web_ErjRepUsers
+        public partial class Web_RepToUsers
         {
             public int Tag { get; set; }
 
@@ -1048,16 +1048,40 @@ namespace ApiKarbord.Controllers.AFI.data
             public string Name { get; set; }
         }
 
-        // GET: api/Web_Data/Web_ErjRepUsers   ارجاع شونده/ارجاع دهنده
-        [Route("api/Web_Data/Web_ErjRepUsers/{ace}/{sal}/{group}/{UserCode}")]
-        public async Task<IHttpActionResult> GetWeb_ErjRepUsers(string ace, string sal, string group, string userCode)
+        // GET: api/Web_Data/Web_RepToUsers   ارجاع شونده
+        [Route("api/Web_Data/Web_RepToUsers/{ace}/{sal}/{group}/{UserCode}")]
+        public async Task<IHttpActionResult> GetWeb_RepToUsers(string ace, string sal, string group, string userCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
                 string sql = string.Format(@"Select * from Web_RepToUsers('{0}') order by code", userCode);
-                var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjRepUsers>(sql).ToList();
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_RepToUsers>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
+        public partial class Web_RepFromUsers
+        {
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+        }
+
+        // GET: api/Web_Data/Web_RepFromUsers   ارجاع دهنده
+        [Route("api/Web_Data/Web_RepFromUsers/{ace}/{sal}/{group}/{UserCode}")]
+        public async Task<IHttpActionResult> GetWeb_RepFromUsers(string ace, string sal, string group, string userCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select * from Web_RepFromUsers('{0}') order by code", userCode);
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_RepFromUsers>(sql).ToList();
                 return Ok(listDB);
             }
             return Ok(con);
