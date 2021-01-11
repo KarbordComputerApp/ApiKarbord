@@ -1113,6 +1113,66 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class DocAttachObject
+        {
+            public long SerialNumber { get; set; }
+
+            public bool? isData { get; set; }
+        }
+
+
+        // Post: api/Web_Data/DocAttach پیوست  
+        [Route("api/Web_Data/DocAttach/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_DocAttach(string ace, string sal, string group, DocAttachObject DocAttachObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select IId,ProgName,ModeCode,SerialNumber,BandNo,Code,Comm,FName");
+                if (DocAttachObject.isData == true)
+                    sql += ",Atch";
+
+                sql += " FROM Web_DocAttach where 1 = 1";
+
+                if (DocAttachObject.SerialNumber > 0)
+                    sql += " and SerialNumber = " + DocAttachObject.SerialNumber;
+
+                var list = UnitDatabase.db.Database.SqlQuery<Web_DocAttach>(sql);
+                return Ok(list);
+            }
+            return Ok(con);
+        }
+
+
+        public class DownloadAttachObject
+        {
+            public int IId { get; set; }
+        }
+
+
+        // Post: api/Web_Data/DownloadAttach   دانلود پیوست  
+        [Route("api/Web_Data/DownloadAttach/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_DownloadAttach(string ace, string sal, string group, DownloadAttachObject DownloadAttachObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select Atch FROM Web_DocAttach where IId = {0}", DownloadAttachObject.IId);
+
+                var list = UnitDatabase.db.Database.SqlQuery<byte[]>(sql);
+                return Ok(list);
+            }
+            return Ok(con);
+        }
+
+
+
         public partial class Web_ErjResult
         {
             public int DocBMode { get; set; }

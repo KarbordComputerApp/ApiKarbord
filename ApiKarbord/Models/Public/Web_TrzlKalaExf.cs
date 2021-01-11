@@ -28,6 +28,10 @@
         [StringLength(250)]
         public string InvName { get; set; }
 
+        public string SortInvCode { get; set; }
+
+        public string SortInvName { get; set; }
+
         [StringLength(50)]
         public string KalaUnitName1 { get; set; }
 

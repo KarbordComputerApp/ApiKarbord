@@ -23,6 +23,10 @@
 
         public string InvName { get; set; }
 
+        public string SortInvCode { get; set; }
+
+        public string SortInvName { get; set; }
+
         public string KalaUnitName1 { get; set; }
 
         public string KalaUnitName2 { get; set; }
