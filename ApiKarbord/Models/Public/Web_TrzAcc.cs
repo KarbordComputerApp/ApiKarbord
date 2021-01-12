@@ -13,6 +13,7 @@
 
         public short? Level { get; set; }
 
+        public byte? HasChild { get; set; }
 
         public string SortAccCode { get; set; }
 

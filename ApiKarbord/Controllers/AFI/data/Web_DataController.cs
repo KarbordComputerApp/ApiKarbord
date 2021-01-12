@@ -1116,8 +1116,6 @@ namespace ApiKarbord.Controllers.AFI.data
         public class DocAttachObject
         {
             public long SerialNumber { get; set; }
-
-            public bool? isData { get; set; }
         }
 
 
@@ -1131,14 +1129,11 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select IId,ProgName,ModeCode,SerialNumber,BandNo,Code,Comm,FName");
-                if (DocAttachObject.isData == true)
-                    sql += ",Atch";
-
-                sql += " FROM Web_DocAttach where 1 = 1";
-
-                if (DocAttachObject.SerialNumber > 0)
-                    sql += " and SerialNumber = " + DocAttachObject.SerialNumber;
+                                           @"select  SerialNumber,Comm,FName FROM Web_DocAttach
+                                             where   ModeCode = {0} and ProgName='{1}' and SerialNumber = {2} order by BandNo desc",
+                                             1,
+                                             "ERJ1",
+                                             DocAttachObject.SerialNumber);
 
                 var list = UnitDatabase.db.Database.SqlQuery<Web_DocAttach>(sql);
                 return Ok(list);
@@ -1149,7 +1144,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class DownloadAttachObject
         {
-            public int IId { get; set; }
+            public long SerialNumber { get; set; }
         }
 
 
@@ -1163,7 +1158,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select Atch FROM Web_DocAttach where IId = {0}", DownloadAttachObject.IId);
+                          @"select Atch FROM Web_DocAttach where SerialNumber = {0}", DownloadAttachObject.SerialNumber);
 
                 var list = UnitDatabase.db.Database.SqlQuery<byte[]>(sql);
                 return Ok(list);
