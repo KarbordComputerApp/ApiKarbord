@@ -17,7 +17,9 @@ using ApiKarbord.Controllers.Unit;
 using ApiKarbord.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-
+using System.IO;
+using System.Drawing;
+using System.IO.Compression;
 
 namespace ApiKarbord.Controllers.AFI.data
 {
@@ -1129,7 +1131,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"select  SerialNumber,Comm,FName FROM Web_DocAttach
+                                           @"select  SerialNumber,Comm,FName,BandNo FROM Web_DocAttach
                                              where   ModeCode = {0} and ProgName='{1}' and SerialNumber = {2} order by BandNo desc",
                                              1,
                                              "ERJ1",
@@ -1145,7 +1147,27 @@ namespace ApiKarbord.Controllers.AFI.data
         public class DownloadAttachObject
         {
             public long SerialNumber { get; set; }
+            public int BandNo { get; set; }
         }
+
+        public class DownloadAttach
+        {
+            public byte[] Atch { get; set; }
+        }
+
+
+        private bool SaveBytesToFile(byte[] butes)
+        {
+
+                using (var fileStream = new FileStream(@"C:\test.pdf", FileMode.Create, FileAccess.Write))
+                {
+                    fileStream.Write(butes, 0, butes.Length);
+                }
+                return true;
+
+
+        }
+
 
 
         // Post: api/Web_Data/DownloadAttach   دانلود پیوست  
@@ -1158,10 +1180,22 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select Atch FROM Web_DocAttach where SerialNumber = {0}", DownloadAttachObject.SerialNumber);
+                          @"select Atch FROM Web_DocAttach where SerialNumber = {0} and BandNo = {1}",
+                          DownloadAttachObject.SerialNumber,
+                          DownloadAttachObject.BandNo);
 
-                var list = UnitDatabase.db.Database.SqlQuery<byte[]>(sql);
-                return Ok(list);
+
+
+
+                var list = UnitDatabase.db.Database.SqlQuery<DownloadAttach>(sql).Single();
+
+               // byte[] imageData = 
+              //  MemoryStream ms = new MemoryStream(imageData);
+
+               // string s = System.Text.Encoding.UTF8.GetString(list.Atch);
+
+
+                return Ok(list.Atch);
             }
             return Ok(con);
         }

@@ -11,6 +11,8 @@
 
         public long? SerialNumber { get; set; }
 
+        public int? BandNo { get; set; }
+
         [StringLength(250)]
         public string Comm { get; set; }
 

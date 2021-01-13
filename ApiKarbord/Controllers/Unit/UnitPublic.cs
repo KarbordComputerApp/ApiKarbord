@@ -16,7 +16,7 @@ namespace ApiKarbord.Controllers.Unit
 
     public class UnitPublic
     {
-        //Server.MapPath("ini/SqlServerConfig.Ini");
+        // Server.MapPath("ini/SqlServerConfig.Ini");
         public static string Appddress; //ادرس نرم افزار
         public static IniFile MyIni;
         public static IniFile MyIniServer;

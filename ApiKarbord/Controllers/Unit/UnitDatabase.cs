@@ -65,20 +65,27 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //Debug
-       static string addressApiAccounting = "http://127.0.0.1:902/";
-       // static string addressApiAccounting = "http://localhost:49961/";
+
+        //static string addressApiAccounting = "http://127.0.0.1:902/";
+        // static string addressApiAccounting = "http://localhost:49961/";
 
         // static string addressApiAccounting = "http://192.168.6.204:902/"; //  Canada
         // static string addressApiAccounting = "http://192.168.0.109:902/"; //  Office 109
         // static string addressApiAccounting = "http://185.208.174.64:902/";//  Interanet
 
 
+        static string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
 
+        static IniFile MyIni = new IniFile(IniPath);
+
+        static string  addressApiAccounting = MyIni.Read("serverName");
 
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
         {
+           // addressApiAccounting = MyIni.Read("serverName");
+
             PersianCalendar pc = new System.Globalization.PersianCalendar();
             string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
 
@@ -102,11 +109,13 @@ namespace ApiKarbord.Controllers.Unit
 
                 var list = model.First();
 
-                if ( UnitPublic.GetPersianDaysDiffDate(list.toDate, PDate) > 0 )
+                if (list.toDate != "" && list.fromDate != "")
                 {
-                    return "Expire Account";
+                    if (UnitPublic.GetPersianDaysDiffDate(list.toDate, PDate) > 0)
+                    {
+                        return "Expire Account";
+                    }
                 }
-
                 if (list.active == false) 
                 {
                     return "Disable Account";

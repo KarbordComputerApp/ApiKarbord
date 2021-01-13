@@ -292,11 +292,10 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
 
-        // Post: api/ReportInv/Chante_FDoc_Moved گزارش کاردکس کالا
+        // Get: api/ReportInv/Chante_FDoc_Moved گزارش کاردکس کالا
         // HE_Report_Chante_FDoc_Moved
         [Route("api/ReportInv/Chante_FDoc_Moved/{ace}/{sal}/{group}")]
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_Chante_FDoc_Moved(string ace, string sal, string group)
+        public async Task<IHttpActionResult> GetWeb_Chante_FDoc_Moved(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);

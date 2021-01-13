@@ -347,7 +347,7 @@
     <Content Include="Content\fonts\Vazir-FD-WOL.eot" />
     <Content Include="Content\fonts\Vazir-FD-WOL.ttf" />
     <Content Include="Content\fonts\Vazir-FD-WOL.woff" />
-    <Content Include="Content\ini\SqlServerConfig.Ini" />
+    <Content Include="Content\ini\ServerConfig.Ini" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
