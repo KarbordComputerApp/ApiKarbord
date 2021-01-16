@@ -1386,6 +1386,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocB_Last.khdtCode);
                 sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocB_Last.custCode);
 
+                sql += "order by RjUpdateDate Desc,RjDate Desc";
+
+
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
                 return Ok(listErjDocB_Last);
             }
