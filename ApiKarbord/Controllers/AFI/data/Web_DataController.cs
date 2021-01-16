@@ -1307,6 +1307,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public byte? FinalCommTrs { get; set; }
 
+            public byte DocAttachExists { get; set; }
 
         }
 
