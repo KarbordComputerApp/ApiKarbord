@@ -1156,16 +1156,13 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        private bool SaveBytesToFile(byte[] butes)
+        private bool SaveBytesToFile(byte[] butes, string filename )
         {
-
-                using (var fileStream = new FileStream(@"C:\test.pdf", FileMode.Create, FileAccess.Write))
+                using (var fileStream = new FileStream(@"D:\"+filename+".pdf", FileMode.Create, FileAccess.Write))
                 {
                     fileStream.Write(butes, 0, butes.Length);
                 }
                 return true;
-
-
         }
 
 
@@ -1186,13 +1183,13 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-
                 var list = UnitDatabase.db.Database.SqlQuery<DownloadAttach>(sql).Single();
 
+               // SaveBytesToFile(list.Atch,"a.zip");
                // byte[] imageData = 
-              //  MemoryStream ms = new MemoryStream(imageData);
+               //  MemoryStream ms = new MemoryStream(list.Atch);
 
-               // string s = System.Text.Encoding.UTF8.GetString(list.Atch);
+                // string s = System.Text.Encoding.UTF8.GetString(list.Atch);
 
 
                 return Ok(list.Atch);
@@ -1386,7 +1383,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocB_Last.khdtCode);
                 sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocB_Last.custCode);
 
-                sql += "order by RjUpdateDate Desc,RjDate Desc";
+                //sql += "order by RjUpdateDate Desc,RjDate Desc";
 
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
