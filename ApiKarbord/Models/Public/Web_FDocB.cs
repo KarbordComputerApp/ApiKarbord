@@ -51,7 +51,7 @@
 
         public byte? KalaDeghatR3 { get; set; }
 
-        public int? DeghatR { get; set; }
+        public byte? DeghatR { get; set; }
 
         // public int Deghat1 { get; set; }
 

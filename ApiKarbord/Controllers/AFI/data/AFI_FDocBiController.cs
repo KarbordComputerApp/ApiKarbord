@@ -164,7 +164,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         await UnitDatabase.db.SaveChangesAsync();
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     throw;
                 }
