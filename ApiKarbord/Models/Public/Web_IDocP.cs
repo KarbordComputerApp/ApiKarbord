@@ -146,7 +146,7 @@ namespace ApiKarbord.Models
         [StringLength(50)]
         public string MainUnitName { get; set; }
 
-        public int? DeghatR { get; set; }
+        public byte? DeghatR { get; set; }
 
         [StringLength(10)]
         public string DocNo { get; set; }

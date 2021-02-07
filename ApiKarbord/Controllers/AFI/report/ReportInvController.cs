@@ -172,6 +172,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string taTarikh { get; set; }
 
+            public long DocNo { get; set; }
+
             public string ModeCode { get; set; }
 
             public string NoSanadAnbar { get; set; }
@@ -215,6 +217,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("Status", IDocRObject.StatusCode);
                 sql += UnitPublic.SpiltCodeAnd("ModeCode", IDocRObject.ModeCode);
 
+                if (IDocRObject.DocNo > 0)
+                    sql += " and DocNo = " + IDocRObject.DocNo;
 
                 sql += " order by DocNo ";
 

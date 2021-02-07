@@ -81,6 +81,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string updatedate { get; set; }
 
+            public string ModeCode { get; set; }
+
         }
 
         // Post: api/IDocData/IDocH لیست سند انبار   
@@ -144,8 +146,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F18,
                                        F19,
                                        F20 
-                                       from Web_IDocH_F(3,'{0}') where InOut = {1} ", IDocHMinObject.user, IDocHMinObject.InOut);
+                                       from Web_IDocH_F(3,'{0}') where 1 = 1 ", IDocHMinObject.user);
 
+                
                 //if (ModeCode == "in")
                 //   sql += " (101,102,103,106,108,110) ";
                 //else if (ModeCode == "out")
@@ -166,6 +169,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (IDocHMinObject.updatedate != null)
                     sql += " and updatedate >= CAST('" + IDocHMinObject.updatedate + "' AS DATETIME2)";
+
+                if (IDocHMinObject.ModeCode != null)
+                    sql += UnitPublic.SpiltCodeAnd("ModeCode", IDocHMinObject.ModeCode);
+                else
+                    sql += " and InOut = " + IDocHMinObject.InOut;
+
 
                 sql += " order by docdate desc, SortDocNo desc";
                 var listIDocH = UnitDatabase.db.Database.SqlQuery<Web_IDocHMini>(sql);
