@@ -156,7 +156,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (IDocHMinObject.invSelect != "")
                 {
-                    sql += " and InvCode = '" + IDocHMinObject.invSelect + "' ";
+                    sql += UnitPublic.SpiltCodeAnd("InvCode", IDocHMinObject.invSelect);
+                    //sql += " and InvCode = '" + IDocHMinObject.invSelect + "' ";
                 }
 
                 if (IDocHMinObject.select == 1)
@@ -173,7 +174,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (IDocHMinObject.ModeCode != null)
                     sql += UnitPublic.SpiltCodeAnd("ModeCode", IDocHMinObject.ModeCode);
                 else
+                {
+                    if (IDocHMinObject.InOut > 0)
                     sql += " and InOut = " + IDocHMinObject.InOut;
+                }
 
 
                 sql += " order by docdate desc, SortDocNo desc";
