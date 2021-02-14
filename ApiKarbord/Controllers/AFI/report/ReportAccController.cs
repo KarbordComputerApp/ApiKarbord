@@ -48,7 +48,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
             if (con == "ok")
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
@@ -117,7 +117,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "15", 9, 0);
             if (con == "ok")
             {
                 // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
@@ -190,7 +190,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "16", 9, 0);
             if (con == "ok")
             {
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
@@ -262,7 +262,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "17", 9, 0);
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,

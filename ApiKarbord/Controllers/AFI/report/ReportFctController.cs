@@ -51,7 +51,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_FDocR(string ace, string sal, string group, FDocRObject FDocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "18", 9, 0);
             if (con == "ok")
             {
 
@@ -119,7 +119,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, TrzFKalaObject TrzFKalaObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "19", 9, 0);
             if (con == "ok")
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.OprCode);
@@ -199,7 +199,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzFCust(string ace, string sal, string group, TrzFCustObject TrzFCustObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "20", 9, 0);
             if (con == "ok")
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFCustObject.OprCode);
