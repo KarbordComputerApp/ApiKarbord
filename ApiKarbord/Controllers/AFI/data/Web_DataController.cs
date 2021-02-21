@@ -262,7 +262,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public IQueryable<Web_Param> GetWeb_Param(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "Param", 0, 0);
             if (con == "ok")
             {
                 return UnitDatabase.db.Web_Param;
@@ -462,7 +462,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_Login(string user, string pass, string param1, string param2)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "00", 0, "", 0, 0);
             if (con == "ok")
             {
                 if (pass == "null")
