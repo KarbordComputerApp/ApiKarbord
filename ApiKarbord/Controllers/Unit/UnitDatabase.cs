@@ -302,6 +302,7 @@ namespace ApiKarbord.Controllers.Unit
                                              SearchOption.TopDirectoryOnly);
             string sal = "";
             string group = "";
+            bool isCols = false;
 
             foreach (var item in filePaths)
             {
@@ -325,6 +326,15 @@ namespace ApiKarbord.Controllers.Unit
                             group = "0" + group;
 
                         dbName = ("ACE_" + files[2] + group + sal);
+
+                        if (files.Length == 6)
+                        {
+                            string nameTemp = (files[5].Split('.'))[0];
+                            if (nameTemp == "Col")
+                            {
+                                isCols = true;
+                            }
+                        }
                     }
 
 
@@ -333,6 +343,7 @@ namespace ApiKarbord.Controllers.Unit
                     string connectionString = String.Format(
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
                                     list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
+
 
                     var connection = new SqlConnection(connectionString);
 
@@ -372,9 +383,11 @@ namespace ApiKarbord.Controllers.Unit
                             db.Database.ExecuteSqlCommand(sql);
                         }
 
-                        if (oldVer < UnitPublic.VerDB)
+                        if (oldVer < UnitPublic.VerDB || isCols == true)
                         {
-                            sql = string.Format(@"
+                            if (isCols == false)
+                            {
+                                sql = string.Format(@"
                                             DECLARE @sql VARCHAR(MAX) = '' 
                                             DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
                                             SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
@@ -404,8 +417,8 @@ namespace ApiKarbord.Controllers.Unit
                                               close cur
                                               deallocate cur
                                          ");
-                            db.Database.ExecuteSqlCommand(sql);
-
+                                db.Database.ExecuteSqlCommand(sql);
+                            }
 
 
                             string lineOfText;
@@ -464,14 +477,20 @@ namespace ApiKarbord.Controllers.Unit
                                     }
                                     catch (Exception e)
                                     {
+                                        filestream.Close();
                                         throw;
+                                        
                                     }
                                 }
                             }
 
-                            sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
-                            db.Database.ExecuteSqlCommand(sql);
+                            if (isCols == false)
+                            {
+                                sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
+                                db.Database.ExecuteSqlCommand(sql);
+                            }
                             filestream.Close();
+                            File.Delete(item);
 
                             // return "به روز رسانی انجام شد";
                         }
@@ -481,15 +500,6 @@ namespace ApiKarbord.Controllers.Unit
                         // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
                         throw;
                     }
-
-
-
-
-
-
-
-
-
                 }
 
             }
