@@ -306,6 +306,7 @@ namespace ApiKarbord.Controllers.Unit
 
             foreach (var item in filePaths)
             {
+                isCols = false;
                 string fileName = Path.GetFileName(item);
                 var files = fileName.Split('_');
                 if (files[1] == list.lockNumber)
