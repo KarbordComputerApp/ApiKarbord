@@ -1113,6 +1113,44 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class ErjDocH_FObject
+        {
+            public byte Mode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public int select { get; set; }
+
+            public bool accessSanad { get; set; }
+
+        }
+
+
+        // Post: api/Web_Data/ErjDocH_F  فهرست پرونده ها  
+        [Route("api/Web_Data/ErjDocH_F/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ErjDocH_F(string ace, string sal, string group, ErjDocH_FObject ErjDocH_FObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = "declare @enddate nvarchar(20) ";
+                sql += "select ";
+                if (ErjDocH_FObject.select == 0)
+                    sql += " top(100) ";
+                
+                sql= string.Format(CultureInfo.InvariantCulture,
+                          @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH_F where 1 = 1",
+                          ErjDocH_FObject.Mode, dataAccount[2]);
+
+                var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocH_F>(sql);
+                return Ok(list);
+            }
+            return Ok(con);
+        }
+
+
         public class DocAttachObject
         {
             public long SerialNumber { get; set; }
@@ -1154,13 +1192,13 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        private bool SaveBytesToFile(byte[] butes, string filename )
+        private bool SaveBytesToFile(byte[] butes, string filename)
         {
-                using (var fileStream = new FileStream(@"D:\"+filename+".pdf", FileMode.Create, FileAccess.Write))
-                {
-                    fileStream.Write(butes, 0, butes.Length);
-                }
-                return true;
+            using (var fileStream = new FileStream(@"D:\" + filename + ".pdf", FileMode.Create, FileAccess.Write))
+            {
+                fileStream.Write(butes, 0, butes.Length);
+            }
+            return true;
         }
 
 
@@ -1183,9 +1221,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 var list = UnitDatabase.db.Database.SqlQuery<DownloadAttach>(sql).Single();
 
-               // SaveBytesToFile(list.Atch,"a.zip");
-               // byte[] imageData = 
-               //  MemoryStream ms = new MemoryStream(list.Atch);
+                // SaveBytesToFile(list.Atch,"a.zip");
+                // byte[] imageData = 
+                //  MemoryStream ms = new MemoryStream(list.Atch);
 
                 // string s = System.Text.Encoding.UTF8.GetString(list.Atch);
 
@@ -1587,6 +1625,79 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class Web_ErjSaveDocB_RjRead
+        {
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
+            public string RjReadSt { get; set; }
+        }
+
+        // POST: api/Web_Data/ErjSaveDocB_RjRead
+        [Route("api/Web_Data/ErjSaveDocB_RjRead/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDocB_RjRead(string ace, string sal, string group, Web_ErjSaveDocB_RjRead Web_ErjSaveDocB_RjRead)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+
+                try
+                {
+                    string sql = "";
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[Web_ErjSaveDocB_RjRead]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1},
+		                            @RjReadSt = '{2}'
+                            SELECT	'Return Value' = @return_value",
+                        Web_ErjSaveDocB_RjRead.SerialNumber,
+                        Web_ErjSaveDocB_RjRead.BandNo,
+                        Web_ErjSaveDocB_RjRead.RjReadSt
+                        );
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+                return Ok(value);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
 
 
 
