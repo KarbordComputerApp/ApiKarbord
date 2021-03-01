@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public class Web_ErjDocH_F
+    public class Web_ErjDocH
     {
         public int TrsMode { get; set; }
 

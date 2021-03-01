@@ -1113,7 +1113,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class ErjDocH_FObject
+        public class ErjDocHObject
         {
             public byte Mode { get; set; }
 
@@ -1126,10 +1126,10 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // Post: api/Web_Data/ErjDocH_F  فهرست پرونده ها  
-        [Route("api/Web_Data/ErjDocH_F/{ace}/{sal}/{group}")]
+        // Post: api/Web_Data/ErjDocH  فهرست پرونده ها  
+        [Route("api/Web_Data/ErjDocH/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_ErjDocH_F(string ace, string sal, string group, ErjDocH_FObject ErjDocH_FObject)
+        public async Task<IHttpActionResult> PostWeb_ErjDocH_F(string ace, string sal, string group, ErjDocHObject ErjDocHObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
@@ -1137,14 +1137,14 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = "declare @enddate nvarchar(20) ";
                 sql += "select ";
-                if (ErjDocH_FObject.select == 0)
+                if (ErjDocHObject.select == 0)
                     sql += " top(100) ";
                 
-                sql= string.Format(CultureInfo.InvariantCulture,
-                          @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH_F where 1 = 1",
-                          ErjDocH_FObject.Mode, dataAccount[2]);
+                sql += string.Format(CultureInfo.InvariantCulture,
+                          @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH where 1 = 1",
+                          ErjDocHObject.Mode, dataAccount[2]);
 
-                var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocH_F>(sql);
+                var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocH>(sql);
                 return Ok(list);
             }
             return Ok(con);
