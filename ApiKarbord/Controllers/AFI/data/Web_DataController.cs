@@ -1139,7 +1139,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += "select ";
                 if (ErjDocHObject.select == 0)
                     sql += " top(100) ";
-                
+
                 sql += string.Format(CultureInfo.InvariantCulture,
                           @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH where 1 = 1",
                           ErjDocHObject.Mode, dataAccount[2]);
@@ -1489,7 +1489,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class Web_ErjSaveDocB_S
+        public class Web_ErjSaveDoc_BSave
         {
             public long SerialNumber { get; set; }
             public string Natijeh { get; set; }
@@ -1502,9 +1502,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // POST: api/Web_Data/ErjSaveDocB_S
-        [Route("api/Web_Data/ErjSaveDocB_S/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostErjSaveDocB_S(string ace, string sal, string group, Web_ErjSaveDocB_S Web_ErjSaveDocB_S)
+        // POST: api/Web_Data/ErjSaveDoc_BSave
+        [Route("api/Web_Data/ErjSaveDoc_BSave/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_BSave(string ace, string sal, string group, Web_ErjSaveDoc_BSave Web_ErjSaveDoc_BSave)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -1513,7 +1513,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Web_ErjSaveDocB_S.SerialNumber, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Web_ErjSaveDoc_BSave.SerialNumber, "", 0, 0);
             if (con == "ok")
             {
                 try
@@ -1522,7 +1522,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @" DECLARE	@return_value int,
 		                            @BandNo nvarchar(10)
-                            EXEC	@return_value = [dbo].[Web_ErjSaveDocB_S]
+                            EXEC	@return_value = [dbo].[Web_ErjSaveDoc_BSave]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1} ,
 		                            @Natijeh = N'{2}',
@@ -1533,14 +1533,14 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @RjMhltDate = N'{7}'
 
                             SELECT	@BandNo as N'@BandNo' ",
-                         Web_ErjSaveDocB_S.SerialNumber,
-                         Web_ErjSaveDocB_S.BandNo,
-                         Web_ErjSaveDocB_S.Natijeh,
-                         Web_ErjSaveDocB_S.FromUserCode,
-                         Web_ErjSaveDocB_S.ToUserCode,
-                         Web_ErjSaveDocB_S.RjDate,
-                         Web_ErjSaveDocB_S.RjTime,
-                         Web_ErjSaveDocB_S.RjMhltDate);
+                         Web_ErjSaveDoc_BSave.SerialNumber,
+                         Web_ErjSaveDoc_BSave.BandNo,
+                         Web_ErjSaveDoc_BSave.Natijeh,
+                         Web_ErjSaveDoc_BSave.FromUserCode,
+                         Web_ErjSaveDoc_BSave.ToUserCode,
+                         Web_ErjSaveDoc_BSave.RjDate,
+                         Web_ErjSaveDoc_BSave.RjTime,
+                         Web_ErjSaveDoc_BSave.RjMhltDate);
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
@@ -1557,8 +1557,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-
-        public class Web_ErjSaveDocC_S
+        public class Web_ErjSaveDoc_CSave
         {
             public long SerialNumber { get; set; }
 
@@ -1571,9 +1570,9 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RjDate { get; set; }
         }
 
-        // POST: api/Web_Data/ErjSaveDocC_S
-        [Route("api/Web_Data/ErjSaveDocC_S/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostErjSaveDocC_S(string ace, string sal, string group, [FromBody]List<Web_ErjSaveDocC_S> Web_ErjSaveDocC_S)
+        // POST: api/Web_Data/ErjSaveDoc_CSave
+        [Route("api/Web_Data/ErjSaveDoc_CSave/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_CSave(string ace, string sal, string group, [FromBody]List<Web_ErjSaveDoc_CSave> Web_ErjSaveDoc_CSave)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -1589,12 +1588,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     string sql = "";
-                    foreach (var item in Web_ErjSaveDocC_S)
+                    foreach (var item in Web_ErjSaveDoc_CSave)
                     {
                         sql = string.Format(CultureInfo.InvariantCulture,
                              @" DECLARE	@return_value int,
                                         @BandNo nvarchar(10)
-                               EXEC	@return_value = [dbo].[Web_ErjSaveDocC_S]
+                               EXEC	@return_value = [dbo].[Web_ErjSaveDoc_CSave]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
 		                            @Natijeh = N'{2}',
@@ -1627,19 +1626,10 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-        public class Web_ErjSaveDocB_RjRead
+        public class Web_ErjSaveDoc_RjRead
         {
+            public int DocBMode { get; set; }
+
             public long SerialNumber { get; set; }
 
             public int BandNo { get; set; }
@@ -1647,9 +1637,9 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RjReadSt { get; set; }
         }
 
-        // POST: api/Web_Data/ErjSaveDocB_RjRead
-        [Route("api/Web_Data/ErjSaveDocB_RjRead/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostErjSaveDocB_RjRead(string ace, string sal, string group, Web_ErjSaveDocB_RjRead Web_ErjSaveDocB_RjRead)
+        // POST: api/Web_Data/ErjSaveDoc_RjRead
+        [Route("api/Web_Data/ErjSaveDoc_RjRead/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_RjRead(string ace, string sal, string group, Web_ErjSaveDoc_RjRead Web_ErjSaveDoc_RjRead)
         {
             int value = 0;
             if (!ModelState.IsValid)
@@ -1667,14 +1657,16 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = "";
                     sql = string.Format(CultureInfo.InvariantCulture,
                          @" DECLARE	@return_value int
-                            EXEC	@return_value = [dbo].[Web_ErjSaveDocB_RjRead]
-		                            @SerialNumber = {0},
-		                            @BandNo = {1},
-		                            @RjReadSt = '{2}'
+                            EXEC	@return_value = [dbo].[Web_ErjSaveDoc_RjRead]
+                                    @DocBMode = {0},		                            
+                                    @SerialNumber = {1},
+		                            @BandNo = {2},
+		                            @RjReadSt = '{3}'
                             SELECT	'Return Value' = @return_value",
-                        Web_ErjSaveDocB_RjRead.SerialNumber,
-                        Web_ErjSaveDocB_RjRead.BandNo,
-                        Web_ErjSaveDocB_RjRead.RjReadSt
+                        Web_ErjSaveDoc_RjRead.DocBMode,
+                        Web_ErjSaveDoc_RjRead.SerialNumber,
+                        Web_ErjSaveDoc_RjRead.BandNo,
+                        Web_ErjSaveDoc_RjRead.RjReadSt
                         );
                     value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
 
