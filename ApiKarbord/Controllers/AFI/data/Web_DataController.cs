@@ -1693,10 +1693,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-
-
-
-
         public class KGruObject
         {
             public byte Mode { get; set; }

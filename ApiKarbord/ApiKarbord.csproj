@@ -209,6 +209,7 @@
     <Compile Include="Controllers\AFI\data\AFI_IDocDataController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_IDocHiController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_FDocHiController.cs" />
+    <Compile Include="Controllers\AFI\data\ErjDocHController.cs" />
     <Compile Include="Controllers\AFI\data\Web_DataController.cs" />
     <Compile Include="Controllers\AFI\report\ReportAccController.cs" />
     <Compile Include="Controllers\AFI\report\ReportFctController.cs" />

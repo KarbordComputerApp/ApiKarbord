@@ -12,13 +12,11 @@ using ApiKarbord.Models;
 
 namespace ApiKarbord.Controllers.Unit
 {
-
-
     public class UnitPublic
     {
 
         public static string titleVer = "API KarbordComputer Test : Ver ";
-        public static int VerNumber = 330;
+        public static int VerNumber = 332;
         public static int VerDB = 4;
 
         //public static string titleVer = "API KarbordComputer : Ver ";
