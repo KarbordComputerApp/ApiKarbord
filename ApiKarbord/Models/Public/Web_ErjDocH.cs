@@ -51,6 +51,16 @@
         [Column(TypeName = "ntext")]
         public string DocDesc { get; set; }
 
+        [Column(TypeName = "ntext")]
+        public string FinalComm { get; set; }
+
+        [Column(TypeName = "ntext")]
+        public string EghdamComm { get; set; }
+
+        [Column(TypeName = "ntext")]
+        public string SpecialComm { get; set; }
+
+
         [StringLength(10)]
         public string MhltDate { get; set; }
 
