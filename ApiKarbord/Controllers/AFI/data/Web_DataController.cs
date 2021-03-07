@@ -1861,7 +1861,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        // GET: api/Web_Data/ExtraFields لیست گروه اشخاص
+        // GET: api/Web_Data/ExtraFields لیست مشخصات اضافی
         [Route("api/Web_Data/ExtraFields/{ace}/{sal}/{group}/{modeCode}")]
         public IQueryable<Web_ExtraFields> GetWeb_ExtraFields(string ace, string sal, string group, string modeCode)
         {

@@ -145,5 +145,9 @@
         [Key]
         [Column(Order = 7)]
         public byte DocAttachExists { get; set; }
+
+        public byte DocBExists { get; set; }
+
+        
     }
 }

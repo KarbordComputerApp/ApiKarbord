@@ -130,5 +130,7 @@ namespace ApiKarbord.Models
 
         [StringLength(20)]
         public string ToUserCode { get; set; }
+
+        //public byte DocBExists { get; set; }
     }
 }

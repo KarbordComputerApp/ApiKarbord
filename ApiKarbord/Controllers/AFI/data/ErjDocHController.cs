@@ -31,6 +31,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string MhltDate { get; set; }
 
+            public string AmalDate { get; set; }
+
+            public string EndDate { get; set; }
+
             public byte BranchCode { get; set; }
 
             public string UserCode { get; set; }
@@ -53,7 +57,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string EghdamComm { get; set; }
 
-            public string FinalCommComm { get; set; }
+            public string FinalComm { get; set; }
 
             public string SpecialComm { get; set; }
 
@@ -130,41 +134,43 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @SerialNumber = {2},
 		                            @DocDate = '{3}',
 		                            @MhltDate = '{4}',
-		                            @BranchCode = {5},
-		                            @UserCode = '{6}', 
-		                            @Eghdam = N'{7}',
-		                            @Tanzim = '{8}',
-		                            @TahieShode = '{9}',
-		                            @Status = '{10}',
-		                            @Spec = '{11}',
-		                            @CustCode = '{12}',
-		                            @KhdtCode = '{13}',
-		                            @DocDesc = '{14}',
-		                            @EghdamComm = '{15}',
-		                            @FinalCommComm = '{16}',
-		                            @SpecialComm = '{17}',
-		                            @RelatedDocs = '{18}',
-		                            @Mahramaneh = {19},
-		                            @F01 = '{20}',
-		                            @F02 = '{21}',
-		                            @F03 = '{22}',
-		                            @F04 = '{23}',
-		                            @F05 = '{24}',
-		                            @F06 = '{25}',
-		                            @F07 = '{26}',
-		                            @F08 = '{27}',
-		                            @F09 = '{28}',
-		                            @F10 = '{29}',
-		                            @F11 = '{30}',
-		                            @F12 = '{31}',
-		                            @F13 = '{32}',
-		                            @F14 = '{33}',
-		                            @F15 = '{34}',
-		                            @F16 = '{35}',
-		                            @F17 = '{36}',
-		                            @F18 = '{37}',
-		                            @F19 = '{38}',
-		                            @F20 = '{39}',
+                                    @AmalDate = '{5}',
+                                    @EndDate = '{6}',
+		                            @BranchCode = {7},
+		                            @UserCode = '{8}', 
+		                            @Eghdam = N'{9}',
+		                            @Tanzim = '{10}',
+		                            @TahieShode = '{11}',
+		                            @Status = '{12}',
+		                            @Spec = '{13}',
+		                            @CustCode = '{14}',
+		                            @KhdtCode = '{15}',
+		                            @DocDesc = '{16}',
+		                            @EghdamComm = '{17}',
+		                            @FinalComm = '{18}',
+		                            @SpecialComm = '{19}',
+		                            @RelatedDocs = '{20}',
+		                            @Mahramaneh = {21},
+		                            @F01 = '{22}',
+		                            @F02 = '{23}',
+		                            @F03 = '{24}',
+		                            @F04 = '{25}',
+		                            @F05 = '{26}',
+		                            @F06 = '{27}',
+		                            @F07 = '{28}',
+		                            @F08 = '{29}',
+		                            @F09 = '{30}',
+		                            @F10 = '{31}',
+		                            @F11 = '{32}',
+		                            @F12 = '{33}',
+		                            @F13 = '{34}',
+		                            @F14 = '{35}',
+		                            @F15 = '{36}',
+		                            @F16 = '{37}',
+		                            @F17 = '{38}',
+		                            @F18 = '{39}',
+		                            @F19 = '{40}',
+		                            @F20 = '{41}',
 		                            @DocNo_Out = @DocNo_Out OUTPUT
                             SELECT	@DocNo_Out as '@DocNo_Out' ",
                             erjDocH.ModeCode,
@@ -172,6 +178,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             erjDocH.SerialNumber,
                             erjDocH.DocDate ?? string.Format("{ 0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
                             erjDocH.MhltDate,
+                            erjDocH.AmalDate,
+                            erjDocH.EndDate,
                             erjDocH.BranchCode,
                             erjDocH.UserCode,
                             erjDocH.Eghdam,
@@ -183,7 +191,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             erjDocH.KhdtCode ?? "",
                             UnitPublic.ConvertTextWebToWin(erjDocH.DocDesc), 
                             UnitPublic.ConvertTextWebToWin(erjDocH.EghdamComm),
-                            UnitPublic.ConvertTextWebToWin(erjDocH.FinalCommComm),
+                            UnitPublic.ConvertTextWebToWin(erjDocH.FinalComm),
                             UnitPublic.ConvertTextWebToWin(erjDocH.SpecialComm),
                             erjDocH.RelatedDocs ?? "",
                             erjDocH.Mahramaneh,
