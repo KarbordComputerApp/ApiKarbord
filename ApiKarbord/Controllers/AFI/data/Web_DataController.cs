@@ -807,6 +807,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string Name { get; set; }
 
             public string Spec { get; set; }
+
+            public byte HasTime { get; set; }
         }
 
 
