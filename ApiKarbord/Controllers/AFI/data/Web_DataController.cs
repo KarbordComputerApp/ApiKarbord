@@ -1770,10 +1770,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql;
                 sql = string.Format(@"
                                   if (select count(code) from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}') > 0
-                                     select * from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}' and Name<> ''
+                                     select * from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}'-- and Name<> ''
                                   else
-                                     select * from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*' and Name <> ''",
-                                      RprtId, UserCode);
+                                     select * from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*'-- and Name <> ''",
+                                  RprtId, UserCode);
 
                 var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
                 return Ok(list);
