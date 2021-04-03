@@ -84,6 +84,7 @@ namespace ApiKarbord.Controllers.Unit
         static IniFile MyIni = new IniFile(IniPath);
 
         static string addressApiAccounting = MyIni.Read("serverName");
+        static string addressFileSql = MyIni.Read("FileSql");
 
         static List<Access> model = null;
 
@@ -298,7 +299,7 @@ namespace ApiKarbord.Controllers.Unit
 
             var list = model.First();
             string dbName;
-            string[] filePaths = Directory.GetFiles(@"c:\a\", "*.txt",
+            string[] filePaths = Directory.GetFiles(addressFileSql +"\\", "*.txt",
                                              SearchOption.TopDirectoryOnly);
             string sal = "";
             string group = "";
