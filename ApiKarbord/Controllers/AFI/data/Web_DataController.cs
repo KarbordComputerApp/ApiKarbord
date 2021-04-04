@@ -1695,6 +1695,159 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+        public class Web_DocAttach_Save
+        {
+            public string ProgName { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
+            public string Code { get; set; }
+
+            public string Comm { get; set; }
+
+            public string FName { get; set; }
+
+            public byte[] Atch { get; set; }
+        }
+
+
+
+// POST: api/Web_Data/ErjDocAttach_Save
+        [Route("api/Web_Data/ErjDocAttach_Save/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjDocAttach_Save(string ace, string sal, string group, Web_DocAttach_Save Web_DocAttach_Save)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = "";
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int
+
+                            EXEC	@return_value = [dbo].[Web_DocAttach_Save]
+		                            @ProgName = '{0}',
+		                            @ModeCode = '{1}',
+		                            @SerialNumber = {2},
+		                            @BandNo = {3},
+		                            @Code = '{4}',
+		                            @Comm = '{5}',
+		                            @FName = '{6}',
+		                            @Atch = '{7}'
+
+                            SELECT	'Return Value' = @return_value",
+                        Web_DocAttach_Save.ProgName,
+                        Web_DocAttach_Save.ModeCode,
+                        Web_DocAttach_Save.SerialNumber,
+                        Web_DocAttach_Save.BandNo,
+                        Web_DocAttach_Save.Code,
+                        Web_DocAttach_Save.Comm,
+                        Web_DocAttach_Save.FName,
+                        Web_DocAttach_Save.Atch
+                        );
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                    if (value > 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+                return Ok(value);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+        public class Web_DocAttach_Del
+        {
+            public string ProgName { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+        // POST: api/Web_Data/ErjDocAttach_Del
+        [Route("api/Web_Data/ErjDocAttach_Del/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjDocAttach_Del(string ace, string sal, string group, Web_DocAttach_Del Web_DocAttach_Del)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = "";
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int
+                            
+                            EXEC	@return_value = [dbo].[Web_DocAttach_Del]
+		                            @ProgName = '{0}',
+		                            @ModeCode = '{1}',
+		                            @SerialNumber = {2},
+		                            @BandNo = {3}
+
+                            SELECT	'Return Value' = @return_value",
+                        Web_DocAttach_Del.ProgName,
+                        Web_DocAttach_Del.ModeCode,
+                        Web_DocAttach_Del.SerialNumber,
+                        Web_DocAttach_Del.BandNo
+                        );
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+                return Ok(value);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
+
+
         public class KGruObject
         {
             public byte Mode { get; set; }

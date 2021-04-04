@@ -310,7 +310,7 @@ namespace ApiKarbord.Controllers.Unit
                 isCols = false;
                 string fileName = Path.GetFileName(item);
                 var files = fileName.Split('_');
-                if (files[1] == list.lockNumber)
+                if (files[1] == list.lockNumber || files[1] == "10000")
                 {
                     string addressFile = item;
                     if (files[2] == "Ace2")
