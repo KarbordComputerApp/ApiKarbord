@@ -492,9 +492,19 @@ namespace ApiKarbord.Controllers.Unit
                                 db.Database.ExecuteSqlCommand(sql);
                             }
                             filestream.Close();
-                            File.Delete(item);
+                            if (dbName != "Ace_WebConfig")
+                            {
+                                File.Delete(item);
+                            }
 
                             // return "به روز رسانی انجام شد";
+                        }
+                        else
+                        {
+                            if (dbName != "Ace_WebConfig")
+                            {
+                                File.Delete(item);
+                            }
                         }
                     }
                     catch (Exception e)

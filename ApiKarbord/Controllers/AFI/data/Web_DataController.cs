@@ -21,6 +21,9 @@ using System.IO;
 using System.Drawing;
 using System.IO.Compression;
 
+using System.Web;
+
+
 namespace ApiKarbord.Controllers.AFI.data
 {
     public class Web_DataController : ApiController
@@ -1145,6 +1148,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += string.Format(CultureInfo.InvariantCulture,
                           @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH where 1 = 1",
                           ErjDocHObject.Mode, dataAccount[2]);
+                if (ErjDocHObject.accessSanad == false)
+                    sql += " and Eghdam = '" + ErjDocHObject.UserCode + "' ";
 
                 var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocH>(sql);
                 return Ok(list);
@@ -1712,68 +1717,135 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string FName { get; set; }
 
-            public byte[] Atch { get; set; }
+            public string Atch { get; set; }
         }
 
 
 
-// POST: api/Web_Data/ErjDocAttach_Save
-        [Route("api/Web_Data/ErjDocAttach_Save/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostErjDocAttach_Save(string ace, string sal, string group, Web_DocAttach_Save Web_DocAttach_Save)
+
+
+
+
+
+        // POST: api/Web_Data/ErjDocAttach_Save
+        [Route("api/Web_Data/ErjDocAttach_Save")]
+        public HttpResponseMessage PostErjDocAttach_Save()
         {
-            int value = 0;
-            if (!ModelState.IsValid)
+            //Create the Directory.
+            string path = HttpContext.Current.Server.MapPath("~/Uploads/");
+            if (!Directory.Exists(path))
             {
-                return BadRequest(ModelState);
+                Directory.CreateDirectory(path);
             }
 
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
-            if (con == "ok")
-            {
-                try
-                {
-                    string sql = "";
-                    sql = string.Format(CultureInfo.InvariantCulture,
-                         @" DECLARE	@return_value int
+            //Fetch the File.
+            HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
 
-                            EXEC	@return_value = [dbo].[Web_DocAttach_Save]
-		                            @ProgName = '{0}',
-		                            @ModeCode = '{1}',
-		                            @SerialNumber = {2},
-		                            @BandNo = {3},
-		                            @Code = '{4}',
-		                            @Comm = '{5}',
-		                            @FName = '{6}',
-		                            @Atch = '{7}'
+            //Fetch the File Name.
+            string fileName = HttpContext.Current.Request.Form["fileName"] + Path.GetExtension(postedFile.FileName);
 
-                            SELECT	'Return Value' = @return_value",
-                        Web_DocAttach_Save.ProgName,
-                        Web_DocAttach_Save.ModeCode,
-                        Web_DocAttach_Save.SerialNumber,
-                        Web_DocAttach_Save.BandNo,
-                        Web_DocAttach_Save.Code,
-                        Web_DocAttach_Save.Comm,
-                        Web_DocAttach_Save.FName,
-                        Web_DocAttach_Save.Atch
-                        );
-                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+            //Save the File.
+            postedFile.SaveAs(path + fileName);
 
-                    await UnitDatabase.db.SaveChangesAsync();
-
-                    if (value > 0)
-                    {
-                        await UnitDatabase.db.SaveChangesAsync();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
-                return Ok(value);
-            }
-            return Ok(con);
+            //Send OK Response to Client.
+            return Request.CreateResponse(HttpStatusCode.OK, fileName);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+          // POST: api/Web_Data/ErjDocAttach_Save
+          [Route("api/Web_Data/ErjDocAttach_Save/{ace}/{sal}/{group}")]
+          public async Task<IHttpActionResult> PostErjDocAttach_Save(string ace, string sal, string group, Web_DocAttach_Save Web_DocAttach_Save)
+          {
+              int value = 0;
+              if (!ModelState.IsValid)
+              {
+                  return BadRequest(ModelState);
+              }
+
+              var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+              string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+              if (con == "ok")
+              {
+                  try
+                  {
+                      SaveDataUrlToFile(Web_DocAttach_Save.Atch, @"c:\1.txt");
+                      string sql = "";
+                      sql = string.Format(CultureInfo.InvariantCulture,
+                           @" DECLARE	@return_value int
+
+                                      EXEC	@return_value = [dbo].[Web_DocAttach_Save]
+                                              @ProgName = '{0}',
+                                              @ModeCode = '{1}',
+                                              @SerialNumber = {2},
+                                              @BandNo = {3},
+                                              @Code = '{4}',
+                                              @Comm = '{5}',
+                                              @FName = '{6}',
+                                              @Atch = '{7}'
+
+                                      SELECT	'Return Value' = @return_value",
+                          Web_DocAttach_Save.ProgName,
+                          Web_DocAttach_Save.ModeCode,
+                          Web_DocAttach_Save.SerialNumber,
+                          Web_DocAttach_Save.BandNo,
+                          Web_DocAttach_Save.Code,
+                          Web_DocAttach_Save.Comm,
+                          Web_DocAttach_Save.FName,
+                          Web_DocAttach_Save.Atch
+                          );
+                      value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                      await UnitDatabase.db.SaveChangesAsync();
+
+                      if (value > 0)
+                      {
+                          await UnitDatabase.db.SaveChangesAsync();
+                      }
+                  }
+                  catch (Exception e)
+                  {
+                      throw;
+                  }
+                  return Ok(value);
+              }
+              return Ok(con);
+          }
+
+
+      */
+
+
+
+
+
 
 
 
@@ -1827,7 +1899,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                     await UnitDatabase.db.SaveChangesAsync();
 
-                    if (value == 0)
+                    if (value == 1)
                     {
                         await UnitDatabase.db.SaveChangesAsync();
                     }
