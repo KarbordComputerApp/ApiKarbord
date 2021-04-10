@@ -13,6 +13,8 @@ using System.Globalization;
 using ApiKarbord.Controllers.Unit;
 using System.Text;
 using System.Web.Hosting;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace ApiKarbordAccount.Controllers
 {
@@ -69,13 +71,21 @@ namespace ApiKarbordAccount.Controllers
             }
         }
 
+
+
+        public static string StreamToString(Stream stream)
+        {
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+
         [Route("api/FileUpload/UploadFile/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> UploadFile(string ace, string sal, string group)
         {
-            var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
-
-            //BinaryReader file = new BinaryReader(httpRequest.InputStream);
-
             string SerialNumber = HttpContext.Current.Request["SerialNumber"];
             string ProgName = HttpContext.Current.Request["ProgName"];
             string ModeCode = HttpContext.Current.Request["ModeCode"];
@@ -83,31 +93,57 @@ namespace ApiKarbordAccount.Controllers
             string Code = HttpContext.Current.Request["Code"];
             string Comm = HttpContext.Current.Request["Comm"];
             string FName = HttpContext.Current.Request["FName"];
+            var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
 
             var req = HttpContext.Current.Request;
-            var guid = req.Form["guid"];
             var file = req.Files[req.Files.Keys.Get(0)];
 
 
+            int lenght = Atch.ContentLength;
+            byte[] filebyte = new byte[lenght];
+            Atch.InputStream.Read(filebyte, 0, lenght);
 
 
-            string fname;
-            fname = Atch.FileName;
-            fname = Path.Combine("c:\\a\\", fname);
-            Atch.SaveAs(fname);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                SqlConnection connection = new SqlConnection(UnitPublic.conString);
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand("Web_DocAttach_Save", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@ProgName", ProgName);
+                cmd.Parameters.AddWithValue("@ModeCode", ModeCode);
+                cmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
+                cmd.Parameters.AddWithValue("@BandNo", BandNo);
+                cmd.Parameters.AddWithValue("@Code", Code);
+                cmd.Parameters.AddWithValue("@Comm", Comm);
+                cmd.Parameters.AddWithValue("@FName", FName);
+                cmd.Parameters.AddWithValue("@Atch", filebyte);
+
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                return Ok(1);
+            }
+            else
+                return Ok(con);
+
+            ///  StreamReader stream = new StreamReader(Atch.InputStream, Encoding.UTF8);
+            //     var data = stream.ReadToEndAsync();
+            //      string s = Convert.ToBase64String(stream.ReadToEnd);
+
+            //int lenght = Atch.ContentLength;
+            //byte[] data = new byte[lenght];
+            //Atch.InputStream.Read(data, 0, lenght);
 
 
+            //       string a = StreamToString(Atch.InputStream);
 
 
-            int lenght = file.ContentLength;
-            byte[] data = new byte[lenght];
-            file.InputStream.Read(data, 0, lenght);
-
-           
-
-
-            string s = Convert.ToBase64String(data);
-            byte[] htmlCode = Encoding.ASCII.GetBytes(s);
+            //  string s = Convert.ToBase64String(data);
+            //    byte[] htmlCode = Encoding.ASCII.GetBytes(s);
 
 
             /* string queryStmt = "INSERT INTO dbo.YourTable(Content) VALUES(@Content)";
@@ -168,46 +204,50 @@ namespace ApiKarbordAccount.Controllers
 
 
 
-            int value = 0;
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
-            if (con == "ok")
-            {
-                try
-                {
-                    string sql = "";
-                    sql = string.Format(CultureInfo.InvariantCulture,
-                         @" DECLARE	@return_value int
 
-                                      EXEC	@return_value = [dbo].[Web_DocAttach_Save]
-                                              @ProgName = '{0}',
-                                              @ModeCode = '{1}',
-                                              @SerialNumber = {2},
-                                              @BandNo = {3},
-                                              @Code = '{4}',
-                                              @Comm = '{5}',
-                                              @FName = '{6}',
-                                              @Atch = '{7}'
+            //   string result1 = new StreamReader(Atch.InputStream).ReadToEnd();
 
-                                      SELECT	'Return Value' = @return_value",
-                       ProgName, ModeCode, SerialNumber, BandNo, Code, Comm, FName, s
-                        );
-                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
 
-                    await UnitDatabase.db.SaveChangesAsync();
+            /*      int value = 0;
+                  var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+                  string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+                  if (con == "ok")
+                  {
+                      try
+                      {
+                          string sql = "";
+                          sql = string.Format(CultureInfo.InvariantCulture,
+                               @" DECLARE	@return_value int
 
-                    if (value > 0)
-                    {
-                        await UnitDatabase.db.SaveChangesAsync();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
-                return Ok(value);
-            }
-            return Ok(con);
+                                            EXEC	@return_value = [dbo].[Web_DocAttach_Save]
+                                                    @ProgName = '{0}',
+                                                    @ModeCode = '{1}',
+                                                    @SerialNumber = {2},
+                                                    @BandNo = {3},
+                                                    @Code = '{4}',
+                                                    @Comm = '{5}',
+                                                    @FName = '{6}',
+                                                    @Atch = '{7}'
+
+                                            SELECT	'Return Value' = @return_value",
+                             ProgName, ModeCode, SerialNumber, BandNo, Code, Comm, FName, ""
+                              );
+                          value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                          await UnitDatabase.db.SaveChangesAsync();
+
+                          if (value > 0)
+                          {
+                              await UnitDatabase.db.SaveChangesAsync();
+                          }
+                      }
+                      catch (Exception e)
+                      {
+                          throw;
+                      }
+                      return Ok(value);
+                  }*/
+            return Ok(1);
 
         }
 

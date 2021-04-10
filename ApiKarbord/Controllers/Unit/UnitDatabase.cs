@@ -187,6 +187,7 @@ namespace ApiKarbord.Controllers.Unit
                 string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act, bandNo);
                 if (conStr.Length > 100)
                 {
+                    UnitPublic.conString = conStr;
                     db = new ApiModel(conStr);
                     if (ace == "Config" && group == "00")
                     {

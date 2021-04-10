@@ -1109,7 +1109,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select * from Web_Mahramaneh");
+                string sql = string.Format(@"Select * from Web_Mahramaneh('{0}')", dataAccount[2]);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_Mahramaneh>(sql).ToList();
                 return Ok(listDB);
             }
