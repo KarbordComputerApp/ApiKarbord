@@ -147,13 +147,12 @@ namespace ApiKarbord.Controllers.AFI.data
                     int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
 
                     string sql2 = string.Format(CultureInfo.InvariantCulture,
-                         @"DECLARE	@return_value nvarchar(50),
-		                            @DocNo_Out int
+                         @"DECLARE	@return_value nvarchar(50)
                           EXEC	@return_value = [dbo].[Web_SaveFDoc_HU]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = {2} ,
-		                            @DOCNO = {3},
+		                            @DOCNO = '{3}',
 		                            @STARTNO = {4},
 		                            @ENDNO = {5},
 		                            @BRANCHCODE = {6},
@@ -213,9 +212,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F18 = '{60}',
                                     @F19 = '{61}',
                                     @F20 = '{62}',
-                                    @Tasvib = '{63}',
-		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
-                            SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
+                                    @Tasvib = '{63}' 
+                            SELECT	'return_value' = @return_value
+                           ",
                             aFI_FDocHi.DocNoMode,
                             aFI_FDocHi.InsertMode,
                             aFI_FDocHi.ModeCode,
@@ -315,12 +314,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
-		                            @DocNo_Out int
+		                            @DocNo_Out nvarchar(10)
                           EXEC	@return_value = [dbo].[Web_SaveFDoc_HI]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = {2} ,
-		                            @DOCNO = {3},
+		                            @DOCNO = '{3}',
 		                            @STARTNO = {4},
 		                            @ENDNO = {5},
 		                            @BRANCHCODE = {6},
@@ -329,7 +328,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @DOCDATE = '{9}',
 		                            @SPEC = '{10}',
 		                            @TANZIM = '{11}',
-		                            @TAHIESHODE = {12},
+		                            @TAHIESHODE = '{12}',
 		                            @CUSTCODE = '{13}',
 		                            @VSTRCODE = '{14}',
 		                            @VSTRPER = {15},
@@ -378,7 +377,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F19 = '{58}',
                                     @F20 = '{59}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
-                            SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
+                            SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                             aFI_FDocHi.DocNoMode,
                             aFI_FDocHi.InsertMode,
                             aFI_FDocHi.ModeCode,
@@ -450,7 +449,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string[] serials = value.Split('-');
+                string[] serials = value.Split('@');
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_FDocHi.ModeCode, 2, aFI_FDocHi.flagLog, 0);
                 return Ok(value);
             }

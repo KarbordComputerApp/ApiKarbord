@@ -36,7 +36,11 @@
 
         public string Status { get; set; }
 
+        public byte? ShowDocTrs { get; set; }
+
         public byte? EditDocTrs { get; set; }
+
+        public byte? DeleteDocTrs { get; set; }
 
         
         public string CustCode { get; set; }

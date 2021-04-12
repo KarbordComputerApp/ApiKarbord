@@ -16,7 +16,7 @@
 
         public string ModeCode { get; set; }
 
-        public int? DocNo { get; set; }
+        public string DocNo { get; set; }
 
         public int? StartNo { get; set; }
 
