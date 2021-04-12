@@ -300,16 +300,27 @@ namespace ApiKarbord.Controllers.Unit
 
             var list = model.First();
             string dbName;
-            string[] filePaths = Directory.GetFiles(addressFileSql +"\\", "*.txt",
+            string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
                                              SearchOption.TopDirectoryOnly);
             string sal = "";
             string group = "";
             bool isCols = false;
 
+            string fileLog = addressFileSql + "\\" + list.lockNumber+ "_" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-ss") + ".txt";
+
+            if (File.Exists(fileLog))
+            {
+                File.Delete(fileLog);
+            }
+
+            StreamWriter sw = File.CreateText(fileLog);
+
             foreach (var item in filePaths)
             {
+               
                 isCols = false;
                 string fileName = Path.GetFileName(item);
+                 sw.WriteLine("fileName : " + fileName);
                 var files = fileName.Split('_');
                 if (files[1] == list.lockNumber || files[1] == "10000")
                 {
@@ -339,7 +350,7 @@ namespace ApiKarbord.Controllers.Unit
                             }
                         }
                     }
-
+                    sw.WriteLine("dbName : " + dbName);
 
 
 
@@ -347,6 +358,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
                                     list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
 
+                    sw.WriteLine("connectionString : " + connectionString);
 
                     var connection = new SqlConnection(connectionString);
 
@@ -386,10 +398,14 @@ namespace ApiKarbord.Controllers.Unit
                             db.Database.ExecuteSqlCommand(sql);
                         }
 
+                        sw.WriteLine("oldVer : " + oldVer.ToString());
+                        sw.WriteLine("VerDB : " + UnitPublic.VerDB);
+
                         if (oldVer < UnitPublic.VerDB || isCols == true)
                         {
                             if (isCols == false)
                             {
+                                sw.WriteLine("Start Delete All");
                                 sql = string.Format(@"
                                             DECLARE @sql VARCHAR(MAX) = '' 
                                             DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
@@ -421,6 +437,7 @@ namespace ApiKarbord.Controllers.Unit
                                               deallocate cur
                                          ");
                                 db.Database.ExecuteSqlCommand(sql);
+                                sw.WriteLine("End Delete All");
                             }
 
 
@@ -474,15 +491,16 @@ namespace ApiKarbord.Controllers.Unit
                                         {
                                             db.Database.ExecuteSqlCommand(sql);
                                         }*/
-
                                         db.Database.ExecuteSqlCommand(sql);
+                                        sw.WriteLine("ExecuteSqlCommand OK : " + sql);
                                         sql = "";
                                     }
                                     catch (Exception e)
                                     {
+                                        sw.WriteLine("ExecuteSqlCommand Error : " + sql);
                                         filestream.Close();
                                         throw;
-                                        
+
                                     }
                                 }
                             }
@@ -491,11 +509,14 @@ namespace ApiKarbord.Controllers.Unit
                             {
                                 sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
                                 db.Database.ExecuteSqlCommand(sql);
+                                sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
+
                             }
                             filestream.Close();
                             if (dbName != "Ace_WebConfig")
                             {
                                 File.Delete(item);
+                                sw.WriteLine("Delete File");
                             }
 
                             // return "به روز رسانی انجام شد";
@@ -505,11 +526,15 @@ namespace ApiKarbord.Controllers.Unit
                             if (dbName != "Ace_WebConfig")
                             {
                                 File.Delete(item);
+                                sw.WriteLine("Delete File");
                             }
                         }
                     }
                     catch (Exception e)
                     {
+                        sw.WriteLine(e.Message);
+                        sw.Close();
+
                         // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
                         throw;
                     }
@@ -517,124 +542,9 @@ namespace ApiKarbord.Controllers.Unit
 
             }
 
+            sw.WriteLine("End");
+            sw.Close();
 
-            /* string sql;
-             int oldVer = 0;
-             try
-             {
-                 try
-                 {
-                     db.Database.Connection.Open();
-                 }
-                 catch (Exception e)
-                 {
-                     string conStr = CreateConnectionString(list.SqlUserName, list.SqlPassword, "", "master", "", "", 0, "", 0, 0);
-                     if (conStr.Length > 100)
-                     {
-                         using (var connection = new SqlConnection(conStr))
-                         {
-                             connection.Open();
-                             var command = connection.CreateCommand();
-                             command.CommandText = "CREATE DATABASE Ace_WebConfig";
-                             command.ExecuteNonQuery();
-                         }
-                     }
-                     db.Database.Connection.Close();
-                     db.Database.Connection.Open();
-                 }
-
-                 try
-                 {
-                     sql = string.Format(@"if (select count(id) from web_version) = 0
-                                                         select 0
-                                                       else
-                                                         select ver from web_version where id = (select max(id) from web_version)");
-                     oldVer = db.Database.SqlQuery<int>(sql).Single();
-                 }
-                 catch (Exception e)
-                 {
-                     sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
-                                                              [id][int] IDENTITY(1,1) NOT NULL,
-                                                              [ver] [int] NULL,
-                                                              [datever] [datetime] NULL,
-                                                      CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
-                                                      ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
-                     db.Database.ExecuteSqlCommand(sql);
-                 }
-
-                 if (oldVer < UnitPublic.VerDB)
-                 {
-                     sql = string.Format(@"
-                                             DECLARE @sql VARCHAR(MAX) = '' 
-                                             DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
-                                             SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
-                                             FROM   sys.views v
-                                             EXEC(@sql);
-                                               declare @procName varchar(500)
-                                               declare cur cursor
-                                               for select name from sys.objects where type = 'if' or type = 'tf' or type = 'fn'
-                                               open cur
-                                               fetch next from cur into @procName
-                                               while @@fetch_status = 0
-                                               begin
-                                                   exec('drop function [' + @procName + ']')
-                                                   fetch next from cur into @procName
-                                               end
-                                               close cur
-                                               deallocate cur
-                                               declare cur cursor
-                                               for select name from sys.objects where type = 'p' 
-                                               open cur
-                                               fetch next from cur into @procName
-                                               while @@fetch_status = 0
-                                               begin
-                                                   exec('drop procedure [' + @procName + ']')
-                                                   fetch next from cur into @procName
-                                               end
-                                               close cur
-                                               deallocate cur
-                                          ");
-                     db.Database.ExecuteSqlCommand(sql);
-
-
-                     string textFilePath = @"c:\a\WebViews_Ace2.txt";
-
-                     string lineOfText;
-                     var filestream = new System.IO.FileStream(textFilePath,
-                                               System.IO.FileMode.Open,
-                                               System.IO.FileAccess.Read,
-                                               System.IO.FileShare.ReadWrite);
-                     var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
-                     sql = "";
-                     while ((lineOfText = file.ReadLine()) != null)
-                     {
-                         if (lineOfText != "-------------------")
-                             sql += lineOfText + " ";
-                         else
-                         {
-                             try
-                             {
-                                 db.Database.ExecuteSqlCommand(sql);
-                                 sql = "";
-                             }
-                             catch (Exception e)
-                             {
-                                 throw;
-                             }
-                         }
-                     }
-
-                     sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
-                     db.Database.ExecuteSqlCommand(sql);
-
-                     // return "به روز رسانی انجام شد";
-                 }
-             }
-             catch (Exception e)
-             {
-                 // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
-                 throw;
-             } */
         }
 
 
