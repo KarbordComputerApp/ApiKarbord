@@ -83,8 +83,10 @@ namespace ApiKarbord.Controllers.Unit
 
         static IniFile MyIni = new IniFile(IniPath);
 
-        static string addressApiAccounting = MyIni.Read("serverName");
-        static string addressFileSql = MyIni.Read("FileSql");
+        public static string addressApiAccounting = MyIni.Read("serverName");
+        public static string addressFileSql = MyIni.Read("FileSql");
+        public static string addressPrintForms = MyIni.Read("PrintForms");
+        public static string lockNumber;
 
         static List<Access> model = null;
 
@@ -297,16 +299,19 @@ namespace ApiKarbord.Controllers.Unit
 
         public static void ChangeDatabase()
         {
-
+            
             var list = model.First();
             string dbName;
+
+            lockNumber = list.lockNumber;
+
             string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
                                              SearchOption.TopDirectoryOnly);
             string sal = "";
             string group = "";
             bool isCols = false;
 
-            string fileLog = addressFileSql + "\\" + list.lockNumber+ "_" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-ss") + ".txt";
+            string fileLog = addressFileSql + "\\" + lockNumber  + "_" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-ss") + ".txt";
 
             if (File.Exists(fileLog))
             {
@@ -322,7 +327,7 @@ namespace ApiKarbord.Controllers.Unit
                 string fileName = Path.GetFileName(item);
                  sw.WriteLine("fileName : " + fileName);
                 var files = fileName.Split('_');
-                if (files[1] == list.lockNumber || files[1] == "10000")
+                if (files[1] == lockNumber || files[1] == "10000")
                 {
                     string addressFile = item;
                     if (files[2] == "Ace2")

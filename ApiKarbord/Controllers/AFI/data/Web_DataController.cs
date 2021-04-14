@@ -2579,5 +2579,56 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
         }
 
+
+
+
+        public partial class PrintForms_Object
+        {
+            public string lockNumber { get; set; }
+            public string mode { get; set; }
+        }
+
+        // Post: api/Web_Data/Web_PrintForms  لیست افرادی که رونوشت دارند
+        [Route("api/Web_Data/PrintForms/{ace}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostPrintForms(string ace,  PrintForms_Object PrintForms_Object)
+        {
+            string filePublicPrintForms = UnitDatabase.addressPrintForms + "\\Public";
+
+            if (!Directory.Exists(filePublicPrintForms))
+            {
+                System.IO.Directory.CreateDirectory(filePublicPrintForms);
+            }
+
+            string filePrintForms = UnitDatabase.addressPrintForms + "\\" + UnitDatabase.lockNumber;
+
+            if (!Directory.Exists(filePrintForms))
+            {
+                System.IO.Directory.CreateDirectory(filePrintForms);
+            }
+
+
+           // var files = Directory.GetFiles(UnitDatabase.addressPrintForms + "\\" + PrintForms_Object.lockNumber + "\\Web8_Factor_SFD", "*.mrt", SearchOption.TopDirectoryOnly);
+
+            var filteredFiles = Directory
+    .GetFiles(UnitDatabase.addressPrintForms + "\\" + PrintForms_Object.lockNumber, ace + "_" + PrintForms_Object.mode + "*").ToList();
+
+
+            //string[] filePaths = Directory.GetFiles(UnitDatabase.addressPrintForms + "\\" +UnitDatabase.lockNumber, "*.mrt",
+            //                                SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3") || s.EndsWith(".jpg"));
+
+
+           var res = JsonConvert.SerializeObject(filteredFiles);
+
+            return Ok(res);
+        }
+
+
+
+
+
+
+       
+
     }
 }
