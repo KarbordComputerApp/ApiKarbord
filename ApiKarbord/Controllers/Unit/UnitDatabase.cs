@@ -544,6 +544,10 @@ namespace ApiKarbord.Controllers.Unit
 
             sw.WriteLine("End");
             sw.Close();
+            if (File.Exists(fileLog))
+            {
+                File.Delete(fileLog);
+            }
 
         }
 

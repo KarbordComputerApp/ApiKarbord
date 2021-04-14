@@ -1118,6 +1118,43 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+        public partial class Web_RooneveshtUsersList_Object
+        {
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+        }
+
+        public partial class Web_RooneveshtUsersList
+        {
+            public string ToUserCode { get; set; }
+
+            public string ToUserName { get; set; }
+        }
+
+        // Post: api/Web_Data/Web_RooneveshtUsersList  لیست افرادی که رونوشت دارند
+        [Route("api/Web_Data/Web_RooneveshtUsersList/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_RooneveshtUsersList(string ace, string sal, string group, Web_RooneveshtUsersList_Object Web_RooneveshtUsersList_Object)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select * from Web_ErjRooneveshtUsersList({0},{1})",
+                                             Web_RooneveshtUsersList_Object.SerialNumber,
+                                             Web_RooneveshtUsersList_Object.BandNo);
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_RooneveshtUsersList>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
         public class ErjDocHObject
         {
             public byte Mode { get; set; }
