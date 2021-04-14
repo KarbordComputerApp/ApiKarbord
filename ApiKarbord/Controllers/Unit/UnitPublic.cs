@@ -16,8 +16,8 @@ namespace ApiKarbord.Controllers.Unit
     {
 
         public static string titleVer = "API KarbordComputer Test : Ver ";
-        public static int VerNumber = 357;
-        public static int VerDB = 8;
+        public static int VerNumber = 358;
+        public static int VerDB = 9;
         public static string conString = "";
 
         //public static string titleVer = "API KarbordComputer : Ver ";
