@@ -1670,6 +1670,68 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+
+
+
+
+
+
+
+
+        public class Web_ErjSaveDoc_CD
+        {
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+        }
+
+        // POST: api/Web_Data/ErjSaveDoc_CD
+        [Route("api/Web_Data/ErjSaveDoc_CD/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_CD(string ace, string sal, string group, Web_ErjSaveDoc_CD Web_ErjSaveDoc_CD)
+        {
+            string value = "";
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = "";
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int,
+                                        @BandNo nvarchar(10)
+                               EXEC	@return_value = [dbo].[Web_ErjSaveDoc_CD]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1}
+                               SELECT	@BandNo as N'@BandNo'",
+
+                        Web_ErjSaveDoc_CD.SerialNumber,
+                        Web_ErjSaveDoc_CD.BandNo);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+                return Ok(value);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
+
         public class Web_ErjSaveDoc_RjRead
         {
             public int DocBMode { get; set; }
@@ -2588,47 +2650,235 @@ namespace ApiKarbord.Controllers.AFI.data
             public string mode { get; set; }
         }
 
-        // Post: api/Web_Data/Web_PrintForms  لیست افرادی که رونوشت دارند
+
+        public class Print
+        {
+            public int code { get; set; }
+            public byte isPublic { get; set; }
+            public string Selected { get; set; }
+            public string name { get; set; }
+            public string namefa { get; set; }
+            public string address { get; set; }
+            public string Data { get; set; }
+        }
+
+
+        // Post: api/Web_Data/Web_PrintForms  لیست فرم های چاپ
         [Route("api/Web_Data/PrintForms/{ace}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostPrintForms(string ace,  PrintForms_Object PrintForms_Object)
+        public async Task<IHttpActionResult> PostPrintForms(string ace, PrintForms_Object PrintForms_Object)
         {
-            string filePublicPrintForms = UnitDatabase.addressPrintForms + "\\Public";
+            string fileName = "";
+            string[] tempName;
+            string selected = "";
+            int i = 0;
+
+
+            string addressPrintForms = HttpContext.Current.Server.MapPath("~\\PrintForms");
+
+            string filePublicPrintForms = addressPrintForms + "\\Public";
 
             if (!Directory.Exists(filePublicPrintForms))
             {
                 System.IO.Directory.CreateDirectory(filePublicPrintForms);
             }
 
-            string filePrintForms = UnitDatabase.addressPrintForms + "\\" + UnitDatabase.lockNumber;
+
+            string filePrintForms = addressPrintForms + "\\" + PrintForms_Object.lockNumber;
+            string IniPath = filePrintForms + "\\data.Ini";
+            IniFile MyIni = new IniFile(IniPath);
 
             if (!Directory.Exists(filePrintForms))
             {
                 System.IO.Directory.CreateDirectory(filePrintForms);
+                List<string> filteredPublicAllFiles = Directory.GetFiles(addressPrintForms + "\\Public", "*").ToList();
+                foreach (var item in filteredPublicAllFiles)
+                {
+                    fileName = Path.GetFileName(item);
+                    MyIni.Write(fileName, "1", "Public");
+                }
+            }
+
+            List<string> filteredPublicFiles = Directory.GetFiles(addressPrintForms + "\\Public", PrintForms_Object.mode + "*").ToList();
+            List<string> filteredFiles = Directory.GetFiles(addressPrintForms + "\\" + PrintForms_Object.lockNumber, PrintForms_Object.mode + "*").ToList();
+
+            List<Print> listFile = new List<Print>();
+
+            foreach (var item in filteredPublicFiles)
+            {
+                string lineOfText;
+                string data = "";
+                i++;
+                FileStream filestream = new System.IO.FileStream(item,
+                                                          System.IO.FileMode.Open,
+                                                          System.IO.FileAccess.Read,
+                                                          System.IO.FileShare.ReadWrite);
+                var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
+
+                while ((lineOfText = file.ReadLine()) != null)
+                {
+                    data += lineOfText;
+                }
+
+                filestream.Close();
+
+                fileName = Path.GetFileName(item);
+                tempName = fileName.Split('-');
+
+                selected = MyIni.Read(fileName, "Public");
+
+                listFile.Add(new Print { code = i, isPublic = 1, Selected = selected, name = fileName, namefa = tempName[1], address = item, Data = data });
+            }
+
+            foreach (var item in filteredFiles)
+            {
+
+                string lineOfText;
+                string data = "";
+                i++;
+                FileStream filestream = new System.IO.FileStream(item,
+                                                          System.IO.FileMode.Open,
+                                                          System.IO.FileAccess.Read,
+                                                          System.IO.FileShare.ReadWrite);
+                var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
+
+                while ((lineOfText = file.ReadLine()) != null)
+                {
+                    data += lineOfText;
+                }
+
+                filestream.Close();
+
+                fileName = Path.GetFileName(item);
+                tempName = fileName.Split('-');
+
+                selected = MyIni.Read(fileName, "LockNumber");
+
+                listFile.Add(new Print { code = i, isPublic = 0, Selected = selected, name = fileName, namefa = tempName[1], address = item, Data = data });
+            }
+
+            //var res = JsonConvert.SerializeObject(files);
+
+            return Ok(listFile);
+        }
+
+
+
+
+        public partial class DeletePrintForm_Object
+        {
+            public string LockNumber { get; set; }
+            public string Address { get; set; }
+        }
+
+
+        // Post: api/Web_Data/DeletePrintForm  حذف فرم چاپ
+        [Route("api/Web_Data/DeletePrintForm/{ace}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostDeletePrintForm(string ace, DeletePrintForm_Object DeletePrintForm_Object)
+        {
+            if (File.Exists(DeletePrintForm_Object.Address))
+            {
+                string addressPrintFormsIni = HttpContext.Current.Server.MapPath("~\\PrintForms") + "\\" + DeletePrintForm_Object.LockNumber;
+                string IniPath = addressPrintFormsIni + "\\data.Ini";
+                IniFile MyIni = new IniFile(IniPath);
+                string fileName = Path.GetFileName(DeletePrintForm_Object.Address);
+                MyIni.DeleteKey(fileName, "LockNumber");
+
+
+                File.Delete(DeletePrintForm_Object.Address);
             }
 
 
-           // var files = Directory.GetFiles(UnitDatabase.addressPrintForms + "\\" + PrintForms_Object.lockNumber + "\\Web8_Factor_SFD", "*.mrt", SearchOption.TopDirectoryOnly);
-
-            var filteredFiles = Directory
-    .GetFiles(UnitDatabase.addressPrintForms + "\\" + PrintForms_Object.lockNumber, ace + "_" + PrintForms_Object.mode + "*").ToList();
-
-
-            //string[] filePaths = Directory.GetFiles(UnitDatabase.addressPrintForms + "\\" +UnitDatabase.lockNumber, "*.mrt",
-            //                                SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3") || s.EndsWith(".jpg"));
-
-
-           var res = JsonConvert.SerializeObject(filteredFiles);
-
-            return Ok(res);
+            return Ok("OK");
         }
 
 
 
 
 
+        public partial class SavePrintForm_Object
+        {
+            public string LockNumber { get; set; }
+            public string Name { get; set; }
+            public string Mode { get; set; }
+            public string Data { get; set; }
+        }
 
-       
+
+        // Post: api/Web_Data/SavePrintForm  ذخیره فرم چاپ
+        [Route("api/Web_Data/SavePrintForm/{ace}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostSavePrintForm(string ace, SavePrintForm_Object SavePrintForm_Object)
+        {
+            string addressPrintForms = HttpContext.Current.Server.MapPath("~\\PrintForms") + "\\" + SavePrintForm_Object.LockNumber + "\\" + SavePrintForm_Object.Mode + "-" + SavePrintForm_Object.Name;
+
+            if (File.Exists(addressPrintForms))
+            {
+                File.Delete(addressPrintForms);
+            }
+
+            // fileName = Path.GetFileName(item);
+            // tempName = fileName.Split('-');
+            string addressPrintFormsIni = HttpContext.Current.Server.MapPath("~\\PrintForms") + "\\" + SavePrintForm_Object.LockNumber;
+            string IniPath = addressPrintFormsIni + "\\data.Ini";
+            IniFile MyIni = new IniFile(IniPath);
+            MyIni.Write(SavePrintForm_Object.Mode + "-" + SavePrintForm_Object.Name, "0", "LockNumber");
+
+            StreamWriter sw = File.CreateText(addressPrintForms);
+            sw.WriteLine(SavePrintForm_Object.Data);
+            sw.Close();
+            return Ok("OK");
+        }
+
+
+
+        public partial class TestSavePrintForm_Object
+        {
+            public string LockNumber { get; set; }
+            public string Name { get; set; }
+            public string Mode { get; set; }
+        }
+
+
+        // Post: api/Web_Data/TestSavePrintForm  ذخیره فرم چاپ
+        [Route("api/Web_Data/TestSavePrintForm/{ace}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostTestSavePrintForm(string ace, TestSavePrintForm_Object TestSavePrintForm_Object)
+        {
+            string addressPrintForms = HttpContext.Current.Server.MapPath("~\\PrintForms") + "\\" + TestSavePrintForm_Object.LockNumber + "\\" + TestSavePrintForm_Object.Mode + "-" + TestSavePrintForm_Object.Name;
+
+            if (File.Exists(addressPrintForms))
+            {
+                return Ok("FindFile");
+            }
+            return Ok("");
+        }
+
+
+        public partial class SelectedPrintForm_Object
+        {
+            public string LockNumber { get; set; }
+            public string Address { get; set; }
+            public byte IsPublic { get; set; }
+
+        }
+
+
+        // Post: api/Web_Data/SelectedPrintForm  انتخاب فرم چاپ
+        [Route("api/Web_Data/SelectedPrintForm/{ace}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostSelectedPrintForm(string ace, SelectedPrintForm_Object SelectedPrintForm_Object)
+        {
+            string addressPrintFormsIni = HttpContext.Current.Server.MapPath("~\\PrintForms") + "\\" + SelectedPrintForm_Object.LockNumber;
+            string IniPath = addressPrintFormsIni + "\\data.Ini";
+            IniFile MyIni = new IniFile(IniPath);
+            string fileName = Path.GetFileName(SelectedPrintForm_Object.Address);
+            string oldData = MyIni.Read(fileName, SelectedPrintForm_Object.IsPublic == 0 ? "LockNumber" : "Public");
+            MyIni.Write(fileName, oldData == "0" ? "1" : "0", SelectedPrintForm_Object.IsPublic == 0 ? "LockNumber" : "Public");
+            return Ok("OK");
+        }
+
 
     }
 }

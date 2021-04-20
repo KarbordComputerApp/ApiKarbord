@@ -58,6 +58,9 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -370,6 +373,45 @@
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMaster.cshtml" />
+    <Content Include="PrintForms\Public\ADoc-عمومی" />
+    <Content Include="PrintForms\Public\IDoc-عمومی" />
+    <Content Include="PrintForms\Public\IDoc_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\ODoc-عمومی" />
+    <Content Include="PrintForms\Public\ODoc_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\PFCT-عمومی" />
+    <Content Include="PrintForms\Public\PFCT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\PORD-عمومی" />
+    <Content Include="PrintForms\Public\PORD_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\PPFCT-عمومی" />
+    <Content Include="PrintForms\Public\PPFCT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\PRFCT-عمومی" />
+    <Content Include="PrintForms\Public\PRFCT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\ReportADocR-عمومی" />
+    <Content Include="PrintForms\Public\ReportDftr-عمومی" />
+    <Content Include="PrintForms\Public\ReportFDocR_P-عمومی" />
+    <Content Include="PrintForms\Public\ReportFDocR_S-عمومی" />
+    <Content Include="PrintForms\Public\ReportFTrz_Kala_P-عمومی" />
+    <Content Include="PrintForms\Public\ReportFTrz_Kala_S-عمومی" />
+    <Content Include="PrintForms\Public\ReportIDocR-عمومی" />
+    <Content Include="PrintForms\Public\ReportKrdx-عمومی" />
+    <Content Include="PrintForms\Public\ReportTChk-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzAcc-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzFCust_P-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzFCust_S-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzFKala_P-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzFKala_S-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzIKala-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaExf-عمومی" />
+    <Content Include="PrintForms\Public\SEXT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SFCT-عمومی" />
+    <Content Include="PrintForms\Public\SFCT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SHVL_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SORD-عمومی" />
+    <Content Include="PrintForms\Public\SORD_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SPFCT-عمومی" />
+    <Content Include="PrintForms\Public\SPFCT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SRFCT-عمومی" />
+    <Content Include="PrintForms\Public\SRFCT_NoPrice-عمومی بدون قیمت" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
