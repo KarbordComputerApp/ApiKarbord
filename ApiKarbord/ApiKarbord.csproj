@@ -400,7 +400,6 @@
     <Content Include="PrintForms\Public\ReportTrzFCust_S-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzFKala_P-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzFKala_S-عمومی" />
-    <Content Include="PrintForms\Public\ReportTrzIKala-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzIKalaExf-عمومی" />
     <Content Include="PrintForms\Public\SEXT_NoPrice-عمومی بدون قیمت" />
     <Content Include="PrintForms\Public\SFCT-عمومی" />
@@ -412,6 +411,7 @@
     <Content Include="PrintForms\Public\SPFCT_NoPrice-عمومی بدون قیمت" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT_NoPrice-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
