@@ -2655,6 +2655,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public int code { get; set; }
             public byte isPublic { get; set; }
+            public byte accessGhimat { get; set; }
             public string Selected { get; set; }
             public string name { get; set; }
             public string namefa { get; set; }
@@ -2670,7 +2671,9 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string fileName = "";
             string[] tempName;
+            string[] tempAccess;
             string selected = "";
+            byte isAccess = 0;
             int i = 0;
 
 
@@ -2722,12 +2725,19 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 filestream.Close();
 
+                isAccess = 0;
                 fileName = Path.GetFileName(item);
                 tempName = fileName.Split('-');
 
+                tempAccess = tempName[0].Split('_');
+                if (tempAccess.Length > 1)
+                {
+                    isAccess = 1;
+                }
+
                 selected = MyIni.Read(fileName, "Public");
 
-                listFile.Add(new Print { code = i, isPublic = 1, Selected = selected, name = fileName, namefa = tempName[1], address = item, Data = data });
+                listFile.Add(new Print { code = i, isPublic = 1, accessGhimat = isAccess, Selected = selected, name = fileName, namefa = tempName[1], address = item, Data = data });
             }
 
             foreach (var item in filteredFiles)
@@ -2748,13 +2758,19 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
                 filestream.Close();
-
+                isAccess = 0;
                 fileName = Path.GetFileName(item);
                 tempName = fileName.Split('-');
 
+                tempAccess = tempName[0].Split('_');
+                if (tempAccess.Length > 1)
+                {
+                    isAccess = 1;
+                }
+
                 selected = MyIni.Read(fileName, "LockNumber");
 
-                listFile.Add(new Print { code = i, isPublic = 0, Selected = selected, name = fileName, namefa = tempName[1], address = item, Data = data });
+                listFile.Add(new Print { code = i, isPublic = 0, accessGhimat = isAccess, Selected = selected, name = fileName, namefa = tempName[1], address = item, Data = data });
             }
 
             //var res = JsonConvert.SerializeObject(files);
@@ -2879,6 +2895,70 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok("OK");
         }
 
+
+        
+
+
+        public partial class SelectedAccessGhimatPrintForm_Object
+        {
+            public string LockNumber { get; set; }
+            public string Address { get; set; }
+            public byte IsPublic { get; set; }
+        }
+
+
+        // Post: api/Web_Data/SelectedAccessGhimatPrintForm  انتخاب فرم چاپ
+        [Route("api/Web_Data/SelectedAccessGhimatPrintForm/{ace}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostSelectedAccessGhimatPrintForm(string ace, SelectedAccessGhimatPrintForm_Object SelectedAccessGhimatPrintForm_Object)
+        {
+            string[] tempName;
+            string[] tempAccess;
+            string address = SelectedAccessGhimatPrintForm_Object.Address;
+            string name = "";
+
+            string fileName = Path.GetFileName(address);
+            string fileDir = Path.GetDirectoryName(address) + "\\";
+
+            
+            tempName = fileName.Split('-');
+            tempAccess = tempName[0].Split('_');
+            
+            if (tempAccess.Length > 1) // no ghimat
+            {
+                name = tempAccess[0] + "-" + tempName[1];
+            }
+            else
+            {
+                name = tempAccess[0] + "_NoPrice-" + tempName[1];
+            }
+
+            try
+            {
+                File.Move(address, fileDir + name);
+            }
+            catch (Exception)
+            {
+                return Ok("FindFile");
+                throw;
+            }
+            
+
+
+            string addressPrintFormsIni = HttpContext.Current.Server.MapPath("~\\PrintForms") + "\\" + SelectedAccessGhimatPrintForm_Object.LockNumber;
+            string IniPath = addressPrintFormsIni + "\\data.Ini";
+            IniFile MyIni = new IniFile(IniPath);
+            fileName = Path.GetFileName(address);
+
+            string selected = MyIni.Read(fileName, "LockNumber");
+
+            MyIni.DeleteKey(fileName, "LockNumber");
+
+            MyIni.Write(name, selected, "LockNumber");
+
+
+            return Ok("OK");
+        }
 
     }
 }
