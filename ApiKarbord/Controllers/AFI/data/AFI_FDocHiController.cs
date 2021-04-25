@@ -147,7 +147,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
 
                     string sql2 = string.Format(CultureInfo.InvariantCulture,
-                         @"DECLARE	@return_value nvarchar(50)
+                         @"DECLARE	@return_value nvarchar(50),
+                                    @DocNo_Out nvarchar(50)
                           EXEC	@return_value = [dbo].[Web_SaveFDoc_HU]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
@@ -212,8 +213,11 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F18 = '{60}',
                                     @F19 = '{61}',
                                     @F20 = '{62}',
-                                    @Tasvib = '{63}' 
-                            SELECT	'return_value' = @return_value
+                                    @Tasvib = '{63}', 
+                                    @OprCode = '{64}', 
+                                    @MkzCode = '{65}',
+                                    @DOCNO_OUT = @DOCNO_OUT OUTPUT
+                            SELECT	'return_value' = ltrim(@DOCNO_OUT)
                            ",
                             aFI_FDocHi.DocNoMode,
                             aFI_FDocHi.InsertMode,
@@ -278,7 +282,9 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F18,
                             aFI_FDocHi.F19,
                             aFI_FDocHi.F20,
-                            aFI_FDocHi.Tasvib
+                            aFI_FDocHi.Tasvib,
+                            aFI_FDocHi.OprCode,
+                            aFI_FDocHi.MkzCode
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql2).Single();
 
@@ -314,7 +320,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
-		                            @DocNo_Out nvarchar(10)
+		                            @DocNo_Out nvarchar(50)
                           EXEC	@return_value = [dbo].[Web_SaveFDoc_HI]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},

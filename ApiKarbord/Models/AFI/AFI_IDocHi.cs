@@ -119,6 +119,11 @@
 
         public string flagLog { get; set; }
 
+
+        public string OprCode { get; set; }
+
+        public string MkzCode { get; set; }
+
     }
 }
 

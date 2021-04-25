@@ -1798,6 +1798,55 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class Web_ErjSaveDoc_HStatus
+        {
+            public long SerialNumber { get; set; }
+
+            public string Status { get; set; }
+        }
+
+
+        // POST: api/Web_Data/ErjSaveDoc_HStatus
+        [Route("api/Web_Data/ErjSaveDoc_HStatus/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_HStatus(string ace, string sal, string group, Web_ErjSaveDoc_HStatus Web_ErjSaveDoc_HStatus)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Web_ErjSaveDoc_HStatus.SerialNumber, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(
+                         @" DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[Web_ErjSaveDoc_HStatus]
+		                            @SerialNumber = {0},
+		                            @Status = '{1}'
+                            SELECT	'Return Value' = @return_value",
+                         Web_ErjSaveDoc_HStatus.SerialNumber,
+                         Web_ErjSaveDoc_HStatus.Status
+                         );
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
+
 
 
 

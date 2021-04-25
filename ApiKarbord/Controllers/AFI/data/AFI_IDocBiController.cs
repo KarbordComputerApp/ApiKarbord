@@ -53,7 +53,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Discount = {8},
 		                            @MainUnit = {9},
 		                            @Comm = N'{10}',
-                                    @Up_Flag = {11}
+                                    @Up_Flag = {11},
+                                    @OprCode = '{12}',
+                                    @MkzCode = '{13}'
                             SELECT	'Return Value' = @return_value
                             ",
                         aFI_IDocBi.SerialNumber,
@@ -67,7 +69,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.Discount ?? 0,
                         aFI_IDocBi.MainUnit,
                         aFI_IDocBi.Comm,
-                        aFI_IDocBi.Up_Flag);
+                        aFI_IDocBi.Up_Flag,
+                        aFI_IDocBi.OprCode,
+                        aFI_IDocBi.MkzCode
+                        );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
@@ -147,7 +152,9 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @TotalPrice = {7},
 		                            @MainUnit = {8},
 		                            @Comm = N'{9}',
-                                    @Up_Flag = {10}
+                                    @Up_Flag = {10},
+                                    @OprCode = '{11}',
+                                    @MkzCode = '{12}'
                             SELECT	'Return Value' = @return_value
                             ",
                         aFI_IDocBi.SerialNumber,
@@ -160,7 +167,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.TotalPrice ?? 0,
                         aFI_IDocBi.MainUnit,
                         aFI_IDocBi.Comm,
-                        aFI_IDocBi.Up_Flag);
+                        aFI_IDocBi.Up_Flag,
+                        aFI_IDocBi.OprCode,
+                        aFI_IDocBi.MkzCode
+                        );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
