@@ -166,6 +166,16 @@
         public double? TotalPrice { get; set; }
 
         public double? FinalPrice { get; set; }
+
+        public string OprCode { get; set; }
+
+        public string MkzCode { get; set; }
+
+        public string MkzName { get; set; }
+
+        public string OprName { get; set; }
+
+
         /*[Key]
         public long SerialNumber { get; set; } 
 

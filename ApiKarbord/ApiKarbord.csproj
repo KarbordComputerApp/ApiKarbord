@@ -402,6 +402,7 @@
     <Content Include="PrintForms\Public\SPFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی با تمامی مقادیر مانده" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
