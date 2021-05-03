@@ -3012,5 +3012,45 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok("OK");
         }
 
+
+
+
+
+        public class GroupsObject
+        {
+            public string ProgName { get; set; }
+
+            public string User { get; set; }
+
+            public string groups { get; set; }
+        }
+
+        public class Web_Groups
+        {
+            public int? Code { get; set; }
+
+            public string Name { get; set; }
+
+        }
+
+
+        // Post: api/Web_Data/Groups لیست گروه ها
+        [Route("api/Web_Data/Groups")]
+        public async Task<IHttpActionResult> PostWeb_Groups(GroupsObject GroupsObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "00", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format("select * FROM  Web_Groups('{0}','{1}') where code in ({2})", GroupsObject.ProgName, GroupsObject.User, GroupsObject.groups);
+   
+                var listGroups = UnitDatabase.db.Database.SqlQuery<Web_Groups>(sql);
+                return Ok(listGroups);
+            }
+            return Ok(con);
+        }
+
+
+
     }
 }

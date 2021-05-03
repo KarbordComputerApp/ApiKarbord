@@ -520,8 +520,8 @@ namespace ApiKarbord.Controllers.Unit
                             filestream.Close();
                             if (dbName != "Ace_WebConfig")
                             {
-                                File.Delete(item);
-                                sw.WriteLine("Delete File");
+                                //File.Delete(item);
+                                //sw.WriteLine("Delete File");
                             }
 
                             // return "به روز رسانی انجام شد";
@@ -530,8 +530,8 @@ namespace ApiKarbord.Controllers.Unit
                         {
                             if (dbName != "Ace_WebConfig")
                             {
-                                File.Delete(item);
-                                sw.WriteLine("Delete File");
+                                //File.Delete(item);
+                                //sw.WriteLine("Delete File");
                             }
                         }
                     }
