@@ -193,7 +193,7 @@ namespace ApiKarbord.Controllers.Unit
                     db = new ApiModel(conStr);
                     if (ace == "Config" && group == "00")
                     {
-                        ChangeDatabase();
+                        ChangeDatabaseConfig();
                         db = new ApiModel(conStr);
                     }
                     return "ok";
@@ -296,10 +296,247 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-
-        public static void ChangeDatabase()
+        public static int ChangeDatabase(string ace, string sal, string group)
         {
-            
+
+            var list = model.First();
+            string dbName;
+
+            lockNumber = list.lockNumber;
+
+            string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
+                                             SearchOption.TopDirectoryOnly);
+
+            bool isCols = false;
+
+            if (!System.IO.Directory.Exists(addressFileSql + "\\" + lockNumber))
+                System.IO.Directory.CreateDirectory(addressFileSql + "\\" + lockNumber);
+
+
+            string fileLog = addressFileSql + "\\" + lockNumber + "\\" + ace + "_" + group + "_" + sal + ".txt";
+
+            if (File.Exists(fileLog))
+            {
+                File.Delete(fileLog);
+            }
+
+            StreamWriter sw = File.CreateText(fileLog);
+
+            foreach (var item in filePaths)
+            {
+
+                isCols = false;
+                string fileName = Path.GetFileName(item);
+                var files = fileName.Split('_');
+                if (files.Length >= 5)
+                {
+                    if (files[3].Length == 1)
+                        files[3] = "0" + files[3];
+
+                    if (files[1] == lockNumber && files[3] == group)
+                    {
+                        sw.WriteLine("fileName : " + fileName);
+                        string addressFile = item;
+                        //sal = (files[4].Split('.'))[0];
+                        //group = files[3];
+                        string salTemp = sal;
+                        if (files[2] == "Web2")
+                            salTemp = "0000";
+
+                        dbName = ("ACE_" + files[2] + group + salTemp);
+
+                        if (files.Length == 6)
+                        {
+                            string nameTemp = (files[5].Split('.'))[0];
+                            if (nameTemp == "Col")
+                            {
+                                isCols = true;
+                            }
+                        }
+
+                        sw.WriteLine("dbName : " + dbName);
+
+
+
+                        string connectionString = String.Format(
+                                        @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                        list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
+
+                        sw.WriteLine("connectionString : " + connectionString);
+
+                        var connection = new SqlConnection(connectionString);
+
+                        connection.Open();
+                        var command = connection.CreateCommand();
+                        command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
+                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
+                        command.ExecuteNonQuery();
+
+                        string conStr = CreateConnectionString(list.UserName, list.Password, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
+                        if (conStr.Length > 100)
+                        {
+                            db = new ApiModel(conStr);
+                        }
+
+
+                        string sql;
+                        int oldVer = 0;
+                        try
+                        {
+                            try
+                            {
+                                sql = string.Format(@"if (select count(id) from web_version) = 0
+                                                                select 0
+                                                              else
+                                                                select ver from web_version where id = (select max(id) from web_version)");
+                                oldVer = db.Database.SqlQuery<int>(sql).Single();
+                            }
+                            catch (Exception e)
+                            {
+                                sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
+                                                                     [id][int] IDENTITY(1,1) NOT NULL,
+                                                                     [ver] [int] NULL,
+                                                                     [datever] [datetime] NULL,
+                                                             CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
+                                                             ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
+                                db.Database.ExecuteSqlCommand(sql);
+                            }
+
+                            sw.WriteLine("oldVer : " + oldVer.ToString());
+                            sw.WriteLine("VerDB : " + UnitPublic.VerDB);
+
+                            if (oldVer < UnitPublic.VerDB || isCols == true)
+                            {
+                                if (isCols == false)
+                                {
+                                    sw.WriteLine("Start Delete All");
+                                    sql = string.Format(@"
+                                                    DECLARE @sql VARCHAR(MAX) = '' 
+                                                    DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
+                                                    SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
+                                                    FROM   sys.views v
+                                                    EXEC(@sql);
+                                                      declare @procName varchar(500)
+                                                      declare cur cursor
+                                                      for select name from sys.objects where type = 'if' or type = 'tf' or type = 'fn'
+                                                      open cur
+                                                      fetch next from cur into @procName
+                                                      while @@fetch_status = 0
+                                                      begin
+                                                          exec('drop function [' + @procName + ']')
+                                                          fetch next from cur into @procName
+                                                      end
+                                                      close cur
+                                                      deallocate cur
+                                                      declare cur cursor
+                                                      for select name from sys.objects where type = 'p' 
+                                                      open cur
+                                                      fetch next from cur into @procName
+                                                      while @@fetch_status = 0
+                                                      begin
+                                                          exec('drop procedure [' + @procName + ']')
+                                                          fetch next from cur into @procName
+                                                      end
+                                                      close cur
+                                                      deallocate cur
+                                                 ");
+                                    db.Database.ExecuteSqlCommand(sql);
+                                    sw.WriteLine("End Delete All");
+                                }
+
+
+                                string lineOfText;
+                                FileStream filestream = new System.IO.FileStream(addressFile,
+                                                          System.IO.FileMode.Open,
+                                                          System.IO.FileAccess.Read,
+                                                          System.IO.FileShare.ReadWrite);
+                                var file = new System.IO.StreamReader(filestream, System.Text.Encoding.Default, true, 128);
+
+                                sql = "";
+                                while ((lineOfText = file.ReadLine()) != null)
+                                {
+                                    if (!lineOfText.StartsWith("------"))
+                                    {
+                                        sql += lineOfText + " ";
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            sql = sql.Replace("yyyy", salTemp);
+
+                                            db.Database.ExecuteSqlCommand(sql);
+                                            //sw.WriteLine("ExecuteSqlCommand OK : " + sql);
+                                            sql = "";
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            sw.WriteLine("ExecuteSqlCommand Error : " + sql);
+                                            filestream.Close();
+                                            throw;
+
+                                        }
+                                    }
+                                }
+
+                                if (isCols == false)
+                                {
+                                    sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
+                                    db.Database.ExecuteSqlCommand(sql);
+                                    sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
+
+                                }
+                                filestream.Close();
+                                if (dbName != "Ace_WebConfig")
+                                {
+                                    //File.Delete(item);
+                                    //sw.WriteLine("Delete File");
+                                }
+
+                                // return "به روز رسانی انجام شد";
+                            }
+                            else
+                            {
+                                if (dbName != "Ace_WebConfig")
+                                {
+                                    //File.Delete(item);
+                                    //sw.WriteLine("Delete File");
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            sw.WriteLine(e.Message);
+                            sw.Close();
+
+                            // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
+                            throw;
+                        }
+                    }
+                }
+            }
+
+            sw.WriteLine("End");
+            sw.Close();
+            if (File.Exists(fileLog))
+            {
+                File.Delete(fileLog);
+            }
+            return 100;
+
+        }
+
+
+
+
+
+
+
+
+
+
+        public static void ChangeDatabaseConfig()
+        {
             var list = model.First();
             string dbName;
 
@@ -311,7 +548,11 @@ namespace ApiKarbord.Controllers.Unit
             string group = "";
             bool isCols = false;
 
-            string fileLog = addressFileSql + "\\" + lockNumber  + "_" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-ss") + ".txt";
+
+            if (!System.IO.Directory.Exists(addressFileSql + "\\" + lockNumber))
+                System.IO.Directory.CreateDirectory(addressFileSql + "\\" + lockNumber);
+
+            string fileLog = addressFileSql + "\\" + lockNumber + "\\Config.txt";
 
             if (File.Exists(fileLog))
             {
@@ -322,39 +563,16 @@ namespace ApiKarbord.Controllers.Unit
 
             foreach (var item in filePaths)
             {
-               
+
                 isCols = false;
                 string fileName = Path.GetFileName(item);
-                 sw.WriteLine("fileName : " + fileName);
-                var files = fileName.Split('_');
-                if (files[1] == lockNumber || files[1] == "10000")
+                if (fileName == "WebViews_10000_Ace2.txt")
                 {
+                    sw.WriteLine("fileName : " + fileName);
+                    var files = fileName.Split('_');
                     string addressFile = item;
-                    if (files[2] == "Ace2")
-                    {
-                        dbName = "Ace_WebConfig";
-                    }
-                    else
-                    {
-                        sal = (files[4].Split('.'))[0];
-                        group = files[3];
-                        if (files[2] == "Web2")
-                            sal = "0000";
+                    dbName = "Ace_WebConfig";
 
-                        if (group.Length == 1)
-                            group = "0" + group;
-
-                        dbName = ("ACE_" + files[2] + group + sal);
-
-                        if (files.Length == 6)
-                        {
-                            string nameTemp = (files[5].Split('.'))[0];
-                            if (nameTemp == "Col")
-                            {
-                                isCols = true;
-                            }
-                        }
-                    }
                     sw.WriteLine("dbName : " + dbName);
 
 
@@ -370,10 +588,10 @@ namespace ApiKarbord.Controllers.Unit
                     connection.Open();
                     var command = connection.CreateCommand();
                     command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
-                                                    CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
+                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
                     command.ExecuteNonQuery();
 
-                    string conStr = CreateConnectionString(list.UserName, list.Password, "", files[2] == "Ace2" ? "Config" : files[2], sal, group, 0, "", 0, 0);
+                    string conStr = CreateConnectionString(list.UserName, list.Password, "", "Config", sal, group, 0, "", 0, 0);
                     if (conStr.Length > 100)
                     {
                         db = new ApiModel(conStr);
@@ -387,19 +605,19 @@ namespace ApiKarbord.Controllers.Unit
                         try
                         {
                             sql = string.Format(@"if (select count(id) from web_version) = 0
-                                                        select 0
-                                                      else
-                                                        select ver from web_version where id = (select max(id) from web_version)");
+                                                                select 0
+                                                              else
+                                                                select ver from web_version where id = (select max(id) from web_version)");
                             oldVer = db.Database.SqlQuery<int>(sql).Single();
                         }
                         catch (Exception e)
                         {
                             sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
-                                                             [id][int] IDENTITY(1,1) NOT NULL,
-                                                             [ver] [int] NULL,
-	                                                         [datever] [datetime] NULL,
-                                                     CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
-                                                     ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
+                                                                     [id][int] IDENTITY(1,1) NOT NULL,
+                                                                     [ver] [int] NULL,
+                                                                     [datever] [datetime] NULL,
+                                                             CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
+                                                             ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
                             db.Database.ExecuteSqlCommand(sql);
                         }
 
@@ -412,35 +630,35 @@ namespace ApiKarbord.Controllers.Unit
                             {
                                 sw.WriteLine("Start Delete All");
                                 sql = string.Format(@"
-                                            DECLARE @sql VARCHAR(MAX) = '' 
-                                            DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
-                                            SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
-                                            FROM   sys.views v
-                                            EXEC(@sql);
-                                              declare @procName varchar(500)
-                                              declare cur cursor
-                                              for select name from sys.objects where type = 'if' or type = 'tf' or type = 'fn'
-                                              open cur
-                                              fetch next from cur into @procName
-                                              while @@fetch_status = 0
-                                              begin
-                                                  exec('drop function [' + @procName + ']')
-                                                  fetch next from cur into @procName
-                                              end
-                                              close cur
-                                              deallocate cur
-                                              declare cur cursor
-                                              for select name from sys.objects where type = 'p' 
-                                              open cur
-                                              fetch next from cur into @procName
-                                              while @@fetch_status = 0
-                                              begin
-                                                  exec('drop procedure [' + @procName + ']')
-                                                  fetch next from cur into @procName
-                                              end
-                                              close cur
-                                              deallocate cur
-                                         ");
+                                                    DECLARE @sql VARCHAR(MAX) = '' 
+                                                    DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
+                                                    SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
+                                                    FROM   sys.views v
+                                                    EXEC(@sql);
+                                                      declare @procName varchar(500)
+                                                      declare cur cursor
+                                                      for select name from sys.objects where type = 'if' or type = 'tf' or type = 'fn'
+                                                      open cur
+                                                      fetch next from cur into @procName
+                                                      while @@fetch_status = 0
+                                                      begin
+                                                          exec('drop function [' + @procName + ']')
+                                                          fetch next from cur into @procName
+                                                      end
+                                                      close cur
+                                                      deallocate cur
+                                                      declare cur cursor
+                                                      for select name from sys.objects where type = 'p' 
+                                                      open cur
+                                                      fetch next from cur into @procName
+                                                      while @@fetch_status = 0
+                                                      begin
+                                                          exec('drop procedure [' + @procName + ']')
+                                                          fetch next from cur into @procName
+                                                      end
+                                                      close cur
+                                                      deallocate cur
+                                                 ");
                                 db.Database.ExecuteSqlCommand(sql);
                                 sw.WriteLine("End Delete All");
                             }
@@ -486,16 +704,6 @@ namespace ApiKarbord.Controllers.Unit
                                         {
                                             sql = func[0] + func[1] + func[2] + func[3] + func[4] + func[5] + func[6] + func[7] + func[8] + func[9] + func[10] + func[11] + func[12] + func[13];
                                         }
-
-                                        /*if (sql.StartsWith("if Not exists"))
-                                        {
-                                            command.CommandText = "use " + dbName + " " + sql;
-                                            command.ExecuteNonQuery();
-                                        }
-                                        else
-                                        {
-                                            db.Database.ExecuteSqlCommand(sql);
-                                        }*/
                                         db.Database.ExecuteSqlCommand(sql);
                                         sw.WriteLine("ExecuteSqlCommand OK : " + sql);
                                         sql = "";
@@ -520,8 +728,6 @@ namespace ApiKarbord.Controllers.Unit
                             filestream.Close();
                             if (dbName != "Ace_WebConfig")
                             {
-                                //File.Delete(item);
-                                //sw.WriteLine("Delete File");
                             }
 
                             // return "به روز رسانی انجام شد";
@@ -543,7 +749,10 @@ namespace ApiKarbord.Controllers.Unit
                         // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
                         throw;
                     }
+
+
                 }
+
 
             }
 
@@ -555,6 +764,11 @@ namespace ApiKarbord.Controllers.Unit
             }
 
         }
+
+
+
+
+
 
 
 
