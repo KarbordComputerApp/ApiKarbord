@@ -15,5 +15,7 @@
         public string Name { get; set; }
 
         public string Spec { get; set; }
+
+        public byte? AutoDocNo { get; set; }
     }
 }
