@@ -114,7 +114,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(@"EXEC[dbo].[Web_Doc_Dates]
                                              @TableName = '{0}',
-		                                     @Mode = '''{1}'''", "Acc5doch", "");
+		                                     @Mode = ''", "Acc5doch");
                 string lastdate = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                 return Ok(lastdate);
             }
