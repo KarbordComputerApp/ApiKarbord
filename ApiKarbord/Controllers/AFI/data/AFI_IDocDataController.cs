@@ -148,7 +148,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F20 
                                        from Web_IDocH_F(3,'{0}') where 1 = 1 ", IDocHMinObject.user);
 
-                
+
                 //if (ModeCode == "in")
                 //   sql += " (101,102,103,106,108,110) ";
                 //else if (ModeCode == "out")
@@ -176,7 +176,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 else
                 {
                     if (IDocHMinObject.InOut > 0)
-                    sql += " and InOut = " + IDocHMinObject.InOut;
+                        sql += " and InOut = " + IDocHMinObject.InOut;
                 }
 
 
@@ -489,6 +489,41 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
 
         }
+
+
+        public class AFI_SaveIDoc_HZ
+        {
+            public long SerialNumber { get; set; }
+
+            public string Tanzim { get; set; }
+
+        }
+
+
+        [Route("api/IDocData/SaveIDoc_HZ/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_SaveIDoc_HZ(string ace, string sal, string group, AFI_SaveIDoc_HZ AFI_SaveIDoc_HZ)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"DECLARE	@return_value int
+                                             EXEC	@return_value = [dbo].[Web_SaveIDoc_HZ]
+		                                            @SerialNumber = {0},
+		                                            @Tanzim = '{1}'
+                                             SELECT	'Return Value' = @return_value ",
+                                           AFI_SaveIDoc_HZ.SerialNumber, AFI_SaveIDoc_HZ.Tanzim);
+                var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
+                return Ok("ok");
+            }
+            return Ok(con);
+        }
+
+
+
+
 
     }
 

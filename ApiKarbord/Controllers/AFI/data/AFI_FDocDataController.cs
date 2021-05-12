@@ -513,5 +513,43 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+
+
+
+        public class AFI_SaveFDoc_HZ
+        {
+            public long SerialNumber { get; set; }
+
+            public string Tanzim { get; set; }
+
+        }
+
+
+        [Route("api/FDocData/SaveFDoc_HZ/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_SaveFDoc_HZ(string ace, string sal, string group, AFI_SaveFDoc_HZ AFI_SaveFDoc_HZ)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"DECLARE	@return_value int
+                                             EXEC	@return_value = [dbo].[Web_SaveFDoc_HZ]
+		                                            @SerialNumber = {0},
+		                                            @Tanzim = '{1}'
+                                             SELECT	'Return Value' = @return_value ",
+                                           AFI_SaveFDoc_HZ.SerialNumber, AFI_SaveFDoc_HZ.Tanzim);
+                var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
+                return Ok("ok");
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
     }
 }
