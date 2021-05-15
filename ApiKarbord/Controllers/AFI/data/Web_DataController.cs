@@ -657,7 +657,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 //string sql = string.Format(@" select SUBSTRING(name,11,4) as name  from sys.sysdatabases where name like 'ACE_{0}%' and SUBSTRING(name,9,2) like '%{1}' order by name", ace, group);
                 string sql = string.Format(@" EXEC	[dbo].[Web_Years]
-		                                            @ProgName = '{0}',
+		                                            @BaseProg = '{0}',
 		                                            @GroupNo = '{1}',
 		                                            @UserCode = '{2}'",
                                            DatabseSalObject.ProgName,
