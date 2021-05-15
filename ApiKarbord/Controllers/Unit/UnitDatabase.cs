@@ -465,6 +465,9 @@ namespace ApiKarbord.Controllers.Unit
                                         {
                                             sql = sql.Replace("yyyy", salTemp);
 
+                                            sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());
+                                            sql = sql.Replace("yyyz", (int.Parse(salTemp) + 1).ToString());
+
                                             db.Database.ExecuteSqlCommand(sql);
                                             //sw.WriteLine("ExecuteSqlCommand OK : " + sql);
                                             sql = "";
