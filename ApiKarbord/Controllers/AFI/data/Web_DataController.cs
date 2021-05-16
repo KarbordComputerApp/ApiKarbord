@@ -2119,7 +2119,17 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                return UnitDatabase.db.Web_Mkz.OrderBy(c => c.SortCode);
+                //var a = UnitDatabase.db.Database.Connection.State;
+
+                var list = UnitDatabase.db.Web_Mkz.OrderBy(c => c.SortCode);
+
+                //if (UnitDatabase.db.Database.Connection.State == ConnectionState.Open)
+                //{
+                //    UnitDatabase.db.Database.Connection.Close();
+                //}
+                //UnitDatabase.db.Dispose();
+                return list;
+               
             }
             return null;
         }

@@ -371,6 +371,7 @@ namespace ApiKarbord.Controllers.Unit
                         command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
                                                             CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
                         command.ExecuteNonQuery();
+                        connection.Close();
 
                         string conStr = CreateConnectionString(list.UserName, list.Password, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
                         if (conStr.Length > 100)
