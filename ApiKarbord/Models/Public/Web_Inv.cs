@@ -17,5 +17,7 @@
         public string Spec { get; set; }
 
         public byte? AutoDocNo { get; set; }
+
+        public byte? SameNoAllMode { get; set; }
     }
 }
