@@ -93,19 +93,15 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
                                    , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
-                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, SAddMin1, SAddMin2, SAddMin3, SAddMin4
-                                   , SAddMin5, SAddMin6, SAddMin7, SAddMin8, SAddMin9, SAddMin10, PAddMin1, PAddMin2, PAddMin3, PAddMin4, PAddMin5, PAddMin6
-                                   , PAddMin7, PAddMin8, PAddMin9, PAddMin10, KalaImage
-                            FROM Web_Kala";
+                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, KalaImage
+                            FROM Web_Kala_f(0,'')";
                 }
                 else
                 {
                     sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
                                    , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
-                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, SAddMin1, SAddMin2, SAddMin3, SAddMin4
-                                   , SAddMin5, SAddMin6, SAddMin7, SAddMin8, SAddMin9, SAddMin10, PAddMin1, PAddMin2, PAddMin3, PAddMin4, PAddMin5, PAddMin6
-                                   , PAddMin7, PAddMin8, PAddMin9, PAddMin10, null as KalaImage
-                            FROM Web_Kala";
+                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, null as KalaImage
+                            FROM Web_Kala_f(0,'')";
                 }
 
                 if (kalaObject.updatedate != null)

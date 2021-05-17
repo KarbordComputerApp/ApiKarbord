@@ -402,7 +402,11 @@
     <Content Include="PrintForms\Public\SPFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی با تمامی مقادیر مانده" />
+    <Content Include="PrintForms\Public\ReportFDocR-عمومی" />
+    <Content Include="PrintForms\Public\ReportKrdx-فرم چاپ" />
+    <Content Include="PrintForms\Public\ReportTrzFKala-عمومی" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی موجودی کالا  با تمامی مقادیر مانده" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی گردش کالا" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>

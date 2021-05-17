@@ -22,7 +22,9 @@
         public DateTime? UpdateDate { get; set; }
 
         public int CustMode { get; set; }
-        public string SAddMin1 { get; set; }
+
+
+        /*public string SAddMin1 { get; set; }
         public string SAddMin2 { get; set; }
         public string SAddMin3 { get; set; }
         public string SAddMin4 { get; set; }
@@ -41,7 +43,10 @@
         public string PAddMin7 { get; set; }
         public string PAddMin8 { get; set; }
         public string PAddMin9 { get; set; }
-        public string PAddMin10 { get; set; }
+        public string PAddMin10 { get; set; }*/
+
+
+
         public int? KalaPriceCode_P { get; set; }
         public int? KalaPriceCode_S { get; set; }
         public int? CGruKalaPriceCode_P { get; set; }

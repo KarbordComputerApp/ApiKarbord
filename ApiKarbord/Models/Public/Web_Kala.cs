@@ -67,29 +67,7 @@
 
         public double? SPrice3 { get; set; }
 
-        //  public byte? SAddMin1 { get; set; }
-        //  public byte? SAddMin2 { get; set; }
-        //  public byte? SAddMin3 { get; set; }
-        //  public byte? SAddMin4 { get; set; }
-        //  public byte? SAddMin5 { get; set; }
-        //  public byte? SAddMin6 { get; set; }
-        // public byte? SAddMin7 { get; set; }
-        //  public byte? SAddMin8 { get; set; }
-        //   public byte? SAddMin9 { get; set; }
-        //   public byte? SAddMin10 { get; set; }
-
-        //  public byte? PAddMin1 { get; set; }
-        // public byte? PAddMin2 { get; set; }
-        //   public byte? PAddMin3 { get; set; }
-        //  public byte? PAddMin4 { get; set; }
-        //  public byte? PAddMin5 { get; set; }
-        //  public byte? PAddMin6 { get; set; }
-        //  public byte? PAddMin7 { get; set; }
-        //  public byte? PAddMin8 { get; set; }
-        //  public byte? PAddMin9 { get; set; }
-        //  public byte? PAddMin10 { get; set; }
-
-
+/*
         public string SAddMin1 { get; set; }
         public string SAddMin2 { get; set; }
         public string SAddMin3 { get; set; }
@@ -110,7 +88,7 @@
         public string PAddMin7 { get; set; }
         public string PAddMin8 { get; set; }
         public string PAddMin9 { get; set; }
-        public string PAddMin10 { get; set; }
+        public string PAddMin10 { get; set; }*/
 
         [StringLength(250)]
         public string F01 { get; set; }
