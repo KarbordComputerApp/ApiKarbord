@@ -401,12 +401,12 @@
     <Content Include="PrintForms\Public\SORD-عمومی" />
     <Content Include="PrintForms\Public\SPFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
     <Content Include="PrintForms\Public\ReportFDocR-عمومی" />
     <Content Include="PrintForms\Public\ReportKrdx-فرم چاپ" />
     <Content Include="PrintForms\Public\ReportTrzFKala-عمومی" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی موجودی کالا  با تمامی مقادیر مانده" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی گردش کالا" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- موجودی کالا %283 واحد شمارش%29" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- گردش کالا %28واحد شمارش اول%29" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaMaster-موجودی کالا%28واحد شمارش اول%29" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
