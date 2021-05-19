@@ -176,7 +176,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             erjDocH.ModeCode,
                             erjDocH.DocNo,
                             erjDocH.SerialNumber,
-                            erjDocH.DocDate ?? string.Format("{ 0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
+                            erjDocH.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
                             erjDocH.MhltDate,
                             erjDocH.AmalDate,
                             erjDocH.EndDate,

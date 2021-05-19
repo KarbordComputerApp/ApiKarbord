@@ -111,6 +111,7 @@ namespace ApiKarbord.Controllers.Unit
             string day = pc.GetDayOfMonth(DateTime.Now).ToString();
 
             month = month.Length == 1 ? "0" + month : month;
+            day = day.Length == 1 ? "0" + day : day;
 
             string PDate = year + "/" + month + "/" + day;
 

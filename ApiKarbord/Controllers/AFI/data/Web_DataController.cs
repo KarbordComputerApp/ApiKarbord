@@ -542,8 +542,10 @@ namespace ApiKarbord.Controllers.AFI.data
                     string day = pc.GetDayOfMonth(DateTime.Now).ToString();
 
                     month = month.Length == 1 ? "0" + month : month;
+                    day = day.Length == 1 ? "0" + day : day;
 
                     string PDate = year + "/" + month + "/" + day;
+
 
                     //string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
                     string Time = DateTime.Now.ToString("HH:mm");
