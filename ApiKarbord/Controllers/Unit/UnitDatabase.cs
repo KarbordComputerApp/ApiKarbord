@@ -95,25 +95,32 @@ namespace ApiKarbord.Controllers.Unit
         public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
         {
             // addressApiAccounting = MyIni.Read("serverName");
-            string IniPath1 = HttpContext.Current.Server.MapPath("~/Content/ini/Config.Ini");
+            string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
-            IniFile MyIni1 = new IniFile(IniPath1);
+            IniFile MyIniLog = new IniFile(IniLogPath);
 
             PersianCalendar pc = new System.Globalization.PersianCalendar();
 
-            MyIni1.Write("DateTime.Now", DateTime.Now.ToString());
-            MyIni1.Write("GetYear", pc.GetYear(DateTime.Now).ToString());
-            MyIni1.Write("GetMonth", pc.GetMonth(DateTime.Now).ToString());
-            MyIni1.Write("GetDayOfMonth", pc.GetDayOfMonth(DateTime.Now).ToString());
+            MyIniLog.Write("DateTime.Now", DateTime.Now.ToString());
+            MyIniLog.Write("GetYear", pc.GetYear(DateTime.Now).ToString());
+            MyIniLog.Write("GetMonth", pc.GetMonth(DateTime.Now).ToString());
+            MyIniLog.Write("GetDayOfMonth", pc.GetDayOfMonth(DateTime.Now).ToString());
 
+            string year = pc.GetYear(DateTime.Now).ToString();
+            string month = pc.GetMonth(DateTime.Now).ToString();
+            string day = pc.GetDayOfMonth(DateTime.Now).ToString();
 
-            string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
+            month = month.Length == 1 ? "0" + month : month;
 
-            MyIni1.Write("PDate", PDate);
+            string PDate = year + "/" + month + "/" + day;
+
+            //string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
+
+            MyIniLog.Write("PDate", PDate);
             try
             {
                 string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/{9}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, bandNo);
-                MyIni1.Write("address", address);
+                MyIniLog.Write("address", address);
 
                 var client = new HttpClient();
 
@@ -123,7 +130,7 @@ namespace ApiKarbord.Controllers.Unit
                       var response = taskwithresponse.Result;
                       var jsonString = response.Content.ReadAsStringAsync();
                       jsonString.Wait();
-                      MyIni1.Write("jsonString.Result", jsonString.Result);
+                      MyIniLog.Write("jsonString.Result", jsonString.Result);
                       model = JsonConvert.DeserializeObject<List<Access>>(jsonString.Result);
                   });
                 task.Wait();
@@ -148,7 +155,7 @@ namespace ApiKarbord.Controllers.Unit
                                     //  @"data source = {0};initial catalog = {1};user id = {2}; password = {3}; MultipleActiveResultSets = True; App = EntityFramework",
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
                                     list.SqlServerName, DatabaseName(ace, sal, group), list.SqlUserName, list.SqlPassword);
-                    MyIni1.Write("connectionString_10", connectionString);
+                    MyIniLog.Write("connectionString_10", connectionString);
                     return connectionString;
                 }
 
@@ -157,7 +164,7 @@ namespace ApiKarbord.Controllers.Unit
             }
             catch (Exception e)
             {
-                MyIni1.Write("Exception_10", e.Message.ToString());
+                MyIniLog.Write("Exception_10", e.Message.ToString());
                 return null;
                 throw;
             }
@@ -198,22 +205,22 @@ namespace ApiKarbord.Controllers.Unit
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static string CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
         {
-            string IniPath1 = HttpContext.Current.Server.MapPath("~/Content/ini/Config.Ini");
+            string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
-            IniFile MyIni1 = new IniFile(IniPath1);
+            IniFile MyIniLog = new IniFile(IniLogPath);
             try
             {
-                MyIni1.Write("1001 Start", "ok");
+                MyIniLog.Write("1001 Start", "ok");
                 string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act, bandNo);
-                MyIni1.Write("conStr", conStr);
+                MyIniLog.Write("conStr", conStr);
                 if (conStr.Length > 100)
                 {
                     UnitPublic.conString = conStr;
-                    MyIni1.Write("conStr_", UnitPublic.conString);
+                    MyIniLog.Write("conStr_", UnitPublic.conString);
                     db = new ApiModel(conStr);
                     if (ace == "Config" && group == "00")
                     {
-                        MyIni1.Write("conStr_1", ace);
+                        MyIniLog.Write("conStr_1", ace);
                         ChangeDatabaseConfig();
                         db = new ApiModel(conStr);
                     }
@@ -224,7 +231,7 @@ namespace ApiKarbord.Controllers.Unit
             }
             catch (Exception e)
             {
-                MyIni1.Write("error", e.Message.ToString());
+                MyIniLog.Write("error", e.Message.ToString());
                 return "error";
                 throw;
             }
@@ -564,11 +571,11 @@ namespace ApiKarbord.Controllers.Unit
 
         public static void ChangeDatabaseConfig()
         {
-            string IniPath1 = HttpContext.Current.Server.MapPath("~/Content/ini/Config.Ini");
+            string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
-            IniFile MyIni1 = new IniFile(IniPath1);
+            IniFile MyIniLog = new IniFile(IniLogPath);
 
-            MyIni1.Write("srart :","OK");
+            MyIniLog.Write("srart :","OK");
             try
             {
 
@@ -577,8 +584,8 @@ namespace ApiKarbord.Controllers.Unit
 
                 lockNumber = list.lockNumber;
 
-                MyIni1.Write("lockNumber :", lockNumber.ToString());
-                MyIni1.Write("addressFileSql :", addressFileSql );
+                MyIniLog.Write("lockNumber :", lockNumber.ToString());
+                MyIniLog.Write("addressFileSql :", addressFileSql );
 
 
                 string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
@@ -587,7 +594,7 @@ namespace ApiKarbord.Controllers.Unit
 
                 foreach (var item in filePaths)
                 {
-                    MyIni1.Write("filePaths :", item);
+                    MyIniLog.Write("filePaths :", item);
                 }
 
 
@@ -601,13 +608,13 @@ namespace ApiKarbord.Controllers.Unit
 
                 string fileLog = addressFileSql + "\\" + lockNumber + "\\Config.txt";
 
-                MyIni1.Write("fileLog :", fileLog);
+                MyIniLog.Write("fileLog :", fileLog);
 
                 if (File.Exists(fileLog))
                 {
-                    MyIni1.Write("deletefileLog :", "start");
+                    MyIniLog.Write("deletefileLog :", "start");
                     File.Delete(fileLog);
-                    MyIni1.Write("deletefileLog :", "End");
+                    MyIniLog.Write("deletefileLog :", "End");
                 }
 
                 StreamWriter sw = File.CreateText(fileLog);
@@ -616,7 +623,7 @@ namespace ApiKarbord.Controllers.Unit
                 {
                     isCols = false;
                     string fileName = Path.GetFileName(item);
-                    MyIni1.Write("fileName :", fileName);
+                    MyIniLog.Write("fileName :", fileName);
                     if (fileName == "WebViews_10000_Ace2.txt")
                     {
                         sw.WriteLine("fileName : " + fileName);
@@ -816,7 +823,7 @@ namespace ApiKarbord.Controllers.Unit
             }
             catch (Exception e)
             {
-                MyIni1.Write("mess :", e.Message);
+                MyIniLog.Write("mess :", e.Message);
             }
 
         }

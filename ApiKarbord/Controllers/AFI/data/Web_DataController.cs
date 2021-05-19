@@ -536,7 +536,16 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
 
                     PersianCalendar pc = new System.Globalization.PersianCalendar();
-                    string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
+
+                    string year = pc.GetYear(DateTime.Now).ToString();
+                    string month = pc.GetMonth(DateTime.Now).ToString();
+                    string day = pc.GetDayOfMonth(DateTime.Now).ToString();
+
+                    month = month.Length == 1 ? "0" + month : month;
+
+                    string PDate = year + "/" + month + "/" + day;
+
+                    //string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
                     string Time = DateTime.Now.ToString("HH:mm");
                     string sql = string.Format(@" EXEC	[dbo].[Web_TestLogin]
 		                                            @MachineId = N'{0}',
