@@ -77,7 +77,12 @@ namespace ApiKarbord.Controllers.AFI.data
         public class KalaObject
         {
             public bool? withimage { get; set; }
+
             public string updatedate { get; set; }
+
+            public byte Mode { get; set; }
+
+            public string UserCode { get; set; }
         }
 
         // Post: api/Web_Data/Kala لیست کالا ها
@@ -88,24 +93,36 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = "";
+
+
+                string sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
+                                   , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
+                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3";
                 if (kalaObject.withimage == true)
-                {
-                    sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
-                                   , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
-                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, KalaImage
-                            FROM Web_Kala_f(0,'')";
-                }
+                    sql += ",KalaImage ";
                 else
-                {
-                    sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
-                                   , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
-                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, null as KalaImage
-                            FROM Web_Kala_f(0,'')";
-                }
+                    sql += ",null as KalaImage ";
+
+                sql += string.Format(" FROM Web_Kala_f({0},'{1}') where 1 = 1 ", kalaObject.Mode, kalaObject.UserCode);
+
+
+                /* if (kalaObject.withimage == true)
+                 {
+                     sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
+                                    , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
+                                    , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, KalaImage
+                             FROM Web_Kala_f(0,'')";
+                 }
+                 else
+                 {
+                     sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
+                                    , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
+                                    , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3, null as KalaImage
+                             FROM Web_Kala_f(0,'')";
+                 }*/
 
                 if (kalaObject.updatedate != null)
-                    sql += " where updatedate >= CAST('" + kalaObject.updatedate + "' AS DATETIME2)";
+                    sql += " and updatedate >= CAST('" + kalaObject.updatedate + "' AS DATETIME2)";
 
                 var listKala = UnitDatabase.db.Database.SqlQuery<Web_Kala>(sql);
                 return Ok(listKala);

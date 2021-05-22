@@ -17,20 +17,16 @@
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(50)]
         public string AccFullCode { get; set; }
 
         [Key]
         [Column(Order = 2)]
-        [StringLength(50)]
         public string TrafFullCode { get; set; }
 
 
 
-        [StringLength(50)]
         public string MkzCode { get; set; }
 
-        [StringLength(50)]
         public string OprCode { get; set; }
 
         [Key]
@@ -45,32 +41,26 @@
 
         [Key]
         [Column(Order = 5)]
-        [StringLength(30)]
         public string CheckNo { get; set; }
 
         [Key]
         [Column(Order = 6)]
-        [StringLength(10)]
         public string CheckDate { get; set; }
 
         [Key]
         [Column(Order = 7)]
-        [StringLength(100)]
         public string Bank { get; set; }
 
         [Key]
         [Column(Order = 8)]
-        [StringLength(100)]
         public string Shobe { get; set; }
 
         [Key]
         [Column(Order = 9)]
-        [StringLength(100)]
         public string Jari { get; set; }
 
         [Key]
         [Column(Order = 10)]
-        [StringLength(20)]
         public string BaratNo { get; set; }
 
         [Key]
@@ -85,7 +75,6 @@
 
         public int? CheckRadif { get; set; }
 
-        [StringLength(10)]
         public string CheckVosoolDate { get; set; }
 
         public double? Bede { get; set; }
@@ -98,7 +87,6 @@
 
         [Key]
         [Column(Order = 14)]
-        [StringLength(50)]
         public string ArzCode { get; set; }
 
         [Key]
@@ -109,25 +97,21 @@
         [Column(Order = 16)]
         public double ArzRate { get; set; }
 
-        [StringLength(10)]
         public string CheckStatus { get; set; }
 
         public long? SerialNumber { get; set; }
 
         [Key]
         [Column(Order = 17)]
-        [StringLength(100)]
         public string AccFullName { get; set; }
 
 
         [Key]
         [Column(Order = 23)]
-        [StringLength(15)]
         public string AccZCode { get; set; }
 
         [Key]
         [Column(Order = 24)]
-        [StringLength(250)]
         public string ZGru { get; set; }
 
         public short? Mkz { get; set; }
@@ -140,54 +124,46 @@
 
         [Key]
         [Column(Order = 25)]
-        [StringLength(50)]
         public string ArzName { get; set; }
 
         [Key]
         [Column(Order = 26)]
-        [StringLength(100)]
         public string TrafFullName { get; set; }
 
         [Key]
         [Column(Order = 27)]
-        [StringLength(15)]
         public string TrafZCode { get; set; }
 
         [Key]
         [Column(Order = 28)]
-        [StringLength(250)]
         public string MkzName { get; set; }
 
        
         [Key]
         [Column(Order = 32)]
-        [StringLength(100)]
         public string OprName { get; set; }
 
         [Key]
         [Column(Order = 33)]
-        [StringLength(100)]
         public string AccZName { get; set; }
 
         [Key]
         [Column(Order = 34)]
-        [StringLength(100)]
         public string TrafZName { get; set; }
 
-        [StringLength(50)]
         public string AccCode { get; set; }
 
-        [StringLength(50)]
         public string TrafCode { get; set; }
 
         [Key]
         [Column(Order = 35)]
-        [StringLength(100)]
         public string AccName { get; set; }
 
         [Key]
         [Column(Order = 36)]
-        [StringLength(100)]
         public string TrafName { get; set; }
+
+
+        public string AccCompleteName { get; set; }
     }
 }
