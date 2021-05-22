@@ -437,7 +437,7 @@ namespace ApiKarbord.Controllers.Unit
                             sw.WriteLine("oldVer : " + oldVer.ToString());
                             sw.WriteLine("VerDB : " + UnitPublic.VerDB);
 
-                            if (oldVer < UnitPublic.VerDB || isCols == true)
+                            if (oldVer < UnitPublic.VerDB)
                             {
                                 if (isCols == false)
                                 {
@@ -514,7 +514,7 @@ namespace ApiKarbord.Controllers.Unit
                                     }
                                 }
 
-                                if (isCols == false)
+                                if (isCols == true)
                                 {
                                     sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
                                     db.Database.ExecuteSqlCommand(sql);
