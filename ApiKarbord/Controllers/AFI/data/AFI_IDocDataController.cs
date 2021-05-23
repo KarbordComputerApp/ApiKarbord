@@ -523,6 +523,51 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class TestIDoc_DeleteObject
+        {
+            public long SerialNumber { get; set; }
+
+        }
+
+        public class TestIDoc_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/IDocData/TestIDoc_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestIDoc_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestIDoc_Delete(string ace, string sal, string group, TestIDoc_DeleteObject TestIDoc_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestIDoc_Delete] @serialNumber = {0} ", TestIDoc_DeleteObject.SerialNumber);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestIDoc_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
 
 
     }

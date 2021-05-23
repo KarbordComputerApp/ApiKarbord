@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 using System.Web.Http.Description;
 using ApiKarbord.Controllers.Unit;
 using ApiKarbord.Models;
-
+using Newtonsoft.Json;
+using System.Globalization;
 
 namespace ApiKarbord.Controllers.AFI.data
 {
@@ -268,6 +269,59 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
 
         }
+
+
+
+
+
+        public class TestDoc_DeleteObject 
+        {
+            public long SerialNumber { get; set; }
+
+        }
+
+        public class TestDoc_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/ErjDocH/TestDoc_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDoc_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestDoc_Delete(string ace, string sal, string group, TestDoc_DeleteObject TestDoc_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestDoc_Delete] @serialNumber = {0} ", TestDoc_DeleteObject.SerialNumber);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDoc_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
 
     }
 }
