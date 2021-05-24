@@ -8,11 +8,14 @@
 
     public class TestDocB
     {
-        [Key]
-        public int id { get; set; }
         public byte? Test { get; set; }
+
         public string TestName { get; set; }
+
+        public string TestCap { get; set; }
+
         public int? BandNo { get; set; }
+
         public string AccCode { get; set; }
     }
 }

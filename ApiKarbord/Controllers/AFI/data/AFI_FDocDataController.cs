@@ -562,6 +562,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string TestName { get; set; }
 
+            public string TestCap { get; set; }
+
             public int BandNo { get; set; }
 
         }
