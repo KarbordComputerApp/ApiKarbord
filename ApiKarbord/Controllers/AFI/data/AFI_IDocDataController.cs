@@ -473,7 +473,9 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestIDoc] @serialNumber = {0} ", AFI_TestIDocB.SerialNumber);
+                                           @"EXEC	[dbo].[Web_TestIDoc] @serialNumber = {0}  , @UserCode = '{1}' ",
+                                           AFI_TestIDocB.SerialNumber, 
+                                           dataAccount[2]);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
@@ -554,7 +556,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestIDoc_Delete] @serialNumber = {0} ", TestIDoc_DeleteObject.SerialNumber);
+                                           @"EXEC	[dbo].[Web_TestIDoc_Delete] @serialNumber = {0}, @UserCode = '{1}' ", TestIDoc_DeleteObject.SerialNumber, dataAccount[2]);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestIDoc_Delete>(sql).ToList();
