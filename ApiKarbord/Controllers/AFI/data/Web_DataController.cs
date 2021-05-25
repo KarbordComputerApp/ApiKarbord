@@ -3106,12 +3106,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // Post: api/Web_Data/ChangeDatabase 
-        [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group)
+        [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}/{auto}")]
+        public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto)
         {
             try
             {
-                UnitDatabase.ChangeDatabase(ace, sal, group);
+                UnitDatabase.ChangeDatabase(ace, sal, group, auto);
                 return Ok("0");
             }
             catch (Exception)
@@ -3369,6 +3369,18 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // GET: api/Web_Data/ بازسازی دستی بانک اطلاعات کانفیگ  
+        [Route("api/Web_Data/ChangeDatabaseConfig")]
+        public async Task<IHttpActionResult> GetWeb_ChangeDatabaseConfig()
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "1234", "00", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                return Ok(0);
+            }
+            return Ok(con);
+        }
 
 
 

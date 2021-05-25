@@ -222,7 +222,7 @@ namespace ApiKarbord.Controllers.Unit
                     if (ace == "Config" && group == "00")
                     {
                         MyIniLog.Write("conStr_1", ace);
-                        ChangeDatabaseConfig();
+                        ChangeDatabaseConfig(sal);
                         db = new ApiModel(conStr);
                     }
                     return "ok";
@@ -326,7 +326,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static int ChangeDatabase(string ace, string sal, string group)
+        public static int ChangeDatabase(string ace, string sal, string group, bool auto)
         {
 
             var list = model.First();
@@ -437,7 +437,7 @@ namespace ApiKarbord.Controllers.Unit
                             sw.WriteLine("oldVer : " + oldVer.ToString());
                             sw.WriteLine("VerDB : " + UnitPublic.VerDB);
 
-                            if (oldVer < UnitPublic.VerDB)
+                            if (oldVer < UnitPublic.VerDB  || auto == false)
                             {
                                 if (isCols == false)
                                 {
@@ -570,13 +570,13 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static void ChangeDatabaseConfig()
+        public static void ChangeDatabaseConfig(string flag)
         {
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
             IniFile MyIniLog = new IniFile(IniLogPath);
 
-            MyIniLog.Write("srart :","OK");
+            MyIniLog.Write("srart :", "OK");
             try
             {
 
@@ -586,7 +586,7 @@ namespace ApiKarbord.Controllers.Unit
                 lockNumber = list.lockNumber;
 
                 MyIniLog.Write("lockNumber :", lockNumber.ToString());
-                MyIniLog.Write("addressFileSql :", addressFileSql );
+                MyIniLog.Write("addressFileSql :", addressFileSql);
 
 
                 string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
@@ -683,7 +683,7 @@ namespace ApiKarbord.Controllers.Unit
                             sw.WriteLine("oldVer : " + oldVer.ToString());
                             sw.WriteLine("VerDB : " + UnitPublic.VerDB);
 
-                            if (oldVer < UnitPublic.VerDB || isCols == true)
+                            if (oldVer < UnitPublic.VerDB || flag == "1234")
                             {
                                 if (isCols == false)
                                 {
