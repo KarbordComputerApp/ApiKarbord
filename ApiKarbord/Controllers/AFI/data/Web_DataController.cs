@@ -2831,11 +2831,15 @@ namespace ApiKarbord.Controllers.AFI.data
                 fileName = Path.GetFileName(item);
                 tempName = fileName.Split('-');
 
-                tempAccess = tempName[0].Split('_');
-                if (tempAccess.Length > 1)
+
+
+                int NoPrice = fileName.IndexOf("_NoPrice");
+
+                if (NoPrice > -1) // no ghimat
                 {
-                    isAccess = 1;
+                    isAccess = 1; 
                 }
+
 
                 selected = MyIni.Read(fileName, "Public");
 
@@ -2864,8 +2868,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 fileName = Path.GetFileName(item);
                 tempName = fileName.Split('-');
 
-                tempAccess = tempName[0].Split('_');
-                if (tempAccess.Length > 1)
+
+
+                int NoPrice = fileName.IndexOf("_NoPrice");
+
+                if (NoPrice > -1) // no ghimat
                 {
                     isAccess = 1;
                 }
@@ -3023,16 +3030,19 @@ namespace ApiKarbord.Controllers.AFI.data
             string fileDir = Path.GetDirectoryName(address) + "\\";
 
 
+            int NoPrice = fileName.IndexOf("_NoPrice");
+
             tempName = fileName.Split('-');
+
             tempAccess = tempName[0].Split('_');
 
-            if (tempAccess.Length > 1) // no ghimat
+            if (NoPrice == -1) // no ghimat
             {
-                name = tempAccess[0] + "-" + tempName[1];
+                name = tempName[0] + "_NoPrice-" + tempName[1];
             }
             else
             {
-                name = tempAccess[0] + "_NoPrice-" + tempName[1];
+                name = fileName.Remove(NoPrice, 8);
             }
 
             try
