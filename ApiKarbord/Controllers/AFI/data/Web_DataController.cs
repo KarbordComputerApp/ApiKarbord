@@ -2153,7 +2153,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 //}
                 //UnitDatabase.db.Dispose();
                 return list;
-               
+
             }
             return null;
         }
@@ -2837,7 +2837,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (NoPrice > -1) // no ghimat
                 {
-                    isAccess = 1; 
+                    isAccess = 1;
                 }
 
 
@@ -3116,280 +3116,99 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // Post: api/Web_Data/ChangeDatabase 
-        [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}/{auto}")]
-        public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto)
+        [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}/{auto}/{lockNumber}")]
+        public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
         {
-            try
-            {
-                UnitDatabase.ChangeDatabase(ace, sal, group, auto);
-                return Ok("0");
-            }
-            catch (Exception)
-            {
-                return Ok("error");
-                throw;
-            }
-            /* ApiModel db;
-            string dbName;
             string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
+
             IniFile MyIni = new IniFile(IniPath);
+
             string addressFileSql = MyIni.Read("FileSql");
 
+            string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
 
-            string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
-                                                 SearchOption.TopDirectoryOnly);
-
-            bool isCols = false;
-
-            string fileLog = addressFileSql + "\\" + LockNumber + "_" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-ss") + ".txt";
-
-            if (File.Exists(fileLog))
+            IniFile MyIniConfig = new IniFile(IniConfigPath);
+            try
             {
-                File.Delete(fileLog);
-            }
+                string Change = MyIniConfig.Read("Change");
+                string BeginDate = MyIniConfig.Read("BeginDate");
+                string User = MyIniConfig.Read("User");
+                string Prog = MyIniConfig.Read("Prog");
+                string Group = MyIniConfig.Read("Group");
+                string Sal = MyIniConfig.Read("Sal");
+                string EndDate = MyIniConfig.Read("EndDate");
 
-            StreamWriter sw = File.CreateText(fileLog);
-
-            foreach (var item in filePaths)
-            {
-
-                isCols = false;
-                string fileName = Path.GetFileName(item);
-                sw.WriteLine("fileName : " + fileName);
-                var files = fileName.Split('_');
-                if (files[1] == LockNumber || files[1] == "10000")
+                var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+                if (Change != "1")
                 {
-                    string addressFile = item;
-                    if (files[2] == "Ace2.txt")
-                    {
-                        dbName = "Ace_WebConfig";
-                    }
-                    else
-                    {
-                        sal = (files[4].Split('.'))[0];
-                        group = files[3];
-                        if (files[2] == "Web2")
-                            sal = "0000";
-
-                        if (group.Length == 1)
-                            group = "0" + group;
-
-                        dbName = ("ACE_" + files[2] + group + sal);
-
-                        if (files.Length == 6)
-                        {
-                            string nameTemp = (files[5].Split('.'))[0];
-                            if (nameTemp == "Col")
-                            {
-                                isCols = true;
-                            }
-                        }
-                    }
-                    sw.WriteLine("dbName : " + dbName);
-
-
-
-                    string connectionString = String.Format(
-                                    @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                    list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
-
-                    sw.WriteLine("connectionString : " + connectionString);
-
-                    var connection = new SqlConnection(connectionString);
-
-                    connection.Open();
-                    var command = connection.CreateCommand();
-                    command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
-                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
-                    command.ExecuteNonQuery();
-
-                    string conStr = UnitDatabase.CreateConnectionString(list.UserName, list.Password, "", files[2] == "Ace2.txt" ? "Config" : files[2], sal, group, 0, "", 0, 0);
-                    if (conStr.Length > 100)
-                    {
-                        db = new ApiModel(conStr);
-                    }
-
-
-                    string sql;
-                    int oldVer = 0;
-                    try
-                    {
-                        try
-                        {
-                            sql = string.Format(@"if (select count(id) from web_version) = 0
-                                                                select 0
-                                                              else
-                                                                select ver from web_version where id = (select max(id) from web_version)");
-                            oldVer = db.Database.SqlQuery<int>(sql).Single();
-                        }
-                        catch (Exception e)
-                        {
-                            sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
-                                                                     [id][int] IDENTITY(1,1) NOT NULL,
-                                                                     [ver] [int] NULL,
-                                                                     [datever] [datetime] NULL,
-                                                             CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
-                                                             ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
-                            db.Database.ExecuteSqlCommand(sql);
-                        }
-
-                        sw.WriteLine("oldVer : " + oldVer.ToString());
-                        sw.WriteLine("VerDB : " + UnitPublic.VerDB);
-
-                        if (oldVer < UnitPublic.VerDB || isCols == true)
-                        {
-                            if (isCols == false)
-                            {
-                                sw.WriteLine("Start Delete All");
-                                sql = string.Format(@"
-                                                    DECLARE @sql VARCHAR(MAX) = '' 
-                                                    DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
-                                                    SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
-                                                    FROM   sys.views v
-                                                    EXEC(@sql);
-                                                      declare @procName varchar(500)
-                                                      declare cur cursor
-                                                      for select name from sys.objects where type = 'if' or type = 'tf' or type = 'fn'
-                                                      open cur
-                                                      fetch next from cur into @procName
-                                                      while @@fetch_status = 0
-                                                      begin
-                                                          exec('drop function [' + @procName + ']')
-                                                          fetch next from cur into @procName
-                                                      end
-                                                      close cur
-                                                      deallocate cur
-                                                      declare cur cursor
-                                                      for select name from sys.objects where type = 'p' 
-                                                      open cur
-                                                      fetch next from cur into @procName
-                                                      while @@fetch_status = 0
-                                                      begin
-                                                          exec('drop procedure [' + @procName + ']')
-                                                          fetch next from cur into @procName
-                                                      end
-                                                      close cur
-                                                      deallocate cur
-                                                 ");
-                                db.Database.ExecuteSqlCommand(sql);
-                                sw.WriteLine("End Delete All");
-                            }
-
-
-                            string lineOfText;
-                            FileStream filestream = new System.IO.FileStream(addressFile,
-                                                      System.IO.FileMode.Open,
-                                                      System.IO.FileAccess.Read,
-                                                      System.IO.FileShare.ReadWrite);
-                            var file = new System.IO.StreamReader(filestream, System.Text.Encoding.Default, true, 128);
-
-                            sql = "";
-                            int counter = 0;
-                            int counter1 = 0;
-                            bool test = false;
-                            string[] func = new string[100];
-                            while ((lineOfText = file.ReadLine()) != null)
-                            {
-                                if (!lineOfText.StartsWith("------"))
-                                {
-                                    if (lineOfText == "Create Function Web_UserTrs")
-                                    {
-                                        test = true;
-                                    }
-                                    if (test == true)
-                                    {
-                                        counter += 1;
-                                        if (counter == 100)
-                                        {
-                                            counter1 += 1;
-                                            counter = 0;
-                                        }
-                                        func[counter1] += lineOfText + " ";
-                                    }
-                                    sql += lineOfText + " ";
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        if (counter1 > 0)
-                                        {
-                                            sql = func[0] + func[1] + func[2] + func[3] + func[4] + func[5] + func[6] + func[7] + func[8] + func[9] + func[10] + func[11] + func[12] + func[13];
-                                        }
-
-
-                                        db.Database.ExecuteSqlCommand(sql);
-                                        sw.WriteLine("ExecuteSqlCommand OK : " + sql);
-                                        sql = "";
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        sw.WriteLine("ExecuteSqlCommand Error : " + sql);
-                                        filestream.Close();
-                                        throw;
-
-                                    }
-                                }
-                            }
-
-                            if (isCols == false)
-                            {
-                                sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
-                                db.Database.ExecuteSqlCommand(sql);
-                                sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
-
-                            }
-                            filestream.Close();
-                            if (dbName != "Ace_WebConfig")
-                            {
-                                //File.Delete(item);
-                                //sw.WriteLine("Delete File");
-                            }
-
-                            // return "به روز رسانی انجام شد";
-                        }
-                        else
-                        {
-                            if (dbName != "Ace_WebConfig")
-                            {
-                                //File.Delete(item);
-                                //sw.WriteLine("Delete File");
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        sw.WriteLine(e.Message);
-                        sw.Close();
-
-                        // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
-                        throw;
-                    }
+                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
+                    return Ok("OK");
                 }
-
+                else
+                {
+                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
+                }
             }
-
-            sw.WriteLine("End");
-            sw.Close();
-            if (File.Exists(fileLog))
+            catch (Exception e)
             {
-                File.Delete(fileLog);
-            }*/
-
+                MyIniConfig.Write("Change", "0");
+                MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                MyIniConfig.Write("error", e.Message.ToString());
+                return Ok("error" + e.Message.ToString());
+                throw;
+            }
         }
 
 
         // GET: api/Web_Data/ بازسازی دستی بانک اطلاعات کانفیگ  
-        [Route("api/Web_Data/ChangeDatabaseConfig")]
-        public async Task<IHttpActionResult> GetWeb_ChangeDatabaseConfig()
+        [Route("api/Web_Data/ChangeDatabaseConfig/{lockNumber}")]
+        public async Task<IHttpActionResult> GetWeb_ChangeDatabaseConfig(string lockNumber)
         {
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "1234", "00", 0, "", 0, 0);
-            if (con == "ok")
+            string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
+
+            IniFile MyIni = new IniFile(IniPath);
+
+            string addressFileSql = MyIni.Read("FileSql");
+
+            string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\" + "Config.ini";
+
+            IniFile MyIniConfig = new IniFile(IniConfigPath);
+
+            try
             {
-                return Ok(0);
+                string Change = MyIniConfig.Read("Change");
+                string BeginDate = MyIniConfig.Read("BeginDate");
+                string User = MyIniConfig.Read("User");
+                string Prog = MyIniConfig.Read("Prog");
+                string Group = MyIniConfig.Read("Group");
+                string Sal = MyIniConfig.Read("Sal");
+                string EndDate = MyIniConfig.Read("EndDate");
+
+                var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+                if (Change != "1")
+                {
+                    string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "1234", "00", 0, "", 0, 0);
+                    if (con == "ok")
+                    {
+                        return Ok("OK");
+                    }
+                    else
+                        return Ok(con);
+                }
+                else
+                {
+                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
+                }
             }
-            return Ok(con);
+            catch (Exception e)
+            {
+                MyIniConfig.Write("Change", "0");
+                MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                MyIniConfig.Write("error", e.Message.ToString());
+                return Ok("error" + e.Message.ToString());
+                throw;
+            }
         }
 
 

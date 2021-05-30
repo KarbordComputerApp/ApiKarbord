@@ -16,14 +16,14 @@ namespace ApiKarbord.Controllers.Unit
     {
 
         
-        public static int VerDB = 23;
+        public static int VerDB = 25;
         public static string conString = "";
 
-       // public static string titleVer = "API KarbordComputer Test : Ver ";
-       // public static int VerNumber = 504;
+        public static string titleVer = "API KarbordComputer Test : Ver ";
+        public static int VerNumber = 509;
 
-        public static string titleVer = "API KarbordComputer : Ver ";
-        public static int VerNumber = 1016;
+       // public static string titleVer = "API KarbordComputer : Ver ";
+       // public static int VerNumber = 1016;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");

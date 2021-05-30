@@ -222,7 +222,7 @@ namespace ApiKarbord.Controllers.Unit
                     if (ace == "Config" && group == "00")
                     {
                         MyIniLog.Write("conStr_1", ace);
-                        ChangeDatabaseConfig(sal);
+                        ChangeDatabaseConfig(userKarbord, sal);
                         db = new ApiModel(conStr);
                     }
                     return "ok";
@@ -326,7 +326,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static int ChangeDatabase(string ace, string sal, string group, bool auto)
+        public static int ChangeDatabase(string ace, string sal, string group, string userCode, bool auto)
         {
 
             var list = model.First();
@@ -439,8 +439,21 @@ namespace ApiKarbord.Controllers.Unit
 
                             if (oldVer < UnitPublic.VerDB  || auto == false)
                             {
+                                string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
+
+                                IniFile MyIniConfig = new IniFile(IniConfigPath);
+
+                                MyIniConfig.Write("Change", "1");
+                                MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
+                                MyIniConfig.Write("User", userCode);
+                                MyIniConfig.Write("Prog", ace);
+                                MyIniConfig.Write("Group", group);
+                                MyIniConfig.Write("Sal", sal);
+
+
                                 if (isCols == false)
                                 {
+
                                     sw.WriteLine("Start Delete All");
                                     sql = string.Format(@"
                                                     DECLARE @sql VARCHAR(MAX) = '' 
@@ -519,7 +532,8 @@ namespace ApiKarbord.Controllers.Unit
                                     sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
                                     db.Database.ExecuteSqlCommand(sql);
                                     sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
-
+                                    MyIniConfig.Write("Change", "0");
+                                    MyIniConfig.Write("EndDate", DateTime.Now.ToString());
                                 }
                                 filestream.Close();
                                 if (dbName != "Ace_WebConfig")
@@ -528,7 +542,6 @@ namespace ApiKarbord.Controllers.Unit
                                     //sw.WriteLine("Delete File");
                                 }
 
-                                // return "به روز رسانی انجام شد";
                             }
                             else
                             {
@@ -570,7 +583,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static void ChangeDatabaseConfig(string flag)
+        public static void ChangeDatabaseConfig(string userCode, string flag)
         {
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
@@ -685,6 +698,15 @@ namespace ApiKarbord.Controllers.Unit
 
                             if (oldVer < UnitPublic.VerDB || flag == "1234")
                             {
+                                string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config.ini";
+
+                                IniFile MyIniConfig = new IniFile(IniConfigPath);
+
+                                MyIniConfig.Write("Change", "1");
+                                MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
+                                MyIniConfig.Write("User", userCode);
+                                MyIniConfig.Write("Prog", "Config");
+
                                 if (isCols == false)
                                 {
                                     sw.WriteLine("Start Delete All");
@@ -782,7 +804,8 @@ namespace ApiKarbord.Controllers.Unit
                                     sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
                                     db.Database.ExecuteSqlCommand(sql);
                                     sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
-
+                                    MyIniConfig.Write("Change", "0");
+                                    MyIniConfig.Write("EndDate", DateTime.Now.ToString());
                                 }
                                 filestream.Close();
                                 if (dbName != "Ace_WebConfig")
