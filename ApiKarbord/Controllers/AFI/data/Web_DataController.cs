@@ -478,7 +478,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_Login(string user, string pass, string param1, string param2)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "00", 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], user, "Config", "", "00", 0, "", 0, 0);
             if (con == "ok")
             {
                 if (pass == "null")
@@ -563,10 +563,18 @@ namespace ApiKarbord.Controllers.AFI.data
 
                     string PDate = year + "/" + month + "/" + day;
 
+                    string sql = string.Format("SELECT count(ID) as id FROM Ace_Config.dbo.UserIn WHERE ProgName IN ('Web1', 'Web2', 'Web8') and usercode <> '{0}'", LoginTestObject.UserCode);
+                    string countUserIn = UnitDatabase.db.Database.SqlQuery<int>(sql).First().ToString();
+                    var list = UnitDatabase.model.First();
+                    int userCount = list.userCount ?? 0;
+                    if (Int32.Parse(countUserIn) >= userCount)
+                    {
+                        return Ok("MaxCount");
+                    }
 
                     //string PDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(pc.GetYear(DateTime.Now).ToString() + "/" + pc.GetMonth(DateTime.Now).ToString() + "/" + pc.GetDayOfMonth(DateTime.Now).ToString()));
                     string Time = DateTime.Now.ToString("HH:mm");
-                    string sql = string.Format(@" EXEC	[dbo].[Web_TestLogin]
+                    sql = string.Format(@" EXEC	[dbo].[Web_TestLogin]
 		                                            @MachineId = N'{0}',
 		                                            @IPWan = N'{1}',
 		                                            @Country = N'{2}',
@@ -592,6 +600,11 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  );
 
                     var value = UnitDatabase.db.Database.SqlQuery<Web_LoginTestObject>(sql).Single();
+
+
+
+
+
                     return Ok(value);
 
                 }
@@ -3099,7 +3112,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_Groups(GroupsObject GroupsObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "00", 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "0", 0, "", 0, 0);
             if (con == "ok")
             {
                 string sql = string.Format("select * FROM  Web_Groups('{0}','{1}') where code in ({2})", GroupsObject.ProgName, GroupsObject.User, GroupsObject.groups);
@@ -3144,10 +3157,13 @@ namespace ApiKarbord.Controllers.AFI.data
                     UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
                     return Ok("OK");
                 }
-                else
+                else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
                 {
-                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
+                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
+                    return Ok("OK");
                 }
+                else
+                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
             }
             catch (Exception e)
             {
@@ -3176,30 +3192,30 @@ namespace ApiKarbord.Controllers.AFI.data
 
             try
             {
-                string Change = MyIniConfig.Read("Change");
+                /*string Change = MyIniConfig.Read("Change");
                 string BeginDate = MyIniConfig.Read("BeginDate");
                 string User = MyIniConfig.Read("User");
                 string Prog = MyIniConfig.Read("Prog");
                 string Group = MyIniConfig.Read("Group");
                 string Sal = MyIniConfig.Read("Sal");
-                string EndDate = MyIniConfig.Read("EndDate");
+                string EndDate = MyIniConfig.Read("EndDate");*/
 
                 var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
-                if (Change != "1")
+                //if (Change != "1")
+                // {
+                string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "1234", "00", 0, "", 0, 0);
+                if (con == "ok")
                 {
-                    string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "1234", "00", 0, "", 0, 0);
-                    if (con == "ok")
-                    {
-                        return Ok("OK");
-                    }
-                    else
-                        return Ok(con);
+                    return Ok("OK");
                 }
                 else
-                {
-                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
-                }
+                    return Ok(con);
+                // }
+                //else
+                // {
+                //    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
+                //}
             }
             catch (Exception e)
             {

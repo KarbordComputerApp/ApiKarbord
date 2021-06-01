@@ -88,7 +88,7 @@ namespace ApiKarbord.Controllers.Unit
         public static string addressPrintForms = MyIni.Read("PrintForms");
         public static string lockNumber;
 
-        static List<Access> model = null;
+        public static List<Access> model = null;
 
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
@@ -221,6 +221,15 @@ namespace ApiKarbord.Controllers.Unit
                     db = new ApiModel(conStr);
                     if (ace == "Config" && group == "00")
                     {
+                        //string sql = string.Format("SELECT count(ID) as id FROM Ace_Config.dbo.UserIn WHERE ProgName IN ('Web1', 'Web2', 'Web8')");
+                        // string countUserIn = db.Database.SqlQuery<int>(sql).First().ToString();
+                        // var list = model.First();
+                        // int userCount = list.userCount ?? 0;
+                        //  if (Int32.Parse(countUserIn) >= userCount)
+                        //  {
+                        //     return "MaxCount";
+                        // }
+
                         MyIniLog.Write("conStr_1", ace);
                         ChangeDatabaseConfig(userKarbord, sal);
                         db = new ApiModel(conStr);
@@ -437,7 +446,7 @@ namespace ApiKarbord.Controllers.Unit
                             sw.WriteLine("oldVer : " + oldVer.ToString());
                             sw.WriteLine("VerDB : " + UnitPublic.VerDB);
 
-                            if (oldVer < UnitPublic.VerDB  || auto == false)
+                            if (oldVer < UnitPublic.VerDB || auto == false)
                             {
                                 string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
 
