@@ -10,7 +10,11 @@
     {
         [Key]
         public string Code { get; set; }
+
         public string Name { get; set; }
+
+        public string SortName { get; set; }
+
         public string Spec { get; set; }
 
         public string Eghdam { get; set; }

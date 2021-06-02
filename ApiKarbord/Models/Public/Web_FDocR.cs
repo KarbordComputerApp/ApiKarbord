@@ -16,19 +16,19 @@
         [Column(Order = 1)]
         public int BandNo { get; set; }
 
-        [StringLength(100)]
+
         public string KalaCode { get; set; }
 
         public string SortMkzCode { get; set; }
 
 
-        [StringLength(50)]
+
         public string MkzCode { get; set; }
 
-        [StringLength(50)]
+
         public string OprCode { get; set; }
 
-        [StringLength(50)]
+
         public string InvCode { get; set; }
 
         public short? MainUnit { get; set; }
@@ -59,10 +59,10 @@
 
         public double? AddMinPrice10 { get; set; }
 
-        [StringLength(250)]
+
         public string BandSpec { get; set; }
 
-        [StringLength(4000)]
+
         public string Comm { get; set; }
 
         public double? Discount { get; set; }
@@ -71,94 +71,94 @@
 
         public double? TotalPrice { get; set; }
 
-        [StringLength(50)]
+
         public string KalaFileNo { get; set; }
 
-        [StringLength(50)]
+
         public string KalaState { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf1 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf2 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf3 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf4 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf5 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf6 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf7 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf8 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf9 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf10 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf11 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf12 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf13 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf14 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaExf15 { get; set; }
 
 
         public double? SortDocNo { get; set; }
 
-        [StringLength(10)]
+
         public string DocNo { get; set; }
 
-        [StringLength(10)]
+
         public string DocDate { get; set; }
 
-        [StringLength(250)]
+
         public string Spec { get; set; }
 
-        [StringLength(10)]
+
         public string Status { get; set; }
 
-        [StringLength(10)]
+
         public string Tanzim { get; set; }
 
-        [StringLength(10)]
+
         public string Taeed { get; set; }
 
-        [StringLength(10)]
+
         public string Eghdam { get; set; }
 
-        [StringLength(10)]
+
         public string Tasvib { get; set; }
 
-        [StringLength(30)]
+
         public string ModeCode { get; set; }
 
-        [StringLength(100)]
+
         public string ModeName { get; set; }
 
-        [StringLength(50)]
+
         public string CustCode { get; set; }
 
-        [StringLength(250)]
+
         public string KalaName { get; set; }
 
         public double? KalaZarib1 { get; set; }
@@ -167,16 +167,16 @@
 
         public double? KalaZarib3 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaUnitName1 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaUnitName2 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaUnitName3 { get; set; }
 
-        [StringLength(50)]
+
         public string KalaFanniNo { get; set; }
 
         public byte? KalaDeghatM1 { get; set; }
@@ -191,22 +191,22 @@
 
         public byte? KalaDeghatR3 { get; set; }
 
-        [StringLength(50)]
+
         public string KGruCode { get; set; }
 
-        [StringLength(250)]
+
         public string CustName { get; set; }
 
-        [StringLength(250)]
+
         public string MkzName { get; set; }
 
-        [StringLength(100)]
+
         public string OprName { get; set; }
 
-        [StringLength(250)]
+
         public string InvName { get; set; }
 
-        [StringLength(50)]
+
         public string MainUnitName { get; set; }
 
         public string F01 { get; set; }

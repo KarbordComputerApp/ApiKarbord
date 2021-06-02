@@ -31,12 +31,12 @@
 
         [Key]
         [Column(Order = 3)]
-        [StringLength(250)]
+        
         public string BandSpec { get; set; }
 
         [Key]
         [Column(Order = 4)]
-        [StringLength(4000)]
+        
         public string Comm { get; set; }
 
         [Key]
@@ -65,7 +65,7 @@
 
         [Key]
         [Column(Order = 11)]
-        [StringLength(4000)]
+        
         public string CheckComm { get; set; }
 
         [Key]

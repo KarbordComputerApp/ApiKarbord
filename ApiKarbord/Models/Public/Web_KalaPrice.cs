@@ -10,7 +10,11 @@
     {
         [Key]
         public int? Code { get; set; }
+
         public string Name { get; set; }
+
+        //public string SortName { get; set; }
+
         public bool Cancel { get; set; }
     }
 }

@@ -13,10 +13,10 @@
 
         public int? BandNo { get; set; }
 
-        [StringLength(250)]
+
         public string Comm { get; set; }
 
-        [StringLength(100)]
+
         public string FName { get; set; }
 
     }

@@ -9,15 +9,14 @@
     public class Web_IMode
     {
         [Key]
-        [StringLength(30)]
         public string Code { get; set; }
 
-        [StringLength(250)]
         public string Name { get; set; }
+
+        //public string SortName { get; set; }
 
         public int? InOut { get; set; }
 
-        [StringLength(1)]
         public string Spec { get; set; }
     }
 }

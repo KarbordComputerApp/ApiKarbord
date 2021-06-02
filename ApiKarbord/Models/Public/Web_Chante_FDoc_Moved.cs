@@ -23,22 +23,22 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long HvlSerialNumber { get; set; }
 
-        [StringLength(10)]
+
         public string mDocNo { get; set; }
 
         public double? mSortDocNo { get; set; }
 
         [Key]
         [Column(Order = 3)]
-        [StringLength(21)]
+
         public string mStatus { get; set; }
 
-        [StringLength(10)]
+
         public string mStatusDate { get; set; }
 
         [Key]
         [Column(Order = 4)]
-        [StringLength(250)]
+
         public string mFooter { get; set; }
     }
 }

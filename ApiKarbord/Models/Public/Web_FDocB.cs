@@ -13,10 +13,10 @@
 
         public int BandNo { get; set; }
 
-        [StringLength(100)]
+
         public string KalaCode { get; set; }
 
-        [StringLength(250)]
+
         public string KalaName { get; set; }
 
         public short? MainUnit { get; set; }

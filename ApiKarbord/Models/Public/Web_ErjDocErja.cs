@@ -20,30 +20,27 @@
         [Column(TypeName = "ntext")]
         public string RjComm { get; set; }
 
-        [StringLength(10)]
+
         public string RjDate { get; set; }
 
-        [StringLength(50)]
+
         public string RjStatus { get; set; }
 
-        [StringLength(61)]
         public string RjTimeSt { get; set; }
 
-        [StringLength(20)]
+
         public string FromUserCode { get; set; }
 
-        [StringLength(50)]
+
         public string FromUserName { get; set; }
 
-        [StringLength(32)]
         public string ToUserCode { get; set; }
 
-        [StringLength(62)]
         public string ToUserName { get; set; }
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(1)]
+
         public string RjReadSt { get; set; }
     }
 }

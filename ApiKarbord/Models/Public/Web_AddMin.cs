@@ -13,6 +13,7 @@
 
         public string Name { get; set; }
 
+
         public int? Mode { get; set; }
 
         public bool? Auto { get; set; }

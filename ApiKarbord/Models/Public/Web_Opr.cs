@@ -10,13 +10,13 @@
     public class Web_Opr
     {
         [Key]
-        [StringLength(50)]
+
         public string Code { get; set; }
 
-        [StringLength(100)]
         public string Name { get; set; }
 
-        [StringLength(250)]
+        public string SortName { get; set; }
+
         public string Spec { get; set; }
     }
 }

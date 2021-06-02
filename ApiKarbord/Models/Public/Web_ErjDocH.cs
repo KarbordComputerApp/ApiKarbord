@@ -12,7 +12,7 @@
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(1)]
+
         public string RepUsers { get; set; }
 
        

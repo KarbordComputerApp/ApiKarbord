@@ -29,10 +29,8 @@ namespace ApiKarbord.Models
 
         public string SqlPassword { get; set; }
 
-        [StringLength(10)]
         public string fromDate { get; set; }
 
-        [StringLength(10)]
         public string toDate { get; set; }
 
         public byte? userCount { get; set; }

@@ -17,51 +17,51 @@
 
         public double? SortDocNo { get; set; }
 
-        [StringLength(10)]
+
         public string DocDate { get; set; }
 
-        [StringLength(50)]
+
         public string CustCode { get; set; }
 
-        [StringLength(100)]
+
         public string CustName { get; set; }
 
-        [StringLength(250)]
+
         public string Spec { get; set; }
 
         public int? KalaPriceCode { get; set; }
 
-        [StringLength(20)]
+
         public string InvCode { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec1 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec2 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec3 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec4 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec5 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec6 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec7 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec8 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec9 { get; set; }
 
-        [StringLength(100)]
+
         public string AddMinSpec10 { get; set; }
 
         public double? AddMinPrice1 { get; set; }
@@ -84,90 +84,90 @@
 
         public double? AddMinPrice10 { get; set; }
 
-        [StringLength(30)]
+
         public string ModeCode { get; set; }
 
-        [StringLength(10)]
+
         public string Status { get; set; }
 
         public byte? PaymentType { get; set; }
 
-        [StringLength(4000)]
+
         public string Footer { get; set; }
 
 
-        [StringLength(10)]
+
         public string Tanzim { get; set; }
 
-        [StringLength(10)]
+
         public string Taeed { get; set; }
 
-        [StringLength(10)]
+
         public string Tasvib { get; set; }
 
         public double? FinalPrice { get; set; }
 
-        [StringLength(20)]
+
         public string Eghdam { get; set; }
 
-        [StringLength(250)]
+
         public string F01 { get; set; }
 
-        [StringLength(250)]
+
         public string F02 { get; set; }
 
-        [StringLength(250)]
+
         public string F03 { get; set; }
 
-        [StringLength(250)]
+
         public string F04 { get; set; }
 
-        [StringLength(250)]
+
         public string F05 { get; set; }
 
-        [StringLength(250)]
+
         public string F06 { get; set; }
 
-        [StringLength(250)]
+
         public string F07 { get; set; }
 
-        [StringLength(250)]
+
         public string F08 { get; set; }
 
-        [StringLength(250)]
+
         public string F09 { get; set; }
 
-        [StringLength(250)]
+
         public string F10 { get; set; }
 
-        [StringLength(250)]
+
         public string F11 { get; set; }
 
-        [StringLength(250)]
+
         public string F12 { get; set; }
 
-        [StringLength(250)]
+
         public string F13 { get; set; }
 
-        [StringLength(250)]
+
         public string F14 { get; set; }
 
-        [StringLength(250)]
+
         public string F15 { get; set; }
 
-        [StringLength(250)]
+
         public string F16 { get; set; }
 
-        [StringLength(250)]
+
         public string F17 { get; set; }
 
-        [StringLength(250)]
+
         public string F18 { get; set; }
 
-        [StringLength(250)]
+
         public string F19 { get; set; }
 
-        [StringLength(250)]
+
         public string F20 { get; set; }
 
         public string MkzCode { get; set; }

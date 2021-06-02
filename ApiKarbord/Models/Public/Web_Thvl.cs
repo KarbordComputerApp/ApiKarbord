@@ -13,12 +13,10 @@ namespace ApiKarbord.Models
 
         public string Name { get; set; }
 
+        public string SortName { get; set; }
+
         public string Spec { get; set; }
-
-       // public int? KalaPriceCode_P { get; set; }
-
-       // public int? KalaPriceCode_S { get; set; }
-
+        
         public int? CGruKalaPriceCode_P { get; set; }
 
         public int? CGruKalaPriceCode_S { get; set; }

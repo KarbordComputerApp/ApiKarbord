@@ -15,10 +15,8 @@
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(50)]
         public string ModeCode { get; set; }
 
-        [StringLength(50)]
         public string Name { get; set; }
 
         public short? Type { get; set; }
