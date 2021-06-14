@@ -97,7 +97,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 string sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name,SortName, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
                                    , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
-                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3";
+                                   , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3,BarCode,DefaultUnit";
                 if (kalaObject.withimage == true)
                     sql += ",KalaImage ";
                 else
@@ -1002,7 +1002,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string RelatedDocs { get; set; }
 
-            public byte? FinalCommTrs { get; set; }
+            public byte? SpecialCommTrs { get; set; }
 
         }
 

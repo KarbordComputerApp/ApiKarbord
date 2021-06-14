@@ -63,28 +63,32 @@
 
         public double? SPrice3 { get; set; }
 
-/*
-        public string SAddMin1 { get; set; }
-        public string SAddMin2 { get; set; }
-        public string SAddMin3 { get; set; }
-        public string SAddMin4 { get; set; }
-        public string SAddMin5 { get; set; }
-        public string SAddMin6 { get; set; }
-        public string SAddMin7 { get; set; }
-        public string SAddMin8 { get; set; }
-        public string SAddMin9 { get; set; }
-        public string SAddMin10 { get; set; }
+        public string BarCode { get; set; }
 
-        public string PAddMin1 { get; set; }
-        public string PAddMin2 { get; set; }
-        public string PAddMin3 { get; set; }
-        public string PAddMin4 { get; set; }
-        public string PAddMin5 { get; set; }
-        public string PAddMin6 { get; set; }
-        public string PAddMin7 { get; set; }
-        public string PAddMin8 { get; set; }
-        public string PAddMin9 { get; set; }
-        public string PAddMin10 { get; set; }*/
+        public byte? DefaultUnit { get; set; }
+
+        /*
+                public string SAddMin1 { get; set; }
+                public string SAddMin2 { get; set; }
+                public string SAddMin3 { get; set; }
+                public string SAddMin4 { get; set; }
+                public string SAddMin5 { get; set; }
+                public string SAddMin6 { get; set; }
+                public string SAddMin7 { get; set; }
+                public string SAddMin8 { get; set; }
+                public string SAddMin9 { get; set; }
+                public string SAddMin10 { get; set; }
+
+                public string PAddMin1 { get; set; }
+                public string PAddMin2 { get; set; }
+                public string PAddMin3 { get; set; }
+                public string PAddMin4 { get; set; }
+                public string PAddMin5 { get; set; }
+                public string PAddMin6 { get; set; }
+                public string PAddMin7 { get; set; }
+                public string PAddMin8 { get; set; }
+                public string PAddMin9 { get; set; }
+                public string PAddMin10 { get; set; }*/
 
         public string F01 { get; set; }
 
