@@ -74,8 +74,8 @@ namespace ApiKarbordAccount.Controllers
             string FName = HttpContext.Current.Request["FName"];
             var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
 
-            var req = HttpContext.Current.Request;
-            var file = req.Files[req.Files.Keys.Get(0)];
+            //var req = HttpContext.Current.Request;
+            //var file = req.Files[req.Files.Keys.Get(0)];
 
 
             int lenght = Atch.ContentLength;

@@ -1250,6 +1250,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class DocAttachObject
         {
+            public int ModeCode { get; set; }
+
             public long SerialNumber { get; set; }
         }
 
@@ -1266,7 +1268,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"select  SerialNumber,Comm,FName,BandNo FROM Web_DocAttach
                                              where   ModeCode = {0} and ProgName='{1}' and SerialNumber = {2} order by BandNo desc",
-                                             1,
+                                             DocAttachObject.ModeCode,
                                              "ERJ1",
                                              DocAttachObject.SerialNumber);
 
@@ -3228,6 +3230,183 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class Object_ErjDocXK
+        {
+            public int ModeCode { get; set; }
+
+            public string LockNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/Web_ErjDocXK/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_ErjDocXK(string ace, string sal, string group, Object_ErjDocXK Object_ErjDocXK)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+             if (con == "ok")
+            {
+                string sql = string.Format("select * from dbo.Web_ErjDocXK({0},'{1}') order by DocDate desc , SerialNumber desc", Object_ErjDocXK.ModeCode, Object_ErjDocXK.LockNo);
+                var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocXK>(sql).ToList();
+                return Ok(list);
+            }
+            return Ok(con);
+        }
+
+
+        public class Object_TicketStatus
+        {
+            public string SerialNumber { get; set; }
+        }
+
+
+        [Route("api/Web_Data/Web_TicketStatus/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_TicketStatus(string ace, string sal, string group, Object_TicketStatus Object_TicketStatus)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format("select * from Web_TicketStatus where serialnumber in ({0})", Object_TicketStatus.SerialNumber);
+                var list = UnitDatabase.db.Database.SqlQuery<Web_TicketStatus>(sql).ToList();
+                return Ok(list);
+            }
+            return Ok(con);
+        }
+
+        public class ErjSaveTicket_HI
+        {
+            public long SerialNumber { get; set; }
+
+            public string DocDate { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Status { get; set; }
+
+            public string Spec { get; set; }
+
+            public string LockNo { get; set; }
+
+            public string Text { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+
+        [Route("api/Web_Data/ErjSaveTicket_HI/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostErjSaveTicket_HI(string ace, string sal, string group, ErjSaveTicket_HI ErjSaveTicket_HI)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"
+                                    DECLARE	@DocNo_Out int
+                                    EXEC	[dbo].[Web_ErjSaveTicket_HI]
+		                                    @SerialNumber = {0},
+		                                    @DocDate = '{1}',
+		                                    @UserCode = '{2}',
+		                                    @Status = '{3}',
+		                                    @Spec = '{4}',
+		                                    @LockNo = '{5}',
+		                                    @Text = '{6}',
+		                                    @F01 = '{7}',
+		                                    @F02 = '{8}',
+		                                    @F03 = '{9}',
+		                                    @F04 = '{10}',
+		                                    @F05 = '{11}',
+		                                    @F06 = '{12}',
+		                                    @F07 = '{13}',
+		                                    @F08 = '{14}',
+		                                    @F09 = '{15}',
+		                                    @F10 = '{16}',
+		                                    @F11 = '{17}',
+		                                    @F12 = '{18}',
+		                                    @F13 = '{19}',
+		                                    @F14 = '{20}',
+		                                    @F15 = '{21}',
+		                                    @F16 = '{22}',
+		                                    @F17 = '{23}',
+		                                    @F18 = '{24}',
+		                                    @F19 = '{25}',
+		                                    @F20 = '{26}',
+		                                    @DocNo_Out = @DocNo_Out OUTPUT
+                                    SELECT	@DocNo_Out as N'DocNo_Out'",
+                    ErjSaveTicket_HI.SerialNumber,
+                    ErjSaveTicket_HI.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
+                    ErjSaveTicket_HI.UserCode,
+                    ErjSaveTicket_HI.Status,
+                    ErjSaveTicket_HI.Spec,
+                    ErjSaveTicket_HI.LockNo,
+                    ErjSaveTicket_HI.Text,
+                    ErjSaveTicket_HI.F01,
+                    ErjSaveTicket_HI.F02,
+                    ErjSaveTicket_HI.F03,
+                    ErjSaveTicket_HI.F04,
+                    ErjSaveTicket_HI.F05,
+                    ErjSaveTicket_HI.F06,
+                    ErjSaveTicket_HI.F07,
+                    ErjSaveTicket_HI.F08,
+                    ErjSaveTicket_HI.F09,
+                    ErjSaveTicket_HI.F10,
+                    ErjSaveTicket_HI.F11,
+                    ErjSaveTicket_HI.F12,
+                    ErjSaveTicket_HI.F13,
+                    ErjSaveTicket_HI.F14,
+                    ErjSaveTicket_HI.F15,
+                    ErjSaveTicket_HI.F16,
+                    ErjSaveTicket_HI.F17,
+                    ErjSaveTicket_HI.F18,
+                    ErjSaveTicket_HI.F19,
+                    ErjSaveTicket_HI.F20
+                    );
+                int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                await UnitDatabase.db.SaveChangesAsync();
+                return Ok(value);
+            }
+            return Ok(con);
+        }
 
     }
 }

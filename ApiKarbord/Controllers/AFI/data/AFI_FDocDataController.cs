@@ -496,7 +496,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestFDoc] @serialNumber = {0}  , @UserCode = '{1}' ", 
+                                           @"EXEC	[dbo].[Web_TestFDoc] @serialNumber = {0}  , @UserCode = '{1}' ",
                                            AFI_TestFDocB.SerialNumber,
                                            dataAccount[2]);
                 try

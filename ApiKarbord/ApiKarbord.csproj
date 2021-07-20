@@ -232,6 +232,8 @@
     <Compile Include="Models\AFI\AFI_IDocHi.cs" />
     <Compile Include="Models\AFI\AFI_FDocHi.cs" />
     <Compile Include="Models\ApiModel.cs" />
+    <Compile Include="Models\Public\Web_TicketStatus.cs" />
+    <Compile Include="Models\Public\Web_ErjDocXK.cs" />
     <Compile Include="Models\Public\Web_ErjDocH.cs" />
     <Compile Include="Models\Public\Web_DocAttach.cs" />
     <Compile Include="Models\Public\Web_Chante_FDoc_Moved.cs" />
