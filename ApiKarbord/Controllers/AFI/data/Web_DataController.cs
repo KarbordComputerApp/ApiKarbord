@@ -848,7 +848,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select * from Web_ErjCust");
+                string sql = string.Format(@"Select code,name,spec from Web_ErjCust");
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjCust>(sql).ToList();
 
                 return Ok(listDB);
@@ -909,6 +909,26 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
         }
 
+
+        public class Web_ErjDocYears
+        {
+            public string Year { get; set; }
+        }
+
+        // GET: api/Web_Data/DocYears لیست سال پرونده ها  
+        [Route("api/Web_Data/ErjDocYears/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_ErjDocYears(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select * from Web_DocYears");
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjDocYears>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
 
 
         public partial class Web_ErjDocK
@@ -1218,6 +1238,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public bool accessSanad { get; set; }
 
+            public string Sal { get; set; }
+
+            public string Status { get; set; }
+
+            public string DocNo { get; set; }
+
         }
 
 
@@ -1230,14 +1256,25 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = "declare @enddate nvarchar(20) ";
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                             @"declare @Sal nvarchar(10) = '{0}'
+                               declare @Status nvarchar(30) = N'{1}'
+                               declare @DocNo nvarchar(50) = '{2}' ",
+                              ErjDocHObject.Sal, 
+                              ErjDocHObject.Status,
+                              ErjDocHObject.DocNo);
+
                 sql += "select ";
                 if (ErjDocHObject.select == 0)
                     sql += " top(100) ";
 
                 sql += string.Format(CultureInfo.InvariantCulture,
-                          @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH where 1 = 1",
-                          ErjDocHObject.Mode, dataAccount[2]);
+                            @" * FROM  Web_ErjDocH_F({0},'{1}') AS ErjDocH where 
+                              (@sal = ''  or substring(docdate, 1, 4) = @Sal) and
+                              (@Status = ''  or Status = @Status) and
+                              (@DocNo = ''  or DocNo = @DocNo) ",
+                              ErjDocHObject.Mode, dataAccount[2]);
                 if (ErjDocHObject.accessSanad == false)
                     sql += " and Eghdam = '" + ErjDocHObject.UserCode + "' ";
 
@@ -3243,7 +3280,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
-             if (con == "ok")
+            if (con == "ok")
             {
                 string sql = string.Format("select * from dbo.Web_ErjDocXK({0},'{1}') order by DocDate desc , SerialNumber desc", Object_ErjDocXK.ModeCode, Object_ErjDocXK.LockNo);
                 var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocXK>(sql).ToList();
