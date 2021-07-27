@@ -931,6 +931,28 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+
+        public class Web_RjStatus
+        {
+            public string Name { get; set; }
+        }
+
+        // GET: api/Web_Data/RjStatus لیست وضعیت ارجاع  
+        [Route("api/Web_Data/RjStatus/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_RjStatus(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select * from Web_RjStatus");
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_RjStatus>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
         public partial class Web_ErjDocK
         {
 
