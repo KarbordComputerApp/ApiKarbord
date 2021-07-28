@@ -68,7 +68,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.TotalPrice ?? 0,
                         aFI_IDocBi.Discount ?? 0,
                         aFI_IDocBi.MainUnit,
-                        aFI_IDocBi.Comm,
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.Comm),
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
                         aFI_IDocBi.MkzCode
@@ -166,7 +166,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.UnitPrice ?? 0,
                         aFI_IDocBi.TotalPrice ?? 0,
                         aFI_IDocBi.MainUnit,
-                        aFI_IDocBi.Comm,
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.Comm),
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
                         aFI_IDocBi.MkzCode

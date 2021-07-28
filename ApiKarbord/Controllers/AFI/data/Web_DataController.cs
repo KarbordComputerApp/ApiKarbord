@@ -1678,7 +1678,6 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-
                     string sql = string.Format(
                          @" DECLARE	@return_value int,
 		                            @BandNo nvarchar(10)
