@@ -1696,7 +1696,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             SELECT	@BandNo as N'@BandNo' ",
                          Web_ErjSaveDoc_BSave.SerialNumber,
                          Web_ErjSaveDoc_BSave.BandNo,
-                         Web_ErjSaveDoc_BSave.Natijeh,
+                         UnitPublic.ConvertTextWebToWin(Web_ErjSaveDoc_BSave.Natijeh),
                          Web_ErjSaveDoc_BSave.FromUserCode,
                          Web_ErjSaveDoc_BSave.ToUserCode,
                          Web_ErjSaveDoc_BSave.RjDate,
@@ -1767,7 +1767,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                             item.SerialNumber,
                             item.BandNo,
-                            item.Natijeh,
+                            UnitPublic.ConvertTextWebToWin(item.Natijeh),
                             item.ToUserCode,
                             item.RjDate);
                         value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();

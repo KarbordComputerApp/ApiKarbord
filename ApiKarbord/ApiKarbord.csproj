@@ -413,6 +413,8 @@
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی گردش کالا" />
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
     <Content Include="PrintForms\Public\ADoc-عمومی" />
+    <Content Include="PrintForms\Public\ReportKrdx-کاردکس مقداری" />
+    <Content Include="PrintForms\Public\ReportTrzIKalaExf-فرم چاپ" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
