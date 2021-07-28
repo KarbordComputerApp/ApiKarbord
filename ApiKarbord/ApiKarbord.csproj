@@ -375,7 +375,6 @@
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMaster.cshtml" />
-    <Content Include="PrintForms\Public\ADoc-عمومی" />
     <Content Include="PrintForms\Public\IDoc-عمومی" />
     <Content Include="PrintForms\Public\IDoc_NoPrice-عمومی بدون قیمت" />
     <Content Include="PrintForms\Public\ODoc-عمومی" />
@@ -413,6 +412,7 @@
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی موجودی کالا  با تمامی مقادیر مانده" />
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی گردش کالا" />
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
+    <Content Include="PrintForms\Public\ADoc-عمومی" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
