@@ -1131,7 +1131,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select * from Web_ErjUsers('{0}')", userCode);
+                string sql = string.Format(@"Select * from Web_ErjUsers('{0}') order by SrchOrder Desc,Name Asc", userCode);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjUsers>(sql).ToList();
                 return Ok(listDB);
             }
