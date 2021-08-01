@@ -923,7 +923,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select * from Web_DocYears");
+                string sql = string.Format(@"Select * from Web_DocYears order by Year Desc");
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjDocYears>(sql).ToList();
                 return Ok(listDB);
             }
