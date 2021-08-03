@@ -398,7 +398,6 @@
     <Content Include="PrintForms\Public\ReportTrzIKalaExf-عمومی" />
     <Content Include="PrintForms\Public\SEXT_NoPrice-عمومی بدون قیمت" />
     <Content Include="PrintForms\Public\SFCT-عمومی" />
-    <Content Include="PrintForms\Public\SHVL_NoPrice-عمومی بدون قیمت" />
     <Content Include="PrintForms\Public\SORD-عمومی" />
     <Content Include="PrintForms\Public\SPFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
@@ -415,6 +414,17 @@
     <Content Include="PrintForms\Public\ADoc-عمومی" />
     <Content Include="PrintForms\Public\ReportKrdx-کاردکس مقداری" />
     <Content Include="PrintForms\Public\ReportTrzIKalaExf-فرم چاپ" />
+    <Content Include="PrintForms\Public\IDoc-عمومی بدون شرح" />
+    <Content Include="PrintForms\Public\IDoc-عمومی بدون قیمت و شرح" />
+    <Content Include="PrintForms\Public\ODoc-عمومی بدون شرح" />
+    <Content Include="PrintForms\Public\ODoc-عمومی بدون قیمت و شرح" />
+    <Content Include="PrintForms\Public\SEXT-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\SHVL-عمومی بدون قیمت" />
+    <Content Include="PrintForms\Public\SHVL-عمومی بدون قیمت با شرح" />
+    <Content Include="PrintForms\Public\SORD-عمومی با شرح" />
+    <Content Include="PrintForms\Public\SPFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\SRFCT-عمومی با شرح" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
