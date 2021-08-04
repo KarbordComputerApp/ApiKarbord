@@ -269,6 +269,30 @@ namespace ApiKarbord.Controllers.AFI.data
                 else
                     sql = string.Format(@"SELECT * FROM Web_IMode_F({0},'{1}') WHERE InOut = {2} order by OrderFld ", iModeObject.Mode, iModeObject.UserCode, iModeObject.InOut);
                 var listIMode = UnitDatabase.db.Database.SqlQuery<Web_IMode>(sql);
+
+               /* var jsonResult = JsonConvert.SerializeObject(listIMode);
+                var aaa = jsonResult;
+                var properties = (from t in typeof(Web_IMode).GetProperties()
+                                  select t.Name).ToList();
+
+                string fields = "";
+                string res;
+                for (int i = 0; i < properties.Count; i++)
+                {
+                    fields = fields + properties[i] + ",";
+                    res = jsonResult.Replace("\"" + properties[i] + "\"", "");
+                    jsonResult = res;
+                }
+
+                var a = jsonResult.Replace(":\"", "!");
+                a = a.Replace("\"", "!");
+                a = a.Replace(",:", ",");
+                a = a.Replace("[{", "");
+                a = a.Replace("}]", "");
+                a = a.Replace("},{", "~");
+
+
+                return Ok(a);*/
                 return Ok(listIMode);
             }
             return Ok(con);

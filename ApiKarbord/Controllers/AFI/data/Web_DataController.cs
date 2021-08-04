@@ -23,6 +23,7 @@ using System.IO.Compression;
 
 using System.Web;
 using System.Data.SqlClient;
+using System.Reflection;
 
 namespace ApiKarbord.Controllers.AFI.data
 {
@@ -124,7 +125,33 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (kalaObject.updatedate != null)
                     sql += " and updatedate >= CAST('" + kalaObject.updatedate + "' AS DATETIME2)";
 
-                var listKala = UnitDatabase.db.Database.SqlQuery<Web_Kala>(sql);
+               var listKala = UnitDatabase.db.Database.SqlQuery<Web_Kala>(sql);
+                /* var jsonResult = JsonConvert.SerializeObject(listKala);
+
+
+                var aaa = jsonResult;
+                var properties = (from t in typeof(Web_Kala).GetProperties()
+                                  select t.Name).ToList();
+
+                string fields = "";
+                string res;
+                for (int i = 0; i < properties.Count; i++)
+                {
+                    fields = fields + properties[i] + ",";
+                    res = jsonResult.Replace("\"" + properties[i] + "\"", "");
+                    jsonResult = res;
+                }
+
+                var a = jsonResult.Replace(":\"", "!");
+                a = a.Replace("\"", "!");
+                a = a.Replace(",:", ",");
+                a = a.Replace("[{", "");
+                a = a.Replace("}]", "~@~");
+                a = a.Replace("},{", "~");
+                //a = a.Replace("!", "\"");
+
+                return Ok(a); */
+
                 return Ok(listKala);
 
             }
@@ -153,7 +180,9 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 //string sql = string.Format("select  * FROM  Web_CGru_F({0},'{1}') where mode = 0 or mode = {2}", cGruObject.Mode, cGruObject.UserCode, cGruObject.ModeGru);
                 string sql = string.Format("select  * FROM  Web_CGru_F({0},'{1}')", cGruObject.Mode, cGruObject.UserCode);
+                
                 var listCGru = UnitDatabase.db.Database.SqlQuery<Web_CGru>(sql);
+                var jsonResult = JsonConvert.SerializeObject(listCGru);
                 return Ok(listCGru);
             }
             return Ok(con);
@@ -473,16 +502,29 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // GET: api/Web_Data/ اطلاعات لاگین   
-        [Route("api/Web_Data/Login/{user}/{pass}/{param1}/{param2}")]
-        public async Task<IHttpActionResult> GetWeb_Login(string user, string pass, string param1, string param2)
+
+        public class LoginObject
+        {
+            public string userName { get; set; }
+
+            public string pass { get; set; }
+
+            public string param1 { get; set; }
+
+            public string param2 { get; set; }
+
+        }
+
+        // Post: api/Web_Data/ اطلاعات لاگین   
+        [Route("api/Web_Data/Login")]
+        public async Task<IHttpActionResult> PostWeb_Login(LoginObject LoginObject)//string user, string pass, string param1, string param2)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], user, "Config", "", "00", 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], LoginObject.userName, "Config", "", "00", 0, "", 0, 0);
             if (con == "ok")
             {
-                if (pass == "null")
-                    pass = "";
+                if (LoginObject.pass == "null")
+                    LoginObject.pass = "";
                 string sql = string.Format(@" DECLARE  @return_value int, @name nvarchar(100)
                                               EXEC     @return_value = [dbo].[Web_Login]
                                                        @Code1 = '{0}',
@@ -491,7 +533,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                               @Psw = N'{3}',
                                                        @Name = @name OUTPUT
                                               SELECT   'Return Value' = CONVERT(nvarchar, @return_value) + '-' +  @Name ",
-                                              param1, user, param2, pass);
+                                               LoginObject.param1, LoginObject.userName, LoginObject.param2, LoginObject.pass);
 
                 string value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                 string[] values = value.Split('-');
@@ -1581,6 +1623,34 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
+                return Ok(listErjDocB_Last);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
+        [Route("api/Web_Data/Web_CountErjDocB_Last/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_CountErjDocB_Last(string ace, string sal, string group, ErjDocB_Last ErjDocB_Last)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select  count(RjReadSt) FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}','{5}') AS ErjDocB_Last where RjReadSt = 'T' "
+                          , ErjDocB_Last.erjaMode
+                          , ErjDocB_Last.docBMode
+                          , ErjDocB_Last.fromUserCode
+                          , ErjDocB_Last.toUserCode
+                          , ErjDocB_Last.srchSt
+                          , dataAccount[2]);
+
+                var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<int>(sql);
                 return Ok(listErjDocB_Last);
             }
             return Ok(con);
@@ -3439,7 +3509,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     ErjSaveTicket_HI.Status,
                     ErjSaveTicket_HI.Spec,
                     ErjSaveTicket_HI.LockNo,
-                    ErjSaveTicket_HI.Text,
+                    UnitPublic.ConvertTextWebToWin(ErjSaveTicket_HI.Text),
                     ErjSaveTicket_HI.F01,
                     ErjSaveTicket_HI.F02,
                     ErjSaveTicket_HI.F03,
