@@ -90,45 +90,49 @@
                 public string PAddMin9 { get; set; }
                 public string PAddMin10 { get; set; }*/
 
-        public string F01 { get; set; }
+        public string KGruCode { get; set; }
 
-        public string F02 { get; set; }
+        public string KGruName { get; set; }
 
-        public string F03 { get; set; }
+        public string KalaF01 { get; set; }
 
-        public string F04 { get; set; }
+        public string KalaF02 { get; set; }
 
-        public string F05 { get; set; }
+        public string KalaF03 { get; set; }
 
-        public string F06 { get; set; }
+        public string KalaF04 { get; set; }
 
-        public string F07 { get; set; }
+        public string KalaF05 { get; set; }
 
-        public string F08 { get; set; }
+        public string KalaF06 { get; set; }
 
-        public string F09 { get; set; }
+        public string KalaF07 { get; set; }
 
-        public string F10 { get; set; }
+        public string KalaF08 { get; set; }
 
-        public string F11 { get; set; }
+        public string KalaF09 { get; set; }
 
-        public string F12 { get; set; }
+        public string KalaF10 { get; set; }
 
-        public string F13 { get; set; }
+        public string KalaF11 { get; set; }
 
-        public string F14 { get; set; }
+        public string KalaF12 { get; set; }
 
-        public string F15 { get; set; }
+        public string KalaF13 { get; set; }
 
-        public string F16 { get; set; }
+        public string KalaF14 { get; set; }
 
-        public string F17 { get; set; }
+        public string KalaF15 { get; set; }
 
-        public string F18 { get; set; }
+        public string KalaF16 { get; set; }
 
-        public string F19 { get; set; }
+        public string KalaF17 { get; set; }
 
-        public string F20 { get; set; }
+        public string KalaF18 { get; set; }
+
+        public string KalaF19 { get; set; }
+
+        public string KalaF20 { get; set; }
 
         [Column(TypeName = "image")]
         public byte[] KalaImage { get; set; }

@@ -55,5 +55,46 @@
         public int? KalaPriceCode_S { get; set; }
         public int? CGruKalaPriceCode_P { get; set; }
         public int? CGruKalaPriceCode_S { get; set; }
+
+        public string CustF01 { get; set; }
+
+        public string CustF02 { get; set; }
+
+        public string CustF03 { get; set; }
+
+        public string CustF04 { get; set; }
+
+        public string CustF05 { get; set; }
+
+        public string CustF06 { get; set; }
+
+        public string CustF07 { get; set; }
+
+        public string CustF08 { get; set; }
+
+        public string CustF09 { get; set; }
+
+        public string CustF10 { get; set; }
+
+        public string CustF11 { get; set; }
+
+        public string CustF12 { get; set; }
+
+        public string CustF13 { get; set; }
+
+        public string CustF14 { get; set; }
+
+        public string CustF15 { get; set; }
+
+        public string CustF16 { get; set; }
+
+        public string CustF17 { get; set; }
+
+        public string CustF18 { get; set; }
+
+        public string CustF19 { get; set; }
+
+        public string CustF20 { get; set; }
+
     }
 }

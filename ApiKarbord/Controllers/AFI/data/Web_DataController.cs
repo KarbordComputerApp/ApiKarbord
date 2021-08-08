@@ -96,8 +96,8 @@ namespace ApiKarbord.Controllers.AFI.data
             {
 
 
-                string sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name,SortName, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo
-                                   , F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, DeghatR1, DeghatR2
+                string sql = @"SELECT Eghdam, EghdamDate, UpdateUser, UpdateDate, Code, Name,SortName, Spec, UnitName1, UnitName2, UnitName3, Zarib1, Zarib2, Zarib3, FanniNo,isnull(KGruCode,'') as KGruCode,isnull(KGruName,'') as KGruName,
+                                   KalaF01, KalaF02, KalaF03, KalaF04, KalaF05, KalaF06, KalaF07, KalaF08, KalaF09, KalaF10, KalaF11, KalaF12, KalaF13, KalaF14, KalaF15, KalaF16, KalaF17, KalaF18, KalaF19, KalaF20, DeghatR1, DeghatR2
                                    , DeghatR3, DeghatM1, DeghatM2, DeghatM3, PPrice1, PPrice2, PPrice3, SPrice1, SPrice2, SPrice3,BarCode,DefaultUnit";
                 if (kalaObject.withimage == true)
                     sql += ",KalaImage ";
@@ -2622,19 +2622,19 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveCust.BranchCode ?? 0,
                         aFI_SaveCust.UserCode,
                         aFI_SaveCust.Code,
-                        aFI_SaveCust.Name,
-                        aFI_SaveCust.Spec,
-                        aFI_SaveCust.MelliCode,
-                        aFI_SaveCust.EcoCode,
-                        aFI_SaveCust.City,
-                        aFI_SaveCust.Street,
-                        aFI_SaveCust.Alley,
-                        aFI_SaveCust.Plack,
-                        aFI_SaveCust.ZipCode,
-                        aFI_SaveCust.Tel,
-                        aFI_SaveCust.Mobile,
-                        aFI_SaveCust.Fax,
-                        aFI_SaveCust.CGruCode,
+                        aFI_SaveCust.Name ?? "",
+                        aFI_SaveCust.Spec ?? "",
+                        aFI_SaveCust.MelliCode ?? "",
+                        aFI_SaveCust.EcoCode ?? "",
+                        aFI_SaveCust.City ?? "",
+                        aFI_SaveCust.Street ?? "",
+                        aFI_SaveCust.Alley ?? "",
+                        aFI_SaveCust.Plack ?? "",
+                        aFI_SaveCust.ZipCode ?? "",
+                        aFI_SaveCust.Tel ?? "",
+                        aFI_SaveCust.Mobile ?? "",
+                        aFI_SaveCust.Fax ?? "",
+                        aFI_SaveCust.CGruCode ?? "",
                         aFI_SaveCust.EtebarNaghd ?? 0,
                         aFI_SaveCust.EtebarCheck ?? 0,
                         aFI_SaveCust.F01,
@@ -2787,7 +2787,7 @@ namespace ApiKarbord.Controllers.AFI.data
                      @" DECLARE	@return_value int,
 		                        @oCode nvarchar(50)
 
-                        EXEC	@return_value = [dbo].[Web_SaveCust]
+                        EXEC	@return_value = [dbo].[Web_SaveKala]
 		                        @BranchCode = {0},
 		                        @UserCode = '{1}',
 		                        @Code = '{2}',
@@ -2821,10 +2821,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveKala.BranchCode ?? 0,
                         aFI_SaveKala.UserCode,
                         aFI_SaveKala.Code,
-                        aFI_SaveKala.Name,
-                        aFI_SaveKala.Spec,
-                        aFI_SaveKala.KGruCode,
-                        aFI_SaveKala.FanniNo,
+                        aFI_SaveKala.Name ?? "",
+                        aFI_SaveKala.Spec ?? "",
+                        aFI_SaveKala.KGruCode ?? "",
+                        aFI_SaveKala.FanniNo ?? "",
                         aFI_SaveKala.F01,
                         aFI_SaveKala.F02,
                         aFI_SaveKala.F03,
@@ -2859,9 +2859,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // post: api/AFI_DelKala
+        // Get: api/AFI_DelKala
         [Route("api/Web_Data/AFI_DelKala/{ace}/{sal}/{group}/{KalaCode}")]
-        public async Task<IHttpActionResult> PostAFI_DelKala(string ace, string sal, string group, string KalaCode)
+        public async Task<IHttpActionResult> GetAFI_DelKala(string ace, string sal, string group, string KalaCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
