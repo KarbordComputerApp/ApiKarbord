@@ -125,7 +125,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (kalaObject.updatedate != null)
                     sql += " and updatedate >= CAST('" + kalaObject.updatedate + "' AS DATETIME2)";
 
-               var listKala = UnitDatabase.db.Database.SqlQuery<Web_Kala>(sql);
+                var listKala = UnitDatabase.db.Database.SqlQuery<Web_Kala>(sql);
                 /* var jsonResult = JsonConvert.SerializeObject(listKala);
 
 
@@ -180,7 +180,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 //string sql = string.Format("select  * FROM  Web_CGru_F({0},'{1}') where mode = 0 or mode = {2}", cGruObject.Mode, cGruObject.UserCode, cGruObject.ModeGru);
                 string sql = string.Format("select  * FROM  Web_CGru_F({0},'{1}')", cGruObject.Mode, cGruObject.UserCode);
-                
+
                 var listCGru = UnitDatabase.db.Database.SqlQuery<Web_CGru>(sql);
                 var jsonResult = JsonConvert.SerializeObject(listCGru);
                 return Ok(listCGru);
@@ -1325,7 +1325,7 @@ namespace ApiKarbord.Controllers.AFI.data
                              @"declare @Sal nvarchar(10) = '{0}'
                                declare @Status nvarchar(30) = N'{1}'
                                declare @DocNo nvarchar(50) = '{2}' ",
-                              ErjDocHObject.Sal, 
+                              ErjDocHObject.Sal,
                               ErjDocHObject.Status,
                               ErjDocHObject.DocNo);
 
@@ -2489,6 +2489,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string EcoCode { get; set; }
 
+            public string Ostan { get; set; }
+
+            public string Shahrestan { get; set; }
+
+            public string Region { get; set; }
+
             public string City { get; set; }
 
             public string Street { get; set; }
@@ -2585,37 +2591,40 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @Spec = '{4}',
 		                        @MelliCode = '{5}',
 		                        @EcoCode = '{6}',
-		                        @City = '{7}',
-		                        @Street = '{8}',
-		                        @Alley = '{9}',
-		                        @Plack = '{10}',
-		                        @ZipCode = '{11}',
-		                        @Tel = '{12}',
-		                        @Mobile = '{13}',
-		                        @Fax = '{14}',
-		                        @CGruCode = '{15}',
-		                        @EtebarNaghd = {16},
-		                        @EtebarCheck = {17},
-		                        @F01 = '{18}',
-		                        @F02 = '{19}',
-		                        @F03 = '{20}',
-		                        @F04 = '{21}',
-		                        @F05 = '{22}',
-		                        @F06 = '{23}',
-		                        @F07 = '{24}',
-		                        @F08 = '{25}',
-		                        @F09 = '{26}',
-		                        @F10 = '{27}',
-		                        @F11 = '{28}',
-		                        @F12 = '{29}',
-		                        @F13 = '{30}',
-		                        @F14 = '{31}',
-		                        @F15 = '{32}',
-		                        @F16 = '{33}',
-		                        @F17 = '{34}',
-		                        @F18 = '{35}',
-		                        @F19 = '{36}',
-		                        @F20 = '{37}',
+                                @Ostan = '{7}',
+                                @Shahrestan = '{8}',
+		                        @Region = '{9}',
+		                        @City = '{10}',
+		                        @Street = '{11}',
+		                        @Alley = '{12}',
+		                        @Plack = '{13}',
+		                        @ZipCode = '{14}',
+		                        @Tel = '{15}',
+		                        @Mobile = '{16}',
+		                        @Fax = '{17}',
+		                        @CGruCode = '{18}',
+		                        @EtebarNaghd = {19},
+		                        @EtebarCheck = {20},
+		                        @F01 = '{21}',
+		                        @F02 = '{22}',
+		                        @F03 = '{23}',
+		                        @F04 = '{24}',
+		                        @F05 = '{25}',
+		                        @F06 = '{26}',
+		                        @F07 = '{27}',
+		                        @F08 = '{28}',
+		                        @F09 = '{29}',
+		                        @F10 = '{30}',
+		                        @F11 = '{31}',
+		                        @F12 = '{32}',
+		                        @F13 = '{33}',
+		                        @F14 = '{34}',
+		                        @F15 = '{35}',
+		                        @F16 = '{36}',
+		                        @F17 = '{37}',
+		                        @F18 = '{38}',
+		                        @F19 = '{39}',
+		                        @F20 = '{40}',
 		                        @oCode = @oCode OUTPUT
 
                         SELECT	@oCode as N'@oCode'",
@@ -2626,6 +2635,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveCust.Spec ?? "",
                         aFI_SaveCust.MelliCode ?? "",
                         aFI_SaveCust.EcoCode ?? "",
+                        aFI_SaveCust.Ostan ?? "",
+                        aFI_SaveCust.Shahrestan ?? "",
+                        aFI_SaveCust.Region ?? "",
                         aFI_SaveCust.City ?? "",
                         aFI_SaveCust.Street ?? "",
                         aFI_SaveCust.Alley ?? "",
@@ -2671,9 +2683,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // post: api/AFI_DelCust
+        // get: api/AFI_DelCust
         [Route("api/Web_Data/AFI_DelCust/{ace}/{sal}/{group}/{CustCode}")]
-        public async Task<IHttpActionResult> PostAFI_DelCust(string ace, string sal, string group, string CustCode)
+        public async Task<IHttpActionResult> GetAFI_DelCust(string ace, string sal, string group, string CustCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
@@ -2720,6 +2732,50 @@ namespace ApiKarbord.Controllers.AFI.data
             public string KGruCode { get; set; }
 
             public string FanniNo { get; set; }
+
+            public int? DefaultUnit { get; set; }
+
+            public string UnitName1 { get; set; }
+
+            public string UnitName2 { get; set; }
+
+            public string UnitName3 { get; set; }
+
+            public double? Weight1 { get; set; }
+
+            public double? Weight2 { get; set; }
+
+            public double? Weight3 { get; set; }
+
+            public double? SPrice1 { get; set; }
+
+            public double? SPrice2 { get; set; }
+
+            public double? SPrice3 { get; set; }
+
+            public double? PPrice1 { get; set; }
+
+            public double? PPrice2 { get; set; }
+
+            public double? PPrice3 { get; set; }
+
+            public double? Zarib1 { get; set; }
+
+            public double? Zarib2 { get; set; }
+
+            public double? Zarib3 { get; set; }
+
+            public Int16? DeghatM1 { get; set; }
+
+            public Int16? DeghatM2 { get; set; }
+
+            public Int16? DeghatM3 { get; set; }
+
+            public Int16? DeghatR1 { get; set; }
+
+            public Int16? DeghatR2 { get; set; }
+
+            public Int16? DeghatR3 { get; set; }
 
             public string F01 { get; set; }
 
@@ -2784,40 +2840,59 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     string sql = string.Format(CultureInfo.InvariantCulture,
-                     @" DECLARE	@return_value int,
-		                        @oCode nvarchar(50)
-
-                        EXEC	@return_value = [dbo].[Web_SaveKala]
+                        @" DECLARE @oCode nvarchar(100)
+                           EXEC	[dbo].[Web_SaveKala]
 		                        @BranchCode = {0},
-		                        @UserCode = '{1}',
-		                        @Code = '{2}',
-		                        @Name = '{3}',
-		                        @Spec = '{4}',
-		                        @KGruCode = '{5}',
-		                        @FanniNo = '{6}',
-		                        @F01 = '{7}',
-		                        @F02 = '{8}',
-		                        @F03 = '{9}',
-		                        @F04 = '{10}',
-		                        @F05 = '{11}',
-		                        @F06 = '{12}',
-		                        @F07 = '{13}',
-		                        @F08 = '{14}',
-		                        @F09 = '{15}',
-		                        @F10 = '{16}',
-		                        @F11 = '{17}',
-		                        @F12 = '{18}',
-		                        @F13 = '{19}',
-		                        @F14 = '{20}',
-		                        @F15 = '{21}',
-		                        @F16 = '{22}',
-		                        @F17 = '{23}',
-		                        @F18 = '{24}',
-		                        @F19 = '{25}',
-		                        @F20 = '{26}',
+		                        @UserCode = N'{1}',
+		                        @Code = N'{2}',
+		                        @Name = N'{3}',
+		                        @Spec = N'{4}',
+		                        @KGruCode = N'{5}',
+		                        @FanniNo = N'{6}',
+		                        @DefaultUnit = {7},
+		                        @UnitName1 = N'{8}',
+		                        @UnitName2 = N'{9}',
+		                        @UnitName3 = N'{10}',
+		                        @Weight1 = {11},
+		                        @Weight2 = {12},
+		                        @Weight3 = {13},
+		                        @SPrice1 = {14},
+		                        @SPrice2 = {15},
+		                        @SPrice3 = {16},
+		                        @PPrice1 = {17},
+		                        @PPrice2 = {18},
+		                        @PPrice3 = {19},
+		                        @Zarib1 = {20},
+		                        @Zarib2 = {21},
+		                        @Zarib3 = {22},
+		                        @DeghatM1 = {23},
+		                        @DeghatM2 = {24},
+		                        @DeghatM3 = {25},
+		                        @DeghatR1 = {26},
+		                        @DeghatR2 = {27},
+		                        @DeghatR3 = {28},
+		                        @F01 = N'{29}',
+		                        @F02 = N'{30}',
+		                        @F03 = N'{31}',
+		                        @F04 = N'{32}',
+		                        @F05 = N'{33}',
+		                        @F06 = N'{34}',
+		                        @F07 = N'{35}',
+		                        @F08 = N'{36}',
+		                        @F09 = N'{37}',
+		                        @F10 = N'{38}',
+		                        @F11 = N'{39}',
+		                        @F12 = N'{40}',
+		                        @F13 = N'{41}',
+		                        @F14 = N'{42}',
+		                        @F15 = N'{43}',
+		                        @F16 = N'{44}',
+		                        @F17 = N'{45}',
+		                        @F18 = N'{46}',
+		                        @F19 = N'{47}',
+		                        @F20 = N'{48}',
 		                        @oCode = @oCode OUTPUT
-
-                        SELECT	@oCode as N'@oCode'",
+                        SELECT	@oCode as N'@oCode' ",
                         aFI_SaveKala.BranchCode ?? 0,
                         aFI_SaveKala.UserCode,
                         aFI_SaveKala.Code,
@@ -2825,6 +2900,28 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveKala.Spec ?? "",
                         aFI_SaveKala.KGruCode ?? "",
                         aFI_SaveKala.FanniNo ?? "",
+                        aFI_SaveKala.DefaultUnit ?? 1,
+                        aFI_SaveKala.UnitName1 ?? "",
+                        aFI_SaveKala.UnitName2 ?? "",
+                        aFI_SaveKala.UnitName3 ?? "",
+                        aFI_SaveKala.Weight1 ?? 0,
+                        aFI_SaveKala.Weight2 ?? 0,
+                        aFI_SaveKala.Weight3 ?? 0,
+                        aFI_SaveKala.SPrice1 ?? 0,
+                        aFI_SaveKala.SPrice2 ?? 0,
+                        aFI_SaveKala.SPrice3 ?? 0,
+                        aFI_SaveKala.PPrice1 ?? 0,
+                        aFI_SaveKala.PPrice2 ?? 0,
+                        aFI_SaveKala.PPrice3 ?? 0,
+                        aFI_SaveKala.Zarib1 ?? 1,
+                        aFI_SaveKala.Zarib2 ?? 0,
+                        aFI_SaveKala.Zarib3 ?? 0,
+                        aFI_SaveKala.DeghatM1 ?? 0,
+                        aFI_SaveKala.DeghatM2 ?? 0,
+                        aFI_SaveKala.DeghatM3 ?? 0,
+                        aFI_SaveKala.DeghatR1 ?? 0,
+                        aFI_SaveKala.DeghatR2 ?? 0,
+                        aFI_SaveKala.DeghatR3 ?? 0,
                         aFI_SaveKala.F01,
                         aFI_SaveKala.F02,
                         aFI_SaveKala.F03,
