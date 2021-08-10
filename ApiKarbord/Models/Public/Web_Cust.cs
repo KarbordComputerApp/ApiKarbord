@@ -28,6 +28,42 @@
         public int CustMode { get; set; }
 
 
+        public string MelliCode { get; set; }
+
+        public string EcoCode { get; set; }
+
+        public string Ostan { get; set; }
+
+        public string Shahrestan { get; set; }
+
+        public string Region { get; set; }
+
+        public string City { get; set; }
+
+        public string Street { get; set; }
+
+        public string Alley { get; set; }
+
+        public string Plack { get; set; }
+
+        public string ZipCode { get; set; }
+
+        public string Tel { get; set; }
+
+        public string Mobile { get; set; }
+
+        public string Fax { get; set; }
+
+        public string Email { get; set; }
+
+        public string CGruCode { get; set; }
+
+        public string CGruName { get; set; }
+
+        public double? EtebarNaghd { get; set; }
+
+        public double? EtebarCheck { get; set; }
+
         /*public string SAddMin1 { get; set; }
         public string SAddMin2 { get; set; }
         public string SAddMin3 { get; set; }

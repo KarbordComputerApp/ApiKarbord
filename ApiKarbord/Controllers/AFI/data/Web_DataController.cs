@@ -1308,6 +1308,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string DocNo { get; set; }
 
+            public string Sort { get; set; }
+
         }
 
 
@@ -1341,6 +1343,17 @@ namespace ApiKarbord.Controllers.AFI.data
                               ErjDocHObject.Mode, dataAccount[2]);
                 if (ErjDocHObject.accessSanad == false)
                     sql += " and Eghdam = '" + ErjDocHObject.UserCode + "' ";
+
+                sql += " order by ";
+
+                if (ErjDocHObject.Sort == "")
+                {
+                    sql += "docdate desc";
+                }
+                else
+                {
+                    sql += ErjDocHObject.Sort;
+                }
 
                 var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocH>(sql);
                 return Ok(list);
@@ -2511,6 +2524,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Fax { get; set; }
 
+            public string Email { get; set; }
+
             public string CGruCode { get; set; }
 
             public double? EtebarNaghd { get; set; }
@@ -2625,6 +2640,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F18 = '{38}',
 		                        @F19 = '{39}',
 		                        @F20 = '{40}',
+		                        @Email = '{41}',
 		                        @oCode = @oCode OUTPUT
 
                         SELECT	@oCode as N'@oCode'",
@@ -2668,7 +2684,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveCust.F17,
                         aFI_SaveCust.F18,
                         aFI_SaveCust.F19,
-                        aFI_SaveCust.F20);
+                        aFI_SaveCust.F20,
+                        aFI_SaveCust.Email);
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
 
                     await UnitDatabase.db.SaveChangesAsync();
