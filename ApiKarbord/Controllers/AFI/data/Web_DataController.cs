@@ -3377,8 +3377,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // Post: api/Web_Data/ChangeDatabase 
         [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}/{auto}/{lockNumber}")]
-        //public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
-        public string GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
+        public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
+        //public string GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
         {
             string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
 
@@ -3403,22 +3403,22 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (Change != "1")
                 {
                     UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
-                    return "OK";
+                    return Ok("OK");
                 }
                 else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
                 {
                     UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
-                    return "OK";
+                    return Ok("OK");
                 }
                 else
-                    return "کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ";
+                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
             }
             catch (Exception e)
             {
                 MyIniConfig.Write("Change", "0");
                 MyIniConfig.Write("EndDate", DateTime.Now.ToString());
                 MyIniConfig.Write("error", e.Message.ToString());
-                return "error" + e.Message.ToString();
+                return Ok("error" + e.Message.ToString());
                 throw;
             }
         }
