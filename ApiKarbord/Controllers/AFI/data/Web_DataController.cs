@@ -1346,7 +1346,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 sql += " order by ";
 
-                if (ErjDocHObject.Sort == "")
+                if (ErjDocHObject.Sort == "" || ErjDocHObject.Sort == null)
                 {
                     sql += "docdate desc";
                 }
@@ -1528,6 +1528,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RjDate { get; set; }
 
             public string RjStatus { get; set; }
+
+            public string RjStatusSort { get; set; }
 
             public string RjEndDate { get; set; }
 
