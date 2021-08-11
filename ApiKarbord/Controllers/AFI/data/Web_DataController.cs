@@ -1529,7 +1529,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string RjStatus { get; set; }
 
-            public string SortRjStatus { get; set; }
+            public long? SortRjStatus { get; set; }
 
             public string RjEndDate { get; set; }
 
