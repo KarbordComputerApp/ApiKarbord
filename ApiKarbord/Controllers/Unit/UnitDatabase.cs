@@ -335,13 +335,12 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static int ChangeDatabase(string ace, string sal, string group, string userCode, bool auto)
+        public static int ChangeDatabase(string ace, string sal, string group, string userCode, bool auto, string lockNumber)
         {
-
             var list = model.First();
             string dbName;
 
-            lockNumber = list.lockNumber;
+            //lockNumber = list.lockNumber;
 
             string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
                                              SearchOption.TopDirectoryOnly);

@@ -3404,12 +3404,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
                 if (Change != "1")
                 {
-                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
+                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber);
                     return Ok("OK");
                 }
                 else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
                 {
-                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto);
+                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber);
                     return Ok("OK");
                 }
                 else
