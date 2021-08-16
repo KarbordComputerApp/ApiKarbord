@@ -15,7 +15,7 @@
 
         public byte? HasChild { get; set; }
 
-        public string SortAccCode { get; set; }
+        public long? SortAccCode { get; set; }
 
 
         public string AccCode { get; set; }

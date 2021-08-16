@@ -19,7 +19,7 @@
 
         public string KalaCode { get; set; }
 
-        public string SortMkzCode { get; set; }
+        public long? SortMkzCode { get; set; }
 
 
 

@@ -15,7 +15,7 @@
 
         public string Name { get; set; }
 
-        public string SortName { get; set; }
+        public long? SortName { get; set; }
 
         public string Spec { get; set; }
     }

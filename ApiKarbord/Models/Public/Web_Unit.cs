@@ -16,6 +16,6 @@ namespace ApiKarbord.Models
 
         public string Name { get; set; }
 
-        //public string SortName { get; set; }
+        //public long? SortName { get; set; }
     }
 }

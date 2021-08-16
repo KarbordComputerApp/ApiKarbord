@@ -94,6 +94,7 @@ namespace ApiKarbord.Controllers.Unit
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
         public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
         {
+
             // addressApiAccounting = MyIni.Read("serverName");
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
@@ -137,19 +138,23 @@ namespace ApiKarbord.Controllers.Unit
                 task.Wait();
 
                 var list = model.First();
+                //Data.Add(list.SqlServerName);
+                //Data.Add(list.SqlUserName);
+                //Data.Add(list.SqlPassword);
 
                 if (list.toDate != "" && list.fromDate != "")
                 {
                     if (UnitPublic.GetPersianDaysDiffDate(list.toDate, PDate) > 0)
                     {
+                        //Data.Add("Expire Account");
                         return "Expire Account";
                     }
                 }
                 if (list.active == false)
                 {
+                    // Data.Add("Disable Account");
                     return "Disable Account";
                 }
-
                 if (model.Count > 0)
                 {
                     string connectionString = String.Format(
@@ -157,11 +162,14 @@ namespace ApiKarbord.Controllers.Unit
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
                                     list.SqlServerName, DatabaseName(ace, sal, group), list.SqlUserName, list.SqlPassword);
                     MyIniLog.Write("connectionString_10", connectionString);
+                    //Data.Add(connectionString);
                     return connectionString;
                 }
-
                 else
+                    // Data.Add("");
                     return "";
+
+                //return Data;
             }
             catch (Exception e)
             {
@@ -207,7 +215,7 @@ namespace ApiKarbord.Controllers.Unit
         public static string CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
         {
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
-
+            string res = "";
             IniFile MyIniLog = new IniFile(IniLogPath);
             try
             {
@@ -231,7 +239,12 @@ namespace ApiKarbord.Controllers.Unit
                         // }
 
                         MyIniLog.Write("conStr_1", ace);
-                        ChangeDatabaseConfig(userKarbord, sal);
+                        res = ChangeDatabaseConfig(userKarbord, sal, userName, password);
+                        if (res == "UseLog")
+                        {
+                            return res;
+
+                        }
                         db = new ApiModel(conStr);
                     }
                     return "ok";
@@ -335,12 +348,10 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static int ChangeDatabase(string ace, string sal, string group, string userCode, bool auto, string lockNumber)
+        public static string ChangeDatabase(string ace, string sal, string group, string userCode, bool auto, string lockNumber, string srv_User, string srv_Pass)
         {
-            var list = model.First();
-            string dbName;
 
-            //lockNumber = list.lockNumber;
+            string dbName;
 
             string[] filePaths = Directory.GetFiles(addressFileSql + "\\", "*.txt",
                                              SearchOption.TopDirectoryOnly);
@@ -356,7 +367,15 @@ namespace ApiKarbord.Controllers.Unit
 
             if (File.Exists(fileLog))
             {
-                File.Delete(fileLog);
+                try
+                {
+                    File.Delete(fileLog);
+                }
+                catch (Exception e)
+                {
+                    return "UseLog";
+                }
+
             }
 
             StreamWriter sw = File.CreateText(fileLog);
@@ -395,11 +414,10 @@ namespace ApiKarbord.Controllers.Unit
 
                         sw.WriteLine("dbName : " + dbName);
 
-
-
-                        string connectionString = String.Format(
-                                        @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                        list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
+                        string connectionString = CreateConnectionString(srv_User, srv_Pass, "", "Master", "", "", 0, "", 0, 0);
+                        //string connectionString = String.Format(
+                        //                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                        //                list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
 
                         sw.WriteLine("connectionString : " + connectionString);
 
@@ -412,7 +430,7 @@ namespace ApiKarbord.Controllers.Unit
                         command.ExecuteNonQuery();
                         connection.Close();
 
-                        string conStr = CreateConnectionString(list.UserName, list.Password, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
+                        string conStr = CreateConnectionString(srv_User, srv_Pass, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
                         if (conStr.Length > 100)
                         {
                             db = new ApiModel(conStr);
@@ -578,7 +596,7 @@ namespace ApiKarbord.Controllers.Unit
             {
                 File.Delete(fileLog);
             }
-            return 100;
+            return "OK";
 
         }
 
@@ -591,7 +609,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static void ChangeDatabaseConfig(string userCode, string flag)
+        public static string ChangeDatabaseConfig(string userCode, string flag, string srv_User, string srv_Pass)
         {
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
@@ -635,7 +653,20 @@ namespace ApiKarbord.Controllers.Unit
                 if (File.Exists(fileLog))
                 {
                     MyIniLog.Write("deletefileLog :", "start");
-                    File.Delete(fileLog);
+
+                    if (File.Exists(fileLog))
+                    {
+                        try
+                        {
+                            File.Delete(fileLog);
+                        }
+                        catch (Exception e)
+                        {
+                            return "UseLog";
+                        }
+
+                    }
+
                     MyIniLog.Write("deletefileLog :", "End");
                 }
 
@@ -656,10 +687,10 @@ namespace ApiKarbord.Controllers.Unit
                         sw.WriteLine("dbName : " + dbName);
 
 
-
-                        string connectionString = String.Format(
-                                        @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                        list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
+                        string connectionString = CreateConnectionString(srv_User, srv_Pass, "", "Master", sal, group, 0, "", 0, 0);
+                        //string connectionString = String.Format(
+                        //                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                        //                list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
 
                         sw.WriteLine("connectionString : " + connectionString);
 
@@ -671,7 +702,7 @@ namespace ApiKarbord.Controllers.Unit
                                                             CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
                         command.ExecuteNonQuery();
 
-                        string conStr = CreateConnectionString(list.UserName, list.Password, "", "Config", sal, group, 0, "", 0, 0);
+                        string conStr = CreateConnectionString(srv_User, srv_Pass, "", "Config", sal, group, 0, "", 0, 0);
                         if (conStr.Length > 100)
                         {
                             db = new ApiModel(conStr);
@@ -857,6 +888,7 @@ namespace ApiKarbord.Controllers.Unit
             {
                 MyIniLog.Write("mess :", e.Message);
             }
+            return "OK";
 
         }
 

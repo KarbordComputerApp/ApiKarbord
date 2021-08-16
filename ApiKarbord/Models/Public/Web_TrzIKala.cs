@@ -11,11 +11,11 @@
         [Key]
         public string KalaCode { get; set; }
 
-        public string SortKalaCode { get; set; }
+        public long? SortKalaCode { get; set; }
 
         public string KalaName { get; set; }
 
-        public string SortKalaName { get; set; }
+        public long? SortKalaName { get; set; }
 
         public string KalaFanniNo { get; set; }
 
@@ -23,9 +23,9 @@
 
         public string InvName { get; set; }
 
-        public string SortInvCode { get; set; }
+        public long? SortInvCode { get; set; }
 
-        public string SortInvName { get; set; }
+        public long? SortInvName { get; set; }
 
         public string KalaUnitName1 { get; set; }
 

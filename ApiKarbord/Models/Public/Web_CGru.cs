@@ -12,11 +12,11 @@
 
         public string Code { get; set; }
 
-        public string SortCode { get; set; }
+        public long SortCode { get; set; }
 
         public string Name { get; set; }
 
-        public string SortName { get; set; }
+        public long SortName { get; set; }
 
         public string Spec { get; set; }
 

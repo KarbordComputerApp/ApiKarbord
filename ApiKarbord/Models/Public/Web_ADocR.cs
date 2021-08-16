@@ -12,7 +12,7 @@
         public int BandNo { get; set; }
 
 
-        public string SortAccCode { get; set; }
+        public long? SortAccCode { get; set; }
 
 
         public string AccCode { get; set; }
@@ -20,7 +20,7 @@
 
         public string MkzCode { get; set; }
 
-        public string SortMkzCode { get; set; }
+        public long? SortMkzCode { get; set; }
 
 
         public string OprCode { get; set; }

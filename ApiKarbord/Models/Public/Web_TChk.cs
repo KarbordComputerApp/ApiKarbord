@@ -8,7 +8,7 @@
 
     public class Web_TChk
     {
-        public string SortAccCode { get; set; }
+        public long? SortAccCode { get; set; }
 
 
         public string AccCode { get; set; }

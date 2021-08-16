@@ -126,7 +126,7 @@
 
         public string MkzCode { get; set; }
 
-        public string SortMkzCode { get; set; }
+        public long? SortMkzCode { get; set; }
 
         [Key]
         [Column(Order = 5)]

@@ -1657,13 +1657,14 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  count(RjReadSt) FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}','{5}') AS ErjDocB_Last where RjReadSt = 'T' "
+                          @"select  count(RjReadSt) FROM  Web_ErjDocB_Last({0}, {1},'{2}','{3}','{4}','{5}') AS ErjDocB_Last where RjReadSt = 'T' and Status = '{6}' "
                           , ErjDocB_Last.erjaMode
                           , ErjDocB_Last.docBMode
                           , ErjDocB_Last.fromUserCode
                           , ErjDocB_Last.toUserCode
                           , ErjDocB_Last.srchSt
-                          , dataAccount[2]);
+                          , dataAccount[2],
+                          "فعال");
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<int>(sql);
                 return Ok(listErjDocB_Last);
@@ -3401,16 +3402,17 @@ namespace ApiKarbord.Controllers.AFI.data
                 string Sal = MyIniConfig.Read("Sal");
                 string EndDate = MyIniConfig.Read("EndDate");
 
+                string res = "";
                 var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
                 if (Change != "1")
                 {
-                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber);
-                    return Ok("OK");
+                    res = UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1]);
+                    return Ok(res);
                 }
                 else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
                 {
-                    UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber);
-                    return Ok("OK");
+                    res = UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1]);
+                    return Ok(res);
                 }
                 else
                     return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
