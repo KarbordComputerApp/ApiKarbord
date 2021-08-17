@@ -104,7 +104,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/ADocData/ADocH اخرین تاریخ    
-        [Route("api/ADocData/ADocH/LastDate/{ace}/{sal}/{group}/{InOut}")]
+        [Route("api/ADocData/ADocH/LastDate/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> GetWeb_ADocHLastDate(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);

@@ -770,8 +770,12 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 if (!string.IsNullOrEmpty(ace) || !string.IsNullOrEmpty(group) || !string.IsNullOrEmpty(user))
                 {
-                    string sql = string.Format(@" select distinct TrsName from Web_UserTrs('{0}',{1},'{2}')"
-                                              , ace, group, user);
+                    //string sql = string.Format(@" select distinct TrsName from Web_UserTrs('{0}',{1},'{2}')", ace, group, user);
+                     string sql = string.Format(@"EXEC [dbo].[Web_UserTrs]
+		                                               @ProgName = '{0}',
+		                                               @GroupNo = {1},
+		                                               @UserCode = '{2}'",
+                                                 ace, group, user);
 
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUser>(sql).ToList();
                     return Ok(listDB);
