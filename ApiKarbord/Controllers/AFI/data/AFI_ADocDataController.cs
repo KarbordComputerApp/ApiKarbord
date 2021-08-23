@@ -429,8 +429,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"DECLARE	@return_value int
                                              EXEC	@return_value = [dbo].[Web_SaveADoc_HZ]
-		                                            @SerialNumber = {0},
-		                                            @Tanzim = '{1}'
+		                                            @SerialNumber = {0}, 
+		                                            @Tanzim = '{1}' 
                                              SELECT	'Return Value' = @return_value ",
                                            AFI_SaveADoc_HZ.SerialNumber, AFI_SaveADoc_HZ.Tanzim);
                 var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
