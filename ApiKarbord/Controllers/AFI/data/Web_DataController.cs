@@ -3662,5 +3662,208 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
         }
 
+
+
+
+        public class AFI_TestCust
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestCust
+        {
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestCust/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestCust))]
+        public async Task<IHttpActionResult> PostWeb_TestCust(string ace, string sal, string group, AFI_TestCust AFI_TestCust)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestCust] @Code = {0}  , @UserCode = '{1}' ",
+                                           AFI_TestCust.Code,
+                                           dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestCust>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+
+        public class TestCust_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestCust_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestCust_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestCust_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestCust_Delete(string ace, string sal, string group, TestCust_DeleteObject TestCust_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestCust_Delete] @Code = {0}, @UserCode = '{1}' ", TestCust_DeleteObject.Code, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestCust_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+
+
+
+
+        public class AFI_TestKala
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestKala
+        {
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestKala/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestKala))]
+        public async Task<IHttpActionResult> PostWeb_TestKala(string ace, string sal, string group, AFI_TestKala AFI_TestKala)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestKala] @Code = {0}  , @UserCode = '{1}' ",
+                                           AFI_TestKala.Code,
+                                           dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestKala>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+        public class TestKala_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestKala_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestKala_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestKala_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestKala_Delete(string ace, string sal, string group, TestKala_DeleteObject TestKala_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestKala_Delete] @Code = {0}, @UserCode = '{1}' ", TestKala_DeleteObject.Code, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestKala_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
     }
 }
