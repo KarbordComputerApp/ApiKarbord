@@ -771,11 +771,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (!string.IsNullOrEmpty(ace) || !string.IsNullOrEmpty(group) || !string.IsNullOrEmpty(user))
                 {
                     //string sql = string.Format(@" select distinct TrsName from Web_UserTrs('{0}',{1},'{2}')", ace, group, user);
-                     string sql = string.Format(@"EXEC [dbo].[Web_UserTrs]
+                    string sql = string.Format(@"EXEC [dbo].[Web_UserTrs]
 		                                               @ProgName = '{0}',
 		                                               @GroupNo = {1},
 		                                               @UserCode = '{2}'",
-                                                 ace, group, user);
+                                                ace, group, user);
 
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUser>(sql).ToList();
                     return Ok(listDB);
@@ -1314,6 +1314,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Sort { get; set; }
 
+            public string ModeSort { get; set; }
+
         }
 
 
@@ -1352,12 +1354,29 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (ErjDocHObject.Sort == "" || ErjDocHObject.Sort == null)
                 {
-                    sql += "docdate desc";
+                    ErjDocHObject.Sort = "DocDate Desc,DocNo Desc";
+                }
+                else if (ErjDocHObject.Sort == "DocDate")
+                {
+                    if (ErjDocHObject.ModeSort == "ASC")
+                        ErjDocHObject.Sort = "DocDate Asc,DocNo Asc";
+                    else
+                        ErjDocHObject.Sort = "DocDate Desc,DocNo Desc";
+                }
+                else if (ErjDocHObject.Sort == "Status")
+                {
+                    if (ErjDocHObject.ModeSort == "ASC")
+                        ErjDocHObject.Sort = "Status Asc, DocDate Asc,DocNo Asc";
+                    else
+                        ErjDocHObject.Sort = "Status Desc, DocDate Desc,DocNo Desc";
                 }
                 else
                 {
-                    sql += ErjDocHObject.Sort;
+                    ErjDocHObject.Sort = ErjDocHObject.Sort + " " + ErjDocHObject.ModeSort;
                 }
+
+                sql += ErjDocHObject.Sort;
+
 
                 var list = UnitDatabase.db.Database.SqlQuery<Web_ErjDocH>(sql);
                 return Ok(list);

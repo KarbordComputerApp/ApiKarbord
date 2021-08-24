@@ -69,6 +69,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string updatedate { get; set; }
 
+            public string Sort { get; set; }
+
+            public string ModeSort { get; set; }
+
         }
 
         // Post: api/FDocData/FDocH لیست فاکتور    
@@ -157,7 +161,34 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (FDocHMinObject.updatedate != null)
                     sql += " and UpdateDate >= CAST('" + FDocHMinObject.updatedate + "' AS DATETIME2)";
 
-                sql += " order by SortDocNo desc ";
+                sql += " order by ";
+
+                if (FDocHMinObject.Sort == "" || FDocHMinObject.Sort == null)
+                {
+                    FDocHMinObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (FDocHMinObject.Sort == "DocDate")
+                {
+                    if (FDocHMinObject.ModeSort == "ASC")
+                        FDocHMinObject.Sort = "DocDate Asc,SortDocNo Asc";
+                    else
+                        FDocHMinObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (FDocHMinObject.Sort == "Status")
+                {
+                    if (FDocHMinObject.ModeSort == "ASC")
+                        FDocHMinObject.Sort = "Status Asc, DocDate Asc,SortDocNo Asc";
+                    else
+                        FDocHMinObject.Sort = "Status Desc, DocDate Desc,SortDocNo Desc";
+                }
+                else
+                {
+                    FDocHMinObject.Sort = FDocHMinObject.Sort + " " + FDocHMinObject.ModeSort;
+                }
+
+                sql += FDocHMinObject.Sort;
+
+                //sql += " order by SortDocNo desc ";
                 var listFDocH = UnitDatabase.db.Database.SqlQuery<Web_FDocHMini>(sql);
                 return Ok(listFDocH);
             }
@@ -585,6 +616,43 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestFDoc_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+        }
+
+        public class AFI_TestFDoc_New
+        {
+            public string DocDate { get; set; }
+
+            public string ModeCode { get; set; }
+        }
+
+
+        [Route("api/FDocData/TestFDoc_New/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_TestFDoc_New(string ace, string sal, string group, AFI_TestFDoc_New AFI_TestFDoc_New)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"EXEC	[dbo].[Web_TestFDoc_New] @UserCode = '{0}',  @DocDate = '{1}', @ModeCode = '{2}'",
+                      dataAccount[2],
+                       AFI_TestFDoc_New.DocDate,
+                       AFI_TestFDoc_New.ModeCode
+                      );
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(jsonResult);
                 }

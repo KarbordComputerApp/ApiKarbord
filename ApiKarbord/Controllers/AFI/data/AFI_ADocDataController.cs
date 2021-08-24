@@ -494,6 +494,50 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class AFI_TestADoc_New
+        {
+
+            public string DocDate { get; set; }
+
+            public string ModeCode { get; set; }
+
+        }
+
+
+        [Route("api/ADocData/TestADoc_New/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_TestADoc_New(string ace, string sal, string group, AFI_TestADoc_New AFI_TestADoc_New)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"EXEC	[dbo].[Web_TestADoc_New] @UserCode = '{0}',  @DocDate = '{1}', @ModeCode = '{2}'",
+                      dataAccount[2],
+                       AFI_TestADoc_New.DocDate,
+                       AFI_TestADoc_New.ModeCode
+                      );
+
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+
 
 
     }
