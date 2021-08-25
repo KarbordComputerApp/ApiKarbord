@@ -536,7 +536,40 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class AFI_TestADoc_Edit
+        {
+            public long Serialnumber { get; set; }
 
+        }
+
+        [Route("api/ADocData/TestADoc_Edit/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_TestADoc_Edit(string ace, string sal, string group, AFI_TestADoc_Edit AFI_TestADoc_Edit)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"EXEC	[dbo].[Web_TestADoc_Edit] @UserCode = '{0}',  @Serialnumber = '{1}'",
+                      dataAccount[2],
+                       AFI_TestADoc_Edit.Serialnumber
+                      );
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
 
 
 

@@ -145,7 +145,18 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F17,
                                        F18,
                                        F19,
-                                       F20 
+                                       F20,
+                                       ThvlRegion,
+                                       ThvlCity,
+                                       ThvlStreet,
+                                       ThvlAlley,
+                                       ThvlPlack,
+                                       ThvlZipCode,
+                                       ThvlTel,
+                                       ThvlMobile,
+                                       ThvlFax,
+                                       ThvlEMail,
+                                       ThvlAddress
                                        from Web_IDocH_F(3,'{0}') where 1 = 1 ", IDocHMinObject.user);
 
 
@@ -623,6 +634,44 @@ namespace ApiKarbord.Controllers.AFI.data
                        AFI_TestIDoc_New.ModeCode
                       );
 
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+
+        public class AFI_TestIDoc_Edit
+        {
+            public long Serialnumber { get; set; }
+
+        }
+
+        [Route("api/IDocData/TestIDoc_Edit/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestDocB))]
+        public async Task<IHttpActionResult> PostWeb_TestIDoc_Edit(string ace, string sal, string group, AFI_TestIDoc_Edit AFI_TestIDoc_Edit)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"EXEC	[dbo].[Web_TestIDoc_Edit] @UserCode = '{0}',  @Serialnumber = '{1}'",
+                      dataAccount[2],
+                       AFI_TestIDoc_Edit.Serialnumber
+                      );
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();
