@@ -156,7 +156,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlMobile,
                                        ThvlFax,
                                        ThvlEMail,
-                                       ThvlAddress
+                                       ThvlAddress,
+                                       ThvlOstan,
+                                       ThvlShahrestan
                                        from Web_IDocH_F(3,'{0}') where 1 = 1 ", IDocHMinObject.user);
 
 

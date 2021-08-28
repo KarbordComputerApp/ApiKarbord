@@ -123,5 +123,9 @@
 
         public string ThvlAddress { get; set; }
 
+        public string ThvlOstan { get; set; }
+
+        public string ThvlShahrestan { get; set; }
+
     }
 }
