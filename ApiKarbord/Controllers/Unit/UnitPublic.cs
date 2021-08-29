@@ -23,7 +23,7 @@ namespace ApiKarbord.Controllers.Unit
         //public static int VerNumber = 516;
 
          public static string titleVer = "API KarbordComputer : Ver ";
-         public static int VerNumber = 1019;
+         public static int VerNumber = 1020;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
