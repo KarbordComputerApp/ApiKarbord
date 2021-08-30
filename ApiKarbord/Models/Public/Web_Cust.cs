@@ -132,5 +132,7 @@
 
         public string CustF20 { get; set; }
 
+        public bool EditBaseTrs { get; set; }
+
     }
 }
