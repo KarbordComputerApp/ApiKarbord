@@ -83,6 +83,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ModeCode { get; set; }
 
+            public string Sort { get; set; }
+
+            public string ModeSort { get; set; }
+
         }
 
         // Post: api/IDocData/IDocH لیست سند انبار   
@@ -193,7 +197,34 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
 
-                sql += " order by docdate desc, SortDocNo desc";
+                sql += " order by ";
+
+                if (IDocHMinObject.Sort == "" || IDocHMinObject.Sort == null)
+                {
+                    IDocHMinObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (IDocHMinObject.Sort == "DocDate")
+                {
+                    if (IDocHMinObject.ModeSort == "ASC")
+                        IDocHMinObject.Sort = "DocDate Asc,SortDocNo Asc";
+                    else
+                        IDocHMinObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (IDocHMinObject.Sort == "Status")
+                {
+                    if (IDocHMinObject.ModeSort == "ASC")
+                        IDocHMinObject.Sort = "Status Asc, DocDate Asc,SortDocNo Asc";
+                    else
+                        IDocHMinObject.Sort = "Status Desc, DocDate Desc,SortDocNo Desc";
+                }
+                else
+                {
+                    IDocHMinObject.Sort = IDocHMinObject.Sort + " " + IDocHMinObject.ModeSort;
+                }
+
+                sql += IDocHMinObject.Sort;
+
+
                 var listIDocH = UnitDatabase.db.Database.SqlQuery<Web_IDocHMini>(sql);
                 return Ok(listIDocH);
             }
