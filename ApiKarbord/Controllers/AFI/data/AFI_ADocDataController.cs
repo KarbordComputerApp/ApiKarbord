@@ -49,21 +49,69 @@ namespace ApiKarbord.Controllers.AFI.data
             return null;
         }
 
+
+
+        public class ADocHObject
+        {
+
+            public int Select { get; set; }
+
+            public string User { get; set; }
+
+            public bool AccessSanad { get; set; }
+
+            public string Sort { get; set; }
+
+            public string ModeSort { get; set; }
+
+        }
+
+
         // GET: api/ADocData/ADocH لیست سند    
-        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/top{select}/{user}/{AccessSanad}")]
-        public async Task<IHttpActionResult> GetAllWeb_ADocH(string ace, string sal, string group, int select, string user, bool accessSanad)
+        [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/")]
+        public async Task<IHttpActionResult> PostAllWeb_ADocH(string ace, string sal, string group, ADocHObject ADocHObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
                 string sql = "select ";
-                if (select == 0)
+                if (ADocHObject.Select == 0)
                     sql += " top(100) ";
                 sql += string.Format(@" * from Web_ADocH where 1 = 1 ");
-                if (accessSanad == false)
-                    sql += " and Eghdam = '" + user + "' ";
-                sql += " order by SortDocNo desc ";
+                if (ADocHObject.AccessSanad == false)
+                    sql += " and Eghdam = '" + ADocHObject.User + "' ";
+
+
+
+                sql += " order by ";
+
+                if (ADocHObject.Sort == "" || ADocHObject.Sort == null)
+                {
+                    ADocHObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (ADocHObject.Sort == "DocDate")
+                {
+                    if (ADocHObject.ModeSort == "ASC")
+                        ADocHObject.Sort = "DocDate Asc,SortDocNo Asc";
+                    else
+                        ADocHObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (ADocHObject.Sort == "Status")
+                {
+                    if (ADocHObject.ModeSort == "ASC")
+                        ADocHObject.Sort = "Status Asc, DocDate Asc,SortDocNo Asc";
+                    else
+                        ADocHObject.Sort = "Status Desc, DocDate Desc,SortDocNo Desc";
+                }
+                else
+                {
+                    ADocHObject.Sort = ADocHObject.Sort + " " + ADocHObject.ModeSort;
+                }
+
+                sql += ADocHObject.Sort;
+
+
                 var listADocH = UnitDatabase.db.Database.SqlQuery<Web_ADocH>(sql);
                 return Ok(listADocH);
             }
