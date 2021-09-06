@@ -3883,6 +3883,14 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // GET: api/Web_Data/Date تاریخ سرور
+        [Route("api/Web_Data/Date")]
+        public async Task<IHttpActionResult> GetWeb_Date()
+        {
+            return Ok(DateTime.Now.ToString("yyyy/MM/dd"));
+        }
+
+
 
     }
 }
