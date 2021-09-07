@@ -3887,8 +3887,23 @@ namespace ApiKarbord.Controllers.AFI.data
         [Route("api/Web_Data/Date")]
         public async Task<IHttpActionResult> GetWeb_Date()
         {
-            return Ok(DateTime.Now.ToString("yyyy/MM/dd"));
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                    string sql = string.Format(@"select dbo.Web_CurrentShamsiDate() as tarikh");
+
+                    var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                    return Ok(listDB);
+            }
+
+            return Ok(con);
+            //return Ok(DateTime.Now.ToString("yyyy/MM/dd"));
         }
+
+
+
+
 
 
 

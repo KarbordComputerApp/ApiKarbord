@@ -64,6 +64,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ModeSort { get; set; }
 
+            public string DocNo { get; set; }
+
         }
 
 
@@ -75,10 +77,15 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = "select ";
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                             @"declare @DocNo nvarchar(50) = '{0}'  select ",
+                             ADocHObject.DocNo);
+
                 if (ADocHObject.Select == 0)
                     sql += " top(100) ";
-                sql += string.Format(@" * from Web_ADocH where 1 = 1 ");
+                sql += string.Format(@" * from Web_ADocH where (@DocNo = ''  or DocNo = @DocNo)  ");
+
                 if (ADocHObject.AccessSanad == false)
                     sql += " and Eghdam = '" + ADocHObject.User + "' ";
 
