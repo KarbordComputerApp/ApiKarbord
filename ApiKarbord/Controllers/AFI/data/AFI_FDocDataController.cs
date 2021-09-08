@@ -73,6 +73,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ModeSort { get; set; }
 
+            public string DocNo { get; set; }
+
         }
 
         // Post: api/FDocData/FDocH لیست فاکتور    
@@ -85,7 +87,12 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
 
-                string sql = "select ";
+
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                             @"declare @DocNo nvarchar(50) = '{0}'  select ",
+                             FDocHMinObject.DocNo);
+
                 if (FDocHMinObject.select == 0)
                     sql += " top(100) ";
                 sql += string.Format(CultureInfo.InvariantCulture, @"SerialNumber,                                   
@@ -151,7 +158,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F19,
                                        F20, 
                                        UpdateDate
-                                       from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' ",
+                                       from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        0,
                                         FDocHMinObject.user
                                        , FDocHMinObject.ModeCode.ToString());

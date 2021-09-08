@@ -87,6 +87,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ModeSort { get; set; }
 
+            public string DocNo { get; set; }
+
         }
 
         // Post: api/IDocData/IDocH لیست سند انبار   
@@ -99,8 +101,11 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = "declare @enddate nvarchar(20) ";
-                sql += "select ";
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                            @"declare @enddate nvarchar(20)
+                            declare @DocNo nvarchar(50) = '{0}'  select ",
+                            IDocHMinObject.DocNo);
+
                 if (IDocHMinObject.select == 0)
                     sql += " top(100) ";
 
@@ -163,7 +168,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlAddress,
                                        ThvlOstan,
                                        ThvlShahrestan
-                                       from Web_IDocH_F(3,'{0}') where 1 = 1 ", IDocHMinObject.user);
+                                       from Web_IDocH_F(3,'{0}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo)  ", IDocHMinObject.user);
 
 
                 //if (ModeCode == "in")
