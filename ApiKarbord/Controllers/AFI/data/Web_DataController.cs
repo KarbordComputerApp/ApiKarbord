@@ -1768,6 +1768,7 @@ namespace ApiKarbord.Controllers.AFI.data
             public int BandNo { get; set; }
             public int SrMode { get; set; }
             public string RjStatus { get; set; }
+            public int? FarayandCode { get; set; }
         }
 
 
@@ -1800,7 +1801,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @RjTime = {6},
 		                            @RjMhltDate = N'{7}',
                                     @SrMode = {8},
-                                    @RjStatus = '{9}'
+                                    @RjStatus = '{9}',
+                                    @FarayandCode = {10}
                             SELECT	@BandNo as N'@BandNo' ",
                          Web_ErjSaveDoc_BSave.SerialNumber,
                          Web_ErjSaveDoc_BSave.BandNo,
@@ -1811,7 +1813,8 @@ namespace ApiKarbord.Controllers.AFI.data
                          Web_ErjSaveDoc_BSave.RjTime,
                          Web_ErjSaveDoc_BSave.RjMhltDate,
                          Web_ErjSaveDoc_BSave.SrMode,
-                         Web_ErjSaveDoc_BSave.RjStatus
+                         Web_ErjSaveDoc_BSave.RjStatus,
+                         Web_ErjSaveDoc_BSave.FarayandCode ?? 0
                          );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
