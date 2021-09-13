@@ -1088,6 +1088,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public double? RjTime { get; set; }
 
+            public string RjTimeSt { get; set; }
+
             public string RelatedDocs { get; set; }
 
             public byte? SpecialCommTrs { get; set; }
@@ -3907,7 +3909,29 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class Web_Farayand
+        {
+            public int Code { get; set; }
 
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+        }
+
+        // GET: api/Web_Data/Farayand لیست فرایند  
+        [Route("api/Web_Data/Farayand/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Farayand(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select * from Web_Farayand");
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_Farayand>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
 
 
     }

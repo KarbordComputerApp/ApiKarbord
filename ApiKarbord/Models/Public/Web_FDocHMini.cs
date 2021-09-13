@@ -180,5 +180,27 @@
 
         public DateTime? UpdateDate { get; set; }
 
+        public string CustEcoCode { get; set; }
+
+        public string CustMelliCode { get; set; }
+
+        public string CustTel { get; set; }
+
+        public string CustFax { get; set; }
+
+        public string CustMobile { get; set; }
+
+        public string CustEmail { get; set; }
+
+        public string CustCity { get; set; }
+
+        public string CustStreet { get; set; }
+
+        public string CustAlley { get; set; }
+
+        public string CustPlack { get; set; }
+
+        public string CustZipCode { get; set; }
+
     }
 }
