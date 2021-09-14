@@ -1578,6 +1578,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string RjReadSt { get; set; }
 
+            public int? FarayandCode { get; set; }
+
+            public string FarayandName { get; set; }
+
             public byte? FinalCommTrs { get; set; }
 
             public byte DocAttachExists { get; set; }
@@ -1845,6 +1849,9 @@ namespace ApiKarbord.Controllers.AFI.data
             public string ToUserCode { get; set; }
 
             public string RjDate { get; set; }
+
+            public string RjTime { get; set; }
+
         }
 
         // POST: api/Web_Data/ErjSaveDoc_CSave
@@ -1875,14 +1882,16 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @BandNo = {1},
 		                            @Natijeh = N'{2}',
 		                            @ToUserCode = N'{3}',
-		                            @RjDate = N'{4}'
+		                            @RjDate = N'{4}',
+                                    @RjTime = {5},
                                SELECT	@BandNo as N'@BandNo'",
 
                             item.SerialNumber,
                             item.BandNo,
                             UnitPublic.ConvertTextWebToWin(item.Natijeh),
                             item.ToUserCode,
-                            item.RjDate);
+                            item.RjDate,
+                            item.RjTime);
                         value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     }
                     await UnitDatabase.db.SaveChangesAsync();
@@ -3919,14 +3928,14 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/Web_Data/Farayand لیست فرایند  
-        [Route("api/Web_Data/Farayand/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_Farayand(string ace, string sal, string group)
+        [Route("api/Web_Data/Farayand/{ace}/{sal}/{group}/{KhdtCode}")]
+        public async Task<IHttpActionResult> GetWeb_Farayand(string ace, string sal, string group, string KhdtCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select * from Web_Farayand");
+                string sql = string.Format(@"Select * from Web_Farayand({0})", KhdtCode);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_Farayand>(sql).ToList();
                 return Ok(listDB);
             }

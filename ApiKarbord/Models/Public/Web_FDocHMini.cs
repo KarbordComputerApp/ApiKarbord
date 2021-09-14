@@ -202,5 +202,12 @@
 
         public string CustZipCode { get; set; }
 
+        public string CustAddress { get; set; }
+
+        public string CustOstan { get; set; }
+
+        public string CustShahrestan { get; set; }
+
+        public string CustRegion { get; set; }
     }
 }
