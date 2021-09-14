@@ -1883,7 +1883,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @Natijeh = N'{2}',
 		                            @ToUserCode = N'{3}',
 		                            @RjDate = N'{4}',
-                                    @RjTime = {5},
+                                    @RjTime = {5}
                                SELECT	@BandNo as N'@BandNo'",
 
                             item.SerialNumber,
