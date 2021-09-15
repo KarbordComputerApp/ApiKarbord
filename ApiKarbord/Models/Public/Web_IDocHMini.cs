@@ -127,5 +127,9 @@
 
         public string ThvlShahrestan { get; set; }
 
+        public string ThvlEcoCode { get; set; }
+
+        public string ThvlMelliCode { get; set; }
+
     }
 }

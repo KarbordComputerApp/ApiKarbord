@@ -253,5 +253,17 @@ namespace ApiKarbord.Models
 
 
         public string TaeedName { get; set; }
+
+
+        [Column(TypeName = "image")]
+        public byte[] EghdamEmza { get; set; }
+
+
+        [Column(TypeName = "image")]
+        public byte[] TaeedEmza { get; set; }
+
+
+        [Column(TypeName = "image")]
+        public byte[] TanzimEmza { get; set; }
     }
 }

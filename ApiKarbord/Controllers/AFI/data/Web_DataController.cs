@@ -1568,6 +1568,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public double? RjTime { get; set; }
 
+            public string RjTimeSt { get; set; }
+
             public string FromUserCode { get; set; }
 
             public string FromUserName { get; set; }

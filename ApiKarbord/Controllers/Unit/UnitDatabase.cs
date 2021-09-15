@@ -534,6 +534,7 @@ namespace ApiKarbord.Controllers.Unit
                                     {
                                         try
                                         {
+                                            //sql = sql.Replace("ی", "ي");
                                             sql = sql.Replace("yyyy", salTemp);
 
                                             sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());

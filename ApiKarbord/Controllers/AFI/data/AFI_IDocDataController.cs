@@ -167,7 +167,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlEMail,
                                        ThvlAddress,
                                        ThvlOstan,
-                                       ThvlShahrestan
+                                       ThvlShahrestan,
+                                       ThvlEcoCode,
+                                       ThvlMelliCode
                                        from Web_IDocH_F(3,'{0}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo)  ", IDocHMinObject.user);
 
 
