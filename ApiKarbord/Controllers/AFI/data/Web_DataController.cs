@@ -1129,11 +1129,11 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top (10000)  * FROM  Web_ErjDocK('{0}','{1}') AS ErjDocK where 1 = 1",
+                          @"select top (10000)  * FROM  Web_ErjDocK('{0}','{1}') AS ErjDocK where 1 = 1 and ShowDocTrs = 1 ",
                           ErjDocKObject.SrchSt, dataAccount[2]);
 
-                if (ErjDocKObject.userMode == "USER")  // بعدا باید درست شود
-                    sql += string.Format(" and Eghdam = '{0}' ", ErjDocKObject.userName);
+                //if (ErjDocKObject.userMode == "USER")  // بعدا باید درست شود
+                //    sql += string.Format(" and Eghdam = '{0}' ", ErjDocKObject.userName);
 
                 if (ErjDocKObject.azTarikh != "")
                     sql += string.Format(" and DocDate >= '{0}' ", ErjDocKObject.azTarikh);

@@ -103,8 +103,10 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                             @"declare @enddate nvarchar(20)
-                            declare @DocNo nvarchar(50) = '{0}'  select ",
-                            IDocHMinObject.DocNo);
+                            declare @DocNo nvarchar(50) = '{0}' 
+                            declare @ModeCode nvarchar(50) = '{1}'
+                            select ",
+                            IDocHMinObject.DocNo, IDocHMinObject.ModeCode);
 
                 if (IDocHMinObject.select == 0)
                     sql += " top(100) ";
@@ -170,7 +172,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlShahrestan,
                                        ThvlEcoCode,
                                        ThvlMelliCode
-                                       from Web_IDocH_F(3,'{0}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo)  ", IDocHMinObject.user);
+                                       from Web_IDocH_F(3,'{0}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo) and (@ModeCode = ''  or ModeCode = @ModeCode)   ", IDocHMinObject.user);
 
 
                 //if (ModeCode == "in")
