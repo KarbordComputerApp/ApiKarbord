@@ -114,8 +114,8 @@
 
         public string InvCode { get; set; }
 
-        //10)]
-       // public int ModeCode { get; set; }
+
+        public string ModeCode { get; set; }
 
 
         public string ThvlCode { get; set; }
