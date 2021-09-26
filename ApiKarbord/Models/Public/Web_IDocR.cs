@@ -34,6 +34,7 @@
 
         public Int16? MainUnit { get; set; }
 
+        public string Eghdam { get; set; }
 
         public string BandSpec { get; set; }
 
