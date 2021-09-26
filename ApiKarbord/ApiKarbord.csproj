@@ -425,6 +425,11 @@
     <Content Include="PrintForms\Public\SORD-عمومی با شرح" />
     <Content Include="PrintForms\Public\SPFCT-عمومی با شرح" />
     <Content Include="PrintForms\Public\SRFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\PFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\PORD-عمومی با شرح" />
+    <Content Include="PrintForms\Public\PPFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\PRFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\SEXT-عمومی بدون قیمت با شرح" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>

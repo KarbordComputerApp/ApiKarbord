@@ -1735,6 +1735,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RjReadSt { get; set; }
 
             public string RooneveshtUsers { get; set; }
+
+            public string FarayandName { get; set; }
         }
 
         public class ErjDocErja
