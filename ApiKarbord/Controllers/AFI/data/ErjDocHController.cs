@@ -232,6 +232,167 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
         }
 
+
+
+
+        public class ErjSaveDoc_HUObject
+        {
+            public long SerialNumber { get; set; }
+
+            public string Tanzim { get; set; }
+
+            public string Status { get; set; }
+
+            public string Spec { get; set; }
+
+            public string DocDesc { get; set; }
+
+            public string EghdamComm { get; set; }
+
+            public string FinalComm { get; set; }
+
+            public string SpecialComm { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+        }
+
+
+
+        // POST: api/ErjDocH/ErjSaveDoc_HU
+        [Route("api/ErjDocH/ErjSaveDoc_HU/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_HU(string ace, string sal, string group, ErjSaveDoc_HUObject ErjSaveDoc_HUObject)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ErjSaveDoc_HUObject.SerialNumber, "", 2, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(
+                         @"DECLARE	@return_value int
+
+                            EXEC	@return_value = [dbo].[Web_ErjSaveDoc_HU]
+                                    @SerialNumber = {0},
+		                            @UserCode = '{1}',
+		                            @Tanzim = '{2}',
+		                            @Status = '{3}',
+		                            @Spec = '{4}',
+		                            @DocDesc = '{5}',
+		                            @EghdamComm = '{6}',
+		                            @FinalComm = '{7}',
+		                            @SpecialComm = '{8}',
+		                            @F01 = '{9}',
+		                            @F02 = '{10}',
+		                            @F03 = '{11}',
+		                            @F04 = '{12}',
+		                            @F05 = '{13}',
+		                            @F06 = '{14}',
+		                            @F07 = '{15}',
+		                            @F08 = '{16}',
+		                            @F09 = '{17}',
+		                            @F10 = '{18}',
+		                            @F11 = '{19}',
+		                            @F12 = '{20}',
+		                            @F13 = '{21}',
+		                            @F14 = '{22}',
+		                            @F15 = '{23}',
+		                            @F16 = '{24}',
+		                            @F17 = '{25}',
+		                            @F18 = '{26}',
+		                            @F19 = '{27}',
+		                            @F20 = '{28}'
+                            SELECT	'Return Value' = @return_value ",
+                            ErjSaveDoc_HUObject.SerialNumber,
+                            dataAccount[2],
+                            ErjSaveDoc_HUObject.Tanzim,
+                            ErjSaveDoc_HUObject.Status,
+                            ErjSaveDoc_HUObject.Spec,
+                            UnitPublic.ConvertTextWebToWin(ErjSaveDoc_HUObject.DocDesc),
+                            UnitPublic.ConvertTextWebToWin(ErjSaveDoc_HUObject.EghdamComm),
+                            UnitPublic.ConvertTextWebToWin(ErjSaveDoc_HUObject.FinalComm),
+                            UnitPublic.ConvertTextWebToWin(ErjSaveDoc_HUObject.SpecialComm),
+                            ErjSaveDoc_HUObject.F01,
+                            ErjSaveDoc_HUObject.F02,
+                            ErjSaveDoc_HUObject.F03,
+                            ErjSaveDoc_HUObject.F04,
+                            ErjSaveDoc_HUObject.F05,
+                            ErjSaveDoc_HUObject.F06,
+                            ErjSaveDoc_HUObject.F07,
+                            ErjSaveDoc_HUObject.F08,
+                            ErjSaveDoc_HUObject.F09,
+                            ErjSaveDoc_HUObject.F10,
+                            ErjSaveDoc_HUObject.F11,
+                            ErjSaveDoc_HUObject.F12,
+                            ErjSaveDoc_HUObject.F13,
+                            ErjSaveDoc_HUObject.F14,
+                            ErjSaveDoc_HUObject.F15,
+                            ErjSaveDoc_HUObject.F16,
+                            ErjSaveDoc_HUObject.F17,
+                            ErjSaveDoc_HUObject.F18,
+                            ErjSaveDoc_HUObject.F19,
+                            ErjSaveDoc_HUObject.F20);
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value > 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+                return Ok(value);
+            }
+            return Ok(con);
+        }
+
+
+
         // DELETE: api/ErjDocH/5
         [Route("api/ErjDocH/{ace}/{sal}/{group}/{SerialNumber}")]
         //[ResponseType(typeof(ErjDocH))]
