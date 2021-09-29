@@ -1917,6 +1917,62 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class Web_ErjSaveDoc_Rooneveshts
+        {
+            public long SerialNumber { get; set; }
+
+            //public string FromUserCode { get; set; }
+
+            public string ToUserCodes { get; set; }
+
+            public int BandNo { get; set; }
+
+            // public string RjDate { get; set; }
+
+        }
+
+        // POST: api/Web_Data/ErjSaveDoc_Rooneveshts
+        [Route("api/Web_Data/ErjSaveDoc_Rooneveshts/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostErjSaveDoc_Rooneveshts(string ace, string sal, string group, Web_ErjSaveDoc_Rooneveshts Web_ErjSaveDoc_Rooneveshts)
+        {
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = "";
+                try
+                {
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int
+                               EXEC	@return_value = [dbo].[Web_ErjSaveDoc_Rooneveshts]
+		                            @SerialNumber = {0},
+                                    @ToUserCodes = N'{1}',
+                                    @BandNo = {2}
+                           SELECT	'Return Value' = @return_value",
+
+                        Web_ErjSaveDoc_Rooneveshts.SerialNumber,
+                        Web_ErjSaveDoc_Rooneveshts.ToUserCodes,
+                        Web_ErjSaveDoc_Rooneveshts.BandNo);
+
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    await UnitDatabase.db.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+                return Ok(value);
+            }
+            return Ok(con);
+        }
+
 
 
 
@@ -2404,8 +2460,16 @@ namespace ApiKarbord.Controllers.AFI.data
                                      select * from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*'-- and Name <> ''",
                                   RprtId, UserCode);
 
-                var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
-                return Ok(list);
+                try
+                {
+                    var list = UnitDatabase.db.Database.SqlQuery<Web_RprtCols>(sql).ToList();
+                    return Ok(list);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+               
             }
             return Ok(con);
         }
@@ -3909,10 +3973,10 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
             if (con == "ok")
             {
-                    string sql = string.Format(@"select dbo.Web_CurrentShamsiDate() as tarikh");
+                string sql = string.Format(@"select dbo.Web_CurrentShamsiDate() as tarikh");
 
-                    var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
-                    return Ok(listDB);
+                var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                return Ok(listDB);
             }
 
             return Ok(con);

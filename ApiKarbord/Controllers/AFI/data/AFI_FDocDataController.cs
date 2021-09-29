@@ -641,6 +641,10 @@ namespace ApiKarbord.Controllers.AFI.data
             public string DocDate { get; set; }
 
             public string ModeCode { get; set; }
+
+            public string DocNo { get; set; }
+
+            public long SerialNumber { get; set; }
         }
 
 
@@ -653,10 +657,12 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                      @"EXEC	[dbo].[Web_TestFDoc_New] @UserCode = '{0}',  @DocDate = '{1}', @ModeCode = '{2}'",
+                      @"EXEC	[dbo].[Web_TestFDoc_New] @UserCode = '{0}',  @DocDate = '{1}', @ModeCode = '{2}' , @DocNo = '{3}' , @SerialNumber = {4}",
                       dataAccount[2],
                        AFI_TestFDoc_New.DocDate,
-                       AFI_TestFDoc_New.ModeCode
+                       AFI_TestFDoc_New.ModeCode,
+                       AFI_TestFDoc_New.DocNo,
+                       AFI_TestFDoc_New.SerialNumber
                       );
                 try
                 {

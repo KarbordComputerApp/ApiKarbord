@@ -323,29 +323,29 @@ namespace ApiKarbord.Controllers.AFI.data
                     sql = string.Format(@"SELECT * FROM Web_IMode_F({0},'{1}') WHERE InOut = {2} order by OrderFld ", iModeObject.Mode, iModeObject.UserCode, iModeObject.InOut);
                 var listIMode = UnitDatabase.db.Database.SqlQuery<Web_IMode>(sql);
 
-               /* var jsonResult = JsonConvert.SerializeObject(listIMode);
-                var aaa = jsonResult;
-                var properties = (from t in typeof(Web_IMode).GetProperties()
-                                  select t.Name).ToList();
+                /* var jsonResult = JsonConvert.SerializeObject(listIMode);
+                 var aaa = jsonResult;
+                 var properties = (from t in typeof(Web_IMode).GetProperties()
+                                   select t.Name).ToList();
 
-                string fields = "";
-                string res;
-                for (int i = 0; i < properties.Count; i++)
-                {
-                    fields = fields + properties[i] + ",";
-                    res = jsonResult.Replace("\"" + properties[i] + "\"", "");
-                    jsonResult = res;
-                }
+                 string fields = "";
+                 string res;
+                 for (int i = 0; i < properties.Count; i++)
+                 {
+                     fields = fields + properties[i] + ",";
+                     res = jsonResult.Replace("\"" + properties[i] + "\"", "");
+                     jsonResult = res;
+                 }
 
-                var a = jsonResult.Replace(":\"", "!");
-                a = a.Replace("\"", "!");
-                a = a.Replace(",:", ",");
-                a = a.Replace("[{", "");
-                a = a.Replace("}]", "");
-                a = a.Replace("},{", "~");
+                 var a = jsonResult.Replace(":\"", "!");
+                 a = a.Replace("\"", "!");
+                 a = a.Replace(",:", ",");
+                 a = a.Replace("[{", "");
+                 a = a.Replace("}]", "");
+                 a = a.Replace("},{", "~");
 
 
-                return Ok(a);*/
+                 return Ok(a);*/
                 return Ok(listIMode);
             }
             return Ok(con);
@@ -551,7 +551,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"EXEC	[dbo].[Web_TestIDoc] @serialNumber = {0}  , @UserCode = '{1}' ",
-                                           AFI_TestIDocB.SerialNumber, 
+                                           AFI_TestIDocB.SerialNumber,
                                            dataAccount[2]);
                 try
                 {
@@ -658,6 +658,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ModeCode { get; set; }
 
+            public string DocNo { get; set; }
+
+            public long SerialNumber { get; set; }
+
         }
 
 
@@ -670,10 +674,12 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                      @"EXEC	[dbo].[Web_TestIDoc_New]  @UserCode = '{0}',  @DocDate = '{1}', @ModeCode = '{2}'",
+                      @"EXEC	[dbo].[Web_TestIDoc_New]  @UserCode = '{0}',  @DocDate = '{1}', @ModeCode = '{2}' , @DocNo = '{3}' , @SerialNumber = {4}",
                       dataAccount[2],
                        AFI_TestIDoc_New.DocDate,
-                       AFI_TestIDoc_New.ModeCode
+                       AFI_TestIDoc_New.ModeCode,
+                       AFI_TestIDoc_New.DocNo,
+                       AFI_TestIDoc_New.SerialNumber
                       );
 
                 try
