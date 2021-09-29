@@ -20,7 +20,7 @@
         [Key]
         public string Code { get; set; }
 
-        public int Type { get; set; }
+        public int? Type { get; set; }
 
         public byte? Visible { get; set; }
 
