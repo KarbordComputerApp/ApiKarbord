@@ -3483,6 +3483,74 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class Web_Statements
+        {
+            public int? Code { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Name { get; set; }
+
+        }
+
+
+        // Get: api/Web_Data/Statements لیست عبارات تعریف شده
+        [Route("api/Web_Data/Statements")]
+        public async Task<IHttpActionResult> GetStatements()
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "0", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format("select * FROM  Web_Statements('{0}')", dataAccount[2]);
+
+                var list = UnitDatabase.db.Database.SqlQuery<Web_Statements>(sql);
+                return Ok(list);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
+
+
+        public class SaveStatementsObject
+        {
+            public string Comm { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/SaveStatements")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_SaveStatements(SaveStatementsObject SaveStatementsObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@" EXEC	[dbo].[Web_SaveStatements]
+		                                            @UserCode = N'{0}',
+		                                            @Comm = N'{1}'",
+                                           dataAccount[2],
+                                           SaveStatementsObject.Comm);
+                var listDB = UnitDatabase.db.Database.SqlQuery<DatabseSal>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
+
+
         // Post: api/Web_Data/ChangeDatabase 
         [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}/{auto}/{lockNumber}")]
         public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
