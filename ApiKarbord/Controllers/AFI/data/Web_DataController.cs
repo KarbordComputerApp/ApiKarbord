@@ -3487,7 +3487,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public int? Code { get; set; }
 
-            public string UserCode { get; set; }
+            //public string UserCode { get; set; }
 
             public string Name { get; set; }
 
@@ -3527,19 +3527,27 @@ namespace ApiKarbord.Controllers.AFI.data
 
         [Route("api/Web_Data/SaveStatements")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_SaveStatements(SaveStatementsObject SaveStatementsObject)
+        public async Task<IHttpActionResult> PostWeb_SaveStatements([FromBody]List<SaveStatementsObject> SaveStatementsObject)
         {
+            int value = 0;
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@" EXEC	[dbo].[Web_SaveStatements]
-		                                            @UserCode = N'{0}',
-		                                            @Comm = N'{1}'",
+                foreach (var item in SaveStatementsObject)
+                {
+                    string sql = string.Format(@"DECLARE @return_value int
+                                                 EXEC	 @return_value = [dbo].[Web_SaveStatements]
+		                                                 @UserCode = N'{0}',
+		                                                 @Comm = N'{1}'
+                                                 SELECT	'Return Value' = @return_value",
                                            dataAccount[2],
-                                           SaveStatementsObject.Comm);
-                var listDB = UnitDatabase.db.Database.SqlQuery<DatabseSal>(sql).ToList();
-                return Ok(listDB);
+                                           item.Comm);
+                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                }
+                await UnitDatabase.db.SaveChangesAsync();
+
+                return Ok(value);
             }
             return Ok(con);
         }
