@@ -665,7 +665,9 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        [Route("api/IDocData/TestIDoc_New/{ace}/{sal}/{group}")]
+
+
+            [Route("api/IDocData/TestIDoc_New/{ace}/{sal}/{group}")]
         [ResponseType(typeof(TestDocB))]
         public async Task<IHttpActionResult> PostWeb_TestIDoc_New(string ace, string sal, string group, AFI_TestIDoc_New AFI_TestIDoc_New)
         {

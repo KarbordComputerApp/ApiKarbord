@@ -3517,42 +3517,74 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        /*   public class SaveStatementsObject
+           {
+               public string Comm { get; set; }
+
+           }
+
+
+
+           [Route("api/Web_Data/SaveStatements")]
+           [ResponseType(typeof(void))]
+           public async Task<IHttpActionResult> PostWeb_SaveStatements([FromBody]List<SaveStatementsObject> SaveStatementsObject)
+           {
+               int value = 0;
+               var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+               string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+               if (con == "ok")
+               {
+                   foreach (var item in SaveStatementsObject)
+                   {
+                       string sql = string.Format(@"DECLARE @return_value int
+                                                    EXEC	 @return_value = [dbo].[Web_SaveStatements]
+                                                            @UserCode = N'{0}',
+                                                            @Comm = N'{1}'
+                                                    SELECT	'Return Value' = @return_value",
+                                              dataAccount[2],
+                                              item.Comm);
+                       value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                   }
+                   await UnitDatabase.db.SaveChangesAsync();
+
+                   return Ok(value);
+               }
+               return Ok(con);
+           }
+
+               */
+
+
+
+
         public class SaveStatementsObject
         {
             public string Comm { get; set; }
 
         }
 
-
-
         [Route("api/Web_Data/SaveStatements")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_SaveStatements([FromBody]List<SaveStatementsObject> SaveStatementsObject)
+        public async Task<IHttpActionResult> PostWeb_SaveStatements(SaveStatementsObject SaveStatementsObject)
         {
-            int value = 0;
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
             if (con == "ok")
             {
-                foreach (var item in SaveStatementsObject)
-                {
                     string sql = string.Format(@"DECLARE @return_value int
                                                  EXEC	 @return_value = [dbo].[Web_SaveStatements]
 		                                                 @UserCode = N'{0}',
 		                                                 @Comm = N'{1}'
                                                  SELECT	'Return Value' = @return_value",
                                            dataAccount[2],
-                                           item.Comm);
-                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
-                }
-                await UnitDatabase.db.SaveChangesAsync();
+                                           SaveStatementsObject.Comm);
+                  var value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
 
+                await UnitDatabase.db.SaveChangesAsync();
                 return Ok(value);
             }
             return Ok(con);
         }
-
-
 
 
 
