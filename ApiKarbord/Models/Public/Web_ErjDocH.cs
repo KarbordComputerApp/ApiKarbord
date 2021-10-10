@@ -65,8 +65,8 @@
         [Column(TypeName = "ntext")]
         public string SpecialComm { get; set; }
 
+        public byte? SpecialCommTrs { get; set; }
 
-        
         public string MhltDate { get; set; }
 
         
