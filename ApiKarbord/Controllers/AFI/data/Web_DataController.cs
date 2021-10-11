@@ -4120,6 +4120,56 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class Web_DocInUse
+        {
+            public string Prog { get; set; }
+
+            public string DMode { get; set; }
+
+            public string GroupNo { get; set; }
+
+            public string Year { get; set; }
+
+            public long SerialNumber { get; set; }
+        }
+
+        // Post: api/Web_Data/DocInUse تست بازبودن سند در ویندوز
+        [Route("api/Web_Data/DocInUse")]
+        public async Task<IHttpActionResult> PostDocInUse(Web_DocInUse Web_DocInUse)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"
+                                            DECLARE @UserCode nvarchar(100)
+
+                                            EXEC	[dbo].[Web_DocInUse]
+		                                            @Prog = N'{0}',
+		                                            @DMode = {1},
+		                                            @GroupNo = {2},
+		                                            @Year = {3},
+		                                            @SerialNumber = {4},
+		                                            @UserCode = @UserCode OUTPUT
+                                            SELECT	@UserCode as N'@UserCode'",
+                                            Web_DocInUse.Prog,
+                                            Web_DocInUse.DMode,
+                                            Web_DocInUse.GroupNo,
+                                            Web_DocInUse.Year,
+                                            Web_DocInUse.SerialNumber
+
+                    );
+
+                var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                return Ok(listDB);
+            }
+
+            return Ok(con);
+            //return Ok(DateTime.Now.ToString("yyyy/MM/dd"));
+        }
+
+
+
 
 
 
