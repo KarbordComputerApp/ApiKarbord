@@ -71,5 +71,8 @@ namespace ApiKarbord.Models
         public short? Level { get; set; }
 
 
+        public string Eghdam { get; set; }
+
+
     }
 }
