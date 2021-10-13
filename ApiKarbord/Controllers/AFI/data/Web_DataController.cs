@@ -4170,6 +4170,29 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class AGruObject
+        {
+            public byte Mode { get; set; }
+
+            public string UserCode { get; set; }
+        }
+
+        // Post: api/Web_Data/AGru  لیست گروه حساب ها  
+        [Route("api/Web_Data/AGru/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_AGru(string ace, string sal, string group, AGruObject AGruObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format("select  * FROM  Web_AGru");
+                var listAGru = UnitDatabase.db.Database.SqlQuery<Web_AGru>(sql);
+                return Ok(listAGru);
+            }
+            return Ok(con);
+        }
+
 
 
 
