@@ -2469,7 +2469,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-               
+
             }
             return Ok(con);
         }
@@ -3571,14 +3571,14 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
             if (con == "ok")
             {
-                    string sql = string.Format(@"DECLARE @return_value int
+                string sql = string.Format(@"DECLARE @return_value int
                                                  EXEC	 @return_value = [dbo].[Web_SaveStatements]
 		                                                 @UserCode = N'{0}',
 		                                                 @Comm = N'{1}'
                                                  SELECT	'Return Value' = @return_value",
-                                           dataAccount[2],
-                                           SaveStatementsObject.Comm);
-                  var value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                                       dataAccount[2],
+                                       SaveStatementsObject.Comm);
+                var value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
 
                 await UnitDatabase.db.SaveChangesAsync();
                 return Ok(value);
@@ -4165,8 +4165,108 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             return Ok(con);
-            //return Ok(DateTime.Now.ToString("yyyy/MM/dd"));
         }
+
+
+
+
+
+        public class Web_SaveDocInUse
+        {
+            public string Prog { get; set; }
+
+            public string DMode { get; set; }
+
+            public string GroupNo { get; set; }
+
+            public string Year { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public string DocNo { get; set; }
+        }
+
+        // Post: api/Web_Data/SaveDocInUse ثبت سند بازشده در ویندوز
+        [Route("api/Web_Data/SaveDocInUse")]
+        public async Task<IHttpActionResult> PostSaveDocInUse(Web_SaveDocInUse Web_SaveDocInUse)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@" EXEC	[dbo].[Web_SaveDocInUse]
+		                                            @Prog = N'{0}',
+		                                            @DMode = {1},
+		                                            @GroupNo = {2},
+		                                            @Year = {3},
+		                                            @SerialNumber = {4},
+		                                            @DocNo = '{5}',
+		                                            @UserCode = '{6}'
+                                              SELECT 'ok' ",
+                                            Web_SaveDocInUse.Prog,
+                                            Web_SaveDocInUse.DMode,
+                                            Web_SaveDocInUse.GroupNo,
+                                            Web_SaveDocInUse.Year,
+                                            Web_SaveDocInUse.SerialNumber,
+                                            Web_SaveDocInUse.DocNo,
+                                            dataAccount[2]);
+
+                var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                return Ok(listDB);
+            }
+
+            return Ok(con);
+        }
+
+
+
+        public class Web_DeleteDocInUse
+        {
+            public string Prog { get; set; }
+
+            public string DMode { get; set; }
+
+            public string GroupNo { get; set; }
+
+            public string Year { get; set; }
+
+            public string SerialNumber { get; set; }
+
+        }
+
+        // Post: api/Web_Data/DeleteDocInUse ثبت سند بازشده در ویندوز
+        [Route("api/Web_Data/DeleteDocInUse")]
+        public async Task<IHttpActionResult> PostDeleteDocInUse(Web_DeleteDocInUse Web_DeleteDocInUse)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@" EXEC	[dbo].[Web_DeleteDocInUse]
+		                                            @Prog = N'{0}',
+		                                            @DMode = {1},
+		                                            @GroupNo = {2},
+		                                            @Year = {3},
+		                                            @SerialNumber = {4},
+		                                            @UserCode = '{5}'
+                                              SELECT 'ok'  ",
+                                            Web_DeleteDocInUse.Prog,
+                                            Web_DeleteDocInUse.DMode,
+                                            Web_DeleteDocInUse.GroupNo,
+                                            Web_DeleteDocInUse.Year,
+                                            Web_DeleteDocInUse.SerialNumber,
+                                            dataAccount[2]);
+
+                var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                return Ok(listDB);
+            }
+
+            return Ok(con);
+        }
+
+
+
+
 
 
 
@@ -4192,6 +4292,219 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
+
+
+
+
+
+
+
+
+        public class AFI_SaveAcc
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string LtnName { get; set; }
+
+            public string Spec { get; set; }
+
+            public string AGruCode { get; set; }
+
+            public string ZGruCode { get; set; }
+
+            public string EMail { get; set; }
+
+            public string Mobile { get; set; }
+
+            public Int16? PDMode { get; set; }
+
+            public Int16? Mahiat { get; set; }
+
+            public Int16? AccStatus { get; set; }
+
+            public Int16? HasChild { get; set; }
+
+            public Int16? Arzi { get; set; }
+
+            public Int16? Mkz { get; set; }
+
+            public Int16? Opr { get; set; }
+
+            public Int16? Amount { get; set; }
+
+            public string Vahed { get; set; }
+
+            public string Deghat { get; set; }
+
+            public string AccComm { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+        // post: api/AFI_SaveAcc
+        [Route("api/Web_Data/AFI_SaveAcc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveAcc(string ace, string sal, string group, AFI_SaveAcc aFI_SaveAcc)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string value;
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                        @" DECLARE @oCode nvarchar(100)
+                           EXEC	[dbo].[Web_SaveAcc]
+		                        @BranchCode = {0},
+		                        @UserCode = N'{1}',
+		                        @Code = N'{2}',
+		                        @Name = N'{3}',
+		                        @Spec = N'{4}',
+		                        @F01 = N'{5}',
+		                        @F02 = N'{6}',
+		                        @F03 = N'{7}',
+		                        @F04 = N'{8}',
+		                        @F05 = N'{9}',
+		                        @F06 = N'{10}',
+		                        @F07 = N'{11}',
+		                        @F08 = N'{12}',
+		                        @F09 = N'{13}',
+		                        @F10 = N'{14}',
+		                        @F11 = N'{15}',
+		                        @F12 = N'{16}',
+		                        @F13 = N'{17}',
+		                        @F14 = N'{18}',
+		                        @F15 = N'{19}',
+		                        @F16 = N'{20}',
+		                        @F17 = N'{21}',
+		                        @F18 = N'{22}',
+		                        @F19 = N'{23}',
+		                        @F20 = N'{24}',
+		                        @oCode = @oCode OUTPUT
+                        SELECT	@oCode as N'@oCode' ",
+                        aFI_SaveAcc.BranchCode ?? 0,
+                        aFI_SaveAcc.UserCode,
+                        aFI_SaveAcc.Code,
+                        aFI_SaveAcc.Name ?? "",
+                        aFI_SaveAcc.Spec ?? "",
+                        aFI_SaveAcc.F01,
+                        aFI_SaveAcc.F02,
+                        aFI_SaveAcc.F03,
+                        aFI_SaveAcc.F04,
+                        aFI_SaveAcc.F05,
+                        aFI_SaveAcc.F06,
+                        aFI_SaveAcc.F07,
+                        aFI_SaveAcc.F08,
+                        aFI_SaveAcc.F09,
+                        aFI_SaveAcc.F10,
+                        aFI_SaveAcc.F11,
+                        aFI_SaveAcc.F12,
+                        aFI_SaveAcc.F13,
+                        aFI_SaveAcc.F14,
+                        aFI_SaveAcc.F15,
+                        aFI_SaveAcc.F16,
+                        aFI_SaveAcc.F17,
+                        aFI_SaveAcc.F18,
+                        aFI_SaveAcc.F19,
+                        aFI_SaveAcc.F20);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+                    return Ok(value);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
+        // Get: api/AFI_DelAcc
+        [Route("api/Web_Data/AFI_DelAcc/{ace}/{sal}/{group}/{AccCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelAcc(string ace, string sal, string group, string AccCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelAcc]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                                                AccCode);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                    return Ok(value);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
 
 
 

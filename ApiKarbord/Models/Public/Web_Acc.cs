@@ -20,6 +20,7 @@ namespace ApiKarbord.Models
         public long SortCode { get; set; }
 
         public string Name { get; set; }
+        public string LtnName { get; set; }
 
         public long SortName { get; set; }
 
