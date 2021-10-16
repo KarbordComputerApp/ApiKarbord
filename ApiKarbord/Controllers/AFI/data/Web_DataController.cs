@@ -4328,7 +4328,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public Int16? AccStatus { get; set; }
 
-            public Int16? HasChild { get; set; }
+            public Int16? NextLevelFromZAcc { get; set; }
 
             public Int16? Arzi { get; set; }
 
@@ -4340,7 +4340,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Vahed { get; set; }
 
-            public string Deghat { get; set; }
+            public Int16? Deghat { get; set; }
 
             public string AccComm { get; set; }
 
@@ -4411,29 +4411,45 @@ namespace ApiKarbord.Controllers.AFI.data
                            EXEC	[dbo].[Web_SaveAcc]
 		                        @BranchCode = {0},
 		                        @UserCode = N'{1}',
-		                        @Code = N'{2}',
+		                        @Code = '{2}',
 		                        @Name = N'{3}',
-		                        @Spec = N'{4}',
-		                        @F01 = N'{5}',
-		                        @F02 = N'{6}',
-		                        @F03 = N'{7}',
-		                        @F04 = N'{8}',
-		                        @F05 = N'{9}',
-		                        @F06 = N'{10}',
-		                        @F07 = N'{11}',
-		                        @F08 = N'{12}',
-		                        @F09 = N'{13}',
-		                        @F10 = N'{14}',
-		                        @F11 = N'{15}',
-		                        @F12 = N'{16}',
-		                        @F13 = N'{17}',
-		                        @F14 = N'{18}',
-		                        @F15 = N'{19}',
-		                        @F16 = N'{20}',
-		                        @F17 = N'{21}',
-		                        @F18 = N'{22}',
-		                        @F19 = N'{23}',
-		                        @F20 = N'{24}',
+                                @Spec = N'{4}',
+		                        @LtnName = N'{4}',
+		                        @AGruCode = '{6}',
+		                        @NextLevelFromZAcc = {7},
+		                        @ZGru = '{8}',
+		                        @AccComm = '{9}',
+		                        @EMail = '{10}',
+		                        @Mobil = '{11}',
+		                        @PDMode = {12},
+		                        @Mahiat = {13},
+		                        @AccStatus = {14},
+		                        @Arzi = {15},
+		                        @Opr = {16},
+		                        @Mkz = {17},
+		                        @Amount = {18},
+		                        @Vahed = '{19}',
+		                        @Deghat = {20},
+		                        @F01 = N'{21}',
+		                        @F02 = N'{22}',
+		                        @F03 = N'{23}',
+		                        @F04 = N'{24}',
+		                        @F05 = N'{25}',
+		                        @F06 = N'{26}',
+		                        @F07 = N'{27}',
+		                        @F08 = N'{28}',
+		                        @F09 = N'{29}',
+		                        @F10 = N'{30}',
+		                        @F11 = N'{31}',
+		                        @F12 = N'{32}',
+		                        @F13 = N'{33}',
+		                        @F14 = N'{34}',
+		                        @F15 = N'{35}',
+		                        @F16 = N'{36}',
+		                        @F17 = N'{37}',
+		                        @F18 = N'{38}',
+		                        @F19 = N'{39}',
+		                        @F20 = N'{40}',
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                         aFI_SaveAcc.BranchCode ?? 0,
@@ -4441,6 +4457,22 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveAcc.Code,
                         aFI_SaveAcc.Name ?? "",
                         aFI_SaveAcc.Spec ?? "",
+                        aFI_SaveAcc.LtnName ?? "",
+                        aFI_SaveAcc.AGruCode,
+                        aFI_SaveAcc.NextLevelFromZAcc,
+                        aFI_SaveAcc.ZGruCode,
+                        UnitPublic.ConvertTextWebToWin(aFI_SaveAcc.AccComm),
+                        aFI_SaveAcc.EMail,
+                        aFI_SaveAcc.Mobile,
+                        aFI_SaveAcc.PDMode,
+                        aFI_SaveAcc.Mahiat,
+                        aFI_SaveAcc.AccStatus,
+                        aFI_SaveAcc.Arzi,
+                        aFI_SaveAcc.Opr,
+                        aFI_SaveAcc.Mkz,
+                        aFI_SaveAcc.Amount ?? 0,
+                        aFI_SaveAcc.Vahed,
+                        aFI_SaveAcc.Deghat ?? 0,
                         aFI_SaveAcc.F01,
                         aFI_SaveAcc.F02,
                         aFI_SaveAcc.F03,

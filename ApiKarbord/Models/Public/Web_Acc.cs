@@ -8,18 +8,15 @@ namespace ApiKarbord.Models
 
     public partial class Web_Acc
     {
-
-
-
-       
         [Key]
         [Column(Order = 0)]
-        
+
         public string Code { get; set; }
 
         public long SortCode { get; set; }
 
         public string Name { get; set; }
+
         public string LtnName { get; set; }
 
         public long SortName { get; set; }
@@ -28,26 +25,25 @@ namespace ApiKarbord.Models
 
         [Key]
         [Column(Order = 1)]
-        
+
         public string ZGru { get; set; }
 
         [Key]
         [Column(Order = 2)]
-        
+
         public string MkzName { get; set; }
 
         [Key]
         [Column(Order = 3)]
-        
+
         public string OprName { get; set; }
 
         [Key]
         [Column(Order = 4)]
-    
+
         public string ArzName { get; set; }
 
         public double ArzRate { get; set; }
-        
 
         public byte? HasChild { get; set; }
 
@@ -55,14 +51,10 @@ namespace ApiKarbord.Models
 
         public byte? NextLevelFromZAcc { get; set; }
 
-    
         public string MkzCode { get; set; }
 
-
-    
         public string OprCode { get; set; }
 
-    
         public string ArzCode { get; set; }
 
         public short? Mkz { get; set; }
@@ -71,59 +63,59 @@ namespace ApiKarbord.Models
 
         public short? Arzi { get; set; }
 
+        public short? Amount { get; set; }
+
         public short? PDMode { get; set; }
 
         public short? Level { get; set; }
 
         public string Eghdam { get; set; }
 
-        
-       public string AccF01 { get; set; }
-        
+        public string AccF01 { get; set; }
+
         public string AccF02 { get; set; }
-        
-       public string AccF03 { get; set; }
-        
+
+        public string AccF03 { get; set; }
+
         public string AccF04 { get; set; }
-       
+
         public string AccF05 { get; set; }
-        
+
         public string AccF06 { get; set; }
-        
+
         public string AccF07 { get; set; }
-        
+
         public string AccF08 { get; set; }
-        
+
         public string AccF09 { get; set; }
-        
+
         public string AccF10 { get; set; }
-        
+
         public string AccF11 { get; set; }
-       
+
         public string AccF12 { get; set; }
-       
+
         public string AccF13 { get; set; }
-        
+
         public string AccF14 { get; set; }
-        
+
         public string AccF15 { get; set; }
-        
+
         public string AccF16 { get; set; }
-        
+
         public string AccF17 { get; set; }
-        
+
         public string AccF18 { get; set; }
-        
+
         public string AccF19 { get; set; }
-        
+
         public string AccF20 { get; set; }
 
         public string AGruCode { get; set; }
 
         public string AGruName { get; set; }
 
-
-         public short AccStatus { get; set; }
+        public short AccStatus { get; set; }
 
         public string AccStatusComm { get; set; }
 
@@ -135,7 +127,6 @@ namespace ApiKarbord.Models
 
         public short? Mahiat { get; set; }
 
-     
         public string PDModeName { get; set; }
 
         public string MahiatName { get; set; }
