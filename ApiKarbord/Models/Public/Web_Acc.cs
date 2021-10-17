@@ -65,6 +65,10 @@ namespace ApiKarbord.Models
 
         public short? Amount { get; set; }
 
+        public string Vahed { get; set; }
+
+        public int Deghat { get; set; }
+
         public short? PDMode { get; set; }
 
         public short? Level { get; set; }

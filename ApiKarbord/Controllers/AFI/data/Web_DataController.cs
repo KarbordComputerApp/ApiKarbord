@@ -4316,7 +4316,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string AGruCode { get; set; }
 
-            public string ZGruCode { get; set; }
+            public string ZGru { get; set; }
 
             public string EMail { get; set; }
 
@@ -4414,13 +4414,13 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @Code = '{2}',
 		                        @Name = N'{3}',
                                 @Spec = N'{4}',
-		                        @LtnName = N'{4}',
+		                        @LtnName = N'{5}',
 		                        @AGruCode = '{6}',
 		                        @NextLevelFromZAcc = {7},
 		                        @ZGru = '{8}',
 		                        @AccComm = '{9}',
 		                        @EMail = '{10}',
-		                        @Mobil = '{11}',
+		                        @Mobile = '{11}',
 		                        @PDMode = {12},
 		                        @Mahiat = {13},
 		                        @AccStatus = {14},
@@ -4460,7 +4460,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveAcc.LtnName ?? "",
                         aFI_SaveAcc.AGruCode,
                         aFI_SaveAcc.NextLevelFromZAcc,
-                        aFI_SaveAcc.ZGruCode,
+                        aFI_SaveAcc.ZGru,
                         UnitPublic.ConvertTextWebToWin(aFI_SaveAcc.AccComm),
                         aFI_SaveAcc.EMail,
                         aFI_SaveAcc.Mobile,
@@ -4536,6 +4536,131 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
+
+
+
+ 
+
+        // Get: api/Web_Data/ZGru لیست گروه زیر حساب ها 
+        [Route("api/Web_Data/ZGru/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_ZGru(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format("select  * FROM  Web_ZGru");
+                var listZGru = UnitDatabase.db.Database.SqlQuery<Web_ZGru>(sql);
+                return Ok(listZGru);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
+
+
+        public class AFI_TestAcc
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestAcc
+        {
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestAcc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestAcc))]
+        public async Task<IHttpActionResult> PostWeb_TestAcc(string ace, string sal, string group, AFI_TestAcc AFI_TestAcc)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestAcc] @Code = {0}  , @UserCode = '{1}' ",
+                                           AFI_TestAcc.Code,
+                                           dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestAcc>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+
+        public class TestAcc_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestAcc_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestAcc_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestAcc_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestAcc_Delete(string ace, string sal, string group, TestAcc_DeleteObject TestAcc_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestAcc_Delete] @Code = '{0}', @UserCode = '{1}' ", TestAcc_DeleteObject.Code, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestAcc_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
 
 
 
