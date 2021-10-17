@@ -4590,7 +4590,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestAcc] @Code = {0}  , @UserCode = '{1}' ",
+                                           @"EXEC	[dbo].[Web_TestAcc] @Code = '{0}'  , @UserCode = '{1}' ",
                                            AFI_TestAcc.Code,
                                            dataAccount[2]);
                 try
