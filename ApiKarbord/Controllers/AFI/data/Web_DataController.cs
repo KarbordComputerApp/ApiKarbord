@@ -1473,6 +1473,18 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class ErjResultObject
+        {
+            public string SerialNumber { get; set; }
+
+            public string DocBMode { get; set; }
+
+            public string ToUserCode { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
         public partial class Web_ErjResult
         {
             public int DocBMode { get; set; }
@@ -1488,21 +1500,27 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RjResult { get; set; }
         }
 
-        // GET: api/Web_Data/Web_ErjResult   نتیجه در اتوماسیون
-        [Route("api/Web_Data/Web_ErjResult/{ace}/{sal}/{group}/{SerialNumber}/{DocBMode}/{ToUserCode}")]
-        public async Task<IHttpActionResult> GetWeb_ErjResult(string ace, string sal, string group, string SerialNumber, string DocBMode, string ToUserCode)
+        // Post: api/Web_Data/Web_ErjResult   نتیجه در اتوماسیون
+        [Route("api/Web_Data/Web_ErjResult/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_ErjResult(string ace, string sal, string group, ErjResultObject ErjResultObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
 
-                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = {0}", SerialNumber);
+                string sql = string.Format(@"Select * from Web_ErjResult where SerialNumber = {0}", ErjResultObject.SerialNumber);
 
-                if (DocBMode != "null")
+                if (ErjResultObject.BandNo != null)
+                {
+
+                    sql += string.Format(@" and  BandNo = {0} ", ErjResultObject.BandNo);
+                }
+
+                if (ErjResultObject.DocBMode != null)
                     sql += string.Format(@" and  DocBMode = {0} and ToUserCode = '{1}'",
-                         DocBMode,
-                         DocBMode == "0" ? "" : ToUserCode
+                         ErjResultObject.DocBMode,
+                         ErjResultObject.DocBMode == "0" ? "" : ErjResultObject.ToUserCode
                         );
 
 
