@@ -3919,7 +3919,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestCust] @Code = {0}  , @UserCode = '{1}' ",
+                                           @"EXEC	[dbo].[Web_TestCust] @Code = '{0}'  , @UserCode = '{1}' ",
                                            AFI_TestCust.Code,
                                            dataAccount[2]);
                 try
@@ -4022,7 +4022,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestKala] @Code = {0}  , @UserCode = '{1}' ",
+                                           @"EXEC	[dbo].[Web_TestKala] @Code = '{0}' , @UserCode = '{1}' ",
                                            AFI_TestKala.Code,
                                            dataAccount[2]);
                 try
