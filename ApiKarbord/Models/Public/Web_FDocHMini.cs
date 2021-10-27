@@ -31,6 +31,8 @@
 
         public int? KalaPriceCode { get; set; }
 
+       // public string KalaPriceName { get; set; }
+
 
         public string InvCode { get; set; }
 
@@ -177,6 +179,10 @@
         public string OprCode { get; set; }
 
         public string OprName { get; set; }
+
+        public string VstrCode { get; set; }
+
+        public string VstrName { get; set; }
 
         public DateTime? UpdateDate { get; set; }
 

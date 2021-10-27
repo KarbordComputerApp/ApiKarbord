@@ -108,6 +108,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                        MkzName,
                                        OprCode,
                                        OprName,                                       
+                                       VstrCode,                                       
+                                       VstrName,                                       
                                        AddMinSpec1,
                                        AddMinSpec2,
                                        AddMinSpec3,

@@ -4151,8 +4151,15 @@ namespace ApiKarbord.Controllers.AFI.data
             public long SerialNumber { get; set; }
         }
 
-        // Post: api/Web_Data/DocInUse تست بازبودن سند در ویندوز
-        [Route("api/Web_Data/DocInUse")]
+        public class DocInUse
+        {
+            public string UserCode { get; set; }
+            public string UserName { get; set; }
+
+        }
+
+            // Post: api/Web_Data/DocInUse تست بازبودن سند در ویندوز
+            [Route("api/Web_Data/DocInUse")]
         public async Task<IHttpActionResult> PostDocInUse(Web_DocInUse Web_DocInUse)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -4160,16 +4167,17 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(@"
-                                            DECLARE @UserCode nvarchar(100)
-
+                                            DECLARE @UserCode nvarchar(100),
+                                                    @UserName nvarchar(100)
                                             EXEC	[dbo].[Web_DocInUse]
 		                                            @Prog = N'{0}',
 		                                            @DMode = {1},
 		                                            @GroupNo = {2},
 		                                            @Year = {3},
 		                                            @SerialNumber = {4},
-		                                            @UserCode = @UserCode OUTPUT
-                                            SELECT	@UserCode as N'@UserCode'",
+		                                            @UserCode = @UserCode OUTPUT,
+                                                    @UserName = @UserName OUTPUT
+                                            SELECT	@UserCode as UserCode , @UserName as UserName",
                                             Web_DocInUse.Prog,
                                             Web_DocInUse.DMode,
                                             Web_DocInUse.GroupNo,
@@ -4178,7 +4186,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                     );
 
-                var listDB = UnitDatabase.db.Database.SqlQuery<string>(sql).ToList();
+                var listDB = UnitDatabase.db.Database.SqlQuery<DocInUse>(sql).ToList();
                 return Ok(listDB);
             }
 
@@ -4557,7 +4565,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
- 
+
 
         // Get: api/Web_Data/ZGru لیست گروه زیر حساب ها 
         [Route("api/Web_Data/ZGru/{ace}/{sal}/{group}")]
@@ -4676,6 +4684,22 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
 
+        }
+
+
+        // GET: api/Web_Data/Vstr لیست ویزیتور ها
+        [Route("api/Web_Data/Vstr/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Vstr(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@" select *  from Web_Vstr");
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_Vstr>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
         }
 
 

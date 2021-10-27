@@ -183,18 +183,11 @@
         public DateTime? EghdamDate { get; set; }
 
 
-
         public string CustName { get; set; }
-
-
-        public string CGruCode { get; set; }
-
-
 
         public string VstrName { get; set; }
 
-
-        public string VGruCode { get; set; }
+        public string VstrCode { get; set; }
 
         public string MkzCode { get; set; }
 

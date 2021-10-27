@@ -164,7 +164,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @TANZIM = '{11}',
 		                            @TAHIESHODE = '{12}',
 		                            @CUSTCODE = '{13}',
-		                            @VSTRCODE = {14},
+		                            @VSTRCODE = '{14}',
 		                            @VSTRPER = {15},
 		                            @PAKHSHCODE = '{16}',
 		                            @KALAPRICECODE = {17},
@@ -443,7 +443,9 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F17,
                             aFI_FDocHi.F18,
                             aFI_FDocHi.F19,
-                            aFI_FDocHi.F20);
+                            aFI_FDocHi.F20
+                            //aFI_FDocHi.VstrCode
+                            );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
