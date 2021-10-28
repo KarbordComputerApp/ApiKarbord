@@ -284,7 +284,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F20,
                             aFI_FDocHi.Tasvib,
                             aFI_FDocHi.OprCode,
-                            aFI_FDocHi.MkzCode
+                            aFI_FDocHi.MkzCode 
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql2).Single();
 
