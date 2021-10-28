@@ -281,7 +281,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F17,
                             aFI_FDocHi.F18,
                             aFI_FDocHi.F19,
-                            aFI_FDocHi.F20,
+                            aFI_FDocHi.F20, 
                             aFI_FDocHi.Tasvib,
                             aFI_FDocHi.OprCode,
                             aFI_FDocHi.MkzCode 
