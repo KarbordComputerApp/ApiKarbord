@@ -273,7 +273,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F09,
                             aFI_FDocHi.F10,
                             aFI_FDocHi.F11,
-                            aFI_FDocHi.F12,
+                            aFI_FDocHi.F12, 
                             aFI_FDocHi.F13, 
                             aFI_FDocHi.F14,
                             aFI_FDocHi.F15, 
