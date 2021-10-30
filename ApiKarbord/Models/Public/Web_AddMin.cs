@@ -13,7 +13,6 @@
 
         public string Name { get; set; }
 
-
         public int? Mode { get; set; }
 
         public bool? Auto { get; set; }
@@ -24,24 +23,24 @@
 
         public bool? DiscountInEffPrice { get; set; }
 
-        public bool? AddMinInEffPrice1 { get; set; }
+        public string AddMinInEffPrice1 { get; set; }
 
-        public bool? AddMinInEffPrice2 { get; set; }
+        public string AddMinInEffPrice2 { get; set; }
 
-        public bool? AddMinInEffPrice3 { get; set; }
+        public string AddMinInEffPrice3 { get; set; }
 
-        public bool? AddMinInEffPrice4 { get; set; }
+        public string AddMinInEffPrice4 { get; set; }
 
-        public bool? AddMinInEffPrice5 { get; set; }
+        public string AddMinInEffPrice5 { get; set; }
 
-        public bool? AddMinInEffPrice6 { get; set; }
+        public string AddMinInEffPrice6 { get; set; }
 
-        public bool? AddMinInEffPrice7 { get; set; }
+        public string AddMinInEffPrice7 { get; set; }
 
-        public bool? AddMinInEffPrice8 { get; set; }
+        public string AddMinInEffPrice8 { get; set; }
 
-        public bool? AddMinInEffPrice9 { get; set; }
+        public string AddMinInEffPrice9 { get; set; }
 
-        public bool? AddMinInEffPrice10 { get; set; }
+        public string AddMinInEffPrice10 { get; set; }
     }
 }

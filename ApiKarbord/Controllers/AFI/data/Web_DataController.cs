@@ -4702,7 +4702,27 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
         }
 
+        // GET: api/Web_Data/AddMin لیست عوارض و تخفیف ها
+        [Route("api/Web_Data/Web_AddMin/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_AddMin(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@" select *  from Web_Addmin");
+                try
+                {
+                    var listDB = UnitDatabase.db.Database.SqlQuery<Web_AddMin>(sql).ToList();
+                    return Ok(listDB);
+                }
+                catch (Exception e)
+                {
 
+                }
+            }
+            return Ok(con);
+        }
 
 
 
