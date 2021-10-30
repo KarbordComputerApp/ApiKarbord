@@ -3810,6 +3810,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string F20 { get; set; }
 
+            public string Motaghazi { get; set; }
+
         }
 
 
@@ -3851,6 +3853,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                    @F18 = '{24}',
 		                                    @F19 = '{25}',
 		                                    @F20 = '{26}',
+		                                    @Motaghazi = '{27}',
 		                                    @DocNo_Out = @DocNo_Out OUTPUT
                                     SELECT	@DocNo_Out as N'DocNo_Out'",
                     ErjSaveTicket_HI.SerialNumber,
@@ -3879,7 +3882,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     ErjSaveTicket_HI.F17,
                     ErjSaveTicket_HI.F18,
                     ErjSaveTicket_HI.F19,
-                    ErjSaveTicket_HI.F20
+                    ErjSaveTicket_HI.F20,
+                    ErjSaveTicket_HI.Motaghazi
                     );
                 int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
 
