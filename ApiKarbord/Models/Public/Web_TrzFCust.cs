@@ -88,5 +88,12 @@
         public double? FinalPrice { get; set; }
 
         public double? TotalPrice { get; set; }
+
+        public double? AccBede { get; set; }
+
+        public double? AccBest { get; set; }
+
+        public double? AccMon { get; set; }
+
     }
 }
