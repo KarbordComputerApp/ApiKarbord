@@ -391,7 +391,6 @@
     <Content Include="PrintForms\Public\ReportFDocR_P-عمومی" />
     <Content Include="PrintForms\Public\ReportFDocR_S-عمومی" />
     <Content Include="PrintForms\Public\ReportIDocR-عمومی" />
-    <Content Include="PrintForms\Public\ReportKrdx-عمومی" />
     <Content Include="PrintForms\Public\ReportTChk-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzAcc-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzFCust_P-عمومی" />
@@ -399,7 +398,6 @@
     <Content Include="PrintForms\Public\ReportTrzFKala_P-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzFKala_S-عمومی" />
     <Content Include="PrintForms\Public\ReportTrzIKalaExf-عمومی" />
-    <Content Include="PrintForms\Public\SEXT_NoPrice-عمومی بدون قیمت" />
     <Content Include="PrintForms\Public\SFCT-عمومی" />
     <Content Include="PrintForms\Public\SORD-عمومی" />
     <Content Include="PrintForms\Public\SPFCT-عمومی" />
@@ -411,11 +409,8 @@
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster-موجودی کالا%28واحد شمارش اول%29" />
     <Content Include="PrintForms\Public\ReportKrdx-کاردکس ریالی" />
     <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی موجودی کالا  با تمامی مقادیر مانده" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaMaster- عمومی گردش کالا" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaMaster-عمومی" />
     <Content Include="PrintForms\Public\ADoc-عمومی" />
     <Content Include="PrintForms\Public\ReportKrdx-کاردکس مقداری" />
-    <Content Include="PrintForms\Public\ReportTrzIKalaExf-فرم چاپ" />
     <Content Include="PrintForms\Public\IDoc-عمومی بدون شرح" />
     <Content Include="PrintForms\Public\IDoc-عمومی بدون قیمت و شرح" />
     <Content Include="PrintForms\Public\ODoc-عمومی بدون شرح" />
