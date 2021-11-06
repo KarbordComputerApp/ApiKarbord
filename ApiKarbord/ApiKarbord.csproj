@@ -424,7 +424,6 @@
     <Content Include="PrintForms\Public\SORD-عمومی" />
     <Content Include="PrintForms\Public\SORD-عمومی با شرح" />
     <Content Include="PrintForms\Public\SPFCT-عمومی" />
-    <Content Include="PrintForms\Public\SPFCT-عمومی با شرح" />
     <Content Include="PrintForms\Public\SPFCT-فرم عمومی با ستون شرح" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT-عمومی با شرح" />
