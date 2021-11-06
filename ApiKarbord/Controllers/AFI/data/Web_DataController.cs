@@ -4452,7 +4452,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @EMail = '{10}',
 		                        @Mobile = '{11}',
 		                        @PDMode = {12},
-		                        @Mahiat = {13},
+		                        @Mahiat = '{13}',
 		                        @AccStatus = {14},
 		                        @Arzi = {15},
 		                        @Opr = {16},
