@@ -3747,7 +3747,12 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format("select * from Web_TicketStatus where serialnumber in ({0})", Object_TicketStatus.SerialNumber);
+                //string sql = string.Format("select * from Web_TicketStatus where serialnumber in ({0})", Object_TicketStatus.SerialNumber);
+
+                string sql = string.Format(@"declare @serialnumber nvarchar(100) = '{0}'
+                                             select * from Web_TicketStatus where 1 = 1 and
+                                            (@serialnumber = '' or serialnumber = @serialnumber)",
+                                          Object_TicketStatus.SerialNumber);
                 var list = UnitDatabase.db.Database.SqlQuery<Web_TicketStatus>(sql).ToList();
                 return Ok(list);
             }
