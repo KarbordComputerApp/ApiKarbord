@@ -4734,7 +4734,63 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class CustAccountObject
+        {
+            public string LockNo { get; set; }
 
+        }
+
+        public class CustAccount
+        {
+            public byte TasviyeCode { get; set; }
+
+            public string Tasviye { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string Status { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public string DocNo { get; set; }
+
+            public double? SortDocNo { get; set; }
+
+            public string DocDate { get; set; }
+
+            public byte? PaymentType { get; set; }
+
+            public string PaymentTypeSt { get; set; }
+
+            public string CustCode { get; set; }
+
+            public string Spec { get; set; }
+
+            public double? TotalValue { get; set; }
+        }
+
+        [Route("api/Web_Data/CustAccount/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(CustAccount))]
+        public async Task<IHttpActionResult> PostWeb_CustAccount(string ace, string sal, string group, CustAccountObject CustAccountObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_CustAccount] @LockNo = '{0}' ", CustAccountObject.LockNo);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<CustAccount>(sql).ToList();
+                    return Ok(result);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
 
 
     }
