@@ -4793,5 +4793,42 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class CustAccountSaveObject
+        {
+            public long SerialNumber { get; set; }
+
+            public string OnlineParLink { get; set; }
+
+
+        }
+
+
+        [Route("api/Web_Data/CustAccountSave/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_CustAccountSave(string ace, string sal, string group, CustAccountSaveObject CustAccountSaveObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,@"DECLARE @return_value int
+                                                                        EXEC    @return_value = [dbo].[Web_CustAccountSave]
+                                                                                @SerialNumber = {0},
+		                                                                        @OnlineParLink = N'{1}'
+                                                                        SELECT  'Return Value' = @return_value",
+                                                                        CustAccountSaveObject.SerialNumber, CustAccountSaveObject.OnlineParLink);
+                try
+                {
+                    int res = UnitDatabase.db.Database.SqlQuery<int>(sql).Single(); 
+                    return Ok("Ok");
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
     }
 }
