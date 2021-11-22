@@ -19,7 +19,7 @@ namespace ApiKarbord.Controllers.Pay
             public string LoginAccount { get; set; } // NRlhOcngQl7BwNOhU104
             public long Amount { get; set; }
             public virtual string AdditionalData { get; set; }
-            public bool ConfirmAfterPayment { get; set; }
+            public long OrderId { get; set; }
             public string Originator { get; set; }
         }
 
@@ -42,23 +42,12 @@ namespace ApiKarbord.Controllers.Pay
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((o, xc, xch, sslP) => true);
                 service.Url = "https://pec.shaparak.ir/NewIPGServices/Sale/SaleService.asmx";
                 var saleRequest = new SaleService.ClientSaleRequestData();
-                //string loginAccount = model.LoginAccount;
-                //if (string.IsNullOrWhiteSpace(loginAccount))
-                //{
-                //    loginAccount = model.LoginAccount;
-                //}
-
-                //if (string.IsNullOrWhiteSpace(loginAccount))
-                //{
-                //    ModelState.AddModelError("LoginAccount", "please fill either Login Account or customLoginAccount");
-                //}
-
                 saleRequest.LoginAccount = model.LoginAccount;
                 saleRequest.CallBackUrl = model.CallBackUrl;// "https://www.karbordcomputer.ir/";
                 saleRequest.Amount = model.Amount;
                 saleRequest.AdditionalData = model.AdditionalData;
                 saleRequest.Originator = model.Originator;
-                saleRequest.OrderId = DateTime.Now.Ticks;
+                saleRequest.OrderId = model.OrderId;
                 responseData = service.SalePaymentRequest(saleRequest);
             }
 
