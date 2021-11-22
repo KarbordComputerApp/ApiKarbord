@@ -42,12 +42,12 @@ namespace ApiKarbord.Controllers.Pay
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((o, xc, xch, sslP) => true);
                 service.Url = "https://pec.shaparak.ir/NewIPGServices/Sale/SaleService.asmx";
                 var saleRequest = new SaleService.ClientSaleRequestData();
-                saleRequest.LoginAccount = model.LoginAccount;
+                saleRequest.LoginAccount = model.LoginAccount;//NRlhOcngQl7BwNOhU104
                 saleRequest.CallBackUrl = model.CallBackUrl;// "https://www.karbordcomputer.ir/";
                 saleRequest.Amount = model.Amount;
                 saleRequest.AdditionalData = model.AdditionalData;
                 saleRequest.Originator = model.Originator;
-                saleRequest.OrderId = model.OrderId;
+                saleRequest.OrderId = model.OrderId + DateTime.Now.Ticks;
                 responseData = service.SalePaymentRequest(saleRequest);
             }
 

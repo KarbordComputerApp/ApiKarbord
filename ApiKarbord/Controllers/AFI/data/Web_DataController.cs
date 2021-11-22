@@ -4795,11 +4795,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class CustAccountSaveObject
         {
+            public string Year { get; set; }
+
             public long SerialNumber { get; set; }
 
             public string OnlineParLink { get; set; }
-
-
         }
 
 
@@ -4811,12 +4811,13 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(CultureInfo.InvariantCulture,@"DECLARE @return_value int
-                                                                        EXEC    @return_value = [dbo].[Web_CustAccountSave]
-                                                                                @SerialNumber = {0},
-		                                                                        @OnlineParLink = N'{1}'
-                                                                        SELECT  'Return Value' = @return_value",
-                                                                        CustAccountSaveObject.SerialNumber, CustAccountSaveObject.OnlineParLink);
+                string sql = string.Format(CultureInfo.InvariantCulture, @"DECLARE @return_value int
+                                                                           EXEC    @return_value = [dbo].[Web_CustAccountSave]
+                                                                                   @Year = N'{0}',
+                                                                                   @SerialNumber = {1},
+		                                                                           @OnlineParLink = N'''{2}'''
+                                                                           SELECT  'Return Value' = @return_value",
+                                                                        CustAccountSaveObject.Year, CustAccountSaveObject.SerialNumber, CustAccountSaveObject.OnlineParLink);
                 try
                 {
                     int res = UnitDatabase.db.Database.SqlQuery<int>(sql).Single(); 
