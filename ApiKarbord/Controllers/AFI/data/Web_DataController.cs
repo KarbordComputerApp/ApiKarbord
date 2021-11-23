@@ -4167,8 +4167,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
-            // Post: api/Web_Data/DocInUse تست بازبودن سند در ویندوز
-            [Route("api/Web_Data/DocInUse")]
+        // Post: api/Web_Data/DocInUse تست بازبودن سند در ویندوز
+        [Route("api/Web_Data/DocInUse")]
         public async Task<IHttpActionResult> PostDocInUse(Web_DocInUse Web_DocInUse)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -4820,7 +4820,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                         CustAccountSaveObject.Year, CustAccountSaveObject.SerialNumber, CustAccountSaveObject.OnlineParLink);
                 try
                 {
-                    int res = UnitDatabase.db.Database.SqlQuery<int>(sql).Single(); 
+                    int res = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     return Ok("Ok");
                 }
                 catch (Exception e)
@@ -4830,6 +4830,40 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
+
+
+
+        public class FDocP_CustAcountObject
+        {
+            public string Year { get; set; }
+
+            public long SerialNumber { get; set; }
+        }
+
+
+        [Route("api/Web_Data/FDocP_CustAcount/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_FDocP_CustAcount(string ace, string sal, string group, FDocP_CustAcountObject FDocP_CustAcountObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, FDocP_CustAcountObject.SerialNumber, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"EXEC	 [dbo].[Web_FDocP]
+		                                             @Year = N'{0}',
+		                                             @SerialNumber = {1}",
+                                                     FDocP_CustAcountObject.Year,
+                                                     FDocP_CustAcountObject.SerialNumber
+                                          );
+                var listFDocP = UnitDatabase.db.Database.SqlQuery<Web_FDocP>(sql);
+                return Ok(listFDocP);
+            }
+            return Ok(con);
+        }
+
+
+
+
 
     }
 }

@@ -32,6 +32,8 @@
         public string TanzimName { get; set; }
 
         public byte DocAttachExists { get; set; }
+
+        public string Motaghazi { get; set; }
     }
 
 }
