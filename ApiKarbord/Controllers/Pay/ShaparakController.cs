@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using ApiKarbord.SaleService;
 using ApiKarbord.ConfirmService;
 using System.Threading.Tasks;
+
 
 namespace ApiKarbord.Controllers.Pay
 {
@@ -15,7 +12,7 @@ namespace ApiKarbord.Controllers.Pay
 
         public class SalePaymentRequestModel
         {
-            public string CallBackUrl { get; set; } 
+            public string CallBackUrl { get; set; }
             public string LoginAccount { get; set; } // NRlhOcngQl7BwNOhU104
             public long Amount { get; set; }
             public virtual string AdditionalData { get; set; }
@@ -33,7 +30,8 @@ namespace ApiKarbord.Controllers.Pay
         }
 
 
-        [HttpPost]
+       
+        [Route("api/Shaparak/SalePayment")]
         public async Task<IHttpActionResult> PostSalePayment(SalePaymentRequestModel model)
         {
             ClientPaymentResponseDataBase responseData = null;
@@ -61,6 +59,58 @@ namespace ApiKarbord.Controllers.Pay
             };
             return Ok(res);
         }
+
+
+
+
+
+
+  
+        public class PaymentConfirmRequest
+        {
+            public string LoginAccount { get; set; } // NRlhOcngQl7BwNOhU104
+
+            public long Token { get; set; }
+
+        }
+
+
+        public class PaymentConfirmResponseModel
+        {
+            public long Token { get; set; }
+
+            public long RRN { get; set; }
+
+            public short status { get; set; }
+
+            public string CardNumberMasked { get; set; }
+
+        }
+
+
+        [Route("api/Shaparak/PaymentConfirm")]
+        public async Task<IHttpActionResult> PostPaymentConfirm(PaymentConfirmRequest model)
+        {
+            using (var confirmSvc = new ConfirmService.ConfirmService())
+            {
+                confirmSvc.Url = "https://pec.Shaparak.ir/NewIPGServices/Confirm/ConfirmService.asmx";
+                var confirmRequestData = new ConfirmService.ClientConfirmRequestData();
+                confirmRequestData.LoginAccount = model.LoginAccount;
+                confirmRequestData.Token = model.Token;
+                var confirmResponse = confirmSvc.ConfirmPayment(confirmRequestData);
+                short status = confirmResponse.Status;
+
+                var res = new PaymentConfirmResponseModel()
+                {
+                    RRN = confirmResponse.RRN,
+                    CardNumberMasked = confirmResponse.CardNumberMasked,
+                    status = confirmResponse.Status,
+                    Token = confirmResponse.Token,
+                };
+                return Ok(res);
+            }
+        }
+
 
 
     }
