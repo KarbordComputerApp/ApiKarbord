@@ -45,7 +45,7 @@ namespace ApiKarbord.Controllers.Pay
                 saleRequest.Amount = model.Amount;
                 saleRequest.AdditionalData = model.AdditionalData;
                 saleRequest.Originator = model.Originator;
-                saleRequest.OrderId = model.OrderId + DateTime.Now.Ticks;
+                saleRequest.OrderId = model.OrderId;
                 responseData = service.SalePaymentRequest(saleRequest);
             }
 
