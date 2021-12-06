@@ -4767,6 +4767,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string Spec { get; set; }
 
             public double? TotalValue { get; set; }
+
+            public string DownloadCount { get; set; }
         }
 
         [Route("api/Web_Data/CustAccount/{ace}/{sal}/{group}")]
@@ -4800,6 +4802,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public long SerialNumber { get; set; }
 
             public string OnlineParLink { get; set; }
+
+            public string DownloadCount { get; set; }
         }
 
 
@@ -4814,10 +4818,18 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(CultureInfo.InvariantCulture, @"DECLARE @return_value int
                                                                            EXEC    @return_value = [dbo].[Web_CustAccountSave]
                                                                                    @Year = N'{0}',
-                                                                                   @SerialNumber = {1},
-		                                                                           @OnlineParLink = N'''{2}'''
-                                                                           SELECT  'Return Value' = @return_value",
-                                                                        CustAccountSaveObject.Year, CustAccountSaveObject.SerialNumber, CustAccountSaveObject.OnlineParLink);
+                                                                                   @SerialNumber = {1}, ",
+                                                                        CustAccountSaveObject.Year, CustAccountSaveObject.SerialNumber);
+
+
+                if (CustAccountSaveObject.OnlineParLink != null) 
+                    sql += string.Format(CultureInfo.InvariantCulture, " @OnlineParLink = N'''{0}''' ", CustAccountSaveObject.OnlineParLink);
+
+                if (CustAccountSaveObject.DownloadCount != null) 
+                    sql += string.Format(CultureInfo.InvariantCulture, " @DownloadCount = N'''{0}''' ", CustAccountSaveObject.DownloadCount);
+
+                sql += " SELECT  'Return Value' = @return_value";
+
                 try
                 {
                     int res = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
@@ -4860,10 +4872,6 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
-
-
-
-
 
     }
 }
