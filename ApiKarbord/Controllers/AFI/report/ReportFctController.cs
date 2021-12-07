@@ -42,6 +42,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string OprCode { get; set; }
 
+            public string StatusCode { get; set; }
+
         }
 
         // Post: api/ReportFct/FDocR گزارش ريز گردش اسناد خرید و فروش
@@ -65,6 +67,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("CustCode", FDocRObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("OprCode", FDocRObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", FDocRObject.MkzCode);
+                sql += UnitPublic.SpiltCodeAnd("Status", FDocRObject.StatusCode);
+
 
                 if (FDocRObject.azTarikh != "")
                     sql += string.Format(" and DocDate >= '{0}' ", FDocRObject.azTarikh);
