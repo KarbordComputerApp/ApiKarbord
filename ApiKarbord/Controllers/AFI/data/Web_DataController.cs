@@ -1683,7 +1683,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocB_Last.khdtCode);
                 sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocB_Last.custCode);
 
-                //sql += "order by RjUpdateDate Desc,RjDate Desc";
+                //sql += "order by SortRjStatus";
 
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
@@ -3611,7 +3611,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // Post: api/Web_Data/ChangeDatabase 
         [Route("api/Web_Data/ChangeDatabase/{ace}/{sal}/{group}/{auto}/{lockNumber}")]
-        public async Task<IHttpActionResult> GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
+        public string GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
         //public string GetWeb_ChangeDatabase(string ace, string sal, string group, bool auto, string lockNumber)
         {
             string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
@@ -3638,22 +3638,22 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (Change != "1")
                 {
                     res = UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1]);
-                    return Ok(res);
+                    return res;
                 }
                 else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
                 {
                     res = UnitDatabase.ChangeDatabase(ace, sal, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1]);
-                    return Ok(res);
+                    return res;
                 }
                 else
-                    return Ok("کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ");
+                    return "کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ";
             }
             catch (Exception e)
             {
                 MyIniConfig.Write("Change", "0");
                 MyIniConfig.Write("EndDate", DateTime.Now.ToString());
                 MyIniConfig.Write("error", e.Message.ToString());
-                return Ok("error" + e.Message.ToString());
+                return "error" + e.Message.ToString();
                 throw;
             }
         }
@@ -3661,7 +3661,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/ بازسازی دستی بانک اطلاعات کانفیگ  
         [Route("api/Web_Data/ChangeDatabaseConfig/{lockNumber}")]
-        public async Task<IHttpActionResult> GetWeb_ChangeDatabaseConfig(string lockNumber)
+        public string GetWeb_ChangeDatabaseConfig(string lockNumber)
         {
             string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
 
@@ -3690,10 +3690,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "1234", "00", 0, "", 0, 0);
                 if (con == "ok")
                 {
-                    return Ok("OK");
+                    return "OK";
                 }
                 else
-                    return Ok(con);
+                    return con;
                 // }
                 //else
                 // {
@@ -3705,7 +3705,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 MyIniConfig.Write("Change", "0");
                 MyIniConfig.Write("EndDate", DateTime.Now.ToString());
                 MyIniConfig.Write("error", e.Message.ToString());
-                return Ok("error" + e.Message.ToString());
+                return "error" + e.Message.ToString();
                 throw;
             }
         }
