@@ -18,6 +18,7 @@ namespace ApiKarbord.Controllers.Unit
     public static class UnitDatabase
     {
         public static ApiModel db;
+        public static ApiModel dbChange;
         class testMaster
         {
             public string TABLE_SCHEMA { get; set; }
@@ -433,7 +434,7 @@ namespace ApiKarbord.Controllers.Unit
                         string conStr = CreateConnectionString(srv_User, srv_Pass, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
                         if (conStr.Length > 100)
                         {
-                            db = new ApiModel(conStr);
+                            dbChange = new ApiModel(conStr);
                         }
 
 
@@ -447,7 +448,7 @@ namespace ApiKarbord.Controllers.Unit
                                                                 select 0
                                                               else
                                                                 select ver from web_version where id = (select max(id) from web_version)");
-                                oldVer = db.Database.SqlQuery<int>(sql).Single();
+                                oldVer = dbChange.Database.SqlQuery<int>(sql).Single();
                             }
                             catch (Exception e)
                             {
@@ -457,7 +458,7 @@ namespace ApiKarbord.Controllers.Unit
                                                                      [datever] [datetime] NULL,
                                                              CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
                                                              ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
-                                db.Database.ExecuteSqlCommand(sql);
+                                dbChange.Database.ExecuteSqlCommand(sql);
                             }
 
                             sw.WriteLine("oldVer : " + oldVer.ToString());
@@ -511,7 +512,7 @@ namespace ApiKarbord.Controllers.Unit
                                                       close cur
                                                       deallocate cur
                                                  ");
-                                    db.Database.ExecuteSqlCommand(sql);
+                                    dbChange.Database.ExecuteSqlCommand(sql);
                                     sw.WriteLine("End Delete All");
                                 }
 
@@ -540,7 +541,7 @@ namespace ApiKarbord.Controllers.Unit
                                             sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());
                                             sql = sql.Replace("yyyz", (int.Parse(salTemp) + 1).ToString());
 
-                                            db.Database.ExecuteSqlCommand(sql);
+                                            dbChange.Database.ExecuteSqlCommand(sql);
                                             //sw.WriteLine("ExecuteSqlCommand OK : " + sql);
                                             sql = "";
                                         }
@@ -557,7 +558,7 @@ namespace ApiKarbord.Controllers.Unit
                                 if (isCols == true)
                                 {
                                     sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
-                                    db.Database.ExecuteSqlCommand(sql);
+                                    dbChange.Database.ExecuteSqlCommand(sql);
                                     sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
                                     MyIniConfig.Write("Change", "0");
                                     MyIniConfig.Write("EndDate", DateTime.Now.ToString());
