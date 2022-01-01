@@ -4822,10 +4822,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                         CustAccountSaveObject.Year, CustAccountSaveObject.SerialNumber);
 
 
-                if (CustAccountSaveObject.OnlineParLink != null) 
+                if (CustAccountSaveObject.OnlineParLink != null)
                     sql += string.Format(CultureInfo.InvariantCulture, " @OnlineParLink = N'''{0}''' ", CustAccountSaveObject.OnlineParLink);
 
-                if (CustAccountSaveObject.DownloadCount != null) 
+                if (CustAccountSaveObject.DownloadCount != null)
                     sql += string.Format(CultureInfo.InvariantCulture, " @DownloadCount = N'''{0}''' ", CustAccountSaveObject.DownloadCount);
 
                 sql += " SELECT  'Return Value' = @return_value";
@@ -4872,6 +4872,34 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
+
+
+
+        public class Web_Dictionary
+        {
+            public string Fa { get; set; }
+            public string En { get; set; }
+        }
+
+        // GET: api/Web_Data/Web_Dictionary لیست وضعیت ارجاع  
+        [Route("api/Web_Data/Web_Dictionary/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_Dictionary(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"Select fa,en from Web_Dictionary");
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_Dictionary>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
 
     }
 }
