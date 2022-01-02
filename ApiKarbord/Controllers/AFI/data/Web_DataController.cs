@@ -4882,11 +4882,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/Web_Data/Web_Dictionary لیست وضعیت ارجاع  
-        [Route("api/Web_Data/Web_Dictionary/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_Dictionary(string ace, string sal, string group)
+        [Route("api/Web_Data/Web_Dictionary")]
+        public async Task<IHttpActionResult> GetWeb_Dictionary()
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "00", 0, "", 0, 0);
             if (con == "ok")
             {
                 string sql = string.Format(@"Select fa,en from Web_Dictionary");
