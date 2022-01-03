@@ -24,6 +24,8 @@
 
         public byte? Visible { get; set; }
 
+        public byte? Translate { get; set; }
+
         public string Prog { get; set; }
        
         public string Name { get; set; }
