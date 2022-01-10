@@ -4901,5 +4901,604 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class AFI_SaveMkz
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+
+            public byte? Mode { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+        // post: api/AFI_SaveMkz
+        [Route("api/Web_Data/AFI_SaveMkz/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveMkz(string ace, string sal, string group, AFI_SaveMkz aFI_SaveMkz)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string value;
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                        @" DECLARE @oCode nvarchar(100)
+                           EXEC	[dbo].[Web_SaveMkz]
+		                        @BranchCode = {0},
+		                        @UserCode = N'{1}',
+		                        @Code = '{2}',
+		                        @Name = N'{3}',
+                                @Spec = N'{4}',
+		                        @F01 = N'{5}',
+		                        @F02 = N'{6}',
+		                        @F03 = N'{7}',
+		                        @F04 = N'{8}',
+		                        @F05 = N'{9}',
+		                        @F06 = N'{10}',
+		                        @F07 = N'{11}',
+		                        @F08 = N'{12}',
+		                        @F09 = N'{13}',
+		                        @F10 = N'{14}',
+		                        @F11 = N'{15}',
+		                        @F12 = N'{16}',
+		                        @F13 = N'{17}',
+		                        @F14 = N'{18}',
+		                        @F15 = N'{19}',
+		                        @F16 = N'{20}',
+		                        @F17 = N'{21}',
+		                        @F18 = N'{22}',
+		                        @F19 = N'{23}',
+		                        @F20 = N'{24}',
+		                        @Mode = {25},
+		                        @oCode = @oCode OUTPUT
+                        SELECT	@oCode as N'@oCode' ",
+                        aFI_SaveMkz.BranchCode ?? 0,
+                        aFI_SaveMkz.UserCode,
+                        aFI_SaveMkz.Code,
+                        aFI_SaveMkz.Name ?? "",
+                        aFI_SaveMkz.Spec ?? "",
+                        aFI_SaveMkz.F01,
+                        aFI_SaveMkz.F02,
+                        aFI_SaveMkz.F03,
+                        aFI_SaveMkz.F04,
+                        aFI_SaveMkz.F05,
+                        aFI_SaveMkz.F06,
+                        aFI_SaveMkz.F07,
+                        aFI_SaveMkz.F08,
+                        aFI_SaveMkz.F09,
+                        aFI_SaveMkz.F10,
+                        aFI_SaveMkz.F11,
+                        aFI_SaveMkz.F12,
+                        aFI_SaveMkz.F13,
+                        aFI_SaveMkz.F14,
+                        aFI_SaveMkz.F15,
+                        aFI_SaveMkz.F16,
+                        aFI_SaveMkz.F17,
+                        aFI_SaveMkz.F18,
+                        aFI_SaveMkz.F19,
+                        aFI_SaveMkz.F20,
+                        aFI_SaveMkz.Mode);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+                    return Ok(value);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
+        // Get: api/AFI_DelMkz
+        [Route("api/Web_Data/AFI_DelMkz/{ace}/{sal}/{group}/{MkzCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelMkz(string ace, string sal, string group, string MkzCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelMkz]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                                                MkzCode);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                    return Ok(value);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
+        public class AFI_TestMkz
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestMkz
+        {
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestMkz/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestMkz))]
+        public async Task<IHttpActionResult> PostWeb_TestMkz(string ace, string sal, string group, AFI_TestMkz AFI_TestMkz)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestMkz] @Code = '{0}'  , @UserCode = '{1}' ",
+                                           AFI_TestMkz.Code,
+                                           dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestMkz>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+        public class TestMkz_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestMkz_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestMkz_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestMkz_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestMkz_Delete(string ace, string sal, string group, TestMkz_DeleteObject TestMkz_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestMkz_Delete] @Code = '{0}', @UserCode = '{1}' ", TestMkz_DeleteObject.Code, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestMkz_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class AFI_SaveOpr
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+
+            public byte? Mode { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+        // post: api/AFI_SaveOpr
+        [Route("api/Web_Data/AFI_SaveOpr/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveOpr(string ace, string sal, string group, AFI_SaveOpr aFI_SaveOpr)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string value;
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                        @" DECLARE @oCode nvarchar(100)
+                           EXEC	[dbo].[Web_SaveOpr]
+		                        @BranchCode = {0},
+		                        @UserCode = N'{1}',
+		                        @Code = '{2}',
+		                        @Name = N'{3}',
+                                @Spec = N'{4}',
+		                        @F01 = N'{5}',
+		                        @F02 = N'{6}',
+		                        @F03 = N'{7}',
+		                        @F04 = N'{8}',
+		                        @F05 = N'{9}',
+		                        @F06 = N'{10}',
+		                        @F07 = N'{11}',
+		                        @F08 = N'{12}',
+		                        @F09 = N'{13}',
+		                        @F10 = N'{14}',
+		                        @F11 = N'{15}',
+		                        @F12 = N'{16}',
+		                        @F13 = N'{17}',
+		                        @F14 = N'{18}',
+		                        @F15 = N'{19}',
+		                        @F16 = N'{20}',
+		                        @F17 = N'{21}',
+		                        @F18 = N'{22}',
+		                        @F19 = N'{23}',
+		                        @F20 = N'{24}',
+		                        @Mode = {25},
+		                        @oCode = @oCode OUTPUT
+                        SELECT	@oCode as N'@oCode' ",
+                        aFI_SaveOpr.BranchCode ?? 0,
+                        aFI_SaveOpr.UserCode,
+                        aFI_SaveOpr.Code,
+                        aFI_SaveOpr.Name ?? "",
+                        aFI_SaveOpr.Spec ?? "",
+                        aFI_SaveOpr.F01,
+                        aFI_SaveOpr.F02,
+                        aFI_SaveOpr.F03,
+                        aFI_SaveOpr.F04,
+                        aFI_SaveOpr.F05,
+                        aFI_SaveOpr.F06,
+                        aFI_SaveOpr.F07,
+                        aFI_SaveOpr.F08,
+                        aFI_SaveOpr.F09,
+                        aFI_SaveOpr.F10,
+                        aFI_SaveOpr.F11,
+                        aFI_SaveOpr.F12,
+                        aFI_SaveOpr.F13,
+                        aFI_SaveOpr.F14,
+                        aFI_SaveOpr.F15,
+                        aFI_SaveOpr.F16,
+                        aFI_SaveOpr.F17,
+                        aFI_SaveOpr.F18,
+                        aFI_SaveOpr.F19,
+                        aFI_SaveOpr.F20,
+                        aFI_SaveOpr.Mode);
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+                    return Ok(value);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
+        // Get: api/AFI_DelOpr
+        [Route("api/Web_Data/AFI_DelOpr/{ace}/{sal}/{group}/{OprCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelOpr(string ace, string sal, string group, string OprCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelOpr]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                                                OprCode);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
+                    return Ok(value);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+            return Ok(con);
+        }
+
+
+        public class AFI_TestOpr
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestOpr
+        {
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestOpr/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestOpr))]
+        public async Task<IHttpActionResult> PostWeb_TestOpr(string ace, string sal, string group, AFI_TestOpr AFI_TestOpr)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestOpr] @Code = '{0}'  , @UserCode = '{1}' ",
+                                           AFI_TestOpr.Code,
+                                           dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestOpr>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+        public class TestOpr_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestOpr_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestOpr_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestOpr_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestOpr_Delete(string ace, string sal, string group, TestOpr_DeleteObject TestOpr_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestOpr_Delete] @Code = '{0}', @UserCode = '{1}' ", TestOpr_DeleteObject.Code, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<TestOpr_Delete>(sql).ToList();
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
     }
 }

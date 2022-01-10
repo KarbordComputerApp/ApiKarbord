@@ -20,5 +20,12 @@
         public long? SortName { get; set; }
 
         public string Spec { get; set; }
+
+        public int Level { get; set; }
+
+        public string ActiveSt { get; set; }
+
+        public string Eghdam { get; set; }
+
     }
 }
