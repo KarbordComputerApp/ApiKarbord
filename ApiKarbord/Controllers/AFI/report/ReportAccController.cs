@@ -294,5 +294,117 @@ namespace ApiKarbord.Controllers.AFI.report
 
 
 
+
+        public class AGMkzObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string AccCode { get; set; }
+
+            public int Level { get; set; }
+
+            public int Sath { get; set; }
+
+        }
+
+        // Post: api/ReportAcc/AGMkz گردش بر اساس مرکز هزینه
+        // HE_Report_AGMkz
+        [Route("api/ReportAcc/AGMkz/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_AGMkz(string ace, string sal, string group, AGMkzObject AGMkzObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
+            if (con == "ok")
+            {
+                string oprCode = UnitPublic.SpiltCodeCama(AGMkzObject.OprCode);
+                string accCode = UnitPublic.SpiltCodeCama(AGMkzObject.AccCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(AGMkzObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  dbo.Web_AGMkz({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS AGMkz where 1 = 1 ",
+                          AGMkzObject.Level,
+                          AGMkzObject.azTarikh,
+                          AGMkzObject.taTarikh,
+                          accCode,
+                          oprCode,
+                          aModeCode,
+                          dataAccount[2]);
+
+               /* if (AGMkzObject.Sath == 1)
+                    sql += string.Format(" and (Level = {0})", AGMkzObject.Level);
+                else
+                    sql += string.Format(" and (Level <= {0})", AGMkzObject.Level);*/
+
+                sql += UnitPublic.SpiltCodeLike("MkzCode", AGMkzObject.MkzCode);
+
+                sql += " order by  SortMkzCode";
+
+                var listAGMkz = UnitDatabase.db.Database.SqlQuery<Web_AGMkz>(sql);
+                return Ok(listAGMkz);
+            }
+            return Ok(con);
+        }
+
+
+
+        public class AGOprObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string AccCode { get; set; }
+
+        }
+
+        // Post: api/ReportAcc/AGOpr    گردش بر اساس  پروژه   
+        // HE_Report_AGOpr
+        [Route("api/ReportAcc/AGOpr/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_AGOpr(string ace, string sal, string group, AGOprObject AGOprObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
+            if (con == "ok")
+            {
+                string mkzCode = UnitPublic.SpiltCodeCama(AGOprObject.MkzCode);
+                string accCode = UnitPublic.SpiltCodeCama(AGOprObject.AccCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(AGOprObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  dbo.Web_AGOpr('{0}', '{1}','{2}','{3}','{4}', '{5}') AS AGOpr where 1 = 1 ",
+                          AGOprObject.azTarikh,
+                          AGOprObject.taTarikh,
+                          accCode,
+                          mkzCode,
+                          aModeCode,
+                          dataAccount[2]);
+
+                sql += UnitPublic.SpiltCodeLike("OprCode", AGOprObject.MkzCode);
+
+                sql += " order by SortOprCode";
+
+                var listAGOpr = UnitDatabase.db.Database.SqlQuery<Web_AGOpr>(sql);
+                return Ok(listAGOpr);
+            }
+            return Ok(con);
+        }
+
+
     }
 }
