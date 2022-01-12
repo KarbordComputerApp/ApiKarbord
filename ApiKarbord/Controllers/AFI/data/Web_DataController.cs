@@ -755,9 +755,8 @@ namespace ApiKarbord.Controllers.AFI.data
         // دریافت اطلاعات سطح دسترسی کاربر
         public class AccessUser
         {
-            //public string Code { get; set; }
-            //public string ProgName { get; set; }
-            //public int GroupNo { get; set; }
+            public string OrgProgName { get; set; }
+
             public string TrsName { get; set; }
         }
 
@@ -831,6 +830,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  select 'TrzFCust_P' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'TrzFCust_P') as Trs
                                                  union all
                                                  select 'Krdx' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'Krdx') as Trs
+                                                 union all
+                                                 select 'AGMkz' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'AGMkz') as Trs
+                                                 union all
+                                                 select 'AGOpr' as Code, [dbo].[Web_RprtTrs](@group, @ace, @username, 'AGOpr') as Trs
 "
                                                , ace, group, user);
                     var listDB = UnitDatabase.db.Database.SqlQuery<AccessUserReport>(sql).ToList();
