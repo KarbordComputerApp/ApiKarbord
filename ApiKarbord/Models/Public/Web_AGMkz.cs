@@ -10,7 +10,7 @@
     {
         public short? MainLevel { get; set; }
 
-        public int? Tag { get; set; }
+        public byte? Tag { get; set; }
 
         public short? Level { get; set; }
 
