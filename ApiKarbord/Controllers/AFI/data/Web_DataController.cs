@@ -5503,5 +5503,45 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+        public class RprtCols_New
+        {
+            public string dataField { get; set; }
+
+            public string caption { get; set; }
+
+            public int? width { get; set; }
+
+            public int? Type { get; set; }
+         
+        }
+
+        // GET: api/Web_Data/RprtCols_New لیست ستونها
+        [Route("api/Web_Data/RprtCols_New/{ace}/{sal}/{group}/{RprtId}/{UserCode}")]
+        public async Task<IHttpActionResult> GetRprtCols_New(string ace, string sal, string group, string RprtId, string UserCode)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql;
+                sql = string.Format(@"exec Web_RprtCols_New @RprtId = '{0}' , @UserCode = '{1}' ",  RprtId, UserCode);
+
+                try
+                {
+                    var list = UnitDatabase.db.Database.SqlQuery<RprtCols_New>(sql).ToList();
+                    //var jsonResult = JsonConvert.SerializeObject(list);
+                    return Ok(list);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+        }
+
+
     }
 }
