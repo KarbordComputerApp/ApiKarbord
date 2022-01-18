@@ -126,11 +126,15 @@ namespace ApiKarbord.Controllers.AFI.report
                 //string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}',{4},{5},'{6}') AS Dftr where 1 = 1 and best >= 0 ",
+                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}','{4}','{5}','{6}','{7}',{8},{9},'{10}') AS Dftr where 1 = 1 and best >= 0 ",
                           DftrObject.azTarikh,
                           DftrObject.taTarikh,
                           DftrObject.Naghl,
                           DftrObject.AccCode,
+                          DftrObject.AModeCode,
+                          DftrObject.MkzCode,
+                          DftrObject.OprCode,
+                          DftrObject.StatusCode,
                           DftrObject.DispBands,
                           DftrObject.JamRooz,
                           dataAccount[2]);
@@ -141,10 +145,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 if (DftrObject.taShomarh != "")
                     sql += string.Format(" and DocNo <= '{0}' ", DftrObject.taShomarh);
 
-                sql += UnitPublic.SpiltCodeAnd("Status", DftrObject.StatusCode);
-                sql += UnitPublic.SpiltCodeAnd("ModeCode", DftrObject.AModeCode);
-                sql += UnitPublic.SpiltCodeAnd("OprCode", DftrObject.OprCode);
-                sql += UnitPublic.SpiltCodeAnd("MkzCode", DftrObject.MkzCode);
+                //sql += UnitPublic.SpiltCodeAnd("Status", DftrObject.StatusCode);
+                //sql += UnitPublic.SpiltCodeAnd("ModeCode", DftrObject.AModeCode);
+                //sql += UnitPublic.SpiltCodeAnd("OprCode", DftrObject.OprCode);
+                //sql += UnitPublic.SpiltCodeAnd("MkzCode", DftrObject.MkzCode);
 
                 sql += " order by bodytag";
 
@@ -339,10 +343,10 @@ namespace ApiKarbord.Controllers.AFI.report
                           aModeCode,
                           dataAccount[2]);
 
-               /* if (AGMkzObject.Sath == 1)
-                    sql += string.Format(" and (Level = {0})", AGMkzObject.Level);
-                else
-                    sql += string.Format(" and (Level <= {0})", AGMkzObject.Level);*/
+                /* if (AGMkzObject.Sath == 1)
+                     sql += string.Format(" and (Level = {0})", AGMkzObject.Level);
+                 else
+                     sql += string.Format(" and (Level <= {0})", AGMkzObject.Level);*/
 
                 sql += UnitPublic.SpiltCodeLike("MkzCode", AGMkzObject.MkzCode);
 
