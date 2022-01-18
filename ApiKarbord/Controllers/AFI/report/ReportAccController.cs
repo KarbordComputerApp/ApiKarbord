@@ -120,10 +120,10 @@ namespace ApiKarbord.Controllers.AFI.report
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "15", 9, 0);
             if (con == "ok")
             {
-                // string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
-                //string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
-                // string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
-                //string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
+                string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
+                string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}','{4}','{5}','{6}','{7}',{8},{9},'{10}') AS Dftr where 1 = 1 and best >= 0 ",
@@ -131,10 +131,10 @@ namespace ApiKarbord.Controllers.AFI.report
                           DftrObject.taTarikh,
                           DftrObject.Naghl,
                           DftrObject.AccCode,
-                          DftrObject.AModeCode,
-                          DftrObject.MkzCode,
-                          DftrObject.OprCode,
-                          DftrObject.StatusCode,
+                          aModeCode,
+                          mkzCode,
+                          oprCode,
+                          status,
                           DftrObject.DispBands,
                           DftrObject.JamRooz,
                           dataAccount[2]);
