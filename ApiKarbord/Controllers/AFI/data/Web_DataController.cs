@@ -549,16 +549,26 @@ namespace ApiKarbord.Controllers.AFI.data
         public class LoginTestObject
         {
             public string MachineId { get; set; }
+
             public string IPWan { get; set; }
+
             public string Country { get; set; }
+
             public string City { get; set; }
+
             public string UserCode { get; set; }
+
             //public string LoginTimeas { get; set; }
             //public string LoginDate { get; set; }
             public string ProgName { get; set; }
+
             public string ProgVer { get; set; }
+
             public string ProgCaption { get; set; }
+
             public Boolean FlagTest { get; set; }
+
+            public string GroupNo { get; set; }
         }
 
         public class Web_LoginTestObject
@@ -578,6 +588,11 @@ namespace ApiKarbord.Controllers.AFI.data
             public string ProgVer { get; set; }
 
             public string ProgCaption { get; set; }
+
+            public string SrvDate { get; set; }
+
+            public int CountErja { get; set; }
+
         }
 
 
@@ -627,7 +642,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                            @ProgName = N'{7}',
 		                                            @ProgVer = N'{8}',
 		                                            @ProgCaption = N'{9}',
-		                                            @FlagTest = {10}",
+		                                            @FlagTest = {10},
+                                                    @GroupNo = '{11}'",
                                                   LoginTestObject.MachineId,
                                                   LoginTestObject.IPWan,
                                                   LoginTestObject.Country,
@@ -638,7 +654,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                                   LoginTestObject.ProgName,
                                                   LoginTestObject.ProgVer,
                                                   LoginTestObject.ProgCaption,
-                                                  LoginTestObject.FlagTest
+                                                  LoginTestObject.FlagTest,
+                                                  LoginTestObject.GroupNo
                                                  );
 
                     var value = UnitDatabase.db.Database.SqlQuery<Web_LoginTestObject>(sql).Single();
@@ -2474,12 +2491,16 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql;
-                sql = string.Format(@"
-                                  if (select count(code) from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}') > 0
+                if (RprtId == "all")
+                    sql = string.Format(@"select * from Web_RprtCols where (UserCode = '{0}' or UserCode = '*Default*')", UserCode);
+                else
+                    sql = string.Format(@"
+                                  if exists (select 1 from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}')
                                      select * from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}'-- and Name<> ''
                                   else
                                      select * from Web_RprtCols where RprtId = '{0}' and UserCode = '*Default*'-- and Name <> ''",
-                                  RprtId, UserCode);
+                                      RprtId, UserCode);
+
 
                 try
                 {
@@ -5513,7 +5534,7 @@ namespace ApiKarbord.Controllers.AFI.data
             public int? width { get; set; }
 
             public int? Type { get; set; }
-         
+
         }
 
         // GET: api/Web_Data/RprtCols_New لیست ستونها
@@ -5525,7 +5546,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql;
-                sql = string.Format(@"exec Web_RprtCols_New @RprtId = '{0}' , @UserCode = '{1}' ",  RprtId, UserCode);
+                sql = string.Format(@"exec Web_RprtCols_New @RprtId = '{0}' , @UserCode = '{1}' ", RprtId, UserCode);
 
                 try
                 {
