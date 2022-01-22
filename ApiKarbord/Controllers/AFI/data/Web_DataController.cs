@@ -569,6 +569,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public Boolean FlagTest { get; set; }
 
             public string GroupNo { get; set; }
+
+            public string Year { get; set; }
         }
 
         public class Web_LoginTestObject
@@ -592,6 +594,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string SrvDate { get; set; }
 
             public int CountErja { get; set; }
+
+            public DateTime? UpdateDate { get; set; }
 
         }
 
@@ -637,13 +641,14 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                            @Country = N'{2}',
 		                                            @City = N'{3}',
 		                                            @UserCode = N'{4}',
-		                                            @LoginTimeas = N'{5}',
+		                                            @LoginTime = N'{5}',
 		                                            @LoginDate = N'{6}',
 		                                            @ProgName = N'{7}',
 		                                            @ProgVer = N'{8}',
 		                                            @ProgCaption = N'{9}',
 		                                            @FlagTest = {10},
-                                                    @GroupNo = '{11}'",
+                                                    @GroupNo = '{11}',
+                                                    @Year = '{12}'",
                                                   LoginTestObject.MachineId,
                                                   LoginTestObject.IPWan,
                                                   LoginTestObject.Country,
@@ -655,7 +660,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                                   LoginTestObject.ProgVer,
                                                   LoginTestObject.ProgCaption,
                                                   LoginTestObject.FlagTest,
-                                                  LoginTestObject.GroupNo
+                                                  LoginTestObject.GroupNo,
+                                                  LoginTestObject.Year
                                                  );
 
                     var value = UnitDatabase.db.Database.SqlQuery<Web_LoginTestObject>(sql).Single();
