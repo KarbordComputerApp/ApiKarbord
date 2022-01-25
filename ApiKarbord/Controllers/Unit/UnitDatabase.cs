@@ -482,7 +482,7 @@ namespace ApiKarbord.Controllers.Unit
                                 {
 
                                     sw.WriteLine("Start Delete All");
-                                    sql = string.Format(@"
+                                    sql = string.Format(@" drop table Web_Flds
                                                     DECLARE @sql VARCHAR(MAX) = '' 
                                                     DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
                                                     SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
