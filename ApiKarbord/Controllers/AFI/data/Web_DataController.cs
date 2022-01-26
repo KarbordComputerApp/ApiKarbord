@@ -4011,7 +4011,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestCust_Delete] @Code = {0}, @UserCode = '{1}' ", TestCust_DeleteObject.Code, dataAccount[2]);
+                                           @"EXEC	[dbo].[Web_TestCust_Delete] @Code = '{0}', @UserCode = '{1}' ", TestCust_DeleteObject.Code, dataAccount[2]);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestCust_Delete>(sql).ToList();
@@ -4112,7 +4112,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestKala_Delete] @Code = {0}, @UserCode = '{1}' ", TestKala_DeleteObject.Code, dataAccount[2]);
+                                           @"EXEC	[dbo].[Web_TestKala_Delete] @Code = '{0}', @UserCode = '{1}' ", TestKala_DeleteObject.Code, dataAccount[2]);
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestKala_Delete>(sql).ToList();
