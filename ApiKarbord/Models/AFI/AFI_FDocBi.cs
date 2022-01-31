@@ -42,5 +42,7 @@
 
         public string MkzCode { get; set; }
 
+        public string InvCode { get; set; }
+
     }
 }
