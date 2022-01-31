@@ -150,7 +150,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"SELECT *  FROM Web_ADocB WHERE SerialNumber = {0}", serialNumber);
+                string sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", serialNumber);
                 var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
                 return Ok(listSanad);
             }

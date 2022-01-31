@@ -399,7 +399,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           aModeCode,
                           dataAccount[2]);
 
-                sql += UnitPublic.SpiltCodeLike("OprCode", AGOprObject.MkzCode);
+                sql += UnitPublic.SpiltCodeLike("OprCode", AGOprObject.OprCode);
 
                 sql += " order by SortOprCode";
 

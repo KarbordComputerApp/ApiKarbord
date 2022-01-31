@@ -206,7 +206,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format("select  * FROM  Web_Acc_F({0},'{1}') where 1 = 1 order by SortCode ", accObject.Mode, accObject.UserCode);
+                string sql = string.Format("select  *  FROM  Web_Acc_F({0},'{1}') where 1 = 1 order by SortCode ", accObject.Mode, accObject.UserCode);
                 var listAcc = UnitDatabase.db.Database.SqlQuery<Web_Acc>(sql);
                 return Ok(listAcc);
             }
