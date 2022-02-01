@@ -1632,6 +1632,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public byte DocAttachExists { get; set; }
 
+            public long? SortRjDate { get; set; }
+
         }
 
 
@@ -1709,8 +1711,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += UnitPublic.SpiltCodeAnd("KhdtCode", ErjDocB_Last.khdtCode);
                 sql += UnitPublic.SpiltCodeAnd("CustCode", ErjDocB_Last.custCode);
 
-                //sql += "order by SortRjStatus";
-
+                if (ErjDocB_Last.erjaMode == "1")
+                    sql += "order by SortRjStatus";
+                else
+                    sql += "order by SortRjDate";
 
                 var listErjDocB_Last = UnitDatabase.db.Database.SqlQuery<Web_ErjDocB_Last>(sql);
                 return Ok(listErjDocB_Last);
