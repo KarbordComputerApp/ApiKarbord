@@ -447,6 +447,8 @@
     <Content Include="PrintForms\Public\SPFCT-فرم عمومی با ستون شرح" />
     <Content Include="PrintForms\Public\SRFCT-عمومی" />
     <Content Include="PrintForms\Public\SRFCT-عمومی با شرح" />
+    <Content Include="PrintForms\Public\ReportAGMkz-فرم عمومی" />
+    <Content Include="PrintForms\Public\ReportAGOpr-فرم عمومی" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
