@@ -430,6 +430,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public long SerialNumber { get; set; }
 
+            public string flagTest { get; set; }
+
         }
 
 
@@ -442,9 +444,11 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                      @"EXEC	[dbo].[Web_TestADoc] @serialNumber = {0} , @UserCode = '{1}' ",
+                      @"EXEC	[dbo].[{2}] @serialNumber = {0} , @UserCode = '{1}' ",
                       AFI_TestADocB.SerialNumber,
-                      dataAccount[2]);
+                      dataAccount[2],
+                      AFI_TestADocB.flagTest == "Y" ? "Web_TestADoc_Test" : "Web_TestADoc"
+                      );
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();

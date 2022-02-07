@@ -70,6 +70,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string flagLog { get; set; }
 
+            public string flagTest { get; set; }
+
         }
 
         // PUT: api/AFI_ADocBi/5
@@ -271,6 +273,104 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+
+
+        // POST: api/AFI_ADocBi
+        [Route("api/AFI_ADocBi/SaveAllDocB/{ace}/{sal}/{group}/{serialNumber}")]
+        [ResponseType(typeof(AFI_ADocBi))]
+        public async Task<IHttpActionResult> PostAFI_SaveAllDocB(string ace, string sal, string group, long serialNumber, [FromBody]List<AFI_ADocBi> AFI_ADocBi)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "ADoc", 5, 0);
+            if (con == "ok")
+            {
+                int value;
+                int i = 0;
+                try
+                {
+                    foreach (var item in AFI_ADocBi)
+                    {
+                        i++;
+                        string sql = string.Format(CultureInfo.InvariantCulture,
+                         @" DECLARE	@return_value int
+                             EXEC	@return_value = [dbo].[{25}]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1},
+		                            @AccCode = '{2}',
+                                    @AccZCode = '{3}',		                            
+                                    @Bede = {4},
+		                            @Best = {5},
+		                            @Comm = '{6}',
+		                            @BandSpec = '{7}',
+		                            @CheckNo = '{8}',
+		                            @CheckDate = N'{9}',
+		                            @Bank = '{10}',
+		                            @Shobe = '{11}',
+		                            @Jari = '{12}',
+		                            @BaratNo = '{13}',
+		                            @TrafCode = '{14}',
+                                    @TrafZCode = '{15}',
+		                            @CheckRadif = {16},
+		                            @CheckComm = '{17}',
+                                    @CheckStatus = '{18}',
+		                            @CheckVosoolDate = N'{19}',
+		                            @OprCode = '{20}',
+		                            @MkzCode = '{21}',
+		                            @ArzCode = '{22}',
+		                            @ArzRate = {23},
+		                            @ArzValue = {24}
+                             SELECT	'Return Value' = @return_value",
+                        serialNumber,
+                        i,
+                        item.AccCode,
+                        item.AccZCode,
+                        item.Bede ?? 0,
+                        item.Best ?? 0,
+                        UnitPublic.ConvertTextWebToWin(item.Comm),
+                        item.BandSpec,
+                        item.CheckNo,
+                        item.CheckDate,
+                        item.Bank,
+                        item.Shobe,
+                        item.Jari,
+                        item.BaratNo,
+                        item.TrafCode,
+                        item.TrafZCode,
+                        item.CheckRadif ?? 0,
+                        UnitPublic.ConvertTextWebToWin(item.CheckComm),
+                        item.CheckStatus,
+                        item.CheckVosoolDate,
+                        item.OprCode,
+                        item.MkzCode,
+                        item.ArzCode,
+                        item.ArzRate ?? 0,
+                        item.arzValue ?? 0,
+                        item.flagTest == "Y" ? "Web_SaveADoc_BI_Test" : "Web_SaveADoc_BI");
+                        value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    }
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "ADoc", 1, "Y", 0);
+                return Ok("OK");
+            }
+            else
+                return Ok(con);
+
+        }
+
+
+
+
         // DELETE: api/AFI_ADocBi/5
         [Route("api/AFI_ADocBi/{ace}/{sal}/{group}/{SerialNumber}/{BandNo}/{FlagLog}")]
         [ResponseType(typeof(AFI_ADocBi))]
@@ -295,26 +395,36 @@ namespace ApiKarbord.Controllers.AFI.data
                         await UnitDatabase.db.SaveChangesAsync();
                     }
 
-                    string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
+                    if (BandNo > 0)
+                    {
+                        string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
                                                              EXEC	@return_value = [dbo].[Web_Doc_BOrder]
                                                                   @TableName = '{0}',
                                                                   @SerialNumber = {1},
                                                                   @BandNoFld = '{2}'
                                                              SELECT	'Return Value' = @return_value",
-                                                             ace == "Web1" ? "Afi1ADocB" : "Acc5DocB",
-                                                             SerialNumber,
-                                                             "BandNo");
-                    int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
-                    await UnitDatabase.db.SaveChangesAsync();
+                                                                 ace == "Web1" ? "Afi1ADocB" : "Acc5DocB",
+                                                                 SerialNumber,
+                                                                 "BandNo");
+                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                        await UnitDatabase.db.SaveChangesAsync();
+                    }
                 }
                 catch (Exception e)
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", SerialNumber.ToString());
-                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 1, FlagLog, 0);
-                return Ok(listSanad);
+                if (BandNo > 0)
+                {
+                    string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", SerialNumber.ToString());
+                    var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql1);
+                    return Ok(listSanad);
+                }
+                else
+                {
+                    return Ok("OK");
+                }
             }
             else
                 return Ok(con);

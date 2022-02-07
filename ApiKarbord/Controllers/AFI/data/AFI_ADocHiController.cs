@@ -97,6 +97,9 @@ namespace ApiKarbord.Controllers.AFI.data
             public int DocNo_Out { get; set; }
 
             public string flagLog { get; set; }
+
+            public string flagTest { get; set; }
+
         }
 
 
@@ -302,7 +305,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @" DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                            EXEC	@return_value = [dbo].[Web_SaveADoc_HI]
+                            EXEC	@return_value = [dbo].[{38}]
 		                            @DocNoMode = {0},
 		                            @InsertMode = {1},
 		                            @ModeCode = '{2}',
@@ -380,7 +383,9 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_i.F17,
                             AFI_ADocHi_i.F18,
                             AFI_ADocHi_i.F19,
-                            AFI_ADocHi_i.F20);
+                            AFI_ADocHi_i.F20,
+                            AFI_ADocHi_i.flagTest == "Y" ? "Web_SaveADoc_HI_Test" : "Web_SaveADoc_HI"
+                            );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
