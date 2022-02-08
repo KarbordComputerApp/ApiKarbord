@@ -350,7 +350,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.ArzCode,
                         item.ArzRate ?? 0,
                         item.arzValue ?? 0,
-                        item.flagTest == "Y" ? "Web_SaveADoc_BI_Test" : "Web_SaveADoc_BI");
+                        item.flagTest == "Y" ? "Web_Save_ADoc_BI_Temp" : "Web_SaveADoc_BI");
                         value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     }
                     await UnitDatabase.db.SaveChangesAsync();

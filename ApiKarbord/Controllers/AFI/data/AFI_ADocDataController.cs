@@ -447,7 +447,7 @@ namespace ApiKarbord.Controllers.AFI.data
                       @"EXEC	[dbo].[{2}] @serialNumber = {0} , @UserCode = '{1}' ",
                       AFI_TestADocB.SerialNumber,
                       dataAccount[2],
-                      AFI_TestADocB.flagTest == "Y" ? "Web_TestADoc_Test" : "Web_TestADoc"
+                      AFI_TestADocB.flagTest == "Y" ? "Web_V_Save_TestADoc" : "Web_TestADoc"
                       );
                 try
                 {

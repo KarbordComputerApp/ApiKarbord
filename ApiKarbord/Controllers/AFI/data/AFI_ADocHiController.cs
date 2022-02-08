@@ -384,7 +384,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_i.F18,
                             AFI_ADocHi_i.F19,
                             AFI_ADocHi_i.F20,
-                            AFI_ADocHi_i.flagTest == "Y" ? "Web_SaveADoc_HI_Test" : "Web_SaveADoc_HI"
+                            AFI_ADocHi_i.flagTest == "Y" ? "Web_V_Save_ADoc_HI_Temp" : "Web_SaveADoc_HI"
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
