@@ -901,6 +901,16 @@ namespace ApiKarbord.Controllers.AFI.data
 
         ///////Erj-----------------------------------------------------------------------------------------------------------------------------
 
+
+
+        public class ErjCustObject
+        {
+            public string userCode { get; set; }
+
+            public byte Mode { get; set; }
+        }
+
+
         public partial class Web_ErjCust
         {
             public string Code { get; set; }
@@ -911,18 +921,18 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        //  GET: api/Web_Data/ErjCust لیست مشتریان ارجاعات
+        //  Post: api/Web_Data/ErjCust لیست مشتریان ارجاعات
 
         [Route("api/Web_Data/ErjCust/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_ErjCust(string ace, string sal, string group)
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ErjCust(string ace, string sal, string group, ErjCustObject ErjCustObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
                 string sql = string.Format(@"Select code,name,spec from Web_ErjCust_F({0},'{1}')",
-                   0, dataAccount[2]
-                    );
+                   ErjCustObject.Mode, ErjCustObject.userCode);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjCust>(sql).ToList();
 
                 return Ok(listDB);
