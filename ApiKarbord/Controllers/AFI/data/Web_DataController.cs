@@ -920,7 +920,9 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select code,name,spec from Web_ErjCust");
+                string sql = string.Format(@"Select code,name,spec from Web_ErjCust_F({0},'{1}')",
+                   0, dataAccount[2]
+                    );
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjCust>(sql).ToList();
 
                 return Ok(listDB);
@@ -1186,26 +1188,34 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class ErjUsersObject
+        {
+            public string userCode { get; set; }
+
+            public long SerialNumber { get; set; }
+        }
+
+
         public partial class Web_ErjUsers
         {
             public string Code { get; set; }
 
-
             public string Name { get; set; }
-
 
             public string Spec { get; set; }
         }
 
-        // GET: api/Web_Data/Web_ErjUsers   ارجاع شونده/ارجاع دهنده
-        [Route("api/Web_Data/Web_ErjUsers/{ace}/{sal}/{group}/{UserCode}")]
-        public async Task<IHttpActionResult> GetWeb_ErjUsers(string ace, string sal, string group, string userCode)
+
+        // Post: api/Web_Data/Web_ErjUsers   ارجاع شونده/ارجاع دهنده
+        [Route("api/Web_Data/Web_ErjUsers/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_ErjUsers(string ace, string sal, string group, ErjUsersObject ErjUsersObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"Select * from Web_ErjUsers('{0}') order by SrchOrder Desc,Name Asc", userCode);
+                string sql = string.Format(@"Select * from Web_ErjUsers('{0}',{1}) order by SrchOrder Desc,Name Asc", ErjUsersObject.userCode, ErjUsersObject.SerialNumber);
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_ErjUsers>(sql).ToList();
                 return Ok(listDB);
             }
