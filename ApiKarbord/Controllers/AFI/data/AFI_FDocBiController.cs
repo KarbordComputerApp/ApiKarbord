@@ -53,7 +53,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Up_Flag = {11},
                                     @OprCode = N'{12}',
 		                            @MkzCode = N'{13}',
-		                            @InvCode = N'{14}',
+		                            @InvCode = N'{14}'
 
                             SELECT	'Return Value' = @return_value
                             ",
@@ -71,7 +71,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_FDocBi.Up_Flag,
                         aFI_FDocBi.OprCode,
                         aFI_FDocBi.MkzCode,
-                        aFI_FDocBi.InvCode
+                        aFI_FDocBi.InvCode ?? ""
                         );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
