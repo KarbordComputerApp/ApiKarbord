@@ -482,7 +482,10 @@ namespace ApiKarbord.Controllers.Unit
                                 {
 
                                     sw.WriteLine("Start Delete All");
-                                    sql = string.Format(@" drop table Web_Flds
+                                    sql = string.Format(@"
+                                                         IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_Flds') drop table Web_Flds
+                                                         IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_T_ADOCB') drop table Web_T_ADOCB
+                                                         IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_T_ADOCH') drop table Web_T_ADOCH
                                                     DECLARE @sql VARCHAR(MAX) = '' 
                                                     DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
                                                     SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
