@@ -260,7 +260,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.InvCode,
                             aFI_FDocHi.Status,
                             aFI_FDocHi.PaymentType,
-                            UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer),
+                            UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? ""),
                             aFI_FDocHi.Taeed == "null" ? "" : aFI_FDocHi.Taeed,
                             aFI_FDocHi.F01,
                             aFI_FDocHi.F02,

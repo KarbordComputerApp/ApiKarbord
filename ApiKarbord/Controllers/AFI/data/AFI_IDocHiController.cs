@@ -105,7 +105,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.InvCode,
                             aFI_IDocHi.Status,
                              //UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
-                             UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
+                             UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer ?? ""),
                             aFI_IDocHi.Taeed == "null" ? "" : aFI_IDocHi.Taeed,
                             aFI_IDocHi.F01,
                             aFI_IDocHi.F02,
