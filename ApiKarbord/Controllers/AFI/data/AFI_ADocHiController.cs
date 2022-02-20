@@ -5,6 +5,8 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Web;
+using System.Runtime.InteropServices;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -16,8 +18,52 @@ namespace ApiKarbord.Controllers.AFI.data
 {
     public class AFI_ADocHiController : ApiController
     {
+
+        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
+        static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
+
+        [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
+        static extern IntPtr GetProcAddress(int hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+
+        [DllImport("kernel32.dll", EntryPoint = "FreeLibrary")]
+        static extern bool FreeLibrary(int hModule);
+
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        delegate bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, ref string RetVal);
+
+
+        public static void CallRecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber)
+        {
+            string dllName = "Acc6_Web.dll";//HttpContext.Current.Server.MapPath("~\\Content\\dll\\Acc6_Web.dll");
+            const string functionName = "RecoverChecks";
+
+            int libHandle = LoadLibrary(dllName);
+            if (libHandle == 0)
+                throw new Exception(string.Format("Could not load library \"{0}\"", dllName));
+            try
+            {
+                var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
+                if (delphiFunctionAddress == IntPtr.Zero)
+                    throw new Exception(string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName));
+
+                var delphiFunction = (RecoverChecks)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RecoverChecks));
+
+                const int stringBufferSize = 1024;
+                var outputStringBuffer = new String('\x00', stringBufferSize);
+
+                var a = delphiFunction(ConnetionString, wDBase, UserCode, SerialNumber, ref outputStringBuffer);
+            }
+            finally
+            {
+                FreeLibrary(libHandle);
+            }
+        }
+
+
         public class AFI_ADocHi_i
         {
+
             public byte DocNoMode { get; set; }
 
             public byte InsertMode { get; set; }
@@ -278,6 +324,21 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+                CallRecoverChecks(
+                    string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         ),
+
+                dbName,
+                    dataAccount[2],
+                    AFI_ADocHi_u.SerialNumber);
+
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, AFI_ADocHi_u.flagLog, 0);
                 return Ok(value);
             }

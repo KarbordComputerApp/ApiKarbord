@@ -89,6 +89,10 @@ namespace ApiKarbord.Controllers.Unit
         public static string addressPrintForms = MyIni.Read("PrintForms");
         public static string lockNumber;
 
+        public static string SqlServerName;
+        public static string SqlUserName;
+        public static string SqlPassword;
+
         public static List<Access> model = null;
 
         //ایجاد کانکشن استرینگ 
@@ -158,6 +162,10 @@ namespace ApiKarbord.Controllers.Unit
                 }
                 if (model.Count > 0)
                 {
+                    SqlServerName = list.SqlServerName;
+                    SqlUserName = list.SqlUserName;
+                    SqlPassword = list.SqlPassword;
+
                     string connectionString = String.Format(
                                     //  @"data source = {0};initial catalog = {1};user id = {2}; password = {3}; MultipleActiveResultSets = True; App = EntityFramework",
                                     @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
