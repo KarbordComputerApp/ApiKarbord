@@ -412,85 +412,92 @@ namespace ApiKarbord.Controllers.Unit
 
                         dbName = ("ACE_" + files[2] + group + salTemp);
 
-                        if (files.Length == 6)
+                        if ((files[2] == "Web8" || files[2] == "Web1") && salTemp == "0000")
                         {
-                            string nameTemp = (files[5].Split('.'))[0];
-                            if (nameTemp == "Col")
+                            sw.WriteLine("Break For Error Name Database : " + dbName);
+                        }
+                        else
+                        {
+
+                            if (files.Length == 6)
                             {
-                                isCols = true;
+                                string nameTemp = (files[5].Split('.'))[0];
+                                if (nameTemp == "Col")
+                                {
+                                    isCols = true;
+                                }
                             }
-                        }
 
-                        sw.WriteLine("dbName : " + dbName);
+                            sw.WriteLine("dbName : " + dbName);
 
-                        string connectionString = CreateConnectionString(srv_User, srv_Pass, "", "Master", "", "", 0, "", 0, 0);
-                        //string connectionString = String.Format(
-                        //                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                        //                list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
+                            string connectionString = CreateConnectionString(srv_User, srv_Pass, "", "Master", "", "", 0, "", 0, 0);
+                            //string connectionString = String.Format(
+                            //                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                            //                list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
 
-                        sw.WriteLine("connectionString : " + connectionString);
+                            sw.WriteLine("connectionString : " + connectionString);
 
-                        var connection = new SqlConnection(connectionString);
+                            var connection = new SqlConnection(connectionString);
 
-                        connection.Open();
-                        var command = connection.CreateCommand();
-                        command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
+                            connection.Open();
+                            var command = connection.CreateCommand();
+                            command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
                                                             CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
-                        command.ExecuteNonQuery();
-                        connection.Close();
+                            command.ExecuteNonQuery();
+                            connection.Close();
 
-                        string conStr = CreateConnectionString(srv_User, srv_Pass, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
-                        if (conStr.Length > 100)
-                        {
-                            dbChange = new ApiModel(conStr);
-                        }
+                            string conStr = CreateConnectionString(srv_User, srv_Pass, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
+                            if (conStr.Length > 100)
+                            {
+                                dbChange = new ApiModel(conStr);
+                            }
 
 
-                        string sql;
-                        int oldVer = 0;
-                        try
-                        {
+                            string sql;
+                            int oldVer = 0;
                             try
                             {
-                                sql = string.Format(@"if (select count(id) from web_version) = 0
+                                try
+                                {
+                                    sql = string.Format(@"if (select count(id) from web_version) = 0
                                                                 select 0
                                                               else
                                                                 select ver from web_version where id = (select max(id) from web_version)");
-                                oldVer = dbChange.Database.SqlQuery<int>(sql).Single();
-                            }
-                            catch (Exception e)
-                            {
-                                sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
+                                    oldVer = dbChange.Database.SqlQuery<int>(sql).Single();
+                                }
+                                catch (Exception e)
+                                {
+                                    sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
                                                                      [id][int] IDENTITY(1,1) NOT NULL,
                                                                      [ver] [int] NULL,
                                                                      [datever] [datetime] NULL,
                                                              CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
                                                              ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
-                                dbChange.Database.ExecuteSqlCommand(sql);
-                            }
+                                    dbChange.Database.ExecuteSqlCommand(sql);
+                                }
 
-                            sw.WriteLine("oldVer : " + oldVer.ToString());
-                            sw.WriteLine("VerDB : " + UnitPublic.VerDB);
+                                sw.WriteLine("oldVer : " + oldVer.ToString());
+                                sw.WriteLine("VerDB : " + UnitPublic.VerDB);
 
-                            if (oldVer < UnitPublic.VerDB || auto == false)
-                            {
-                                string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
-
-                                IniFile MyIniConfig = new IniFile(IniConfigPath);
-
-                                MyIniConfig.Write("Change", "1");
-                                MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
-                                MyIniConfig.Write("User", userCode);
-                                MyIniConfig.Write("Prog", ace);
-                                MyIniConfig.Write("Group", group);
-                                MyIniConfig.Write("Sal", sal);
-
-
-                                if (isCols == false)
+                                if (oldVer < UnitPublic.VerDB || auto == false)
                                 {
+                                    string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
 
-                                    sw.WriteLine("Start Delete All");
-                                    sql = string.Format(@"
+                                    IniFile MyIniConfig = new IniFile(IniConfigPath);
+
+                                    MyIniConfig.Write("Change", "1");
+                                    MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
+                                    MyIniConfig.Write("User", userCode);
+                                    MyIniConfig.Write("Prog", ace);
+                                    MyIniConfig.Write("Group", group);
+                                    MyIniConfig.Write("Sal", sal);
+
+
+                                    if (isCols == false)
+                                    {
+
+                                        sw.WriteLine("Start Delete All");
+                                        sql = string.Format(@"
                                                          IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_Flds') drop table Web_Flds
                                                          IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_T_ADOCB') drop table Web_T_ADOCB
                                                          IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_T_ADOCH') drop table Web_T_ADOCH
@@ -523,81 +530,82 @@ namespace ApiKarbord.Controllers.Unit
                                                       close cur
                                                       deallocate cur
                                                  ");
-                                    dbChange.Database.ExecuteSqlCommand(sql);
-                                    sw.WriteLine("End Delete All");
-                                }
-
-
-                                string lineOfText;
-                                FileStream filestream = new System.IO.FileStream(addressFile,
-                                                          System.IO.FileMode.Open,
-                                                          System.IO.FileAccess.Read,
-                                                          System.IO.FileShare.ReadWrite);
-                                var file = new System.IO.StreamReader(filestream, System.Text.Encoding.Default, true, 128);
-
-                                sql = "";
-                                while ((lineOfText = file.ReadLine()) != null)
-                                {
-                                    if (!lineOfText.StartsWith("------"))
-                                    {
-                                        sql += lineOfText + " ";
+                                        dbChange.Database.ExecuteSqlCommand(sql);
+                                        sw.WriteLine("End Delete All");
                                     }
-                                    else
+
+
+                                    string lineOfText;
+                                    FileStream filestream = new System.IO.FileStream(addressFile,
+                                                              System.IO.FileMode.Open,
+                                                              System.IO.FileAccess.Read,
+                                                              System.IO.FileShare.ReadWrite);
+                                    var file = new System.IO.StreamReader(filestream, System.Text.Encoding.Default, true, 128);
+
+                                    sql = "";
+                                    while ((lineOfText = file.ReadLine()) != null)
                                     {
-                                        try
+                                        if (!lineOfText.StartsWith("------"))
                                         {
-                                            //sql = sql.Replace("ی", "ي");
-                                            sql = sql.Replace("yyyy", salTemp);
-
-                                            sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());
-                                            sql = sql.Replace("yyyz", (int.Parse(salTemp) + 1).ToString());
-
-                                            dbChange.Database.ExecuteSqlCommand(sql);
-                                            //sw.WriteLine("ExecuteSqlCommand OK : " + sql);
-                                            sql = "";
+                                            sql += lineOfText + " ";
                                         }
-                                        catch (Exception e)
+                                        else
                                         {
-                                            sw.WriteLine("ExecuteSqlCommand Error : " + sql);
-                                            filestream.Close();
-                                            throw;
+                                            try
+                                            {
+                                                //sql = sql.Replace("ی", "ي");
+                                                sql = sql.Replace("yyyy", salTemp);
 
+                                                sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());
+                                                sql = sql.Replace("yyyz", (int.Parse(salTemp) + 1).ToString());
+
+                                                dbChange.Database.ExecuteSqlCommand(sql);
+                                                //sw.WriteLine("ExecuteSqlCommand OK : " + sql);
+                                                sql = "";
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                sw.WriteLine("ExecuteSqlCommand Error : " + sql);
+                                                filestream.Close();
+                                                throw;
+
+                                            }
                                         }
                                     }
-                                }
 
-                                if (isCols == true)
-                                {
-                                    sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
-                                    dbChange.Database.ExecuteSqlCommand(sql);
-                                    sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
-                                    MyIniConfig.Write("Change", "0");
-                                    MyIniConfig.Write("EndDate", DateTime.Now.ToString());
-                                }
-                                filestream.Close();
-                                if (dbName != "Ace_WebConfig")
-                                {
-                                    //File.Delete(item);
-                                    //sw.WriteLine("Delete File");
-                                }
+                                    if (isCols == true)
+                                    {
+                                        sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
+                                        dbChange.Database.ExecuteSqlCommand(sql);
+                                        sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
+                                        MyIniConfig.Write("Change", "0");
+                                        MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                                    }
+                                    filestream.Close();
+                                    if (dbName != "Ace_WebConfig")
+                                    {
+                                        //File.Delete(item);
+                                        //sw.WriteLine("Delete File");
+                                    }
 
+                                }
+                                else
+                                {
+                                    if (dbName != "Ace_WebConfig")
+                                    {
+                                        //File.Delete(item);
+                                        //sw.WriteLine("Delete File");
+                                    }
+                                }
                             }
-                            else
+                            catch (Exception e)
                             {
-                                if (dbName != "Ace_WebConfig")
-                                {
-                                    //File.Delete(item);
-                                    //sw.WriteLine("Delete File");
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            sw.WriteLine(e.Message);
-                            sw.Close();
+                                sw.WriteLine(e.Message);
+                                sw.Close();
 
-                            // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
-                            throw;
+                                // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
+                                throw;
+                            }
                         }
                     }
                 }
