@@ -3515,6 +3515,41 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class ProgTrsObject
+        {
+            public string User { get; set; }
+        }
+
+        public class Web_ProgTrs
+        {
+            public int id { get; set; }
+
+            public string status { get; set; }
+
+            public string prog { get; set; }
+        }
+
+
+        // Post: api/Web_Data/ProgTrs لیست گروه ها
+        [Route("api/Web_Data/ProgTrs")]
+        public async Task<IHttpActionResult> PostWeb_ProgTrs(ProgTrsObject ProgTrsObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "0", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format("select * FROM Web_ProgTrs('{0}')", ProgTrsObject.User);
+
+                var listProgTrs = UnitDatabase.db.Database.SqlQuery<Web_ProgTrs>(sql);
+                return Ok(listProgTrs);
+            }
+            return Ok(con);
+        }
+
+
+
+
+
 
         public class GroupsObject
         {
