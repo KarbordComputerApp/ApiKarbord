@@ -24,6 +24,7 @@ using System.IO.Compression;
 using System.Web;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace ApiKarbord.Controllers.AFI.data
 {
@@ -5628,6 +5629,69 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
         }
 
+
+
+
+
+        public class V_Del_ADocObject
+        {
+            public long serialNumber { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/V_Del_ADoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_V_Del_ADoc(string ace, string sal, string group, V_Del_ADocObject V_Del_ADocObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"DECLARE	@return_value int
+
+                        EXEC	@return_value = [dbo].[Web_V_Del_ADoc]
+		                        @serialNumber = {0},
+		                        @UserCode = '{1}'
+                        SELECT	'Return Value' = @return_value", V_Del_ADocObject.serialNumber, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
+                    return Ok("OK");
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
+        //copy dll to addr C:\Windows\SysWOW64  
+        [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
+        public static extern bool GetVer(StringBuilder RetVal);
+
+        [Route("api/Web_Data/GetVerDll")]
+        public async Task<IHttpActionResult> GetVerDll()
+        {
+            try
+            {
+                StringBuilder str = new StringBuilder(256);
+                GetVer(str);
+                return Ok(str.ToString());
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message.ToString());
+                throw;
+            }
+           
+        }
 
     }
 }
