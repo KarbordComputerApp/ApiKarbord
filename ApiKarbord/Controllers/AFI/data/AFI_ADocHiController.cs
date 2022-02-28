@@ -155,10 +155,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string flagTest { get; set; }
 
-            public string DarChecks { get; set; }
-
-            public string ParChecks { get; set; }
-
         }
 
 
@@ -232,10 +228,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string flagLog { get; set; }
 
-            public string DarChecks { get; set; }
-
-            public string ParChecks { get; set; }
-
         }
 
 
@@ -255,14 +247,14 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 return BadRequest(ModelState);
             }
-
+            string sql = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, 0);
             if (con == "ok")
             {
                 try
                 {
-                    string sql = string.Format(
+                    sql = string.Format(
                          @" DECLARE	@return_value nvarchar(50)
                             EXEC	@return_value = [dbo].[Web_SaveADoc_HU]
 		                            @SerialNumber = {0},
@@ -342,6 +334,28 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
+
+                sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", AFI_ADocHi_u.SerialNumber);
+                string darChecks = "";
+                string parChecks = "";
+                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
+
+                foreach (var item in listSanad)
+                {
+                    if (item.PDMode == 1)
+                        darChecks += darChecks + item.CheckNo + ',';
+
+                    if (item.PDMode == 2)
+                        parChecks += parChecks + item.CheckNo + ',';
+                }
+
+                if (darChecks.Length > 0)
+                    darChecks = darChecks.Remove(darChecks.Length - 1);
+
+                if (parChecks.Length > 0)
+                    parChecks = parChecks.Remove(parChecks.Length - 1);
+
+
                 string dbName = UnitDatabase.DatabaseName(ace, sal, group);
 
                 //   public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
@@ -361,8 +375,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     dbName,
                     dataAccount[2],
                     AFI_ADocHi_u.SerialNumber,
-                    AFI_ADocHi_u.DarChecks ?? "",
-                    AFI_ADocHi_u.ParChecks ?? "",
+                    darChecks,
+                    parChecks,
                     str);
                 string log = str.ToString();
 
@@ -388,13 +402,14 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
 
+            string sql = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_i.SerialNumber, "ADoc", 2, 0);
             if (con == "ok")
             {
                 try
                 {
-                    string sql = string.Format(
+                    sql = string.Format(
                          @" DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
                             EXEC	@return_value = [dbo].[{38}]
@@ -488,7 +503,51 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
+
                 string[] serials = value.Split('-');
+
+
+                sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", serials[0]);
+                string darChecks = "";
+                string parChecks = "";
+                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
+
+                foreach (var item in listSanad)
+                {
+                    if (item.PDMode == 1)
+                        darChecks += darChecks + item.CheckNo + ',';
+
+                    if (item.PDMode == 2)
+                        parChecks += parChecks + item.CheckNo + ',';
+                }
+
+                if (darChecks.Length > 0)
+                    darChecks = darChecks.Remove(darChecks.Length - 1);
+
+                if (parChecks.Length > 0)
+                    parChecks = parChecks.Remove(parChecks.Length - 1);
+
+
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                StringBuilder str = new StringBuilder(1024);
+                RecoverChecks(
+                    connectionString,
+                    dbName,
+                    dataAccount[2],
+                    Convert.ToInt64(serials[0]),
+                    darChecks,
+                    parChecks,
+                    str);
+                string log = str.ToString();
+
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
                 return Ok(value);
             }
@@ -506,7 +565,29 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"DECLARE	@return_value int
+
+                string sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", SerialNumber);
+                string darChecks = "" ;
+                string parChecks = "" ;
+                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
+
+                foreach (var item in listSanad)
+                {
+                    if(item.PDMode == 1)
+                        darChecks += darChecks + item.CheckNo + ',';
+
+                    if (item.PDMode == 2)
+                        parChecks += parChecks + item.CheckNo + ',';
+                }
+
+                if(darChecks.Length > 0)
+                    darChecks = darChecks.Remove(darChecks.Length - 1);
+
+                if (parChecks.Length > 0)
+                    parChecks = parChecks.Remove(parChecks.Length - 1);
+
+
+                sql = string.Format(@"DECLARE	@return_value int
                                                  EXEC	@return_value = [dbo].[Web_SaveADoc_Del]
 		                                                @SerialNumber = {0}
                                                  SELECT	'Return Value' = @return_value"
@@ -517,6 +598,30 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     await UnitDatabase.db.SaveChangesAsync();
                 }
+
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+
+                StringBuilder str = new StringBuilder(1024);
+
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                RecoverChecks(
+                    connectionString,
+                    dbName,
+                    dataAccount[2],
+                    0,
+                    darChecks,
+                    parChecks,
+                    str);
+                string log = str.ToString();
+
+
 
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
             }
