@@ -3532,14 +3532,18 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // Post: api/Web_Data/ProgTrs لیست گروه ها
-        [Route("api/Web_Data/ProgTrs")]
-        public async Task<IHttpActionResult> PostWeb_ProgTrs(ProgTrsObject ProgTrsObject)
+        [Route("api/Web_Data/ProgTrs/{ace}")]
+        public async Task<IHttpActionResult> PostWeb_ProgTrs(string ace, ProgTrsObject ProgTrsObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "0", 0, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format("select * FROM Web_ProgTrs('{0}')", ProgTrsObject.User);
+                string sql;
+                if (ace == "Web1")
+                    sql = string.Format("select * FROM Web_ProgTrs('{0}') where prog in ('Afi1','Erj1') ", ProgTrsObject.User);
+                else
+                    sql = string.Format("select * FROM Web_ProgTrs('{0}') where prog not in ('Afi1') ", ProgTrsObject.User);
 
                 var listProgTrs = UnitDatabase.db.Database.SqlQuery<Web_ProgTrs>(sql);
                 return Ok(listProgTrs);
@@ -5690,7 +5694,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(e.Message.ToString());
                 throw;
             }
-           
+
         }
 
     }
