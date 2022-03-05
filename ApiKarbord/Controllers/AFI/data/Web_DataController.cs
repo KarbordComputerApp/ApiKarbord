@@ -5676,18 +5676,52 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        //copy dll to addr C:\Windows\SysWOW64  
-        [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
-        public static extern bool GetVer(StringBuilder RetVal);
+        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
+        static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
+
+        [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
+        static extern IntPtr GetProcAddress(int hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+
+        [DllImport("kernel32.dll", EntryPoint = "FreeLibrary")]
+        static extern bool FreeLibrary(int hModule);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        delegate bool GetVer(StringBuilder RetVal);
+
+
+
+        public static string CallGetVer()
+        {
+            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Acc6_Web.dll");
+            const string functionName = "GetVer";
+
+            int libHandle = LoadLibrary(dllName);
+            if (libHandle == 0)
+                return string.Format("Could not load library \"{0}\"", dllName);
+            try
+            {
+                var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
+                if (delphiFunctionAddress == IntPtr.Zero)
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+
+                var delphiFunction = (GetVer)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(GetVer));
+
+                StringBuilder RetVal = new StringBuilder(1024);
+                delphiFunction(RetVal);
+                return RetVal.ToString();
+            }
+            finally
+            {
+                FreeLibrary(libHandle);
+            }
+        }
 
         [Route("api/Web_Data/GetVerDll")]
         public async Task<IHttpActionResult> GetVerDll()
         {
             try
             {
-                StringBuilder str = new StringBuilder(256);
-                GetVer(str);
-                return Ok(str.ToString());
+                return Ok(CallGetVer());
             }
             catch (Exception e)
             {

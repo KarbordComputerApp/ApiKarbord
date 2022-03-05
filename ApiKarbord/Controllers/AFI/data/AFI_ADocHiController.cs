@@ -14,6 +14,7 @@ using System.Web.Http.Description;
 using ApiKarbord.Controllers.Unit;
 using ApiKarbord.Models;
 using System.Text;
+using System.Reflection;
 
 namespace ApiKarbord.Controllers.AFI.data
 {
@@ -63,11 +64,57 @@ namespace ApiKarbord.Controllers.AFI.data
            */
 
         //string a = HttpContext.Current.Server.MapPath("~\\Content\\dll\\Acc6_Web.dll");
-        [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
+        // [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
 
         //  public static extern bool GetVer(StringBuilder RetVal);
-        public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
+        // public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
 
+
+        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
+        static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
+
+        [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
+        static extern IntPtr GetProcAddress(int hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+
+        [DllImport("kernel32.dll", EntryPoint = "FreeLibrary")]
+        static extern bool FreeLibrary(int hModule);
+
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        delegate bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
+
+        public static string CallRecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks)
+        {
+            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Acc6_Web.dll");
+            const string functionName = "RecoverChecks";
+
+            int libHandle = LoadLibrary(dllName);
+            if (libHandle == 0)
+                return string.Format("Could not load library \"{0}\"", dllName);
+            try
+            {
+                var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
+                if (delphiFunctionAddress == IntPtr.Zero)
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+
+                var delphiFunction = (RecoverChecks)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RecoverChecks));
+
+                StringBuilder RetVal = new StringBuilder(1024);
+                delphiFunction(
+                    ConnetionString,
+                    wDBase,
+                    UserCode,
+                    SerialNumber,
+                    DarChecks,
+                    ParChecks,
+                    RetVal);
+                return RetVal.ToString();
+            }
+            finally
+            {
+                FreeLibrary(libHandle);
+            }
+        }
 
 
         public class AFI_ADocHi_i
@@ -370,15 +417,19 @@ namespace ApiKarbord.Controllers.AFI.data
                          UnitDatabase.SqlServerName
                          );
 
-                RecoverChecks(
+                //string dllPath = @"C:\a\Acc6_Web.dll";
+                //Assembly a = Assembly.Load(dllPath);
+
+                CallRecoverChecks(
                     connectionString,
                     dbName,
                     dataAccount[2],
                     AFI_ADocHi_u.SerialNumber,
                     darChecks,
-                    parChecks,
-                    str);
-                string log = str.ToString();
+                    parChecks);
+
+                //FreeLibrary(hDLL)
+                //string log = str.ToString();
 
                 //  StringBuilder str = new StringBuilder(256);
                 //   GetVer(str);
@@ -492,8 +543,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_i.F19,
                             AFI_ADocHi_i.F20,
                             AFI_ADocHi_i.flagTest == "Y" ? "Web_SaveADoc_HI_Temp" : "Web_SaveADoc_HI"
-                            );                              
-                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                            );
+                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
                         await UnitDatabase.db.SaveChangesAsync();
@@ -504,10 +555,70 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
+
                 string[] serials = value.Split('-');
+                if (AFI_ADocHi_i.flagTest != "Y")
+                {
+
+                    sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", serials[0]);
+                    string darChecks = "";
+                    string parChecks = "";
+                    var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
+
+                    foreach (var item in listSanad)
+                    {
+                        if (item.PDMode == 1)
+                            darChecks += darChecks + item.CheckNo + ',';
+
+                        if (item.PDMode == 2)
+                            parChecks += parChecks + item.CheckNo + ',';
+                    }
+
+                    if (darChecks.Length > 0)
+                        darChecks = darChecks.Remove(darChecks.Length - 1);
+
+                    if (parChecks.Length > 0)
+                        parChecks = parChecks.Remove(parChecks.Length - 1);
 
 
-                sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", serials[0]);
+                    string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+                    string connectionString = string.Format(
+                             @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                             UnitDatabase.SqlPassword,
+                             UnitDatabase.SqlUserName,
+                             dbName,
+                             UnitDatabase.SqlServerName
+                             );
+
+
+                    string log = CallRecoverChecks(
+                        connectionString,
+                        dbName,
+                        dataAccount[2],
+                        Convert.ToInt64(serials[0]),
+                        darChecks,
+                        parChecks
+                        );
+                }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
+                return Ok(value);
+            }
+            return Ok(con);
+
+        }
+
+
+
+        // DELETE: api/AFI_ADocHi/5
+        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{SerialNumber}")]
+        public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, 0);
+            if (con == "ok")
+            {
+
+                string sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", SerialNumber);
                 string darChecks = "";
                 string parChecks = "";
                 var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
@@ -528,65 +639,6 @@ namespace ApiKarbord.Controllers.AFI.data
                     parChecks = parChecks.Remove(parChecks.Length - 1);
 
 
-                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
-                string connectionString = string.Format(
-                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
-                         UnitDatabase.SqlPassword,
-                         UnitDatabase.SqlUserName,
-                         dbName,
-                         UnitDatabase.SqlServerName
-                         );
-
-                StringBuilder str = new StringBuilder(1024);
-                RecoverChecks(
-                    connectionString,
-                    dbName,
-                    dataAccount[2],
-                    Convert.ToInt64(serials[0]),
-                    darChecks,
-                    parChecks,
-                    str);
-                string log = str.ToString();
-
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
-                return Ok(value);
-            }
-            return Ok(con);
-
-        }
-
-
-
-        // DELETE: api/AFI_ADocHi/5
-        [Route("api/AFI_ADocHi/{ace}/{sal}/{group}/{SerialNumber}")]
-        public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber)
-        {
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, 0);
-            if (con == "ok")
-            {
-
-                string sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", SerialNumber);
-                string darChecks = "" ;
-                string parChecks = "" ;
-                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql);
-
-                foreach (var item in listSanad)
-                {
-                    if(item.PDMode == 1)
-                        darChecks += darChecks + item.CheckNo + ',';
-
-                    if (item.PDMode == 2)
-                        parChecks += parChecks + item.CheckNo + ',';
-                }
-
-                if(darChecks.Length > 0)
-                    darChecks = darChecks.Remove(darChecks.Length - 1);
-
-                if (parChecks.Length > 0)
-                    parChecks = parChecks.Remove(parChecks.Length - 1);
-
-
                 sql = string.Format(@"DECLARE	@return_value int
                                                  EXEC	@return_value = [dbo].[Web_SaveADoc_Del]
 		                                                @SerialNumber = {0}
@@ -601,7 +653,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 string dbName = UnitDatabase.DatabaseName(ace, sal, group);
 
-                StringBuilder str = new StringBuilder(1024);
 
                 string connectionString = string.Format(
                          @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
@@ -611,15 +662,15 @@ namespace ApiKarbord.Controllers.AFI.data
                          UnitDatabase.SqlServerName
                          );
 
-                RecoverChecks(
+                string log = CallRecoverChecks(
                     connectionString,
                     dbName,
                     dataAccount[2],
                     0,
                     darChecks,
-                    parChecks,
-                    str);
-                string log = str.ToString();
+                    parChecks
+                    );
+
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
             }
             return Ok(con);
