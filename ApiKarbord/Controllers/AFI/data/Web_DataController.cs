@@ -5655,9 +5655,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql = string.Format(CultureInfo.InvariantCulture,
                       @"DECLARE	@return_value int
 
-                        EXEC	@return_value = [dbo].[Web_V_Del_ADoc]
-		                        @serialNumber = {0},
-		                        @UserCode = '{1}'
+                        EXEC	@return_value = [dbo].[Web_SaveADoc_Del_Temp]
+		                        @serialNumber = {0}--,
+		                   --     @UserCode = '{1}'
                         SELECT	'Return Value' = @return_value", V_Del_ADocObject.serialNumber, dataAccount[2]);
                 try
                 {

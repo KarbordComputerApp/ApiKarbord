@@ -491,9 +491,9 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_i.F18,
                             AFI_ADocHi_i.F19,
                             AFI_ADocHi_i.F20,
-                            AFI_ADocHi_i.flagTest == "Y" ? "Web_V_Save_ADoc_HI_Temp" : "Web_SaveADoc_HI"
-                            );
-                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                            AFI_ADocHi_i.flagTest == "Y" ? "Web_SaveADoc_HI_Temp" : "Web_SaveADoc_HI"
+                            );                              
+                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
                         await UnitDatabase.db.SaveChangesAsync();
@@ -620,9 +620,6 @@ namespace ApiKarbord.Controllers.AFI.data
                     parChecks,
                     str);
                 string log = str.ToString();
-
-
-
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
             }
             return Ok(con);
