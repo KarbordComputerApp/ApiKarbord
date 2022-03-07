@@ -2574,6 +2574,10 @@ namespace ApiKarbord.Controllers.AFI.data
             public string Code { get; set; }
 
             public byte? Visible { get; set; }
+
+            public byte? Position { get; set; }
+
+            public Int16? Width { get; set; }
         }
 
 
@@ -2583,10 +2587,6 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostRprtColsSave(string ace, string sal, string group, [FromBody]List<RprtColsSave> RprtColsSave)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
@@ -2603,13 +2603,17 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                                @UserCode = '{0}',
 		                                                @RprtId = '{1}',
 		                                                @Code = '{2}',
-		                                                @Visible = {3}
+		                                                @Visible = {3},
+		                                                @Position = {4},
+		                                                @Width = {5}
                                                 SELECT	'Return Value' = @return_value ",
 
                         item.UserCode,
                         item.RprtId,
                         item.Code,
-                        item.Visible ?? 0
+                        item.Visible ?? 0,
+                        item.Position ?? 0,
+                        item.Width ?? 100
                         );
                         value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     }
@@ -5656,8 +5660,8 @@ namespace ApiKarbord.Controllers.AFI.data
                       @"DECLARE	@return_value int
 
                         EXEC	@return_value = [dbo].[Web_SaveADoc_Del_Temp]
-		                        @serialNumber = {0}--,
-		                   --     @UserCode = '{1}'
+		                        @serialNumber = {0},
+		                        @UserCode = '{1}'
                         SELECT	'Return Value' = @return_value", V_Del_ADocObject.serialNumber, dataAccount[2]);
                 try
                 {

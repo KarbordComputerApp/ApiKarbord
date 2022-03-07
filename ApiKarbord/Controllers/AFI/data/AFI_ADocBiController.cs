@@ -72,6 +72,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string flagTest { get; set; }
 
+            public double? Amount { get; set; }
         }
 
         // PUT: api/AFI_ADocBi/5
@@ -121,7 +122,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @MkzCode = '{21}',
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
-		                            @ArzValue = {24}
+		                            @ArzValue = {24},
+		                            @Amount = {25}
                              SELECT	'Return Value' = @return_value",
                         aFI_ADocBi.SerialNumber,
                         aFI_ADocBi.BandNo,
@@ -147,7 +149,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.MkzCode,
                         aFI_ADocBi.ArzCode,
                         aFI_ADocBi.ArzRate ?? 0,
-                        aFI_ADocBi.arzValue ?? 0);
+                        aFI_ADocBi.arzValue ?? 0,
+                        aFI_ADocBi.Amount ?? 0
+                        );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
@@ -226,7 +230,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @MkzCode = '{21}',
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
-		                            @ArzValue = {24}
+		                            @ArzValue = {24},
+		                            @Amount = {25},
                              SELECT	'Return Value' = @return_value",
                         aFI_ADocBi.SerialNumber,
                         bandNo == 0 ? aFI_ADocBi.BandNo : bandNo,
@@ -252,7 +257,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.MkzCode,
                         aFI_ADocBi.ArzCode,
                         aFI_ADocBi.ArzRate ?? 0,
-                        aFI_ADocBi.arzValue ?? 0);
+                        aFI_ADocBi.arzValue ?? 0,
+                        aFI_ADocBi.Amount ?? 0
+                        );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
@@ -323,7 +330,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @MkzCode = '{21}',
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
-		                            @ArzValue = {24}
+		                            @ArzValue = {24},
+                                    @Amount = {26}
                              SELECT	'Return Value' = @return_value",
                         serialNumber,
                         i,
@@ -350,7 +358,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.ArzCode,
                         item.ArzRate ?? 0,
                         item.arzValue ?? 0,
-                        item.flagTest == "Y" ? "Web_SaveADoc_BI_Temp" : "Web_SaveADoc_BI");
+                        item.flagTest == "Y" ? "Web_SaveADoc_BI_Temp" : "Web_SaveADoc_BI",
+                        item.Amount ?? 0);
                         value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     }
                     await UnitDatabase.db.SaveChangesAsync();

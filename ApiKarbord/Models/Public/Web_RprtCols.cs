@@ -29,7 +29,13 @@
         public string Prog { get; set; }
        
         public string Name { get; set; }
-      
+
+        public byte Position { get; set; }
+
+        public Int16 Width { get; set; }
+
+
+
         /*public string RprtId { get; set; }
 
         public string UserCode { get; set; }
