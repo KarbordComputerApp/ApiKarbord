@@ -5735,5 +5735,74 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+
+
+
+
+
+
+        public class LogXObject
+        {
+            public string ProgName_ { get; set; }
+            public string IP_ { get; set; }
+            public string GroupNo_ { get; set; }
+            public Int16 Year_ { get; set; }
+            public byte EditMode_ { get; set; }
+            public byte LogMode_ { get; set; }
+            public string Code_ { get; set; }
+            public string DocNo_ { get; set; }
+            public long SerialNumber_ { get; set; }
+
+        }
+
+
+        [Route("api/Web_Data/LogX")]
+        public async Task<IHttpActionResult> PostWeb_LogX(LogXObject LogXObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], "Config", "", "00", 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                    @"DECLARE	@return_value int
+                    EXEC	@return_value = Web_SaveLogX
+		                    @ProgName_ = '{0}',
+		                    @IP_ = '{1}',
+		                    @UserCode_ = '{2}',
+		                    @GroupNo_ = {3},
+		                    @Year_ = {4},
+		                    @EditMode_ = {5},
+		                    @LogMode_ = {6},
+		                    @Code_ = '{7}',
+		                    @DocNo_ = '{8}',
+		                    @SerialNumber_ = {9}
+                    SELECT	'Return Value' = @return_value", 
+                    LogXObject.ProgName_, 
+                    LogXObject.IP_, 
+                    dataAccount[2], 
+                    LogXObject.GroupNo_, 
+                    LogXObject.Year_, 
+                    LogXObject.EditMode_, 
+                    LogXObject.LogMode_, 
+                    LogXObject.Code_, 
+                    LogXObject.DocNo_, 
+                    LogXObject.SerialNumber_
+                   );
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
+                    return Ok("OK");
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
     }
 }
