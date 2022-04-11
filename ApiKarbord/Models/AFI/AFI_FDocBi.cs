@@ -44,5 +44,7 @@
 
         public string InvCode { get; set; }
 
+        public string flagTest { get; set; }
+
     }
 }

@@ -374,6 +374,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public double? MP8 { get; set; }
             public double? MP9 { get; set; }
             public double? MP10 { get; set; }
+
+            public string flagTest { get; set; }
         }
 
         // Post: api/Web_Data/AddMin لیست کسورات و افزایشات   
@@ -391,7 +393,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, calcAddmin.serialNumber, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
+                string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[{24}]
 		                                            @serialNumber = {0},
                                                     @forSale = {1},
                                                     @custCode = {2},
@@ -440,7 +442,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                     calcAddmin.MP7 ?? 0,
                                                     calcAddmin.MP8 ?? 0,
                                                     calcAddmin.MP9 ?? 0,
-                                                    calcAddmin.MP10 ?? 0);
+                                                    calcAddmin.MP10 ?? 0,
+                                                    calcAddmin.flagTest == "Y" ? "Web_Calc_AddMin_EffPrice_Temp" : "Web_Calc_AddMin_EffPrice"
+                                                    );
                 var result = UnitDatabase.db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
                 var jsonResult = JsonConvert.SerializeObject(result);
                 return Ok(jsonResult);
@@ -5776,16 +5780,16 @@ namespace ApiKarbord.Controllers.AFI.data
 		                    @Code_ = '{7}',
 		                    @DocNo_ = '{8}',
 		                    @SerialNumber_ = {9}
-                    SELECT	'Return Value' = @return_value", 
-                    LogXObject.ProgName_, 
-                    LogXObject.IP_, 
-                    dataAccount[2], 
-                    LogXObject.GroupNo_, 
-                    LogXObject.Year_, 
-                    LogXObject.EditMode_, 
-                    LogXObject.LogMode_, 
-                    LogXObject.Code_, 
-                    LogXObject.DocNo_, 
+                    SELECT	'Return Value' = @return_value",
+                    LogXObject.ProgName_,
+                    LogXObject.IP_,
+                    dataAccount[2],
+                    LogXObject.GroupNo_,
+                    LogXObject.Year_,
+                    LogXObject.EditMode_,
+                    LogXObject.LogMode_,
+                    LogXObject.Code_,
+                    LogXObject.DocNo_,
                     LogXObject.SerialNumber_
                    );
                 try
@@ -5802,6 +5806,46 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(con);
 
         }
+
+
+
+
+        public class V_Del_FDocObject
+        {
+            public long serialNumber { get; set; }
+
+        }
+
+
+        [Route("api/Web_Data/V_Del_FDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_V_Del_FDoc(string ace, string sal, string group, V_Del_FDocObject V_Del_FDocObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"DECLARE	@return_value int
+
+                        EXEC	@return_value = [dbo].[Web_SaveFDoc_Del_Temp]
+		                        @serialNumber = {0},
+		                        @UserCode = '{1}'
+                        SELECT	'Return Value' = @return_value", V_Del_FDocObject.serialNumber, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
+                    return Ok("OK");
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
 
 
     }

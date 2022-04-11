@@ -229,8 +229,9 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await UnitDatabase.db.SaveChangesAsync();
                     }
-
-                    string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
+                    if (BandNo > 0)
+                    {
+                        string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
                                                            EXEC	@return_value = [dbo].[Web_Doc_BOrder]
 	                                                            @TableName = '{0}',
                                                                 @SerialNumber = {1},
@@ -239,8 +240,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                            ace == "Web1" ? "Afi1FDocB" : "Fct5DocB",
                                                            SerialNumber,
                                                            ace == "Web1" ? "BandNo" : "Radif");
-                    int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
-                    //await UnitDatabase.db.SaveChangesAsync();
+                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                        //await UnitDatabase.db.SaveChangesAsync();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -257,19 +259,80 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // POST: api/AFI_FDocBi
+        [Route("api/AFI_FDocBi/SaveAllDocB/{ace}/{sal}/{group}/{serialNumber}")]
+        [ResponseType(typeof(AFI_FDocBi))]
+        public async Task<IHttpActionResult> PostAFI_SaveAllDocB(string ace, string sal, string group, long serialNumber, [FromBody]List<AFI_FDocBi> AFI_FDocBi)
+        {
 
-        /*  protected override void Dispose(bool disposing)
-          {
-              if (disposing)
-              {
-                  db.Dispose();
-              }
-              base.Dispose(disposing);
-          }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, 5, 0);
+            if (con == "ok")
+            {
+                int value;
+                int i = 0;
+                try
+                {
+                    foreach (var item in AFI_FDocBi)
+                    {
+                        i++;
+                        string sql = string.Format(CultureInfo.InvariantCulture,
 
-          private bool AFI_FDocBiExists(long id)
-          {
-              return db.AFI_FDocBi.Count(e => e.SerialNumber == id) > 0;
-          }*/
+
+                             @"DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[{15}]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1},
+		                            @KalaCode = N'{2}',
+		                            @Amount1 = {3},
+		                            @Amount2 = {4},
+		                            @Amount3 = {5},
+		                            @UnitPrice = {6},
+		                            @TotalPrice = {7},
+                                    @Discount = {8},
+		                            @MainUnit = {9},
+		                            @Comm = N'{10}',
+                                    @Up_Flag = {11},
+                                    @OprCode = N'{12}',
+		                            @MkzCode = N'{13}',
+		                            @InvCode = N'{14}'
+                            SELECT	'Return Value' = @return_value
+                            ",
+                        serialNumber,
+                        i,
+                        item.KalaCode,
+                        item.Amount1 ?? 0,
+                        item.Amount2 ?? 0,
+                        item.Amount3 ?? 0,
+                        item.UnitPrice ?? 0,
+                        item.TotalPrice ?? 0,
+                        item.Discount ?? 0,
+                        item.MainUnit ?? 1,
+                        UnitPublic.ConvertTextWebToWin(item.Comm ?? ""),
+                        item.Up_Flag,
+                        item.OprCode,
+                        item.MkzCode,
+                        item.InvCode,
+                        item.flagTest == "Y" ? "Web_SaveFDoc_BI_Temp" : "Web_SaveFDoc_BI");
+                        value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    }
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "FDoc", 1, "Y", 0);
+                return Ok("OK");
+            }
+            else
+                return Ok(con);
+
+        }
     }
 }

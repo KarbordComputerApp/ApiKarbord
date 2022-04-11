@@ -321,7 +321,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out nvarchar(50)
-                          EXEC	@return_value = [dbo].[Web_SaveFDoc_HI]
+                          EXEC	@return_value = [dbo].[{60}]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = {2} ,
@@ -443,7 +443,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F17,
                             aFI_FDocHi.F18,
                             aFI_FDocHi.F19,
-                            aFI_FDocHi.F20
+                            aFI_FDocHi.F20,
+                            aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI"
                             //aFI_FDocHi.VstrCode
                             );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();

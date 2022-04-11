@@ -163,5 +163,7 @@
         public string OprCode { get; set; }
         public string MkzCode { get; set; }
 
+        public string flagTest { get; set; }
+
     }
 }
