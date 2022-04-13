@@ -5847,6 +5847,28 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        [Route("api/Web_Data/Web_UnitName/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_UnitName(string ace, string sal, string group)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(@"select distinct '' as KalaCode, 0 as Code,  Name from (
+                                             select distinct UnitName1 as Name from Web_Kala
+                                             union all
+                                             select distinct UnitName2 as Name from Web_Kala
+                                             union all
+                                             select distinct UnitName3 as Name from Web_Kala) as list");
+              
+                var listDB = UnitDatabase.db.Database.SqlQuery<Web_Unit>(sql).ToList();
+                return Ok(listDB);
+            }
+            return Ok(con);
+        }
+
+
+
 
     }
 }
