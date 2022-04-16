@@ -334,5 +334,64 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(con);
 
         }
+
+
+
+
+        public class ConvertObject
+        {
+            public string ModeCode { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public long TempSerialNumber { get; set; }
+
+        }
+
+
+
+        // POST: api/AFI_FDocBi
+        [Route("api/AFI_FDocBi/Convert/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostAFI_Convert(string ace, string sal, string group, ConvertObject ConvertObject)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, 5, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                                  @"DECLARE	@return_value int
+                                    EXEC	@return_value = [dbo].[Web_SaveFDocB_Convert]
+		                                    @SerialNumber = {0},
+		                                    @SerialNumber = {1}
+                                    SELECT	'Return Value' = @return_value",
+                                  ConvertObject.SerialNumber,
+                                  ConvertObject.TempSerialNumber);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "FDoc", 1, "Y", 0);
+                return Ok("OK");
+            }
+            else
+                return Ok(con);
+
+        }
+
+
+
     }
 }

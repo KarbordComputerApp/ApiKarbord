@@ -447,11 +447,137 @@ namespace ApiKarbord.Controllers.AFI.data
                                                     );
                 var result = UnitDatabase.db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
                 var jsonResult = JsonConvert.SerializeObject(result);
+
+                /* foreach (var item in result)
+                 {
+                     if (item.Code == 1) aFI_FDocHi.AddMinPrice1 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 2) aFI_FDocHi.AddMinPrice2 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 3) aFI_FDocHi.AddMinPrice3 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 4) aFI_FDocHi.AddMinPrice4 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 5) aFI_FDocHi.AddMinPrice5 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 6) aFI_FDocHi.AddMinPrice6 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 7) aFI_FDocHi.AddMinPrice7 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 8) aFI_FDocHi.AddMinPrice8 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 9) aFI_FDocHi.AddMinPrice9 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                     if (item.Code == 10) aFI_FDocHi.AddMinPrice10 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                 }
+
+                 var sql1 = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
+                             EXEC	@return_value = [dbo].[Web_FDocB_CalcAddMin]
+                                         @serialNumber = {0},
+                                         @deghat = {1},
+                                         @forSale = {2},
+                                         @MP1 = {3},
+                                         @MP2 = {4},
+                                         @MP3 = {5},
+                                         @MP4 = {6},
+                                         @MP5 = {7},
+                                         @MP6 = {8},
+                                         @MP7 = {9},
+                                         @MP8 = {10},
+                                         @MP9 = {11},
+                                         @MP10 = {12}
+                             SELECT	'Return Value' = @return_value",
+                             aFI_FDocHi.SerialNumber,
+                             aFI_FDocHi.deghat,
+                             forSale,
+                             aFI_FDocHi.AddMinPrice1,
+                             aFI_FDocHi.AddMinPrice2,
+                             aFI_FDocHi.AddMinPrice3,
+                             aFI_FDocHi.AddMinPrice4,
+                             aFI_FDocHi.AddMinPrice5,
+                             aFI_FDocHi.AddMinPrice6,
+                             aFI_FDocHi.AddMinPrice7,
+                             aFI_FDocHi.AddMinPrice8,
+                             aFI_FDocHi.AddMinPrice9,
+                             aFI_FDocHi.AddMinPrice10);
+                 int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
+                 */
                 return Ok(jsonResult);
             }
             return Ok(con);
         }
 
+
+
+
+
+
+
+
+        public class TashimBand
+        {
+            public long SerialNumber { get; set; }
+
+            public bool ForSale { get; set; }
+
+            public int Deghat { get; set; }
+
+            public double? MP1 { get; set; }
+
+            public double? MP2 { get; set; }
+
+            public double? MP3 { get; set; }
+
+            public double? MP4 { get; set; }
+
+            public double? MP5 { get; set; }
+
+            public double? MP6 { get; set; }
+
+            public double? MP7 { get; set; }
+
+            public double? MP8 { get; set; }
+
+            public double? MP9 { get; set; }
+
+            public double? MP10 { get; set; }
+        }
+
+        // Post: api/Web_Data/TashimBand لیست کسورات و افزایشات   
+        [ResponseType(typeof(void))]
+        [Route("api/Web_Data/TashimBand/{ace}/{sal}/{group}")]
+
+        public async Task<IHttpActionResult> PostTashimBand(string ace, string sal, string group, TashimBand tashimBand)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, tashimBand.SerialNumber, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
+                             EXEC	@return_value = [dbo].[Web_FDocB_CalcAddMin_Temp]
+                                         @serialNumber = {0},
+                                         @deghat = {1},
+                                         @forSale = {2},
+                                         @MP1 = {3},
+                                         @MP2 = {4},
+                                         @MP3 = {5},
+                                         @MP4 = {6},
+                                         @MP5 = {7},
+                                         @MP6 = {8},
+                                         @MP7 = {9},
+                                         @MP8 = {10},
+                                         @MP9 = {11},
+                                         @MP10 = {12}
+                             SELECT	'Return Value' = @return_value",
+                              tashimBand.SerialNumber,
+                              tashimBand.Deghat,
+                              tashimBand.ForSale,
+                              tashimBand.MP1,
+                              tashimBand.MP2,
+                              tashimBand.MP3,
+                              tashimBand.MP4,
+                              tashimBand.MP5,
+                              tashimBand.MP6,
+                              tashimBand.MP7,
+                              tashimBand.MP8,
+                              tashimBand.MP9,
+                              tashimBand.MP10);
+                int test = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                return Ok("OK");
+            }
+            return Ok(con);
+        }
 
 
         //انبار---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -5860,7 +5986,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                              select distinct UnitName2 as Name from Web_Kala
                                              union all
                                              select distinct UnitName3 as Name from Web_Kala) as list");
-              
+
                 var listDB = UnitDatabase.db.Database.SqlQuery<Web_Unit>(sql).ToList();
                 return Ok(listDB);
             }
