@@ -370,7 +370,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                   @"DECLARE	@return_value int
                                     EXEC	@return_value = [dbo].[Web_SaveFDocB_Convert]
 		                                    @SerialNumber = {0},
-		                                    @SerialNumber = {1}
+		                                    @TempSerialNumber = {1}
                                     SELECT	'Return Value' = @return_value",
                                   ConvertObject.SerialNumber,
                                   ConvertObject.TempSerialNumber);

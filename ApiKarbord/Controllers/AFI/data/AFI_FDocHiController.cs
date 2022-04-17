@@ -48,7 +48,11 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-                    string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
+                    if (aFI_FDocHi.New != "Y")
+                    {
+
+
+                        string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[Web_Calc_AddMin_EffPrice]
 		                                            @serialNumber = {0},
                                                     @forSale = {1},
                                                     @custCode = '{2}',
@@ -73,49 +77,49 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                            @MP8 = {21},
 		                                            @MP9 = {22},
 		                                            @MP10 = {23} ",
-                                                    aFI_FDocHi.SerialNumber,
-                                                    forSale,
-                                                    aFI_FDocHi.CustCode,
-                                                    0,
-                                                    aFI_FDocHi.AddMinSpec1,
-                                                    aFI_FDocHi.AddMinSpec2,
-                                                    aFI_FDocHi.AddMinSpec3,
-                                                    aFI_FDocHi.AddMinSpec4,
-                                                    aFI_FDocHi.AddMinSpec5,
-                                                    aFI_FDocHi.AddMinSpec6,
-                                                    aFI_FDocHi.AddMinSpec7,
-                                                    aFI_FDocHi.AddMinSpec8,
-                                                    aFI_FDocHi.AddMinSpec9,
-                                                    aFI_FDocHi.AddMinSpec10,
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice1 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice2 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice3 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice4 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice5 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice6 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice7 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice8 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice9 ?? 0),
-                                                    Math.Abs(aFI_FDocHi.AddMinPrice10 ?? 0));
-                    var result = UnitDatabase.db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
+                                                        aFI_FDocHi.SerialNumber,
+                                                        forSale,
+                                                        aFI_FDocHi.CustCode,
+                                                        0,
+                                                        aFI_FDocHi.AddMinSpec1,
+                                                        aFI_FDocHi.AddMinSpec2,
+                                                        aFI_FDocHi.AddMinSpec3,
+                                                        aFI_FDocHi.AddMinSpec4,
+                                                        aFI_FDocHi.AddMinSpec5,
+                                                        aFI_FDocHi.AddMinSpec6,
+                                                        aFI_FDocHi.AddMinSpec7,
+                                                        aFI_FDocHi.AddMinSpec8,
+                                                        aFI_FDocHi.AddMinSpec9,
+                                                        aFI_FDocHi.AddMinSpec10,
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice1 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice2 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice3 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice4 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice5 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice6 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice7 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice8 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice9 ?? 0),
+                                                        Math.Abs(aFI_FDocHi.AddMinPrice10 ?? 0));
+                        var result = UnitDatabase.db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
 
 
 
-                    foreach (var item in result)
-                    {
-                        if (item.Code == 1) aFI_FDocHi.AddMinPrice1 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 2) aFI_FDocHi.AddMinPrice2 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 3) aFI_FDocHi.AddMinPrice3 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 4) aFI_FDocHi.AddMinPrice4 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 5) aFI_FDocHi.AddMinPrice5 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 6) aFI_FDocHi.AddMinPrice6 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 7) aFI_FDocHi.AddMinPrice7 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 8) aFI_FDocHi.AddMinPrice8 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 9) aFI_FDocHi.AddMinPrice9 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                        if (item.Code == 10) aFI_FDocHi.AddMinPrice10 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
-                    }
+                        foreach (var item in result)
+                        {
+                            if (item.Code == 1) aFI_FDocHi.AddMinPrice1 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 2) aFI_FDocHi.AddMinPrice2 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 3) aFI_FDocHi.AddMinPrice3 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 4) aFI_FDocHi.AddMinPrice4 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 5) aFI_FDocHi.AddMinPrice5 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 6) aFI_FDocHi.AddMinPrice6 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 7) aFI_FDocHi.AddMinPrice7 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 8) aFI_FDocHi.AddMinPrice8 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 9) aFI_FDocHi.AddMinPrice9 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                            if (item.Code == 10) aFI_FDocHi.AddMinPrice10 = Math.Round(item.AddMinPrice ?? 0, aFI_FDocHi.deghat);
+                        }
 
-                    var sql1 = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
+                        var sql1 = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
                             EXEC	@return_value = [dbo].[Web_FDocB_CalcAddMin]
 		                                @serialNumber = {0},
 		                                @deghat = {1},
@@ -131,21 +135,21 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                @MP9 = {11},
 		                                @MP10 = {12}
                             SELECT	'Return Value' = @return_value",
-                            aFI_FDocHi.SerialNumber,
-                            aFI_FDocHi.deghat,
-                            forSale,
-                            aFI_FDocHi.AddMinPrice1,
-                            aFI_FDocHi.AddMinPrice2,
-                            aFI_FDocHi.AddMinPrice3,
-                            aFI_FDocHi.AddMinPrice4,
-                            aFI_FDocHi.AddMinPrice5,
-                            aFI_FDocHi.AddMinPrice6,
-                            aFI_FDocHi.AddMinPrice7,
-                            aFI_FDocHi.AddMinPrice8,
-                            aFI_FDocHi.AddMinPrice9,
-                            aFI_FDocHi.AddMinPrice10);
-                    int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
-
+                                aFI_FDocHi.SerialNumber,
+                                aFI_FDocHi.deghat,
+                                forSale,
+                                aFI_FDocHi.AddMinPrice1,
+                                aFI_FDocHi.AddMinPrice2,
+                                aFI_FDocHi.AddMinPrice3,
+                                aFI_FDocHi.AddMinPrice4,
+                                aFI_FDocHi.AddMinPrice5,
+                                aFI_FDocHi.AddMinPrice6,
+                                aFI_FDocHi.AddMinPrice7,
+                                aFI_FDocHi.AddMinPrice8,
+                                aFI_FDocHi.AddMinPrice9,
+                                aFI_FDocHi.AddMinPrice10);
+                        int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
+                    }
                     string sql2 = string.Format(CultureInfo.InvariantCulture,
                          @"DECLARE	@return_value nvarchar(50),
                                     @DocNo_Out nvarchar(50)

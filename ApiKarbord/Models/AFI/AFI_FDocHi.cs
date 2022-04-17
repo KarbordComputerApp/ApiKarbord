@@ -165,5 +165,7 @@
 
         public string flagTest { get; set; }
 
+        public string New { get; set; }
+
     }
 }
