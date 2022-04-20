@@ -44,7 +44,15 @@
 
         public string InvCode { get; set; }
 
-        public string flagTest { get; set; }
+        public long? LFctSerialNumber { get; set; }
+
+        public long? InvSerialNumber { get; set; }
+
+        public long? LinkNumber { get; set; }
+
+        public int? LinkYear { get; set; }
+        
+        public string LinkProg { get; set; }
 
     }
 }

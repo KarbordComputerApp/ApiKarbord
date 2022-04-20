@@ -53,26 +53,16 @@
 
         public byte? DeghatR { get; set; }
 
-        // public int Deghat1 { get; set; }
 
-        // public int Deghat2 { get; set; }
+        public long? LFctSerialNumber { get; set; }
 
-        //    public int Deghat3 { get; set; }
+        public int? InvSerialNumber { get; set; }
 
-        /* SELECT
-       [SerialNumber]
-      ,[BandNo]
-      ,[KalaCode]
-	  ,[KalaName]
-      ,[Amount1]
-      ,[Amount2]
-      ,[Amount3]
-      ,[MainUnit]
-      ,[UnitPrice]
-      ,[TotalPrice]
-      ,[Discount]
-	  ,[Comm]
-        FROM[ACE_AFI1011397].[dbo].[Web_FDocB]*/
+        public int? LinkNumber { get; set; }
+
+        public Int16? LinkYear { get; set; }
+
+        public string LinkProg { get; set; }
 
 
     }

@@ -83,7 +83,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg
                                           FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
                 var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
@@ -183,7 +183,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg
                                          FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
                 var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
@@ -248,7 +248,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg
                                          FROM Web_FDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
                 var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 0);
@@ -284,7 +284,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
                              @"DECLARE	@return_value int
-                            EXEC	@return_value = [dbo].[{15}]
+                            EXEC	@return_value = [dbo].[Web_SaveFDoc_BI_Temp]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
 		                            @KalaCode = N'{2}',
@@ -299,7 +299,12 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Up_Flag = {11},
                                     @OprCode = N'{12}',
 		                            @MkzCode = N'{13}',
-		                            @InvCode = N'{14}'
+		                            @InvCode = N'{14}',
+                                    @LFctSerialNumber = {15},
+                                    @InvSerialNumber = {16},
+                                    @LinkNumber = {17},
+                                    @LinkYear = {18},
+                                    @LinkProg = N'{19}'
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
@@ -317,7 +322,13 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.OprCode,
                         item.MkzCode,
                         item.InvCode,
-                        item.flagTest == "Y" ? "Web_SaveFDoc_BI_Temp" : "Web_SaveFDoc_BI");
+                        item.LFctSerialNumber ?? 0,
+                        item.InvSerialNumber ?? 0,
+                        item.LinkNumber ?? 0,
+                        item.LinkYear ?? 0,
+                        item.LinkProg
+                        //item.flagTest == "Y" ? "Web_SaveFDoc_BI_Temp" : "Web_SaveFDoc_BI"
+                        );
                         value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     }
                     await UnitDatabase.db.SaveChangesAsync();
