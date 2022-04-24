@@ -32,6 +32,8 @@
 
         public string Comm { get; set; }
 
+        public string BandSpec { get; set; }
+
         public bool Up_Flag { get; set; }
 
         public string ModeCode { get; set; }

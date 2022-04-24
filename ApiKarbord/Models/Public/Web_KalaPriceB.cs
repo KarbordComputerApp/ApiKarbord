@@ -10,9 +10,13 @@
     {
         [Key]
         public int? Code { get; set; }
+
         public string KalaCode { get; set; }
+
         public double? Price1 { get; set; }
+
         public double? Price2 { get; set; }
+
         public double? Price3 { get; set; }
     }
 }

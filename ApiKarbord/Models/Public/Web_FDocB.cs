@@ -37,6 +37,8 @@
 
         public string Comm { get; set; }
 
+        public string BandSpec { get; set; }
+
         public bool UP_Flag { get; set; }
 
         public byte? KalaDeghatM1 { get; set; }

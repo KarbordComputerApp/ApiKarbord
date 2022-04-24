@@ -262,8 +262,10 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             if (con == "ok")
             {
-                var list = UnitDatabase.db.Web_KalaPriceB.Where(c => c.Code == code && c.KalaCode == kalacode);
-                return list;
+                if (kalacode == "null")
+                    return UnitDatabase.db.Web_KalaPriceB.Where(c => c.Code == code);
+                else
+                    return UnitDatabase.db.Web_KalaPriceB.Where(c => c.Code == code && c.KalaCode == kalacode);
             }
             return null;
         }
