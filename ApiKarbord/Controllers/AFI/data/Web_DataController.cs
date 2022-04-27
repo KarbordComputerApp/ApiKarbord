@@ -5975,6 +5975,44 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        public class V_Del_IDocObject
+        {
+            public long serialNumber { get; set; }
+
+        }
+
+
+        [Route("api/Web_Data/V_Del_IDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_V_Del_IDoc(string ace, string sal, string group, V_Del_IDocObject V_Del_IDocObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (con == "ok")
+            {
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                      @"DECLARE	@return_value int
+
+                        EXEC	@return_value = [dbo].[Web_SaveIDoc_Del_Temp]
+		                        @serialNumber = {0},
+		                        @UserCode = '{1}'
+                        SELECT	'Return Value' = @return_value", V_Del_IDocObject.serialNumber, dataAccount[2]);
+                try
+                {
+                    var result = UnitDatabase.db.Database.SqlQuery<int>(sql).ToList();
+                    return Ok("OK");
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+            return Ok(con);
+
+        }
+
+
+
         [Route("api/Web_Data/Web_UnitName/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> GetWeb_UnitName(string ace, string sal, string group)
         {

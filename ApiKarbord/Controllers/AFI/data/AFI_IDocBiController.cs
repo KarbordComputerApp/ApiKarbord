@@ -55,7 +55,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @Comm = N'{10}',
                                     @Up_Flag = {11},
                                     @OprCode = '{12}',
-                                    @MkzCode = '{13}'
+                                    @MkzCode = '{13}',
+                                    @BandSpec = '{14}'
                             SELECT	'Return Value' = @return_value
                             ",
                         aFI_IDocBi.SerialNumber,
@@ -71,7 +72,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(aFI_IDocBi.Comm ?? ""),
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
-                        aFI_IDocBi.MkzCode
+                        aFI_IDocBi.MkzCode,
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? "")
                         );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
@@ -84,7 +86,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
                                           FROM Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
                 var listFactor = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
 
@@ -154,7 +156,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @Comm = N'{9}',
                                     @Up_Flag = {10},
                                     @OprCode = '{11}',
-                                    @MkzCode = '{12}'
+                                    @MkzCode = '{12}',
+                                    @BandSpec = '{13}'
                             SELECT	'Return Value' = @return_value
                             ",
                         aFI_IDocBi.SerialNumber,
@@ -169,7 +172,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(aFI_IDocBi.Comm ?? ""),
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
-                        aFI_IDocBi.MkzCode
+                        aFI_IDocBi.MkzCode,
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? "")
                         );
                     int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
@@ -182,7 +186,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
                                          FROM Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
                 var listFactor = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocBi.flagLog, 0);
@@ -234,7 +238,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
                                          FROM Web_IDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
                 var listFactor = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? "IIDoc" : "IODoc", 2, FlagLog, 0);
@@ -243,6 +247,151 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(con);
         }
+
+
+
+
+
+
+        // POST: api/AFI_IDocBi
+        [Route("api/AFI_IDocBi/SaveAllDocB/{ace}/{sal}/{group}/{serialNumber}")]
+        [ResponseType(typeof(AFI_IDocBi))]
+        public async Task<IHttpActionResult> PostAFI_SaveAllDocB(string ace, string sal, string group, long serialNumber, [FromBody]List<AFI_IDocBi> AFI_IDocBi)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? "IIDoc" : "IODoc", 5, 0);
+            if (con == "ok")
+            {
+                int value;
+                int i = 0;
+                try
+                {
+                    foreach (var item in AFI_IDocBi)
+                    {
+                        i++;
+                        string sql = string.Format(CultureInfo.InvariantCulture,
+
+
+                             @"DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[Web_SaveIDoc_BI_Temp]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1},
+		                            @KalaCode = N'{2}',
+		                            @Amount1 = {3},
+		                            @Amount2 = {4},
+		                            @Amount3 = {5},
+		                            @UnitPrice = {6},
+		                            @TotalPrice = {7},
+		                            @MainUnit = {8},
+		                            @Comm = N'{9}',
+                                    @Up_Flag = {10},
+                                    @OprCode = N'{11}',
+		                            @MkzCode = N'{12}',
+                                    @BandSpec = N'{13}'
+                            SELECT	'Return Value' = @return_value
+                            ",
+                        serialNumber,
+                        i,
+                        item.KalaCode,
+                        item.Amount1 ?? 0,
+                        item.Amount2 ?? 0,
+                        item.Amount3 ?? 0,
+                        item.UnitPrice ?? 0,
+                        item.TotalPrice ?? 0,
+                        item.MainUnit ?? 1,
+                        UnitPublic.ConvertTextWebToWin(item.Comm ?? ""),
+                        item.Up_Flag,
+                        item.OprCode,
+                        item.MkzCode,
+                        UnitPublic.ConvertTextWebToWin(item.BandSpec ?? "")
+                        );
+                        value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    }
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "IDoc", 1, "Y", 0);
+                return Ok("OK");
+            }
+            else
+                return Ok(con);
+
+        }
+
+
+
+
+
+
+
+
+        public class ConvertObject
+        {
+            public long SerialNumber { get; set; }
+
+            public long TempSerialNumber { get; set; }
+
+        }
+
+
+
+        // POST: api/AFI_IDocBi
+        [Route("api/AFI_IDocBi/Convert/{ace}/{sal}/{group}/{InOut}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostAFI_Convert(string ace, string sal, string group, string InOut, ConvertObject ConvertObject)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, InOut, 5, 0);
+            if (con == "ok")
+            {
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                                  @"DECLARE	@return_value int
+                                    EXEC	@return_value = [dbo].[Web_SaveIDocB_Convert]
+		                                    @SerialNumber = {0},
+		                                    @TempSerialNumber = {1}
+                                    SELECT	'Return Value' = @return_value",
+                                  ConvertObject.SerialNumber,
+                                  ConvertObject.TempSerialNumber);
+                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+
+                    await UnitDatabase.db.SaveChangesAsync();
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "FDoc", 1, "Y", 0);
+                return Ok("OK");
+            }
+            else
+                return Ok(con);
+
+        }
+
+
+
+
+
+
+
+
 
     }
 }

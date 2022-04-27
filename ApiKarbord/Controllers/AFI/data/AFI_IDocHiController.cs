@@ -56,7 +56,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @SPEC = '{10}',
 		                            @TANZIM = '{11}',
 		                            @TAHIESHODE = '{12}',
-		                            @CUSTCODE = '{13}',
+		                            @ThvlCODE = '{13}',
 		                            @KALAPRICECODE = {14},
                                     @InvCode = '{15}',
                                     @Status = N'{16}',
@@ -100,7 +100,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.Spec,
                             aFI_IDocHi.Tanzim,
                             aFI_IDocHi.TahieShode,
-                            aFI_IDocHi.CustCode,
+                            aFI_IDocHi.ThvlCode,
                             aFI_IDocHi.KalaPriceCode ?? 0,
                             aFI_IDocHi.InvCode,
                             aFI_IDocHi.Status,
@@ -167,7 +167,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                          EXEC	@return_value = [dbo].[Web_SaveIDoc_HI]
+                          EXEC	@return_value = [dbo].[{37}]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = '{2}' ,
@@ -181,7 +181,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @SPEC = '{10}',
 		                            @TANZIM = '{11}',
 		                            @TAHIESHODE = '{12}',
-		                            @CUSTCODE = '{13}',
+		                            @ThvlCODE = '{13}',
 		                            @KALAPRICECODE = {14},
                                     @InvCode = '{15}',
                                     @Eghdam = N'''{16}''',
@@ -210,7 +210,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.DocNoMode,
                             aFI_IDocHi.InsertMode,
                             aFI_IDocHi.ModeCode,
-                            aFI_IDocHi.DocNo,
+                            aFI_IDocHi.DocNo ?? 0,
                             aFI_IDocHi.StartNo,
                             aFI_IDocHi.EndNo,
                             aFI_IDocHi.BranchCode,
@@ -220,7 +220,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.Spec,
                             aFI_IDocHi.Tanzim,
                             aFI_IDocHi.TahieShode,
-                            aFI_IDocHi.CustCode ?? "",
+                            aFI_IDocHi.ThvlCode ?? "",
                             aFI_IDocHi.KalaPriceCode ?? 0,
                             aFI_IDocHi.InvCode,
                             aFI_IDocHi.Eghdam,
@@ -243,7 +243,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.F17,
                             aFI_IDocHi.F18,
                             aFI_IDocHi.F19,
-                            aFI_IDocHi.F20);
+                            aFI_IDocHi.F20,
+                            aFI_IDocHi.flagTest == "Y" ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI");
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {

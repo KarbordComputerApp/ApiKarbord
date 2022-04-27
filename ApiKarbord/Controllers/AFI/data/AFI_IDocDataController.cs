@@ -248,7 +248,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "", 0, 0);
             if (con == "ok")
             {
-                string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
                                          FROM Web_IDocB WHERE SerialNumber = {0}", serialNumber);
                 var listIDocB = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql);
                 return Ok(listIDocB);
@@ -288,7 +288,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
                                          FROM Web_IDocB WHERE SerialNumber = {0}", serialnumber);
                 var listIDocB = UnitDatabase.db.Database.SqlQuery<Web_IDocB>(sql1);
                 return Ok(listIDocB);
@@ -538,6 +538,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public long SerialNumber { get; set; }
 
+            public string flagTest { get; set; }
+
         }
 
 
@@ -550,9 +552,10 @@ namespace ApiKarbord.Controllers.AFI.data
             if (con == "ok")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[Web_TestIDoc] @serialNumber = {0}  , @UserCode = '{1}' ",
+                                           @"EXEC	[dbo].[{2}] @serialNumber = {0}  , @UserCode = '{1}' ",
                                            AFI_TestIDocB.SerialNumber,
-                                           dataAccount[2]);
+                                           dataAccount[2],
+                                           AFI_TestIDocB.flagTest == "Y" ? "Web_TestIDoc_Temp" : "Web_TestIDoc");
                 try
                 {
                     var result = UnitDatabase.db.Database.SqlQuery<TestDocB>(sql).ToList();

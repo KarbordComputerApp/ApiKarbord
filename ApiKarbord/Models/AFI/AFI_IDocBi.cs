@@ -42,6 +42,8 @@
 
         public string MkzCode { get; set; }
 
+        public string BandSpec { get; set; }
+
     }
 }
 

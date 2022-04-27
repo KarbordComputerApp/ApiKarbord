@@ -50,5 +50,7 @@
         public byte? KalaDeghatR3 { get; set; }
 
         public byte? DeghatR { get; set; }
+
+        public string BandSpec { get; set; }
     }
 }
