@@ -104,6 +104,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.KalaPriceCode ?? 0,
                             aFI_IDocHi.InvCode,
                             aFI_IDocHi.Status,
+
                              //UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer),
                              UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer ?? ""),
                             aFI_IDocHi.Taeed == "null" ? "" : aFI_IDocHi.Taeed,
@@ -205,6 +206,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F18 = '{34}',
                                     @F19 = '{35}',
                                     @F20 = '{36}',
+                                    @Footer = '{37}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_IDocHi.DocNoMode,
@@ -244,7 +246,9 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.F18,
                             aFI_IDocHi.F19,
                             aFI_IDocHi.F20,
-                            aFI_IDocHi.flagTest == "Y" ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI");
+                            aFI_IDocHi.flagTest == "Y" ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI",
+                            UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer ?? "")
+                            );
                     value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
