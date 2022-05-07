@@ -257,7 +257,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
                 catch (Exception e)
                 {
-                    throw;
+                    throw; 
                 }
 
                 string[] serials = value.Split('-');
