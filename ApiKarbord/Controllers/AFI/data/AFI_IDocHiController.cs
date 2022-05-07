@@ -263,7 +263,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string[] serials = value.Split('-');
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocHi.flagLog, 0);
 
-                return Ok(value);
+                return Ok(value); 
             }
             return Ok(con);
         }
