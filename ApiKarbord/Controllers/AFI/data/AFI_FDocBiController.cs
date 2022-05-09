@@ -31,9 +31,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 4, aFI_FDocBi.BandNo ?? 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 4, aFI_FDocBi.BandNo ?? 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(CultureInfo.InvariantCulture,
@@ -74,10 +75,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_FDocBi.InvCode ?? "", 
                         UnitPublic.ConvertTextWebToWin(aFI_FDocBi.BandSpec ?? "")
                         );
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception)
@@ -86,11 +87,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec
                                           FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
-                var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
+                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
                 return Ok(listFactor);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
         // POST: api/AFI_FDocBi
@@ -104,9 +105,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 5, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 5, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string fieldBandNo;
@@ -136,7 +138,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                            aFI_FDocBi.SerialNumber,
                                                            bandNo,
                                                            fieldBandNo);
-                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                        int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     }
                     string sql = string.Format(CultureInfo.InvariantCulture,
                           @"DECLARE	@return_value int
@@ -176,10 +178,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_FDocBi.InvCode,
                         UnitPublic.ConvertTextWebToWin(aFI_FDocBi.BandSpec ?? "")
                         );
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -188,11 +190,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec
                                          FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
-                var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
+                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
                 return Ok(listFactor);
             }
-            return Ok(con);
+            return Ok(conStr);
 
         }
 
@@ -202,19 +204,18 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string ModeCode, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 6, BandNo);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 6, BandNo);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
-
-
                     // Fct5: 'Fct5DocB'   'Radif'
                     // Inv5: 'Inv5DocB'   'Radif'
                     // Afi1: 'Afi1FDocB'  'BandNo'
 
 
-                    //var list = UnitDatabase.db.AFI_FDocBi.First(c=>c.SerialNumber == SerialNumber && c.BandNo==BandNo);
+                    //var list = db.AFI_FDocBi.First(c=>c.SerialNumber == SerialNumber && c.BandNo==BandNo);
                     //if (list == null)
                     //{
                     //    return NotFound();
@@ -227,10 +228,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                 SerialNumber,
                                                 BandNo);
 
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                     if (BandNo > 0)
                     {
@@ -243,8 +244,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                                            ace == "Web1" ? "Afi1FDocB" : "Fct5DocB",
                                                            SerialNumber,
                                                            ace == "Web1" ? "BandNo" : "Radif");
-                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
-                        //await UnitDatabase.db.SaveChangesAsync();
+                        int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                        //await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -253,11 +254,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec
                                          FROM Web_FDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
-                var listFactor = UnitDatabase.db.Database.SqlQuery<Web_FDocB>(sql1);
+                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 0);
                 return Ok(listFactor);
             }
-            return Ok(con);
+            return Ok(conStr);
 
         }
 
@@ -273,9 +274,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, 5, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, 5, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 int value;
                 int i = 0;
                 try
@@ -334,9 +336,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(item.BandSpec ?? "")
                         //item.flagTest == "Y" ? "Web_SaveFDoc_BI_Temp" : "Web_SaveFDoc_BI"
                         );
-                        value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                        value = db.Database.SqlQuery<int>(sql).Single();
                     }
-                    await UnitDatabase.db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
 
                 }
                 catch (Exception)
@@ -347,7 +349,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok("OK");
             }
             else
-                return Ok(con);
+                return Ok(conStr);
 
         }
 
@@ -377,9 +379,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, 5, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, 5, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(CultureInfo.InvariantCulture,
@@ -390,9 +393,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                     SELECT	'Return Value' = @return_value",
                                   ConvertObject.SerialNumber,
                                   ConvertObject.TempSerialNumber);
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
 
-                    await UnitDatabase.db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
 
                 }
                 catch (Exception)
@@ -403,7 +406,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok("OK");
             }
             else
-                return Ok(con);
+                return Ok(conStr);
 
         }
 

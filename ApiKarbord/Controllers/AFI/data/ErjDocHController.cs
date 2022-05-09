@@ -120,9 +120,10 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, erjDocH.SerialNumber, "", 2, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, erjDocH.SerialNumber, "", 2, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(
@@ -216,10 +217,10 @@ namespace ApiKarbord.Controllers.AFI.data
                             erjDocH.F18,
                             erjDocH.F19,
                             erjDocH.F20);
-                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    value = db.Database.SqlQuery<int>(sql).Single();
                     if (value > 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -229,7 +230,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 return Ok(value);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -307,9 +308,10 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ErjSaveDoc_HUObject.SerialNumber, "", 2, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ErjSaveDoc_HUObject.SerialNumber, "", 2, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(
@@ -375,10 +377,10 @@ namespace ApiKarbord.Controllers.AFI.data
                             ErjSaveDoc_HUObject.F18,
                             ErjSaveDoc_HUObject.F19,
                             ErjSaveDoc_HUObject.F20);
-                    value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    value = db.Database.SqlQuery<int>(sql).Single();
                     if (value > 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -388,7 +390,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 return Ok(value);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -403,9 +405,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "", 0, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "", 0, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(@"DECLARE	@return_value int
@@ -414,10 +417,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  SELECT	'Return Value' = @return_value"
                             , SerialNumber);
 
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value > 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -427,7 +430,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "", 3, "Y", 0);
                 return Ok(1);
             }
-            return Ok(con);
+            return Ok(conStr);
 
         }
 
@@ -462,16 +465,17 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestDoc_Delete(string ace, string sal, string group, TestDoc_DeleteObject TestDoc_DeleteObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"EXEC	[dbo].[Web_TestDoc_Delete] @serialNumber = {0} , @UserCode = '{1}' ",
                                            TestDoc_DeleteObject.SerialNumber ,
                                            dataAccount[2]);
                 try
                 {
-                    var result = UnitDatabase.db.Database.SqlQuery<TestDoc_Delete>(sql).ToList();
+                    var result = db.Database.SqlQuery<TestDoc_Delete>(sql).ToList();
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(jsonResult);
                 }
@@ -481,7 +485,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
             }
-            return Ok(con);
+            return Ok(conStr);
 
         }
 

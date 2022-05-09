@@ -84,10 +84,10 @@ namespace ApiKarbordAccount.Controllers
 
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
             {
-                SqlConnection connection = new SqlConnection(UnitPublic.conString);
+                SqlConnection connection = new SqlConnection(conStr);
                 connection.Open();
 
                 SqlCommand cmd = new SqlCommand("Web_DocAttach_Save", connection);
@@ -107,7 +107,7 @@ namespace ApiKarbordAccount.Controllers
                 return Ok(1);
             }
             else
-                return Ok(con);
+                return Ok(conStr);
         }
 
 

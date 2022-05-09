@@ -43,9 +43,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     if (aFI_FDocHi.New != "Y")
@@ -101,7 +102,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                         Math.Abs(aFI_FDocHi.AddMinPrice8 ?? 0),
                                                         Math.Abs(aFI_FDocHi.AddMinPrice9 ?? 0),
                                                         Math.Abs(aFI_FDocHi.AddMinPrice10 ?? 0));
-                        var result = UnitDatabase.db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
+                        var result = db.Database.SqlQuery<AddMin>(sql).Where(c => c.Name != "").ToList();
 
 
 
@@ -148,7 +149,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                 aFI_FDocHi.AddMinPrice8,
                                 aFI_FDocHi.AddMinPrice9,
                                 aFI_FDocHi.AddMinPrice10);
-                        int test = UnitDatabase.db.Database.SqlQuery<int>(sql1).Single();
+                        int test = db.Database.SqlQuery<int>(sql1).Single();
                     }
                     string sql2 = string.Format(CultureInfo.InvariantCulture,
                          @"DECLARE	@return_value nvarchar(50),
@@ -290,9 +291,9 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.OprCode, 
                             aFI_FDocHi.MkzCode 
                             );
-                    value = UnitDatabase.db.Database.SqlQuery<string>(sql2).Single();
+                    value = db.Database.SqlQuery<string>(sql2).Single();
 
-                    await UnitDatabase.db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
                 }
                 catch (Exception e)
                 {
@@ -302,7 +303,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, aFI_FDocHi.flagLog, 0);
                 return Ok(value);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
         // POST: api/AFI_FDocHi
@@ -317,9 +318,10 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(
@@ -451,10 +453,10 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI"
                             //aFI_FDocHi.VstrCode
                             );
-                    value = UnitDatabase.db.Database.SqlQuery<string>(sql).Single();
+                    value = db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -466,7 +468,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_FDocHi.ModeCode, 2, aFI_FDocHi.flagLog, 0);
                 return Ok(value);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
         // DELETE: api/AFI_FDocHi/5
@@ -475,9 +477,10 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocHi(string ace, string sal, string group, long SerialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(@"DECLARE	@return_value int
@@ -486,10 +489,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  SELECT	'Return Value' = @return_value"
                                                 , SerialNumber);
 
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value > 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -502,7 +505,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y", 0);
                 return Ok(1);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
     }

@@ -17,7 +17,7 @@ namespace ApiKarbord.Controllers.Unit
 {
     public static class UnitDatabase
     {
-        public static ApiModel db;
+       // public static ApiModel db;
         public static ApiModel dbChange;
         class testMaster
         {
@@ -220,8 +220,9 @@ namespace ApiKarbord.Controllers.Unit
         }
 
 
+        //public static readonly object LockObject = new object();
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static string CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
+       /* public static string CreateConection(string userName, string password, string userKarbord, string ace, string sal, string group, long serialnumber, string modecode, int act, int bandNo)
         {
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
             string res = "";
@@ -229,37 +230,40 @@ namespace ApiKarbord.Controllers.Unit
             try
             {
                 MyIniLog.Write("1001 Start", "ok");
-                string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act, bandNo);
-                MyIniLog.Write("conStr", conStr);
-                if (conStr.Length > 100)
-                {
-                    UnitPublic.conString = conStr;
-                    MyIniLog.Write("conStr_", UnitPublic.conString);
-                    db = new ApiModel(conStr);
-                    if (ace == "Config" && group == "00")
+                //lock (LockObject)
+               // {
+                    string conStr = CreateConnectionString(userName, password, userKarbord, ace, sal, group, serialnumber, modecode, act, bandNo);
+                    MyIniLog.Write("conStr", conStr);
+                    if (conStr.Length > 100)
                     {
-                        //string sql = string.Format("SELECT count(ID) as id FROM Ace_Config.dbo.UserIn WHERE ProgName IN ('Web1', 'Web2', 'Web8')");
-                        // string countUserIn = db.Database.SqlQuery<int>(sql).First().ToString();
-                        // var list = model.First();
-                        // int userCount = list.userCount ?? 0;
-                        //  if (Int32.Parse(countUserIn) >= userCount)
-                        //  {
-                        //     return "MaxCount";
-                        // }
-
-                        MyIniLog.Write("conStr_1", ace);
-                        res = ChangeDatabaseConfig(userKarbord, sal, userName, password);
-                        if (res == "UseLog")
-                        {
-                            return res;
-
-                        }
+                        UnitPublic.conString = conStr;
+                        MyIniLog.Write("conStr_", UnitPublic.conString);
                         db = new ApiModel(conStr);
+                        if (ace == "Config" && group == "00")
+                        {
+                            //string sql = string.Format("SELECT count(ID) as id FROM Ace_Config.dbo.UserIn WHERE ProgName IN ('Web1', 'Web2', 'Web8')");
+                            // string countUserIn = db.Database.SqlQuery<int>(sql).First().ToString();
+                            // var list = model.First();
+                            // int userCount = list.userCount ?? 0;
+                            //  if (Int32.Parse(countUserIn) >= userCount)
+                            //  {
+                            //     return "MaxCount";
+                            // }
+
+                            MyIniLog.Write("conStr_1", ace);
+                            res = ChangeDatabaseConfig(userKarbord, sal, userName, password);
+                            if (res == "UseLog")
+                            {
+                                return res;
+
+                            }
+                            db = new ApiModel(conStr);
+                        }
+                        return "ok";
                     }
-                    return "ok";
-                }
-                else
-                    return conStr;
+                    else
+                        return conStr;
+               // }
             }
             catch (Exception e)
             {
@@ -267,10 +271,10 @@ namespace ApiKarbord.Controllers.Unit
                 return "error";
                 throw;
             }
-        }
+        }*/
 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static Boolean TestSqlServer(bool api)
+      /*  public static Boolean TestSqlServer(bool api)
         {
             try
             {
@@ -292,7 +296,7 @@ namespace ApiKarbord.Controllers.Unit
                 throw;
             }
         }
-
+        */
 
 
 
@@ -726,51 +730,51 @@ namespace ApiKarbord.Controllers.Unit
                         string conStr = CreateConnectionString(srv_User, srv_Pass, "", "Config", sal, group, 0, "", 0, 0);
                         if (conStr.Length > 100)
                         {
-                            db = new ApiModel(conStr);
-                        }
+                            ApiModel db = new ApiModel(conStr);
 
 
-                        string sql;
-                        int oldVer = 0;
-                        try
-                        {
+
+                            string sql;
+                            int oldVer = 0;
                             try
                             {
-                                sql = string.Format(@"if (select count(id) from web_version) = 0
+                                try
+                                {
+                                    sql = string.Format(@"if (select count(id) from web_version) = 0
                                                                 select 0
                                                               else
                                                                 select ver from web_version where id = (select max(id) from web_version)");
-                                oldVer = db.Database.SqlQuery<int>(sql).Single();
-                            }
-                            catch (Exception e)
-                            {
-                                sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
+                                    oldVer = db.Database.SqlQuery<int>(sql).Single();
+                                }
+                                catch (Exception e)
+                                {
+                                    sql = string.Format(@"CREATE TABLE[dbo].[Web_Version] (
                                                                      [id][int] IDENTITY(1,1) NOT NULL,
                                                                      [ver] [int] NULL,
                                                                      [datever] [datetime] NULL,
                                                              CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
                                                              ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
-                                db.Database.ExecuteSqlCommand(sql);
-                            }
+                                    db.Database.ExecuteSqlCommand(sql);
+                                }
 
-                            sw.WriteLine("oldVer : " + oldVer.ToString());
-                            sw.WriteLine("VerDB : " + UnitPublic.VerDB);
+                                sw.WriteLine("oldVer : " + oldVer.ToString());
+                                sw.WriteLine("VerDB : " + UnitPublic.VerDB);
 
-                            if (oldVer < UnitPublic.VerDB || flag == "1234")
-                            {
-                                string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config.ini";
-
-                                IniFile MyIniConfig = new IniFile(IniConfigPath);
-
-                                MyIniConfig.Write("Change", "1");
-                                MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
-                                MyIniConfig.Write("User", userCode);
-                                MyIniConfig.Write("Prog", "Config");
-
-                                if (isCols == false)
+                                if (oldVer < UnitPublic.VerDB || flag == "1234")
                                 {
-                                    sw.WriteLine("Start Delete All");
-                                    sql = string.Format(@"
+                                    string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config.ini";
+
+                                    IniFile MyIniConfig = new IniFile(IniConfigPath);
+
+                                    MyIniConfig.Write("Change", "1");
+                                    MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
+                                    MyIniConfig.Write("User", userCode);
+                                    MyIniConfig.Write("Prog", "Config");
+
+                                    if (isCols == false)
+                                    {
+                                        sw.WriteLine("Start Delete All");
+                                        sql = string.Format(@"
                                                     DECLARE @sql VARCHAR(MAX) = '' 
                                                     DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
                                                     SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
@@ -800,96 +804,98 @@ namespace ApiKarbord.Controllers.Unit
                                                       close cur
                                                       deallocate cur
                                                  ");
-                                    db.Database.ExecuteSqlCommand(sql);
-                                    sw.WriteLine("End Delete All");
-                                }
-
-
-                                string lineOfText;
-                                FileStream filestream = new System.IO.FileStream(addressFile,
-                                                          System.IO.FileMode.Open,
-                                                          System.IO.FileAccess.Read,
-                                                          System.IO.FileShare.ReadWrite);
-                                var file = new System.IO.StreamReader(filestream, System.Text.Encoding.Default, true, 128);
-
-                                sql = "";
-                                int counter = 0;
-                                int counter1 = 0;
-                                bool test = false;
-                                string[] func = new string[100];
-                                while ((lineOfText = file.ReadLine()) != null)
-                                {
-                                    if (!lineOfText.StartsWith("------"))
-                                    {
-                                        if (lineOfText == "Create Function Web_UserTrs")
-                                        {
-                                            test = true;
-                                        }
-                                        if (test == true)
-                                        {
-                                            counter += 1;
-                                            if (counter == 100)
-                                            {
-                                                counter1 += 1;
-                                                counter = 0;
-                                            }
-                                            func[counter1] += lineOfText + " ";
-                                        }
-                                        sql += lineOfText + " ";
+                                        db.Database.ExecuteSqlCommand(sql);
+                                        sw.WriteLine("End Delete All");
                                     }
-                                    else
-                                    {
-                                        try
-                                        {
-                                            if (counter1 > 0)
-                                            {
-                                                sql = func[0] + func[1] + func[2] + func[3] + func[4] + func[5] + func[6] + func[7] + func[8] + func[9] + func[10] + func[11] + func[12] + func[13];
-                                            }
-                                            db.Database.ExecuteSqlCommand(sql);
-                                            sw.WriteLine("ExecuteSqlCommand OK : " + sql);
-                                            sql = "";
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            sw.WriteLine("ExecuteSqlCommand Error : " + sql);
-                                            filestream.Close();
-                                            throw;
 
+
+                                    string lineOfText;
+                                    FileStream filestream = new System.IO.FileStream(addressFile,
+                                                              System.IO.FileMode.Open,
+                                                              System.IO.FileAccess.Read,
+                                                              System.IO.FileShare.ReadWrite);
+                                    var file = new System.IO.StreamReader(filestream, System.Text.Encoding.Default, true, 128);
+
+                                    sql = "";
+                                    int counter = 0;
+                                    int counter1 = 0;
+                                    bool test = false;
+                                    string[] func = new string[100];
+                                    while ((lineOfText = file.ReadLine()) != null)
+                                    {
+                                        if (!lineOfText.StartsWith("------"))
+                                        {
+                                            if (lineOfText == "Create Function Web_UserTrs")
+                                            {
+                                                test = true;
+                                            }
+                                            if (test == true)
+                                            {
+                                                counter += 1;
+                                                if (counter == 100)
+                                                {
+                                                    counter1 += 1;
+                                                    counter = 0;
+                                                }
+                                                func[counter1] += lineOfText + " ";
+                                            }
+                                            sql += lineOfText + " ";
                                         }
+                                        else
+                                        {
+                                            try
+                                            {
+                                                if (counter1 > 0)
+                                                {
+                                                    sql = func[0] + func[1] + func[2] + func[3] + func[4] + func[5] + func[6] + func[7] + func[8] + func[9] + func[10] + func[11] + func[12] + func[13];
+                                                }
+                                                db.Database.ExecuteSqlCommand(sql);
+                                                sw.WriteLine("ExecuteSqlCommand OK : " + sql);
+                                                sql = "";
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                sw.WriteLine("ExecuteSqlCommand Error : " + sql);
+                                                filestream.Close();
+                                                throw;
+
+                                            }
+                                        }
+                                    }
+
+                                    if (isCols == false)
+                                    {
+                                        sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
+                                        db.Database.ExecuteSqlCommand(sql);
+                                        sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
+                                        MyIniConfig.Write("Change", "0");
+                                        MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                                    }
+                                    filestream.Close();
+                                    if (dbName != "Ace_WebConfig")
+                                    {
+                                    }
+
+                                    // return "به روز رسانی انجام شد";
+                                }
+                                else
+                                {
+                                    if (dbName != "Ace_WebConfig")
+                                    {
+                                        //File.Delete(item);
+                                        //sw.WriteLine("Delete File");
                                     }
                                 }
 
-                                if (isCols == false)
-                                {
-                                    sql = string.Format(@"INSERT INTO Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
-                                    db.Database.ExecuteSqlCommand(sql);
-                                    sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
-                                    MyIniConfig.Write("Change", "0");
-                                    MyIniConfig.Write("EndDate", DateTime.Now.ToString());
-                                }
-                                filestream.Close();
-                                if (dbName != "Ace_WebConfig")
-                                {
-                                }
-
-                                // return "به روز رسانی انجام شد";
                             }
-                            else
+                            catch (Exception e)
                             {
-                                if (dbName != "Ace_WebConfig")
-                                {
-                                    //File.Delete(item);
-                                    //sw.WriteLine("Delete File");
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            sw.WriteLine(e.Message);
-                            sw.Close();
+                                sw.WriteLine(e.Message);
+                                sw.Close();
 
-                            // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
-                            throw;
+                                // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
+                                throw;
+                            }
                         }
 
 
@@ -920,7 +926,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static void TestDatabase(string ace)
+       /* public static void TestDatabase(string ace)
         {
             string sql;
             int oldVer = 0;
@@ -1130,7 +1136,7 @@ namespace ApiKarbord.Controllers.Unit
              */
 
 
-        }
+       // }
 
 
 

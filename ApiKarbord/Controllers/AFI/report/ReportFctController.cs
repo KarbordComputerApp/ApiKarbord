@@ -53,10 +53,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_FDocR(string ace, string sal, string group, FDocRObject FDocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "18", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "18", 9, 0);
+            if (conStr.Length > 100)
             {
-
+                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000)  * FROM  dbo.Web_FDocR('{0}', '{1}','{2}') AS FDocR where 1 = 1 ",
                           FDocRObject.ModeCode1, FDocRObject.ModeCode2, dataAccount[2]);
@@ -76,10 +76,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 if (FDocRObject.taTarikh != "")
                     sql += string.Format(" and DocDate <= '{0}' ", FDocRObject.taTarikh);
 
-                var listFDocR = UnitDatabase.db.Database.SqlQuery<Web_FDocR>(sql);
+                var listFDocR = db.Database.SqlQuery<Web_FDocR>(sql);
                 return Ok(listFDocR);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -123,9 +123,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, TrzFKalaObject TrzFKalaObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "19", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "19", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.MkzCode);
                 string custCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.CustCode);
@@ -154,10 +155,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzFKalaObject.KalaCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", TrzFKalaObject.KGruCode);
 
-                var listTrzFKala = UnitDatabase.db.Database.SqlQuery<Web_TrzFKala>(sql);
+                var listTrzFKala = db.Database.SqlQuery<Web_TrzFKala>(sql);
                 return Ok(listTrzFKala);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -203,9 +204,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzFCust(string ace, string sal, string group, TrzFCustObject TrzFCustObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "20", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "20", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFCustObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzFCustObject.MkzCode);
                 string kalaCode = UnitPublic.SpiltCodeCama(TrzFCustObject.KalaCode);
@@ -233,10 +235,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("CustCode", TrzFCustObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("CGruCode", TrzFCustObject.CGruCode);
 
-                var listTrzFCust = UnitDatabase.db.Database.SqlQuery<Web_TrzFCust>(sql);
+                var listTrzFCust = db.Database.SqlQuery<Web_TrzFCust>(sql);
                 return Ok(listTrzFCust);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
     }

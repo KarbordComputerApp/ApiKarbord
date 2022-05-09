@@ -80,22 +80,7 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(AFI_ADocBi))]
         public async Task<IHttpActionResult> PutAFI_ADocBi(string ace, string sal, string group, AFI_ADocBi aFI_ADocBi)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 4, aFI_ADocBi.BandNo ?? 0);
-            if (con == "ok")
-            {
-                try
-                {
-                    string sql = string.Format(CultureInfo.InvariantCulture,
+            string sql = string.Format(CultureInfo.InvariantCulture,
                           @" DECLARE	@return_value int
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BU]
 		                            @SerialNumber = {0},
@@ -152,23 +137,21 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.arzValue ?? 0,
                         aFI_ADocBi.Amount ?? 0
                         );
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
-                    if (value == 0)
-                    {
-                        await UnitDatabase.db.SaveChangesAsync();
-                    }
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 4, aFI_ADocBi.BandNo ?? 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<int>(sql);
+                await db.SaveChangesAsync();
+
                 string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
-                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql1);
+                var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 1, aFI_ADocBi.flagLog, 0);
                 return Ok(listSanad);
             }
-            else
-                return Ok(con);
+            return Ok(conStr);
 
         }
 
@@ -183,11 +166,13 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 5, bandNo == 0 ? aFI_ADocBi.BandNo ?? 0 : bandNo);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 5, bandNo == 0 ? aFI_ADocBi.BandNo ?? 0 : bandNo);
+            if (conStr.Length > 100)
             {
                 try
                 {
+                    ApiModel db = new ApiModel(conStr);
+
                     if (bandNo > 0)
                     {
                         string sqlUpdateBand = string.Format(@"DECLARE	@return_value int
@@ -201,7 +186,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                aFI_ADocBi.SerialNumber,
                                                                bandNo,
                                                                "BandNo");
-                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                        int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     }
                     string sql = string.Format(CultureInfo.InvariantCulture,
                         @" DECLARE	@return_value int
@@ -260,23 +245,25 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.arzValue ?? 0,
                         aFI_ADocBi.Amount ?? 0
                         );
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
+
+
+                    string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
+                    var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 1, aFI_ADocBi.flagLog, 0);
+                    return Ok(listSanad);
                 }
                 catch (Exception)
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
-                var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql1);
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 1, aFI_ADocBi.flagLog, 0);
-                return Ok(listSanad);
             }
             else
-                return Ok(con);
+                return Ok(conStr);
 
         }
 
@@ -293,11 +280,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "ADoc", 5, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "ADoc", 5, 0);
+            if (conStr.Length > 100)
             {
                 int value;
                 int i = 0;
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     foreach (var item in AFI_ADocBi)
@@ -360,9 +348,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.arzValue ?? 0,
                         item.flagTest == "Y" ? "Web_SaveADoc_BI_Temp" : "Web_SaveADoc_BI",
                         item.Amount ?? 0);
-                        value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                        value = db.Database.SqlQuery<int>(sql).Single();
                     }
-                    await UnitDatabase.db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
 
                 }
                 catch (Exception)
@@ -373,7 +361,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok("OK");
             }
             else
-                return Ok(con);
+                return Ok(conStr);
 
         }
 
@@ -386,9 +374,10 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_ADocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 6, BandNo);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 6, BandNo);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(@"DECLARE	@return_value int
@@ -398,10 +387,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  SELECT	'Return Value' = @return_value",
                                                 SerialNumber,
                                                 BandNo);
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
-                        await UnitDatabase.db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                     }
 
                     if (BandNo > 0)
@@ -415,8 +404,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                  ace == "Web1" ? "Afi1ADocB" : "Acc5DocB",
                                                                  SerialNumber,
                                                                  "BandNo");
-                        int valueUpdateBand = UnitDatabase.db.Database.SqlQuery<int>(sqlUpdateBand).Single();
-                        await UnitDatabase.db.SaveChangesAsync();
+                        int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
+                        await db.SaveChangesAsync();
                     }
                 }
                 catch (Exception e)
@@ -427,7 +416,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (BandNo > 0)
                 {
                     string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", SerialNumber.ToString());
-                    var listSanad = UnitDatabase.db.Database.SqlQuery<Web_ADocB>(sql1);
+                    var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);
                     return Ok(listSanad);
                 }
                 else
@@ -436,11 +425,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
             }
             else
-                return Ok(con);
+                return Ok(conStr);
         }
 
         public class ConvertObject
-        { 
+        {
 
             public long SerialNumber { get; set; }
 
@@ -461,9 +450,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "ADoc", 5, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "ADoc", 5, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(CultureInfo.InvariantCulture,
@@ -474,9 +464,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                     SELECT	'Return Value' = @return_value",
                                   ConvertObject.SerialNumber,
                                   ConvertObject.TempSerialNumber);
-                    int value = UnitDatabase.db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
 
-                    await UnitDatabase.db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
 
                 }
                 catch (Exception)
@@ -487,7 +477,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok("OK");
             }
             else
-                return Ok(con);
+                return Ok(conStr);
 
         }
     }

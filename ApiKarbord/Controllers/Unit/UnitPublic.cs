@@ -52,7 +52,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //دریافت اطلاعات کاربر
-        public static bool UserInformation(string acc, string inv, string fct, string afi)
+      /*  public static bool UserInformation(string acc, string inv, string fct, string afi)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace ApiKarbord.Controllers.Unit
                 throw;
             }
         }
-
+        */
         public static string MD5Hash(string itemToHash)
         {
             return string.Join("", MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(itemToHash)).Select(s => s.ToString("x2")));

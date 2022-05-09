@@ -48,9 +48,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(TrzAccObject.AModeCode);
@@ -74,10 +75,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by  SortAccCode";
 
-                var listTrzAcc = UnitDatabase.db.Database.SqlQuery<Web_TrzAcc>(sql);
+                var listTrzAcc =db.Database.SqlQuery<Web_TrzAcc>(sql);
                 return Ok(listTrzAcc);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -117,9 +118,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "15", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "15", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
@@ -152,10 +154,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by bodytag";
 
-                var listDftr = UnitDatabase.db.Database.SqlQuery<Web_Dftr>(sql);
+                var listDftr =db.Database.SqlQuery<Web_Dftr>(sql);
                 return Ok(listDftr);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -194,9 +196,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "16", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "16", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(ADocRObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(ADocRObject.MkzCode);
@@ -232,10 +235,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by DocNo,BandNo";
 
-                var listADocR = UnitDatabase.db.Database.SqlQuery<Web_ADocR>(sql);
+                var listADocR =db.Database.SqlQuery<Web_ADocR>(sql);
                 return Ok(listADocR);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -266,9 +269,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "17", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "17", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top(10000) * FROM  Web_TChk('{0}') AS TChk where 1 = 1", dataAccount[2]);
 
@@ -290,10 +294,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeLike("AccCode", TChkObject.AccCode);
                 sql += " order by CheckNo,Bank,Shobe";
 
-                var listTChk = UnitDatabase.db.Database.SqlQuery<Web_TChk>(sql);
+                var listTChk =db.Database.SqlQuery<Web_TChk>(sql);
                 return Ok(listTChk);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -326,9 +330,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_AGMkz(string ace, string sal, string group, AGMkzObject AGMkzObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(AGMkzObject.OprCode);
                 string accCode = UnitPublic.SpiltCodeCama(AGMkzObject.AccCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(AGMkzObject.AModeCode);
@@ -352,10 +357,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by  SortMkzCode";
 
-                var listAGMkz = UnitDatabase.db.Database.SqlQuery<Web_AGMkz>(sql);
+                var listAGMkz =db.Database.SqlQuery<Web_AGMkz>(sql);
                 return Ok(listAGMkz);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -383,9 +388,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_AGOpr(string ace, string sal, string group, AGOprObject AGOprObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "14", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string mkzCode = UnitPublic.SpiltCodeCama(AGOprObject.MkzCode);
                 string accCode = UnitPublic.SpiltCodeCama(AGOprObject.AccCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(AGOprObject.AModeCode);
@@ -403,10 +409,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by SortOprCode";
 
-                var listAGOpr = UnitDatabase.db.Database.SqlQuery<Web_AGOpr>(sql);
+                var listAGOpr =db.Database.SqlQuery<Web_AGOpr>(sql);
                 return Ok(listAGOpr);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 

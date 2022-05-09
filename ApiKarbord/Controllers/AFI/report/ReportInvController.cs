@@ -55,10 +55,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzIKala(string ace, string sal, string group, TrzIObject TrzIObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "22", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "22", 9, 0);
+            if (conStr.Length > 100)
             {
-
+                ApiModel db = new ApiModel(conStr);
                 string modeCode = UnitPublic.SpiltCodeCama(TrzIObject.ModeCode);
                 string kGruCode = UnitPublic.SpiltCodeCama(TrzIObject.KGruCode);
                 string thvlCode = UnitPublic.SpiltCodeCama(TrzIObject.ThvlCode);
@@ -84,10 +84,10 @@ namespace ApiKarbord.Controllers.AFI.report
                           );
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIObject.KalaCode);
 
-                var listTrzI = UnitDatabase.db.Database.SqlQuery<Web_TrzIKala>(sql);
+                var listTrzI = db.Database.SqlQuery<Web_TrzIKala>(sql);
                 return Ok(listTrzI);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
         public class TrzIExfObject
@@ -123,11 +123,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzIKalaExf(string ace, string sal, string group, TrzIExfObject TrzIExfObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "23", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "23", 9, 0);
+            if (conStr.Length > 100)
             {
-
-
+                ApiModel db = new ApiModel(conStr);
                 string modeCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ModeCode);
                 string kGruCode = UnitPublic.SpiltCodeCama(TrzIExfObject.KGruCode);
                 string thvlCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ThvlCode);
@@ -155,10 +154,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag ";
 
-                var listTrzIExf = UnitDatabase.db.Database.SqlQuery<Web_TrzIKalaExf>(sql);
+                var listTrzIExf = db.Database.SqlQuery<Web_TrzIKalaExf>(sql);
                 return Ok(listTrzIExf);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -201,9 +200,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_IDocR(string ace, string sal, string group, IDocRObject IDocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "24", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "24", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select top (10000) * FROM  dbo.Web_IDocR('{0}', '{1}','{2}') AS IDocR where 1 = 1 ",
                           IDocRObject.azTarikh, IDocRObject.taTarikh, dataAccount[2]);
@@ -222,10 +222,10 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by DocNo ";
 
-                var listIDocR = UnitDatabase.db.Database.SqlQuery<Web_IDocR>(sql);
+                var listIDocR = db.Database.SqlQuery<Web_IDocR>(sql);
                 return Ok(listIDocR);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
         public class KrdxObject
@@ -264,10 +264,10 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_Krdx(string ace, string sal, string group, KrdxObject KrdxObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "21", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "21", 9, 0);
+            if (conStr.Length > 100)
             {
-
+                ApiModel db = new ApiModel(conStr);
                 string invCode = UnitPublic.SpiltCodeCama(KrdxObject.InvCode);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * from (select top (10000) * FROM  dbo.Web_Krdx('{0}', '{1}',{2},'{3}','{4}','{5}') AS Krdx where 1 = 1 ",
@@ -289,10 +289,10 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += "or BodyTag = 0  order by BodyTag,DocNo ";
                 sql += " ) as a where VAmount1 is not null";
 
-                var listKrdx = UnitDatabase.db.Database.SqlQuery<Web_Krdx>(sql);
+                var listKrdx = db.Database.SqlQuery<Web_Krdx>(sql);
                 return Ok(listKrdx);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
 
@@ -302,16 +302,17 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> GetWeb_Chante_FDoc_Moved(string ace, string sal, string group)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string con = UnitDatabase.CreateConection(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "27", 9, 0);
-            if (con == "ok")
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "27", 9, 0);
+            if (conStr.Length > 100)
             {
+                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * from Web_Chante_FDoc_Moved where 1 = 1 ");
 
-                var listChante_FDoc_Moved = UnitDatabase.db.Database.SqlQuery<Web_Chante_FDoc_Moved>(sql);
+                var listChante_FDoc_Moved = db.Database.SqlQuery<Web_Chante_FDoc_Moved>(sql);
                 return Ok(listChante_FDoc_Moved);
             }
-            return Ok(con);
+            return Ok(conStr);
         }
 
     }
