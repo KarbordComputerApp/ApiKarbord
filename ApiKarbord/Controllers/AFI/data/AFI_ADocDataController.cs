@@ -352,27 +352,44 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_ChangeStatus(string ace, string sal, string group, AFI_StatusChange AFI_StatusChange)
         {
-            string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"DECLARE	@return_value int
-                            EXEC	@return_value = [dbo].[Web_SaveADoc_Status]
-		                            @DMode = {0},
-		                            @UserCode = N'{1}',
-		                            @SerialNumber = {2},
-		                            @Status = N'{3}'
-                            SELECT	'Return Value' = @return_value",
-                          AFI_StatusChange.DMode,
-                          AFI_StatusChange.UserCode,
-                          AFI_StatusChange.SerialNumber,
-                          AFI_StatusChange.Status);
-
+            int value = 0;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, "Adoc", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                var list = db.Database.SqlQuery<int>(sql);
-                await db.SaveChangesAsync();
+
+                try
+                {
+                    string sql = string.Format(CultureInfo.InvariantCulture,
+                         @"DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[Web_SaveADoc_Status]
+		                            @DMode = {0},
+		                            @UserCode = N'{1}',
+		                            @SerialNumber = {2},
+		                            @Status = N'{3}'
+                            SELECT	'Return Value' = @return_value",
+                         AFI_StatusChange.DMode,
+                         AFI_StatusChange.UserCode,
+                         AFI_StatusChange.SerialNumber,
+                         AFI_StatusChange.Status);
+
+                    value = db.Database.SqlQuery<int>(sql).Single();
+                    if (value == 0)
+                    {
+                        await db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, "ADoc", 7, "Y", 0);
                 return Ok("200");
             }
