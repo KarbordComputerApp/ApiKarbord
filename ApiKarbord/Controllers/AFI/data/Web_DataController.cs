@@ -2295,6 +2295,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 ApiModel db = new ApiModel(conStr);
                 var list = db.Web_Mkz.OrderBy(c => c.SortCode);
+                return list;
             }
             return null;
         }
