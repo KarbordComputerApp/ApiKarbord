@@ -216,7 +216,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
 		                            @ArzValue = {24},
-		                            @Amount = {25},
+		                            @Amount = {25}
                              SELECT	'Return Value' = @return_value",
                         aFI_ADocBi.SerialNumber,
                         bandNo == 0 ? aFI_ADocBi.BandNo : bandNo,
