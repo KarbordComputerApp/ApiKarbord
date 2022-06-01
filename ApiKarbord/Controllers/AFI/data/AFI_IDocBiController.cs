@@ -57,7 +57,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Up_Flag = {11},
                                     @OprCode = '{12}',
                                     @MkzCode = '{13}',
-                                    @BandSpec = '{14}'
+                                    @BandSpec = '{14}',
+                                    @ArzCode = N'{15}',
+                                    @ArzRate = {16},
+                                    @ArzValue = {17}
                             SELECT	'Return Value' = @return_value
                             ",
                         aFI_IDocBi.SerialNumber,
@@ -74,7 +77,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
                         aFI_IDocBi.MkzCode,
-                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? "")
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? ""),
+                        aFI_IDocBi.ArzCode ?? "",
+                        aFI_IDocBi.ArzRate ?? 0,
+                        aFI_IDocBi.ArzValue ?? 0
                         );
                     int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
@@ -159,7 +165,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Up_Flag = {10},
                                     @OprCode = '{11}',
                                     @MkzCode = '{12}',
-                                    @BandSpec = '{13}'
+                                    @BandSpec = '{13}',
+                                    @ArzCode = N'{14}',
+                                    @ArzRate = {15},
+                                    @ArzValue = {16}
                             SELECT	'Return Value' = @return_value
                             ",
                         aFI_IDocBi.SerialNumber,
@@ -175,7 +184,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
                         aFI_IDocBi.MkzCode,
-                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? "")
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? ""), 
+                        aFI_IDocBi.ArzCode ?? "",
+                        aFI_IDocBi.ArzRate ?? 0,
+                        aFI_IDocBi.ArzValue ?? 0
                         );
                     int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
