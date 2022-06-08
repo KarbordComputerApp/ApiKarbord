@@ -308,7 +308,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @Up_Flag = {10},
                                     @OprCode = N'{11}',
 		                            @MkzCode = N'{12}',
-                                    @BandSpec = N'{13}'
+                                    @BandSpec = N'{13}',
+                                    @ArzCode = N'{14}',
+                                    @ArzRate = {15},
+                                    @ArzValue = {16}
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
@@ -324,7 +327,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.Up_Flag,
                         item.OprCode,
                         item.MkzCode,
-                        UnitPublic.ConvertTextWebToWin(item.BandSpec ?? "")
+                        UnitPublic.ConvertTextWebToWin(item.BandSpec ?? ""),
+                        item.ArzCode ?? "",
+                        item.ArzRate ?? 0,
+                        item.ArzValue ?? 0
                         );
                         value = db.Database.SqlQuery<int>(sql).Single();
                     }

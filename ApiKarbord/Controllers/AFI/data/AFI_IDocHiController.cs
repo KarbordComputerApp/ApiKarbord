@@ -6,7 +6,10 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ApiKarbord.Controllers.Unit;
@@ -305,6 +308,96 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(conStr);
         }
+
+
+
+
+        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
+        static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
+
+        [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
+        static extern IntPtr GetProcAddress(int hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+
+        [DllImport("kernel32.dll", EntryPoint = "FreeLibrary")]
+        static extern bool FreeLibrary(int hModule);
+
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        delegate bool RegIDoctoADoc(string ConnetionString, string wDBase, string UserCode, string SerialNumbers, StringBuilder RetVal);
+
+
+        public static string CallRegIDoctoADoc(string ConnetionString, string wDBase, string UserCode, string SerialNumbers)
+        {
+            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Acc6_Web.dll");
+            const string functionName = "RegIDoctoADoc";
+
+            int libHandle = LoadLibrary(dllName);
+            if (libHandle == 0)
+                return string.Format("Could not load library \"{0}\"", dllName);
+            try
+            {
+                var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
+                if (delphiFunctionAddress == IntPtr.Zero)
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+
+                var delphiFunction = (RegIDoctoADoc)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RegIDoctoADoc));
+
+                StringBuilder RetVal = new StringBuilder(1024);
+                delphiFunction(
+                    ConnetionString,
+                    wDBase,
+                    UserCode,
+                    SerialNumbers,
+                    RetVal);
+                return RetVal.ToString();
+            }
+            finally
+            {
+                FreeLibrary(libHandle);
+            }
+        }
+
+
+
+
+        public class RegIDocToADocObject
+        {
+            public string SerialNumbers { get; set; }
+
+        }
+
+
+        [Route("api/AFI_IDocHi/AFI_RegIDocToADoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_RegIDocToADoc(string ace, string sal, string group, RegIDocToADocObject RegIDocToADocObject)
+        {
+            string log = "";
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "IDoc", 3, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                log = CallRegIDoctoADoc(
+                    connectionString,
+                    dbName,
+                    dataAccount[2],
+                    RegIDocToADocObject.SerialNumbers
+                    );
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "IDoc", 3, "Y", 0);
+            }
+            return Ok(log);
+        }
+
 
     }
 }

@@ -5186,19 +5186,19 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public static string CallGetVer()
+        public static string CallGetVer(string dllName)
         {
-            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Acc6_Web.dll");
+            string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "GetVer";
 
-            int libHandle = LoadLibrary(dllName);
+            int libHandle = LoadLibrary(dllPath);
             if (libHandle == 0)
-                return string.Format("Could not load library \"{0}\"", dllName);
+                return string.Format("Could not load library \"{0}\"", dllPath);
             try
             {
                 var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
                 if (delphiFunctionAddress == IntPtr.Zero)
-                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllPath);
 
                 var delphiFunction = (GetVer)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(GetVer));
 
@@ -5212,12 +5212,12 @@ namespace ApiKarbord.Controllers.AFI.data
             }
         }
 
-        [Route("api/Web_Data/GetVerDll")]
-        public async Task<IHttpActionResult> GetVerDll()
+        [Route("api/Web_Data/GetVerDllAcc6")]
+        public async Task<IHttpActionResult> GetVerDllAcc6()
         {
             try
             {
-                return Ok(CallGetVer());
+                return Ok(CallGetVer("Acc6_Web.dll"));
             }
             catch (Exception e)
             {
@@ -5227,7 +5227,20 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+        [Route("api/Web_Data/GetVerDllFct6")]
+        public async Task<IHttpActionResult> GetVerDllFct6()
+        {
+            try
+            {
+                return Ok(CallGetVer("Fct6_Web.dll"));
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message.ToString());
+                throw;
+            }
 
+        }
 
 
 

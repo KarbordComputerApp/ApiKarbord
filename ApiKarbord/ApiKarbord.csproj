@@ -330,6 +330,7 @@
     <Content Include="Content\css\rtl.css" />
     <Content Include="Content\css\Site.css" />
     <Content Include="Content\Dll\Acc6_Web.dll" />
+    <Content Include="Content\Dll\Fct6_Web.dll" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\L.png" />
     <Content Include="Content\img\L5.png" />

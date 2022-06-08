@@ -322,7 +322,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @LinkNumber = {17},
                                     @LinkYear = {18},
                                     @LinkProg = N'{19}',
-                                    @BandSpec = N'{20}'
+                                    @BandSpec = N'{20}',
+                                    @ArzCode = N'{21}',
+                                    @ArzRate = {22},
+                                    @ArzValue = {23}
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
@@ -345,7 +348,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.LinkNumber ?? 0,
                         item.LinkYear ?? 0,
                         item.LinkProg, 
-                        UnitPublic.ConvertTextWebToWin(item.BandSpec ?? "")
+                        UnitPublic.ConvertTextWebToWin(item.BandSpec ?? ""),
+                        item.ArzCode ?? "",
+                        item.ArzRate ?? 0,
+                        item.ArzValue ?? 0
                         //item.flagTest == "Y" ? "Web_SaveFDoc_BI_Temp" : "Web_SaveFDoc_BI"
                         );
                         value = db.Database.SqlQuery<int>(sql).Single();

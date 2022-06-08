@@ -175,6 +175,10 @@
 
         public string OprName { get; set; }
 
+        public string ArzCode { get; set; }
+
+        public string ArzName { get; set; }
+
 
         /*[Key]
         public long SerialNumber { get; set; } 

@@ -215,5 +215,9 @@
         public string CustShahrestan { get; set; }
 
         public string CustRegion { get; set; }
+
+        public string ArzCode { get; set; }
+
+        public string ArzName { get; set; }
     }
 }

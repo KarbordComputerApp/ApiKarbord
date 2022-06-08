@@ -207,6 +207,10 @@
 
         public double? Discount { get; set; }
 
+        public string ArzCode { get; set; }
+
+        public string ArzName { get; set; }
+
       
     }
 }
