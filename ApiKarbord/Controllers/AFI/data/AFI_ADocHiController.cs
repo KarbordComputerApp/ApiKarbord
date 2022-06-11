@@ -64,7 +64,7 @@ namespace ApiKarbord.Controllers.AFI.data
            */
 
         //string a = HttpContext.Current.Server.MapPath("~\\Content\\dll\\Acc6_Web.dll");
-        // [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
+       //  [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
 
         //  public static extern bool GetVer(StringBuilder RetVal);
         // public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);

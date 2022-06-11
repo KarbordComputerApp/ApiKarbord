@@ -5107,6 +5107,171 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+
+        public class AFI_SaveArz
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+
+            public double? Rate { get; set; }
+
+        }
+
+        // post: api/AFI_SaveArz
+        [Route("api/Web_Data/AFI_SaveArz/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveArz(string ace, string sal, string group, AFI_SaveArz aFI_SaveArz)
+        {
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                      @" DECLARE @oCode nvarchar(100)
+                           EXEC	[dbo].[Web_SaveArz]
+		                        @BranchCode = {0},
+		                        @UserCode = N'{1}',
+		                        @Code = '{2}',
+		                        @Name = N'{3}',
+                                @Spec = N'{4}',
+                                @Rate = {5},
+		                        @oCode = @oCode OUTPUT
+                        SELECT	@oCode as N'@oCode' ",
+                                 aFI_SaveArz.BranchCode ?? 0,
+                                 aFI_SaveArz.UserCode,
+                                 aFI_SaveArz.Code,
+                                 aFI_SaveArz.Name ?? "",
+                                 aFI_SaveArz.Spec ?? "",
+                                 aFI_SaveArz.Rate ?? 0);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<string>(sql);
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        // Get: api/AFI_DelArz
+        [Route("api/Web_Data/AFI_DelArz/{ace}/{sal}/{group}/{ArzCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelArz(string ace, string sal, string group, string ArzCode)
+        {
+            string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelArz]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                            ArzCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<int>(sql);
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        public class AFI_TestArz
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestArz
+        {
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestArz/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestArz))]
+        public async Task<IHttpActionResult> PostWeb_TestArz(string ace, string sal, string group, AFI_TestArz AFI_TestArz)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                           @"EXEC [dbo].[Web_TestArz] @Code = '{0}' , @UserCode = '{1}'",
+                           AFI_TestArz.Code,
+                           dataAccount[2]);
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var result = db.Database.SqlQuery<TestArz>(sql);
+                var list = JsonConvert.SerializeObject(result);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        public class TestArz_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestArz_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestArz_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestArz_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestArz_Delete(string ace, string sal, string group, TestArz_DeleteObject TestArz_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestArz_Delete] @Code = '{0}', @UserCode = '{1}' ", TestArz_DeleteObject.Code, dataAccount[2]);
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var result = db.Database.SqlQuery<TestArz_Delete>(sql);
+                var list = JsonConvert.SerializeObject(result);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
+
+
+
+
+
         public class RprtCols_New
         {
             public string dataField { get; set; }
