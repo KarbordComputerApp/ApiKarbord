@@ -329,7 +329,9 @@
     <Content Include="Content\css\PersianDatePicker.min.css" />
     <Content Include="Content\css\rtl.css" />
     <Content Include="Content\css\Site.css" />
+    <Content Include="Content\Dll\acc5\exe\Acc6Doct.dll" />
     <Content Include="Content\Dll\Acc6_Web.dll" />
+    <Content Include="Content\Dll\exe\Ace3Client.dll" />
     <Content Include="Content\Dll\Fct6_Web.dll" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\L.png" />
