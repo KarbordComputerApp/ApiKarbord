@@ -516,7 +516,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
+        /*[DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
         static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
 
         [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
@@ -561,9 +561,12 @@ namespace ApiKarbord.Controllers.AFI.data
                 FreeLibrary(libHandle);
             }
         }
+        */
 
 
 
+        [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
+        public static extern bool RegFDoctoADoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
 
         public class RegFDocToADocObject
         {
@@ -576,7 +579,7 @@ namespace ApiKarbord.Controllers.AFI.data
         [Route("api/AFI_FDocHi/AFI_RegFDocToADoc/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostAFI_RegFDocToADoc(string ace, string sal, string group, RegFDocToADocObject RegFDocToADocObject)
         {
-            string log = "";
+            StringBuilder RetVal = new StringBuilder(1024);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, 0);
@@ -591,18 +594,19 @@ namespace ApiKarbord.Controllers.AFI.data
                          dbName,
                          UnitDatabase.SqlServerName
                          );
-
-                log = CallRegFDoctoADoc(
+               
+                RegFDoctoADoc(
                     connectionString,
                     dbName,
                     dataAccount[2],
                     RegFDocToADocObject.ModeCode,
-                    RegFDocToADocObject.SerialNumbers
+                    RegFDocToADocObject.SerialNumbers,
+                    RetVal
                     );
 
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
             }
-            return Ok(log);
+            return Ok(RetVal.ToString());
         }
 
 

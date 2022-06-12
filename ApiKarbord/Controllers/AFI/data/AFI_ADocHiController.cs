@@ -21,56 +21,8 @@ namespace ApiKarbord.Controllers.AFI.data
     public class AFI_ADocHiController : ApiController
     {
 
-        /*   [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
-           static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
 
-           [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
-           static extern IntPtr GetProcAddress(int hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
-
-           [DllImport("kernel32.dll", EntryPoint = "FreeLibrary")]
-           static extern bool FreeLibrary(int hModule);
-
-
-           [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-           delegate bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, ref string RetVal);
-
-
-           public static void CallRecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber)
-           {
-               string dllName = "Acc6_Web.dll";//HttpContext.Current.Server.MapPath("~\\Content\\dll\\Acc6_Web.dll");
-               const string functionName = "RecoverChecks";
-
-               int libHandle = LoadLibrary(dllName);
-               if (libHandle == 0)
-                   throw new Exception(string.Format("Could not load library \"{0}\"", dllName));
-               try
-               {
-                   var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
-                   if (delphiFunctionAddress == IntPtr.Zero)
-                       throw new Exception(string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName));
-
-                   var delphiFunction = (RecoverChecks)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RecoverChecks));
-
-                   const int stringBufferSize = 1024;
-                   var outputStringBuffer = new String('\x00', stringBufferSize);
-
-                   var a = delphiFunction(ConnetionString, wDBase, UserCode, SerialNumber, ref outputStringBuffer);
-               }
-               finally
-               {
-                   FreeLibrary(libHandle);
-               }
-           }
-           */
-
-        //string a = HttpContext.Current.Server.MapPath("~\\Content\\dll\\Acc6_Web.dll");
-       //  [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
-
-        //  public static extern bool GetVer(StringBuilder RetVal);
-        // public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
-
-
-        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
+       /* [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
         static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
 
         [DllImport("kernel32.dll", EntryPoint = "GetProcAddress")]
@@ -82,6 +34,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         delegate bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
+
+
 
         public static string CallRecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks)
         {
@@ -114,7 +68,10 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 FreeLibrary(libHandle);
             }
-        }
+        }*/
+
+        [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
+        public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
 
 
         public class AFI_ADocHi_i
@@ -421,13 +378,14 @@ namespace ApiKarbord.Controllers.AFI.data
                 //string dllPath = @"C:\a\Acc6_Web.dll";
                 //Assembly a = Assembly.Load(dllPath);
 
-                CallRecoverChecks(
+                StringBuilder RetVal = new StringBuilder(1024);
+                RecoverChecks(
                     connectionString,
                     dbName,
                     dataAccount[2],
                     AFI_ADocHi_u.SerialNumber,
                     darChecks,
-                    parChecks);
+                    parChecks, RetVal);
 
                 //FreeLibrary(hDLL)
                 //string log = str.ToString();
@@ -592,14 +550,15 @@ namespace ApiKarbord.Controllers.AFI.data
                              UnitDatabase.SqlServerName
                              );
 
-
-                    string log = CallRecoverChecks(
+                    StringBuilder RetVal = new StringBuilder(1024);
+                    RecoverChecks(
                         connectionString,
                         dbName,
                         dataAccount[2],
                         Convert.ToInt64(serials[0]),
                         darChecks,
-                        parChecks
+                        parChecks,
+                        RetVal
                         );
                 }
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
@@ -663,14 +622,15 @@ namespace ApiKarbord.Controllers.AFI.data
                          dbName,
                          UnitDatabase.SqlServerName
                          );
-
-                string log = CallRecoverChecks(
+                StringBuilder RetVal = new StringBuilder(1024);
+                RecoverChecks(
                     connectionString,
                     dbName,
                     dataAccount[2],
                     0,
                     darChecks,
-                    parChecks
+                    parChecks,
+                    RetVal
                     );
 
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);

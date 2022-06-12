@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -733,6 +735,24 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+
+        [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
+        public static extern bool GetVer(StringBuilder RetVal);
+
+        [Route("api/FDocData/GetVerDllFct6")]
+        public async Task<IHttpActionResult> GetVerDllAcc6()
+        {
+            try
+            {
+                StringBuilder RetVal = new StringBuilder(1024);
+                GetVer(RetVal);
+                return Ok(RetVal.ToString());
+            }
+            catch (Exception e)
+            {
+                return Ok("Error : " + e.Message.ToString());
+            }
+        }
 
 
     }

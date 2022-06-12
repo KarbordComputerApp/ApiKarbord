@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -14,6 +16,7 @@ using System.Web.Http.Results;
 using ApiKarbord.Controllers.Unit;
 using ApiKarbord.Models;
 using Newtonsoft.Json;
+
 
 
 namespace ApiKarbord.Controllers.AFI.data
@@ -602,6 +605,24 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
+        public static extern bool GetVer(StringBuilder RetVal);
+
+        [Route("api/ADocData/GetVerDllAcc6")]
+        public async Task<IHttpActionResult> GetVerDllAcc6()
+        {
+            try
+            {
+                StringBuilder RetVal = new StringBuilder(1024);
+                GetVer(RetVal);
+                return Ok(RetVal.ToString());
+            }
+            catch (Exception e)
+            {
+                return Ok("Error : " + e.Message.ToString());
+            }
+        }
 
     }
+
 }
