@@ -11,6 +11,8 @@
         [Key]
         public string Code { get; set; }
 
+        public string LtnCode { get; set; }
+
         public string Name { get; set; }
 
         public long SortName { get; set; }
@@ -18,5 +20,7 @@
         public string Spec { get; set; }
 
         public double? Rate { get; set; }
+
+
     }
 }

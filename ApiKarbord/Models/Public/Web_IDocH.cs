@@ -179,6 +179,8 @@
 
         public string ArzName { get; set; }
 
+        public double? ArzRate { get; set; }
+
 
         /*[Key]
         public long SerialNumber { get; set; } 

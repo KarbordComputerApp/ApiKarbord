@@ -161,7 +161,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F18,
                                        F19,
                                        F20, 
-                                       UpdateDate,ArzCode,ArzName,
+                                       UpdateDate,ArzCode,ArzName,ArzRate,
                                        CustEcoCode,CustMelliCode,CustTel,CustFax,CustMobile,CustEmail,CustCity,CustStreet,CustAlley,CustPlack,CustZipCode,CustAddress,CustOstan,CustShahrestan,CustRegion
                                        from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        0,

@@ -175,7 +175,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlOstan,
                                        ThvlShahrestan,
                                        ThvlEcoCode,
-                                       ThvlMelliCode,ArzCode,ArzName
+                                       ThvlMelliCode,ArzCode,ArzName,ArzRate
                                        from Web_IDocH_F(3,'{0}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo) and (@ModeCode = ''  or ModeCode = @ModeCode)   ", IDocHMinObject.user);
 
 

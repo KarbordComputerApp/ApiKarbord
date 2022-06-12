@@ -219,5 +219,7 @@
         public string ArzCode { get; set; }
 
         public string ArzName { get; set; }
+
+        public double? ArzRate { get; set; }
     }
 }
