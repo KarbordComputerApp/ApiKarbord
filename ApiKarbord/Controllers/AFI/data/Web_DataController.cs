@@ -5336,7 +5336,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-/*
+
         [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
         static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
 
@@ -5347,11 +5347,8 @@ namespace ApiKarbord.Controllers.AFI.data
         static extern bool FreeLibrary(int hModule);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        delegate bool GetVer1(StringBuilder RetVal);
+        delegate bool GetVer(StringBuilder RetVal);
 
-
-        [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
-        public static extern bool GetVer(StringBuilder RetVal);
 
 
         public static string CallGetVer(string dllName)
@@ -5361,7 +5358,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             int libHandle = LoadLibrary(dllPath);
             if (libHandle == 0)
-                return string.Format(@"Could not load library '{0}'", dllPath);
+                return string.Format("Could not load library \"{0}\"", dllPath);
             try
             {
                 var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
@@ -5378,22 +5375,39 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 FreeLibrary(libHandle);
             }
+        }
+
+
+
+        [Route("api/Web_Data/GetVerDllAcc6")]
+        public async Task<IHttpActionResult> GetVerDllAcc6()
+        {
             try
             {
-                StringBuilder RetVal = new StringBuilder(1024);
-                GetVer(RetVal);
-                return RetVal.ToString();
+                return Ok(CallGetVer("Acc6_Web.dll"));
             }
             catch (Exception e)
             {
-                return "11 : " + e.Message.ToString();
+                return Ok(e.Message.ToString());
+                throw;
             }
+
         }
 
-    */
+        [Route("api/Web_Data/GetVerDllFct6")]
+        public async Task<IHttpActionResult> GetVerDllFct6()
+        {
+            try
+            {
+                return Ok(CallGetVer("Fct6_Web.dll"));
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message.ToString());
+                throw;
+            }
 
-
-
+        }
 
 
 

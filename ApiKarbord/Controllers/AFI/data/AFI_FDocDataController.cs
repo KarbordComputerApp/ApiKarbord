@@ -736,7 +736,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
+       /* [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
         public static extern bool GetVer(StringBuilder RetVal);
 
         [Route("api/FDocData/GetVerDllFct6")]
@@ -752,7 +752,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 return Ok("Error : " + e.Message.ToString());
             }
-        }
+        }*/
 
 
     }

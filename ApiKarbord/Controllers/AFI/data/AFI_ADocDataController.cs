@@ -605,7 +605,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
+      /*  [DllImport("Acc6_Web.dll", CharSet = CharSet.Unicode)]
         public static extern bool GetVer(StringBuilder RetVal);
 
         [Route("api/ADocData/GetVerDllAcc6")]
@@ -621,7 +621,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 return Ok("Error : " + e.Message.ToString());
             }
-        }
+        }*/
 
     }
 
