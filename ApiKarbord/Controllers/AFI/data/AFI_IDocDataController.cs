@@ -253,7 +253,8 @@ namespace ApiKarbord.Controllers.AFI.data
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
+                string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
+                                            DeghatR,BandSpec,ArzValue
                                          FROM Web_IDocB WHERE SerialNumber = {0}", serialNumber);
                 var listIDocB = db.Database.SqlQuery<Web_IDocB>(sql);
                 return Ok(listIDocB);
@@ -294,7 +295,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
+                                              DeghatR,BandSpec,ArzValue
                                          FROM Web_IDocB WHERE SerialNumber = {0}", serialnumber);
                 var listIDocB = db.Database.SqlQuery<Web_IDocB>(sql1);
                 return Ok(listIDocB);

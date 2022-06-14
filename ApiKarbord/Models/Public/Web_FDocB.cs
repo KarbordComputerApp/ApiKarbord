@@ -66,6 +66,8 @@
 
         public string LinkProg { get; set; }
 
+        public double? ArzValue { get; set; }
+
 
     }
 }

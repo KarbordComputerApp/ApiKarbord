@@ -52,5 +52,7 @@
         public byte? DeghatR { get; set; }
 
         public string BandSpec { get; set; }
+
+        public double? ArzValue { get; set; }
     }
 }
