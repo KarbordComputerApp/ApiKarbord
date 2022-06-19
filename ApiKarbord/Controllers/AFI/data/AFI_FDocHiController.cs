@@ -529,7 +529,6 @@ namespace ApiKarbord.Controllers.AFI.data
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         delegate bool RegFDoctoADoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
 
-
         public static string CallRegFDoctoADoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
             string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Fct6_Web.dll");
@@ -562,6 +561,44 @@ namespace ApiKarbord.Controllers.AFI.data
             }
         }
 
+
+
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        delegate bool RegFDoctoIDoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
+
+
+        public static string CallRegFDoctoIDoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
+        {
+            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Fct6_Web.dll");
+            const string functionName = "RegFDoctoIDoc";
+
+            int libHandle = LoadLibrary(dllName);
+            if (libHandle == 0)
+                return string.Format("Could not load library \"{0}\"", dllName);
+            try
+            {
+                var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
+                if (delphiFunctionAddress == IntPtr.Zero)
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+
+                var delphiFunction = (RegFDoctoIDoc)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RegFDoctoIDoc));
+
+                StringBuilder RetVal = new StringBuilder(1024);
+                delphiFunction(
+                    ConnetionString,
+                    wDBase,
+                    wUserCode,
+                    wModeCode,
+                    SerialNumbers,
+                    RetVal);
+                return RetVal.ToString();
+            }
+            finally
+            {
+                FreeLibrary(libHandle);
+            }
+        }
 
 
 
@@ -605,6 +642,47 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(log);
         }
 
+
+
+        public class RegFDocToIDocObject
+        {
+            public string SerialNumbers { get; set; }
+            public string ModeCode { get; set; }
+
+        }
+
+
+        [Route("api/AFI_FDocHi/AFI_RegFDocToIDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_RegFDocToIDoc(string ace, string sal, string group, RegFDocToIDocObject RegFDocToIDocObject)
+        {
+            string log = "";
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                log = CallRegFDoctoIDoc(
+                    connectionString,
+                    dbName,
+                    dataAccount[2],
+                    RegFDocToIDocObject.ModeCode,
+                    RegFDocToIDocObject.SerialNumbers
+                    );
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
+            }
+            return Ok(log);
+        }
 
     }
 }

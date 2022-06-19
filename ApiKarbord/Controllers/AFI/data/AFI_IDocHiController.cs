@@ -328,7 +328,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public static string CallRegIDoctoADoc(string ConnetionString, string wDBase, string UserCode, string SerialNumbers)
         {
-            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Acc6_Web.dll");
+            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Inv6_Web.dll");
             const string functionName = "RegIDoctoADoc";
 
             int libHandle = LoadLibrary(dllName);

@@ -58,16 +58,15 @@
 
         public long? LFctSerialNumber { get; set; }
 
-        public int? InvSerialNumber { get; set; }
+        public long? InvSerialNumber { get; set; }
 
-        public int? LinkNumber { get; set; }
+        public long? LinkNumber { get; set; }
 
-        public Int16? LinkYear { get; set; }
+        public int? LinkYear { get; set; }
 
         public string LinkProg { get; set; }
 
         public double? ArzValue { get; set; }
-
 
     }
 }
