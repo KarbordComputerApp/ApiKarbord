@@ -83,19 +83,20 @@ namespace ApiKarbord.Controllers.AFI.data
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         delegate bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
 
-        public static string CallRecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks)
+        public static string CallRecoverChecks(string ace, string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks)
         {
-            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Acc6_Web.dll");
+            string dllName = ace == "Web8" ? "Acc6_Web.dll" : "Afi2_Web.dll";
+            string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RecoverChecks";
 
-            int libHandle = LoadLibrary(dllName);
+            int libHandle = LoadLibrary(dllPath);
             if (libHandle == 0)
-                return string.Format("Could not load library \"{0}\"", dllName);
+                return string.Format("Could not load library \"{0}\"", dllPath);
             try
             {
                 var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
                 if (delphiFunctionAddress == IntPtr.Zero)
-                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllPath);
 
                 var delphiFunction = (RecoverChecks)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RecoverChecks));
 
@@ -383,56 +384,52 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
 
-                if (ace == "Web8")
+                sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", AFI_ADocHi_u.SerialNumber);
+                string darChecks = "";
+                string parChecks = "";
+                var listSanad = db.Database.SqlQuery<Web_ADocB>(sql);
+
+                foreach (var item in listSanad)
                 {
+                    if (item.PDMode == 1)
+                        darChecks += darChecks + item.CheckNo + ',';
 
-                    sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", AFI_ADocHi_u.SerialNumber);
-                    string darChecks = "";
-                    string parChecks = "";
-                    var listSanad = db.Database.SqlQuery<Web_ADocB>(sql);
-
-                    foreach (var item in listSanad)
-                    {
-                        if (item.PDMode == 1)
-                            darChecks += darChecks + item.CheckNo + ',';
-
-                        if (item.PDMode == 2)
-                            parChecks += parChecks + item.CheckNo + ',';
-                    }
-
-                    if (darChecks.Length > 0)
-                        darChecks = darChecks.Remove(darChecks.Length - 1);
-
-                    if (parChecks.Length > 0)
-                        parChecks = parChecks.Remove(parChecks.Length - 1);
-
-
-                    string dbName = UnitDatabase.DatabaseName(ace, sal, group);
-
-                    //   public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
-
-                    StringBuilder str = new StringBuilder(1024);
-
-                    string connectionString = string.Format(
-                             @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
-                             UnitDatabase.SqlPassword,
-                             UnitDatabase.SqlUserName,
-                             dbName,
-                             UnitDatabase.SqlServerName
-                             );
-
-                    //string dllPath = @"C:\a\Acc6_Web.dll";
-                    //Assembly a = Assembly.Load(dllPath);
-
-                    CallRecoverChecks(
-                        connectionString,
-                        dbName,
-                        dataAccount[2],
-                        AFI_ADocHi_u.SerialNumber,
-                        darChecks,
-                        parChecks);
-
+                    if (item.PDMode == 2)
+                        parChecks += parChecks + item.CheckNo + ',';
                 }
+
+                if (darChecks.Length > 0)
+                    darChecks = darChecks.Remove(darChecks.Length - 1);
+
+                if (parChecks.Length > 0)
+                    parChecks = parChecks.Remove(parChecks.Length - 1);
+
+
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+
+                //   public static extern bool RecoverChecks(string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks, StringBuilder RetVal);
+
+                StringBuilder str = new StringBuilder(1024);
+
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                //string dllPath = @"C:\a\Acc6_Web.dll";
+                //Assembly a = Assembly.Load(dllPath);
+
+                CallRecoverChecks(
+                    ace,
+                    connectionString,
+                    dbName,
+                    dataAccount[2],
+                    AFI_ADocHi_u.SerialNumber,
+                    darChecks,
+                    parChecks);
 
 
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, AFI_ADocHi_u.flagLog, 0);
@@ -558,7 +555,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
                 string[] serials = value.Split('-');
-                if (AFI_ADocHi_i.flagTest != "Y" && ace == "Web8")
+                if (AFI_ADocHi_i.flagTest != "Y")
                 {
 
                     sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", serials[0]);
@@ -593,6 +590,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
                     string log = CallRecoverChecks(
+                        ace,
                         connectionString,
                         dbName,
                         dataAccount[2],
@@ -639,40 +637,37 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (parChecks.Length > 0)
                     parChecks = parChecks.Remove(parChecks.Length - 1);
 
-                if (ace == "Web8")
-                {
-                    sql = string.Format(@"DECLARE	@return_value int
+                sql = string.Format(@"DECLARE	@return_value int
                                                  EXEC	@return_value = [dbo].[Web_SaveADoc_Del]
 		                                                @SerialNumber = {0}
                                                  SELECT	'Return Value' = @return_value"
-                                            , SerialNumber);
+                                        , SerialNumber);
 
-                    int value = db.Database.SqlQuery<int>(sql).Single();
-                    if (value > 0)
-                    {
-                        await db.SaveChangesAsync();
-                    }
-
-                    string dbName = UnitDatabase.DatabaseName(ace, sal, group);
-
-
-                    string connectionString = string.Format(
-                             @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
-                             UnitDatabase.SqlPassword,
-                             UnitDatabase.SqlUserName,
-                             dbName,
-                             UnitDatabase.SqlServerName
-                             );
-
-                    string log = CallRecoverChecks(
-                        connectionString,
-                        dbName,
-                        dataAccount[2],
-                        0,
-                        darChecks,
-                        parChecks
-                        );
+                int value = db.Database.SqlQuery<int>(sql).Single();
+                if (value > 0)
+                {
+                    await db.SaveChangesAsync();
                 }
+
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+
+
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                string log = CallRecoverChecks(
+                    ace, connectionString,
+                    dbName,
+                    dataAccount[2],
+                    0,
+                    darChecks,
+                    parChecks
+                    );
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
             }
             return Ok(conStr);

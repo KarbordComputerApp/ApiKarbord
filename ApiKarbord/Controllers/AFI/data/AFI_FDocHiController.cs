@@ -529,19 +529,20 @@ namespace ApiKarbord.Controllers.AFI.data
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         delegate bool RegFDoctoADoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
 
-        public static string CallRegFDoctoADoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
+        public static string CallRegFDoctoADoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Fct6_Web.dll");
+            string dllName = ace == "Web8" ? "Fct6_Web.dll" : "Afi2_Web.dll";
+            string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegFDoctoADoc";
 
-            int libHandle = LoadLibrary(dllName);
+            int libHandle = LoadLibrary(dllPath);
             if (libHandle == 0)
-                return string.Format("Could not load library \"{0}\"", dllName);
+                return string.Format("Could not load library \"{0}\"", dllPath);
             try
             {
                 var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
                 if (delphiFunctionAddress == IntPtr.Zero)
-                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllPath);
 
                 var delphiFunction = (RegFDoctoADoc)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RegFDoctoADoc));
 
@@ -568,19 +569,20 @@ namespace ApiKarbord.Controllers.AFI.data
         delegate bool RegFDoctoIDoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
 
 
-        public static string CallRegFDoctoIDoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
+        public static string CallRegFDoctoIDoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Fct6_Web.dll");
+            string dllName = ace == "Web8" ? "Fct6_Web.dll" : "Afi2_Web.dll";
+            string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegFDoctoIDoc";
 
-            int libHandle = LoadLibrary(dllName);
+            int libHandle = LoadLibrary(dllPath);
             if (libHandle == 0)
-                return string.Format("Could not load library \"{0}\"", dllName);
+                return string.Format("Could not load library \"{0}\"", dllPath);
             try
             {
                 var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
                 if (delphiFunctionAddress == IntPtr.Zero)
-                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllPath);
 
                 var delphiFunction = (RegFDoctoIDoc)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RegFDoctoIDoc));
 
@@ -630,6 +632,7 @@ namespace ApiKarbord.Controllers.AFI.data
                          );
 
                 log = CallRegFDoctoADoc(
+                    ace,
                     connectionString,
                     dbName,
                     dataAccount[2],
@@ -672,7 +675,7 @@ namespace ApiKarbord.Controllers.AFI.data
                          );
 
                 log = CallRegFDoctoIDoc(
-                    connectionString,
+                    ace,connectionString,
                     dbName,
                     dataAccount[2],
                     RegFDocToIDocObject.ModeCode,

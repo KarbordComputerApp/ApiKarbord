@@ -5409,6 +5409,36 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+        [Route("api/Web_Data/GetVerDllInv6")]
+        public async Task<IHttpActionResult> GetVerDllInv6()
+        {
+            try
+            {
+                return Ok(CallGetVer("Inv6_Web.dll"));
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message.ToString());
+                throw;
+            }
+
+        }
+
+        [Route("api/Web_Data/GetVerDllAfi2")]
+        public async Task<IHttpActionResult> GetVerDllAfi2()
+        {
+            try
+            {
+                return Ok(CallGetVer("Afi2_Web.dll"));
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message.ToString());
+                throw;
+            }
+
+        }
+
 
 
 

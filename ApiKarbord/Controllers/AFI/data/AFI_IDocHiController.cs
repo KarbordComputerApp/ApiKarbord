@@ -312,6 +312,19 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         [DllImport("kernel32.dll", EntryPoint = "LoadLibrary")]
         static extern int LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpLibFileName);
 
@@ -323,22 +336,22 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        delegate bool RegIDoctoADoc(string ConnetionString, string wDBase, string UserCode, string SerialNumbers, StringBuilder RetVal);
+        delegate bool RegIDoctoADoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
 
-
-        public static string CallRegIDoctoADoc(string ConnetionString, string wDBase, string UserCode, string SerialNumbers)
+        public static string CallRegIDoctoADoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = HttpContext.Current.Server.MapPath("~/Content/Dll/Inv6_Web.dll");
+            string dllName = ace == "Web8" ? "Inv6_Web.dll" : "Afi2_Web.dll";
+            string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegIDoctoADoc";
 
-            int libHandle = LoadLibrary(dllName);
+            int libHandle = LoadLibrary(dllPath);
             if (libHandle == 0)
-                return string.Format("Could not load library \"{0}\"", dllName);
+                return string.Format("Could not load library \"{0}\"", dllPath);
             try
             {
                 var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
                 if (delphiFunctionAddress == IntPtr.Zero)
-                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllName);
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllPath);
 
                 var delphiFunction = (RegIDoctoADoc)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RegIDoctoADoc));
 
@@ -346,7 +359,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 delphiFunction(
                     ConnetionString,
                     wDBase,
-                    UserCode,
+                    wUserCode,
+                    wModeCode,
                     SerialNumbers,
                     RetVal);
                 return RetVal.ToString();
@@ -360,20 +374,60 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class RegIDocToADocObject
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        delegate bool RegIDoctoFDoc(string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers, StringBuilder RetVal);
+
+
+        public static string CallRegIDoctoFDoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
+        {
+            string dllName = ace == "Web8" ? "Inv6_Web.dll" : "Afi2_Web.dll";
+            string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
+            const string functionName = "RegIDoctoFDoc";
+
+            int libHandle = LoadLibrary(dllPath);
+            if (libHandle == 0)
+                return string.Format("Could not load library \"{0}\"", dllPath);
+            try
+            {
+                var delphiFunctionAddress = GetProcAddress(libHandle, functionName);
+                if (delphiFunctionAddress == IntPtr.Zero)
+                    return string.Format("Can't find function \"{0}\" in library \"{1}\"", functionName, dllPath);
+
+                var delphiFunction = (RegIDoctoFDoc)Marshal.GetDelegateForFunctionPointer(delphiFunctionAddress, typeof(RegIDoctoFDoc));
+
+                StringBuilder RetVal = new StringBuilder(1024);
+                delphiFunction(
+                    ConnetionString,
+                    wDBase,
+                    wUserCode,
+                    wModeCode,
+                    SerialNumbers,
+                    RetVal);
+                return RetVal.ToString();
+            }
+            finally
+            {
+                FreeLibrary(libHandle);
+            }
+        }
+
+
+
+        public class RegIDoctoADocObject
         {
             public string SerialNumbers { get; set; }
+            public string ModeCode { get; set; }
 
         }
 
 
-        [Route("api/AFI_IDocHi/AFI_RegIDocToADoc/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostAFI_RegIDocToADoc(string ace, string sal, string group, RegIDocToADocObject RegIDocToADocObject)
+        [Route("api/AFI_IDocHi/AFI_RegIDoctoADoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_RegIDoctoADoc(string ace, string sal, string group, RegIDoctoADocObject RegIDoctoADocObject)
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
-            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "IDoc", 3, 0);
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -387,16 +441,64 @@ namespace ApiKarbord.Controllers.AFI.data
                          );
 
                 log = CallRegIDoctoADoc(
+                    ace,
                     connectionString,
                     dbName,
                     dataAccount[2],
-                    RegIDocToADocObject.SerialNumbers
+                    RegIDoctoADocObject.ModeCode,
+                    RegIDoctoADocObject.SerialNumbers
                     );
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "IDoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
             }
             return Ok(log);
         }
+
+
+
+        public class RegIDoctoFDocObject
+        {
+            public string SerialNumbers { get; set; }
+            public string ModeCode { get; set; }
+
+        }
+
+
+        [Route("api/AFI_IDocHi/AFI_RegIDoctoFDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_RegIDoctoFDoc(string ace, string sal, string group, RegIDoctoFDocObject RegIDoctoFDocObject)
+        {
+            string log = "";
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "", 0, 0);
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string dbName = UnitDatabase.DatabaseName(ace, sal, group);
+                string connectionString = string.Format(
+                         @"Provider =SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}",
+                         UnitDatabase.SqlPassword,
+                         UnitDatabase.SqlUserName,
+                         dbName,
+                         UnitDatabase.SqlServerName
+                         );
+
+                log = CallRegIDoctoFDoc(
+                    ace, connectionString,
+                    dbName,
+                    dataAccount[2],
+                    RegIDoctoFDocObject.ModeCode,
+                    RegIDoctoFDocObject.SerialNumbers
+                    );
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
+            }
+            return Ok(log);
+        }
+
+
+
+
 
 
     }
