@@ -62,7 +62,7 @@
 
         public long? LinkNumber { get; set; }
 
-        public int? LinkYear { get; set; }
+        public Int16? LinkYear { get; set; }
 
         public string LinkProg { get; set; }
 
