@@ -161,10 +161,6 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
 
-
-
-
-
         public class IDocRObject
         {
             public string azTarikh { get; set; }
@@ -314,6 +310,77 @@ namespace ApiKarbord.Controllers.AFI.report
             }
             return Ok(conStr);
         }
+
+
+
+
+
+        public class Web_TrzIKalaVstr
+        {
+            public string KalaCode { get; set; }
+            public string KalaName { get; set; }
+
+            //public string SortKalaCode { get; set; }
+
+            //public byte? KalaDeghatM1 { get; set; }
+
+            //public byte? KalaDeghatM2 { get; set; }
+
+            //public byte? KalaDeghatM3 { get; set; }
+
+            public double? MAmount1 { get; set; }
+
+            public double? MAmount2 { get; set; }
+
+            public double? MAmount3 { get; set; }
+
+            public double MTotalPrice { get; set; }
+
+        }
+
+        public class TrzIKalaVstrObject
+        {
+            public string ModeCode { get; set; }
+
+            public string DocDate { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+
+        }
+
+        // Post: api/ReportInv/TrzIKalaVstr گزارش موجودی انبار  
+        // HE_Report_TrzIKalaVstr
+        [Route("api/ReportInv/TrzIKalaVstr/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrzIKalaVstr(string ace, string sal, string group, TrzIKalaVstrObject TrzIKalaVstrbject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "22", 9, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKalaVstr('{0}','{1}','{2}','{3}') AS TrzI where 1 = 1 ",
+                          TrzIKalaVstrbject.ModeCode,
+                          TrzIKalaVstrbject.DocDate,
+                          TrzIKalaVstrbject.InvCode,
+                          dataAccount[2]
+                          );
+                if (TrzIKalaVstrbject.KalaCode != "")
+                {
+                    sql += " and KalaCode = " + TrzIKalaVstrbject.KalaCode;
+                }
+                
+                var listTrzIKalaVstr = db.Database.SqlQuery<Web_TrzIKalaVstr>(sql);
+                return Ok(listTrzIKalaVstr);
+            }
+            return Ok(conStr);
+        }
+
+
 
     }
 }
