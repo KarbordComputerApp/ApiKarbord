@@ -34,7 +34,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 4, aFI_IDocBi.BandNo ?? 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 4, aFI_IDocBi.BandNo ?? 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -115,7 +115,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 5, bandNo == 0 ? aFI_IDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 5, bandNo == 0 ? aFI_IDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -217,7 +217,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_IDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, int InOut, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? "IIDoc" : "IODoc", 6, BandNo);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, InOut == 1 ? "IIDoc" : "IODoc", 6, BandNo);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -281,7 +281,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? "IIDoc" : "IODoc", 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? "IIDoc" : "IODoc", 5, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -379,7 +379,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, InOut, 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ConvertObject.SerialNumber, InOut, 5, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

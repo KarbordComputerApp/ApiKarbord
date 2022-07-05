@@ -97,7 +97,7 @@ namespace ApiKarbord.Controllers.Unit
 
         //ایجاد کانکشن استرینگ 
         //اگر سایت ترو باشد یعنی به اس کیو ال ای پی ای
-        public static string CreateConnectionString(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
+        public static string CreateConnectionString(string userName, string password, string userKarbord, string device, string ace, string sal, string group, long serialNumber, string modecode, int act, int bandNo)
         {
 
             // addressApiAccounting = MyIni.Read("serverName");
@@ -160,6 +160,22 @@ namespace ApiKarbord.Controllers.Unit
                     // Data.Add("Disable Account");
                     return "Disable Account";
                 }
+
+                if (device == "" && list.IsApi == false)
+                {
+                    return "Not Access Api";
+                }
+
+                if (device == "Web" && list.IsWeb == false)
+                {
+                    return "Not Access Web";
+                }
+
+                if (device == "App" && list.IsApp == false)
+                {
+                    return "Not Access App";
+                }
+
                 if (model.Count > 0)
                 {
                     SqlServerName = list.SqlServerName;
@@ -307,6 +323,7 @@ namespace ApiKarbord.Controllers.Unit
             string userName = string.Empty;
             string password = string.Empty;
             string userKarbord = string.Empty;
+            string device = string.Empty;
 
 
             if (header.Contains("userName"))
@@ -322,9 +339,15 @@ namespace ApiKarbord.Controllers.Unit
                 userKarbord = header.GetValues("userKarbord").First();
             }
 
+            if (header.Contains("device"))
+            {
+                device = header.GetValues("device").First();
+            }
+
             list.Add(userName);
             list.Add(password);
             list.Add(userKarbord);
+            list.Add(device);
 
             return (list);
         }
@@ -361,7 +384,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static string ChangeDatabase(string ace, string sal, string group, string userCode, bool auto, string lockNumber, string srv_User, string srv_Pass)
+        public static string ChangeDatabase(string ace, string sal, string group, string userCode, bool auto, string lockNumber, string srv_User, string srv_Pass, string device)
         {
 
             string dbName;
@@ -434,7 +457,7 @@ namespace ApiKarbord.Controllers.Unit
 
                             sw.WriteLine("dbName : " + dbName);
 
-                            string connectionString = CreateConnectionString(srv_User, srv_Pass, "", "Master", "", "", 0, "", 0, 0);
+                            string connectionString = CreateConnectionString(srv_User, srv_Pass, device, "", "Master", "", "", 0, "", 0, 0);
                             //string connectionString = String.Format(
                             //                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
                             //                list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
@@ -450,7 +473,7 @@ namespace ApiKarbord.Controllers.Unit
                             command.ExecuteNonQuery();
                             connection.Close();
 
-                            string conStr = CreateConnectionString(srv_User, srv_Pass, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
+                            string conStr = CreateConnectionString(srv_User, srv_Pass, device, "", files[2] == "Ace2.txt" ? "Config" : files[2], salTemp, group, 0, "", 0, 0);
                             if (conStr.Length > 100)
                             {
                                 dbChange = new ApiModel(conStr);
@@ -634,7 +657,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static string ChangeDatabaseConfig(string userCode, string flag, string srv_User, string srv_Pass)
+        public static string ChangeDatabaseConfig(string userCode, string flag, string srv_User, string srv_Pass, string device)
         {
             string IniLogPath = HttpContext.Current.Server.MapPath("~/Content/ini/SysLog.Ini");
 
@@ -712,7 +735,7 @@ namespace ApiKarbord.Controllers.Unit
                         sw.WriteLine("dbName : " + dbName);
 
 
-                        string connectionString = CreateConnectionString(srv_User, srv_Pass, "", "Master", sal, group, 0, "", 0, 0);
+                        string connectionString = CreateConnectionString(srv_User, srv_Pass, device, "", "Master", sal, group, 0, "", 0, 0);
                         //string connectionString = String.Format(
                         //                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
                         //                list.SqlServerName, "master", list.SqlUserName, list.SqlPassword);
@@ -727,7 +750,7 @@ namespace ApiKarbord.Controllers.Unit
                                                             CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
                         command.ExecuteNonQuery();
 
-                        string conStr = CreateConnectionString(srv_User, srv_Pass, "", "Config", sal, group, 0, "", 0, 0);
+                        string conStr = CreateConnectionString(srv_User, srv_Pass, device,"", "Config", sal, group, 0, "", 0, 0);
                         if (conStr.Length > 100)
                         {
                             ApiModel db = new ApiModel(conStr);

@@ -31,7 +31,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 4, aFI_FDocBi.BandNo ?? 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 4, aFI_FDocBi.BandNo ?? 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -111,7 +111,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 5, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 5, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -216,7 +216,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string ModeCode, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 6, BandNo);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, ModeCode, 6, BandNo);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -286,7 +286,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, 5, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -397,7 +397,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, 5, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
