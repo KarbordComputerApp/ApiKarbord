@@ -4111,8 +4111,13 @@ namespace ApiKarbord.Controllers.AFI.data
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                var list = db.Database.SqlQuery<string>(sql);
-                return Ok(list);
+                string value = db.Database.SqlQuery<string>(sql).Single();
+                if (value != "")
+                {
+                    await db.SaveChangesAsync();
+                }
+
+                return Ok(value);
             }
             return Ok(conStr);
         }
