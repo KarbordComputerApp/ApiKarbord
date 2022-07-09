@@ -599,21 +599,36 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
-        // Post: api/Web_Data/ اطلاعات لاگین   
-        [Route("api/Web_Data/Login")]
+
+        public class LoginData
+        {
+            public int Value { get; set; }
+
+            public string Name { get; set; }
+
+            public string VstrCode { get; set; }
+
+        }
+
+            // Post: api/Web_Data/ اطلاعات لاگین   
+            [Route("api/Web_Data/Login")]
         public async Task<IHttpActionResult> PostWeb_Login(LoginObject LoginObject)//string user, string pass, string param1, string param2)
         {
             if (LoginObject.pass == "null")
                 LoginObject.pass = "";
-            string sql = string.Format(@" DECLARE  @return_value int, @name nvarchar(100)
-                                              EXEC     @return_value = [dbo].[Web_Login]
-                                                       @Code1 = '{0}',
-		                                               @UserCode = N'{1}',
-                                                       @Code2 = '{2}',
-		                                               @Psw = N'{3}',
-                                                       @Name = @name OUTPUT
-                                              SELECT   'Return Value' = CONVERT(nvarchar, @return_value) + '-' +  @Name ",
-                                           LoginObject.param1, LoginObject.userName, LoginObject.param2, LoginObject.pass);
+            string sql = string.Format(@"DECLARE @return_value int,
+                                                 @name nvarchar(100),
+		                                         @vstrcode nvarchar(100)
+
+                                         EXEC    @return_value = [dbo].[Web_Login]
+                                                 @Code1 = '{0}',
+		                                         @UserCode = N'{1}',
+                                                 @Code2 = '{2}',
+		                                         @Psw = N'{3}',
+                                                 @Name = @name OUTPUT,
+		                                         @vstrcode = @VstrCode OUTPUT
+                                         SELECT  @return_value as Value, @Name as Name ,  @vstrcode as VstrCode",
+                                         LoginObject.param1, LoginObject.userName, LoginObject.param2, LoginObject.pass);
 
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -622,12 +637,13 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 ApiModel db = new ApiModel(conStr);
 
-                string value = db.Database.SqlQuery<string>(sql).Single();
-                string[] values = value.Split('-');
-                if (values[0] == "1")
-                    return Ok(value);
-                else
-                    return Ok(0);
+                var list  = db.Database.SqlQuery<LoginData>(sql).ToList();
+                
+
+                //if (list.Value == 1)
+                    return Ok(list);
+               ///// else
+             //       return Ok(0);
             }
             return Ok(conStr);
         }
