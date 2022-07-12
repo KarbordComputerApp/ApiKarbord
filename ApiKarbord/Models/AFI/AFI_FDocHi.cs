@@ -167,5 +167,9 @@
 
         public string New { get; set; }
 
+        public double? TotalValue { get; set; }
+
+
+
     }
 }

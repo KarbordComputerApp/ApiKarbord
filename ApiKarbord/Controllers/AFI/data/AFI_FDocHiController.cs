@@ -393,6 +393,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F20 = '{59}',
                                     @PaymentType = {61},
                                     @Footer = '{62}',
+                                    @TotalValue = '{63}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                             aFI_FDocHi.DocNoMode,
@@ -457,7 +458,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F20,
                             aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI",
                             aFI_FDocHi.PaymentType,
-                            UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? "")
+                            UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? ""),
+                            aFI_FDocHi.TotalValue ?? 0
                             //aFI_FDocHi.VstrCode
                             );
                     value = db.Database.SqlQuery<string>(sql).Single();
