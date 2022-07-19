@@ -5642,5 +5642,61 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(conStr);
         }
 
+
+
+
+
+        public class CustAccMondehObject
+        {
+            public string CustCode { get; set; }
+
+        }
+
+        public class Web_CustAccMondeh
+        {
+            public string CustAccCode { get; set; }
+
+            public double Bede { get; set; }
+
+            public double Best { get; set; }
+
+            public double Mon { get; set; }
+
+        }
+
+        [Route("api/Web_Data/CustAccMondeh/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_CustAccMondeh(string ace, string sal, string group, CustAccMondehObject CustAccMondehObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                       @"DECLARE	@CustAccCode nvarchar(50),
+		                            @Bede float,
+		                            @Best float
+
+                            EXEC	[dbo].[Web_CustAccMondeh]
+		                            @CustCode = N'{0}',
+		                            @CustAccCode = @CustAccCode OUTPUT,
+		                            @Bede = @Bede OUTPUT,
+		                            @Best = @Best OUTPUT
+
+                            SELECT	@CustAccCode as CustAccCode,
+		                            isnull(@Bede,0) as Bede,
+		                            isnull(@Best,0) as Best,
+		                            isnull(@Bede,0) - isnull(@Best,0) as Mon", 
+                       CustAccMondehObject.CustCode);
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<Web_CustAccMondeh>(sql).ToList();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
     }
 }
