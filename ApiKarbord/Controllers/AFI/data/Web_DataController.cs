@@ -2385,7 +2385,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string sql;
             if (RprtId == "all")
-                sql = string.Format(@"select * from Web_RprtCols where (UserCode = '{0}' or UserCode = '*Default*')", UserCode);
+                sql = string.Format(@"select  * from Web_RprtCols where (UserCode = '{0}' or UserCode = '*Default*')", UserCode);
             else
                 sql = string.Format(@"
                                   if exists (select 1 from Web_RprtCols where RprtId = '{0}' and UserCode = '{1}')

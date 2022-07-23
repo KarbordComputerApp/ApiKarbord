@@ -422,7 +422,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 //string dllPath = @"C:\a\Acc6_Web.dll";
                 //Assembly a = Assembly.Load(dllPath);
 
-                CallRecoverChecks(
+                string log = CallRecoverChecks(
                     ace,
                     connectionString,
                     dbName,
@@ -668,6 +668,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     darChecks,
                     parChecks
                     );
+
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
             }
             return Ok(conStr);

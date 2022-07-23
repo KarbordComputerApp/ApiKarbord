@@ -8,16 +8,11 @@
 
     public class Web_RprtCols
     {
-
-
-       
-       
         public string RprtId { get; set; }
 
-      
         public string UserCode { get; set; }
 
-        [Key]
+       [Key]
         public string Code { get; set; }
 
         public int? Type { get; set; }
