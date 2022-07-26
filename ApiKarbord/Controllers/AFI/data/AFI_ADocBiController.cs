@@ -143,8 +143,12 @@ namespace ApiKarbord.Controllers.AFI.data
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                var list = db.Database.SqlQuery<int>(sql);
-                await db.SaveChangesAsync();
+                int value = db.Database.SqlQuery<int>(sql).Single();
+                if (value == 0)
+                {
+                    await db.SaveChangesAsync();
+                }
+                //await db.SaveChangesAsync();
 
                 string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
                 var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);

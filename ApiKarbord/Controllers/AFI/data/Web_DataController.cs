@@ -5669,20 +5669,30 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string sql = string.Format(CultureInfo.InvariantCulture,
-                       @"DECLARE	@CustAccCode nvarchar(50),
-		                            @Bede float,
-		                            @Best float
+                                        @"IF  EXISTS (select name from sys.procedures where name = 'Web_CustAccMondeh')
+                                        begin
+                                        DECLARE	@CustAccCode nvarchar(50),
+		                                        @Bede float,
+		                                        @Best float
 
-                            EXEC	[dbo].[Web_CustAccMondeh]
-		                            @CustCode = N'{0}',
-		                            @CustAccCode = @CustAccCode OUTPUT,
-		                            @Bede = @Bede OUTPUT,
-		                            @Best = @Best OUTPUT
+                                        EXEC	[dbo].[Web_CustAccMondeh]
+		                                        @CustCode = N'{0}',
+		                                        @CustAccCode = @CustAccCode OUTPUT,
+		                                        @Bede = @Bede OUTPUT,
+		                                        @Best = @Best OUTPUT
 
-                            SELECT	@CustAccCode as CustAccCode,
-		                            isnull(@Bede,0) as Bede,
-		                            isnull(@Best,0) as Best,
-		                            isnull(@Bede,0) - isnull(@Best,0) as Mon", 
+                                        SELECT	@CustAccCode as CustAccCode,
+		                                        isnull(@Bede,0) as Bede,
+		                                        isnull(@Best,0) as Best,
+		                                        isnull(@Bede,0) - isnull(@Best,0) as Mon
+                                        end
+                                        else
+                                        begin
+                                        SELECT	'' as CustAccCode,
+		                                        cast(0 as float) as Bede,
+		                                        cast(0 as float) as Best,
+		                                        cast(0 as float) as Mon
+                                        end", 
                        CustAccMondehObject.CustCode);
 
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
