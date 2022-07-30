@@ -68,8 +68,52 @@ namespace ApiKarbord.Controllers.AFI.report
                 string invCode = UnitPublic.SpiltCodeCama(TrzIObject.InvCode);
                 string statusCode = UnitPublic.SpiltCodeCama(TrzIObject.StatusCode);
 
-                string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  dbo.Web_TrzIKala('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}') AS TrzI where 1 = 1 ",
+                string sql = "IF EXISTS(SELECT name FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[Web_TrzIKala]')) select 1 as find else select 0 as find";
+                int test = db.Database.SqlQuery<int>(sql).Single();
+                if (test == 0)
+                {
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                        @"SELECT '' as InvCode
+                                ,'' as InvName
+                                ,'' as KalaCode
+                                ,'' as KalaName
+                                ,'' as KalaFanniNo
+                                ,'' as KalaUnitName1
+                                ,'' as KalaUnitName2
+                                ,'' as KalaUnitName3
+                                ,CAST(0 as tinyint) as KalaDeghatM1
+                                ,CAST(0 as tinyint) as KalaDeghatM2
+                                ,CAST(0 as tinyint) as KalaDeghatM3
+                                ,CAST(0 as tinyint) as KalaDeghatR1
+                                ,CAST(0 as tinyint) as KalaDeghatR2
+                                ,CAST(0 as tinyint) as KalaDeghatR3
+                                ,'' as KGruCode
+                                ,'' as KGruName
+                                ,cast(0 as float) as AAmount1
+                                ,cast(0 as float) as AAmount2
+                                ,cast(0 as float) as AAmount3
+                                ,cast(0 as float) as VAmount1
+                                ,cast(0 as float) as VAmount2
+                                ,cast(0 as float) as VAmount3
+                                ,cast(0 as float) as SAmount1
+                                ,cast(0 as float) as SAmount2
+                                ,cast(0 as float) as SAmount3
+                                ,cast(0 as float) as ATotalPrice
+                                ,cast(0 as float) as VTotalPrice
+                                ,cast(0 as float) as STotalPrice
+                                ,cast(0 as bigint) as SortKalaCode
+                                ,cast(0 as bigint) as SortKalaName
+                                ,cast(0 as bigint) as SortInvCode
+                                ,cast(0 as bigint) as SortInvName
+                                ,cast(0 as float) as MAmount1
+                                ,cast(0 as float) as MAmount2
+                                ,cast(0 as float) as MAmount3
+                                ,cast(0 as float) as MTotalPrice");
+                }
+                else
+                {
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select  top (10000) * FROM  dbo.Web_TrzIKala('{0}', '{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}') AS TrzI where 1 = 1",
                           TrzIObject.azTarikh,
                           TrzIObject.taTarikh,
                           modeCode,
@@ -82,8 +126,9 @@ namespace ApiKarbord.Controllers.AFI.report
                           statusCode,
                           dataAccount[2]
                           );
-                sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIObject.KalaCode);
+                    sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzIObject.KalaCode);
 
+                }
                 var listTrzI = db.Database.SqlQuery<Web_TrzIKala>(sql);
                 return Ok(listTrzI);
             }
