@@ -207,6 +207,129 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(conStr);
         }
 
+
+
+
+
+        public class FDocHMinAppObject
+        {
+            public string ModeCode { get; set; }
+
+            public int select { get; set; }
+
+            public string user { get; set; }
+
+            public bool AccessSanad { get; set; }
+
+            public string updatedate { get; set; }
+
+            public string Sort { get; set; }
+
+            public string ModeSort { get; set; }
+
+            public string DocNo { get; set; }
+
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+        }
+
+
+
+
+        // Post: api/FDocData/FDocHApp لیست فاکتور    
+        [Route("api/FDocData/FDocHApp/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAllWeb_FDocHMinApp(string ace, string sal, string group, FDocHMinAppObject FDocHMinAppObject)
+        {
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                             @"declare @DocNo nvarchar(50) = '{0}'  select ",
+                             FDocHMinAppObject.DocNo);
+
+                sql += " top( " +FDocHMinAppObject.select + " ) ";
+
+                sql += string.Format(CultureInfo.InvariantCulture, @"SerialNumber,                                   
+                                       DocNo,
+                                       SortDocNo,
+                                       DocDate,
+                                       CustCode,
+                                       CustName,
+                                       Spec,
+                                       KalaPriceCode,
+                                       InvCode,
+                                       MkzCode,
+                                       MkzName,
+                                       OprCode,
+                                       OprName,                                       
+                                       VstrCode,                                       
+                                       VstrName,                                       
+                                       ModeCode,
+                                       Status,
+                                       PaymentType,
+                                       Tanzim,
+                                       Taeed,
+                                       Tasvib, 
+                                       FinalPrice,
+                                       Eghdam,
+                                       UpdateDate,ArzCode,ArzName,ArzRate
+                                       from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' and (@DocNo = ''  or DocNo = @DocNo) ",
+                                       0,FDocHMinAppObject.user,FDocHMinAppObject.ModeCode.ToString());
+                if (FDocHMinAppObject.AccessSanad == false)
+                    sql += " and Eghdam = '" + FDocHMinAppObject.user + "' ";
+
+                if (FDocHMinAppObject.updatedate != null)
+                    sql += " and UpdateDate >= CAST('" + FDocHMinAppObject.updatedate + "' AS DATETIME2)";
+
+                if (FDocHMinAppObject.azTarikh != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", FDocHMinAppObject.azTarikh);
+
+                if (FDocHMinAppObject.taTarikh != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", FDocHMinAppObject.taTarikh);
+
+
+                sql += " order by ";
+
+                if (FDocHMinAppObject.Sort == "" || FDocHMinAppObject.Sort == null)
+                {
+                    FDocHMinAppObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (FDocHMinAppObject.Sort == "DocDate")
+                {
+                    if (FDocHMinAppObject.ModeSort == "ASC")
+                        FDocHMinAppObject.Sort = "DocDate Asc,SortDocNo Asc";
+                    else
+                        FDocHMinAppObject.Sort = "DocDate Desc,SortDocNo Desc";
+                }
+                else if (FDocHMinAppObject.Sort == "Status")
+                {
+                    if (FDocHMinAppObject.ModeSort == "ASC")
+                        FDocHMinAppObject.Sort = "Status Asc, DocDate Asc,SortDocNo Asc";
+                    else
+                        FDocHMinAppObject.Sort = "Status Desc, DocDate Desc,SortDocNo Desc";
+                }
+                else
+                {
+                    FDocHMinAppObject.Sort = FDocHMinAppObject.Sort + " " + FDocHMinAppObject.ModeSort;
+                }
+
+                sql += FDocHMinAppObject.Sort;
+
+                //sql += " order by SortDocNo desc ";
+                var listFDocH = db.Database.SqlQuery<Web_FDocHMiniApp>(sql);
+                return Ok(listFDocH);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
         // GET: api/FDocData/FDocH تعداد رکورد ها    
         [Route("api/FDocData/FDocH/{ace}/{sal}/{group}/{ModeCode}")]
         public async Task<IHttpActionResult> GetWeb_FDocHCount(string ace, string sal, string group, string ModeCode)

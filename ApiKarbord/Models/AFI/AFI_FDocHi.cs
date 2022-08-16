@@ -169,7 +169,5 @@
 
         public double? TotalValue { get; set; }
 
-
-
     }
 }
