@@ -44,6 +44,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Where { get; set; }
 
+            public string CustCode { get; set; }
+
         }
 
         public static readonly object LockObject = new object();
@@ -78,6 +80,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += " and (" + custObject.Where + " )";
             }
 
+            if (custObject.CustCode != "")
+            {
+                sql += " and (Code = '" + custObject.CustCode + "' )";
+            }
+
 
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
 
@@ -89,6 +96,111 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(conStr);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class Cust_AppObject
+        {
+            public string UserCode { get; set; }
+
+            public string Where { get; set; }
+
+            public string CustCode { get; set; }
+
+        }
+
+        // Post: api/Web_Data/CustApp لیست اشخاص
+        [Route("api/Web_Data/CustApp/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Cust_App(string ace, string sal, string group, Cust_AppObject Cust_AppObject)
+        {
+            string sql = "";
+            sql = string.Format("select  * FROM  dbo.Web_Cust_App() where 1 = 1 ");
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            if (dataAccount[3] != "" && Cust_AppObject.Where != "" && Cust_AppObject.Where != "null" && Cust_AppObject.Where != null)
+            {
+                sql += " and (" + Cust_AppObject.Where + " )";
+            }
+
+            if (Cust_AppObject.CustCode != "")
+            {
+                sql += " and (Code = '" + Cust_AppObject.CustCode + "' )";
+            }
+
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var listCust = db.Database.SqlQuery<Web_Cust_App>(sql);
+                return Ok(listCust);
+            }
+            return Ok(conStr);
+        }
+
+
+
+        public class Cust_InfoObject
+        {
+            public string UserCode { get; set; }
+
+            public string Where { get; set; }
+
+            public string CustCode { get; set; }
+
+        }
+
+        // Post: api/Web_Data/CustInfo لیست اشخاص
+        [Route("api/Web_Data/CustInfo/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Cust_Info(string ace, string sal, string group, Cust_InfoObject Cust_InfoObject)
+        {
+            string sql = "";
+            sql = string.Format("select  * FROM  dbo.Web_Cust_Info() where 1 = 1 ");
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            if (dataAccount[3] != "" && Cust_InfoObject.Where != "" && Cust_InfoObject.Where != "null" && Cust_InfoObject.Where != null)
+            {
+                sql += " and (" + Cust_InfoObject.Where + " )";
+            }
+
+            if (Cust_InfoObject.CustCode != "")
+            {
+                sql += " and (Code = '" + Cust_InfoObject.CustCode + "' )";
+            }
+
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var listCust = db.Database.SqlQuery<Web_Cust_Info>(sql);
+                return Ok(listCust);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
+
+
+
+
+
 
         public class KalaObject
         {
@@ -5692,7 +5804,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                        cast(0 as float) as Bede,
 		                                        cast(0 as float) as Best,
 		                                        cast(0 as float) as Mon
-                                        end", 
+                                        end",
                        CustAccMondehObject.CustCode);
 
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
