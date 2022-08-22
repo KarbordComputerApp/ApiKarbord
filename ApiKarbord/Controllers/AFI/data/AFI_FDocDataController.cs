@@ -27,7 +27,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_FMode(string ace, string sal, string group, int InOut)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -37,7 +37,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 else
                     sql = string.Format(@"SELECT * FROM Web_FMode WHERE InOut = {0} order by OrderFld ", InOut);
 
-                var listFMode =db.Database.SqlQuery<Web_FMode>(sql);
+                var listFMode = db.Database.SqlQuery<Web_FMode>(sql);
                 return Ok(listFMode);
             }
             return Ok(conStr);
@@ -49,11 +49,11 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IQueryable<Web_FDocH>> GetWeb_FDocH(string ace, string sal, string group, long serialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                var a =db.Web_FDocH.Where(c => c.SerialNumber == serialNumber && c.ModeCode == ModeCode);
+                var a = db.Web_FDocH.Where(c => c.SerialNumber == serialNumber && c.ModeCode == ModeCode);
                 return a;
             }
             return null;
@@ -79,8 +79,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string DocNo { get; set; }
 
-            public string CustCode { get; set; }
-
         }
 
         // Post: api/FDocData/FDocH لیست فاکتور    
@@ -89,7 +87,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -175,9 +173,6 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (FDocHMinObject.updatedate != null)
                     sql += " and UpdateDate >= CAST('" + FDocHMinObject.updatedate + "' AS DATETIME2)";
 
-                if (FDocHMinObject.CustCode != "")
-                    sql += " and CustCode = '" + FDocHMinObject.CustCode + "'";
-                
 
                 sql += " order by ";
 
@@ -207,7 +202,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += FDocHMinObject.Sort;
 
                 //sql += " order by SortDocNo desc ";
-                var listFDocH =db.Database.SqlQuery<Web_FDocHMini>(sql);
+                var listFDocH = db.Database.SqlQuery<Web_FDocHMini>(sql);
                 return Ok(listFDocH);
             }
             return Ok(conStr);
@@ -239,6 +234,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string taTarikh { get; set; }
 
+            public string CustCode { get; set; }
+
+            public string VstrCode { get; set; }
+
         }
 
 
@@ -258,7 +257,7 @@ namespace ApiKarbord.Controllers.AFI.data
                              @"declare @DocNo nvarchar(50) = '{0}'  select ",
                              FDocHMinAppObject.DocNo);
 
-                sql += " top( " +FDocHMinAppObject.select + " ) ";
+                sql += " top( " + FDocHMinAppObject.select + " ) ";
 
                 sql += string.Format(CultureInfo.InvariantCulture, @"SerialNumber,                                   
                                        DocNo,
@@ -285,7 +284,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        Eghdam,
                                        UpdateDate,ArzCode,ArzName,ArzRate
                                        from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' and (@DocNo = ''  or DocNo = @DocNo) ",
-                                       0,FDocHMinAppObject.user,FDocHMinAppObject.ModeCode.ToString());
+                                       0, FDocHMinAppObject.user, FDocHMinAppObject.ModeCode.ToString());
                 if (FDocHMinAppObject.AccessSanad == false)
                     sql += " and Eghdam = '" + FDocHMinAppObject.user + "' ";
 
@@ -297,6 +296,13 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (FDocHMinAppObject.taTarikh != "")
                     sql += string.Format(" and DocDate <= '{0}' ", FDocHMinAppObject.taTarikh);
+
+
+                if (FDocHMinAppObject.CustCode != "")
+                    sql += string.Format(" and CustCode = '{0}' ", FDocHMinAppObject.CustCode);
+
+                if (FDocHMinAppObject.VstrCode != "")
+                    sql += string.Format(" and VstrCode = '{0}' ", FDocHMinAppObject.VstrCode);
 
 
                 sql += " order by ";
@@ -341,12 +347,12 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_FDocHCount(string ace, string sal, string group, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(@"SELECT count(SerialNumber) FROM Web_FDocH WHERE ModeCode = '{0}'", ModeCode);
-                int count =db.Database.SqlQuery<int>(sql).Single();
+                int count = db.Database.SqlQuery<int>(sql).Single();
                 return Ok(count);
             }
             return Ok(conStr);
@@ -357,14 +363,14 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_FDocHLastDate(string ace, string sal, string group, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(@"EXEC[dbo].[Web_Doc_Dates]
                                              @TableName = '{0}',
 		                                     @Mode = '''{1}'''", "fct5doch", ModeCode);
-                string lastdate =db.Database.SqlQuery<string>(sql).Single();
+                string lastdate = db.Database.SqlQuery<string>(sql).Single();
                 return Ok(lastdate);
             }
             return Ok(conStr);
@@ -375,13 +381,13 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_FDocB(string ace, string sal, string group, long serialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec,ArzValue
                                          FROM Web_FDocB WHERE SerialNumber = {0}", serialNumber);
-                var listFactor =db.Database.SqlQuery<Web_FDocB>(sql);
+                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql);
                 return Ok(listFactor);
             }
             return Ok(conStr);
@@ -396,7 +402,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialnumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialnumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -408,7 +414,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @SerialNumber = {0}
                             SELECT  'Return Value' = @return_value",
                           serialnumber);
-                    int value =db.Database.SqlQuery<int>(sql).Single();
+                    int value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
                         await db.SaveChangesAsync();
@@ -421,7 +427,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec,ArzValue
                                           FROM Web_FDocB WHERE SerialNumber = {0}", serialnumber);
-                var listFactor =db.Database.SqlQuery<Web_FDocB>(sql1);
+                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
                 return Ok(listFactor);
             }
             return Ok(conStr);
@@ -436,7 +442,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestMoveFactor(string ace, string sal, string group, long serialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -452,7 +458,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                            ModeCode);
                 try
                 {
-                    var result =db.Database.SqlQuery<string>(sql).ToList();
+                    var result = db.Database.SqlQuery<string>(sql).ToList();
                     return Ok(result);
                     // return Ok("");
                 }
@@ -513,7 +519,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_Move.SerialNumber ?? 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, AFI_Move.SerialNumber ?? 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -554,7 +560,7 @@ namespace ApiKarbord.Controllers.AFI.data
                           AFI_Move.Per
                           );
 
-                    value =db.Database.SqlQuery<long>(sql).Single();
+                    value = db.Database.SqlQuery<long>(sql).Single();
                     if (value == 0)
                     {
                         await db.SaveChangesAsync();
@@ -565,7 +571,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                var list =db.Web_FDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode);
+                var list = db.Web_FDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode);
                 if (AFI_Move.MoveMode == 0) // copy
                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, value, AFI_Move.ModeCode, 2, "Y", 0);
                 else if (AFI_Move.MoveMode == 1) // move
@@ -605,7 +611,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_StatusChange.SerialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, AFI_StatusChange.SerialNumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -624,7 +630,7 @@ namespace ApiKarbord.Controllers.AFI.data
                           AFI_StatusChange.SerialNumber,
                           AFI_StatusChange.Status);
 
-                    value =db.Database.SqlQuery<int>(sql).Single();
+                    value = db.Database.SqlQuery<int>(sql).Single();
                     if (value == 0)
                     {
                         await db.SaveChangesAsync();
@@ -647,12 +653,12 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetAllWeb_FDocP(string ace, string sal, string group, long SerialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(@"select * from Web_FDocP where SerialNumber = {0} order by BandNo", SerialNumber);
-                var listFDocP =db.Database.SqlQuery<Web_FDocP>(sql);
+                var listFDocP = db.Database.SqlQuery<Web_FDocP>(sql);
                 return Ok(listFDocP);
             }
             return Ok(conStr);
@@ -672,7 +678,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestFDoc(string ace, string sal, string group, AFI_TestFDocB AFI_TestFDocB)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_TestFDocB.SerialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, AFI_TestFDocB.SerialNumber, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -684,7 +690,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                             );
                 try
                 {
-                    var result =db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(jsonResult);
                 }
@@ -715,9 +721,10 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_SaveFDoc_HZ(string ace, string sal, string group, AFI_SaveFDoc_HZ AFI_SaveFDoc_HZ)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
-            {ApiModel db = new ApiModel(conStr);
+            {
+                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"DECLARE	@return_value int
                                              EXEC	@return_value = [dbo].[Web_SaveFDoc_HZ]
@@ -725,7 +732,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                            @Tanzim = '{1}'
                                              SELECT	'Return Value' = @return_value ",
                                            AFI_SaveFDoc_HZ.SerialNumber, AFI_SaveFDoc_HZ.Tanzim);
-                var result =db.Database.SqlQuery<int>(sql).ToList();
+                var result = db.Database.SqlQuery<int>(sql).ToList();
                 return Ok("ok");
             }
             return Ok(conStr);
@@ -760,7 +767,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestFDoc_Delete(string ace, string sal, string group, TestFDoc_DeleteObject TestFDoc_DeleteObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -768,7 +775,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                            @"EXEC	[dbo].[Web_TestFDoc_Delete] @serialNumber = {0}, @UserCode = '{1}' ", TestFDoc_DeleteObject.SerialNumber, dataAccount[2]);
                 try
                 {
-                    var result =db.Database.SqlQuery<TestFDoc_Delete>(sql).ToList();
+                    var result = db.Database.SqlQuery<TestFDoc_Delete>(sql).ToList();
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(jsonResult);
                 }
@@ -798,7 +805,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestFDoc_New(string ace, string sal, string group, AFI_TestFDoc_New AFI_TestFDoc_New)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -812,7 +819,7 @@ namespace ApiKarbord.Controllers.AFI.data
                       );
                 try
                 {
-                    var result =db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(jsonResult);
                 }
@@ -838,7 +845,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestFDoc_Edit(string ace, string sal, string group, AFI_TestFDoc_Edit AFI_TestFDoc_Edit)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -849,7 +856,7 @@ namespace ApiKarbord.Controllers.AFI.data
                       );
                 try
                 {
-                    var result =db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(jsonResult);
                 }
@@ -865,23 +872,23 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-       /* [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
-        public static extern bool GetVer(StringBuilder RetVal);
+        /* [DllImport("Fct6_Web.dll", CharSet = CharSet.Unicode)]
+         public static extern bool GetVer(StringBuilder RetVal);
 
-        [Route("api/FDocData/GetVerDllFct6")]
-        public async Task<IHttpActionResult> GetVerDllAcc6()
-        {
-            try
-            {
-                StringBuilder RetVal = new StringBuilder(1024);
-                GetVer(RetVal);
-                return Ok(RetVal.ToString());
-            }
-            catch (Exception e)
-            {
-                return Ok("Error : " + e.Message.ToString());
-            }
-        }*/
+         [Route("api/FDocData/GetVerDllFct6")]
+         public async Task<IHttpActionResult> GetVerDllAcc6()
+         {
+             try
+             {
+                 StringBuilder RetVal = new StringBuilder(1024);
+                 GetVer(RetVal);
+                 return Ok(RetVal.ToString());
+             }
+             catch (Exception e)
+             {
+                 return Ok("Error : " + e.Message.ToString());
+             }
+         }*/
 
 
     }
