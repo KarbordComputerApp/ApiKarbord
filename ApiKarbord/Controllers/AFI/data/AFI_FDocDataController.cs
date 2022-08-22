@@ -79,6 +79,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string DocNo { get; set; }
 
+            public string CustCode { get; set; }
+
         }
 
         // Post: api/FDocData/FDocH لیست فاکتور    
@@ -172,6 +174,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (FDocHMinObject.updatedate != null)
                     sql += " and UpdateDate >= CAST('" + FDocHMinObject.updatedate + "' AS DATETIME2)";
+
+                if (FDocHMinObject.CustCode != null)
+                    sql += " and CustCode = '" + FDocHMinObject.CustCode + "'";
+                
 
                 sql += " order by ";
 
