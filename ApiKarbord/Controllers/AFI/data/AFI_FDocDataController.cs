@@ -175,7 +175,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 if (FDocHMinObject.updatedate != null)
                     sql += " and UpdateDate >= CAST('" + FDocHMinObject.updatedate + "' AS DATETIME2)";
 
-                if (FDocHMinObject.CustCode != null)
+                if (FDocHMinObject.CustCode != "")
                     sql += " and CustCode = '" + FDocHMinObject.CustCode + "'";
                 
 
