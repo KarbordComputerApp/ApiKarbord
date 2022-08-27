@@ -80,7 +80,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += " and (" + custObject.Where + " )";
             }
 
-            if (custObject.CustCode != "")
+            if (custObject.CustCode != "" && custObject.CustCode != null)
             {
                 sql += " and (Code = '" + custObject.CustCode + "' )";
             }
@@ -133,7 +133,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += " and (" + Cust_AppObject.Where + " )";
             }
 
-            if (Cust_AppObject.CustCode != "")
+            if (Cust_AppObject.CustCode != "" && Cust_AppObject.CustCode != null)
             {
                 sql += " and (Code = '" + Cust_AppObject.CustCode + "' )";
             }
@@ -176,7 +176,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += " and (" + Cust_InfoObject.Where + " )";
             }
 
-            if (Cust_InfoObject.CustCode != "")
+            if (Cust_InfoObject.CustCode != "" && Cust_InfoObject.CustCode != null)
             {
                 sql += " and (Code = '" + Cust_InfoObject.CustCode + "' )";
             }
@@ -213,6 +213,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string UserCode { get; set; }
 
             public string Where { get; set; }
+
+            public string KalaCode { get; set; }
         }
 
         // Post: api/Web_Data/Kala لیست کالا ها
@@ -239,6 +241,11 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += " and (" + kalaObject.Where + " )";
             }
 
+            if (kalaObject.KalaCode != "" && kalaObject.KalaCode != null)
+            {
+                sql += " and (Code = '" + kalaObject.KalaCode + "' )";
+            }
+
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
 
             if (conStr.Length > 100)
@@ -249,6 +256,133 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(conStr);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class Kala_AppObject
+        {
+            public string UserCode { get; set; }
+
+            public string Where { get; set; }
+
+            public string KalaCode { get; set; }
+
+        }
+
+        // Post: api/Web_Data/KalaApp لیست کالا
+        [Route("api/Web_Data/KalaApp/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Kala_App(string ace, string sal, string group, Kala_AppObject Kala_AppObject)
+        {
+            string sql = "";
+            sql = string.Format("select  * FROM  dbo.Web_Kala_App() where 1 = 1 ");
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            if (dataAccount[3] != "" && Kala_AppObject.Where != "" && Kala_AppObject.Where != "null" && Kala_AppObject.Where != null)
+            {
+                sql += " and (" + Kala_AppObject.Where + " )";
+            }
+
+            if (Kala_AppObject.KalaCode != "" && Kala_AppObject.KalaCode != null)
+            {
+                sql += " and (Code = '" + Kala_AppObject.KalaCode + "' )";
+            }
+
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var listKala = db.Database.SqlQuery<Web_Kala_App>(sql);
+                return Ok(listKala);
+            }
+            return Ok(conStr);
+        }
+
+
+
+        public class Kala_InfoObject
+        {
+            public string UserCode { get; set; }
+
+            public string Where { get; set; }
+
+            public string InvCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+        }
+
+        // Post: api/Web_Data/KalaInfo لیست اشخاص
+        [Route("api/Web_Data/KalaInfo/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Kala_Info(string ace, string sal, string group, Kala_InfoObject Kala_InfoObject)
+        {
+            string sql = "";
+            sql = string.Format("select  * FROM  dbo.Web_Kala_Info('{0}') where 1 = 1 " , Kala_InfoObject.InvCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            if (dataAccount[3] != "" && Kala_InfoObject.Where != "" && Kala_InfoObject.Where != "null" && Kala_InfoObject.Where != null)
+            {
+                sql += " and (" + Kala_InfoObject.Where + " )";
+            }
+
+            if (Kala_InfoObject.KalaCode != "" && Kala_InfoObject.KalaCode != null)
+            {
+                sql += " and (Code = '" + Kala_InfoObject.KalaCode + "' )";
+            }
+
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var listKala = db.Database.SqlQuery<Web_Kala_Info>(sql);
+                return Ok(listKala);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
