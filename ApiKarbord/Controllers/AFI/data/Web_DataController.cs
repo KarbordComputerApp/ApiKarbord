@@ -1986,6 +1986,7 @@ namespace ApiKarbord.Controllers.AFI.data
             public byte DocAttachExists { get; set; }
 
             public long? SortRjDate { get; set; }
+            public byte? KhdtHasTime { get; set; }
 
         }
 

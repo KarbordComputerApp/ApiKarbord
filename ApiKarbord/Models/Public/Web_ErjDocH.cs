@@ -163,6 +163,8 @@
 
         public byte DocBExists { get; set; }
 
+        public byte? KhdtHasTime { get; set; }
+
         
     }
 }
