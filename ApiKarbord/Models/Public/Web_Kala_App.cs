@@ -14,5 +14,10 @@
         public string Name { get; set; }
 
         public string KGruCode { get; set; }
+
+        public string BarCode { get; set; }
+        
+        public double? Mjd { get; set; }
+
     }
 }

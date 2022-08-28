@@ -286,6 +286,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string KalaCode { get; set; }
 
+            public string InvCode { get; set; }
+
+
         }
 
         // Post: api/Web_Data/KalaApp لیست کالا
@@ -293,7 +296,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_Kala_App(string ace, string sal, string group, Kala_AppObject Kala_AppObject)
         {
             string sql = "";
-            sql = string.Format("select  * FROM  dbo.Web_Kala_App() where 1 = 1 ");
+            sql = string.Format("select  * FROM  dbo.Web_Kala_App('{0}') where 1 = 1 ", Kala_AppObject.InvCode);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
