@@ -3712,6 +3712,36 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class DeleteStatementsObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        [Route("api/Web_Data/DeleteStatements")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_SaveStatements(DeleteStatementsObject DeleteStatementsObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(@"DECLARE @return_value int
+                                         EXEC	 @return_value = [dbo].[Web_DeleteStatements]
+		                                         @Code = N'{0}'
+                                         SELECT	'Return Value' = @return_value",
+                                       DeleteStatementsObject.Code);
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "", 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<int>(sql).Single();
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
 
 
         // Post: api/Web_Data/ChangeDatabase 
