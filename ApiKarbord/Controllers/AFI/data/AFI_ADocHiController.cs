@@ -392,10 +392,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 foreach (var item in listSanad)
                 {
                     if (item.PDMode == 1)
-                        darChecks += darChecks + item.CheckNo + ',';
+                        darChecks += item.CheckNo + ',';
 
                     if (item.PDMode == 2)
-                        parChecks += parChecks + item.CheckNo + ',';
+                        parChecks += item.CheckNo + ',';
                 }
 
                 if (darChecks.Length > 0)
@@ -566,10 +566,10 @@ namespace ApiKarbord.Controllers.AFI.data
                     foreach (var item in listSanad)
                     {
                         if (item.PDMode == 1)
-                            darChecks += darChecks + item.CheckNo + ',';
+                            darChecks += item.CheckNo + ',';
 
                         if (item.PDMode == 2)
-                            parChecks += parChecks + item.CheckNo + ',';
+                            parChecks += item.CheckNo + ',';
                     }
 
                     if (darChecks.Length > 0)
@@ -625,10 +625,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 foreach (var item in listSanad)
                 {
                     if (item.PDMode == 1)
-                        darChecks += darChecks + item.CheckNo + ',';
+                        darChecks += item.CheckNo + ',';
 
                     if (item.PDMode == 2)
-                        parChecks += parChecks + item.CheckNo + ',';
+                        parChecks += item.CheckNo + ',';
                 }
 
                 if (darChecks.Length > 0)
