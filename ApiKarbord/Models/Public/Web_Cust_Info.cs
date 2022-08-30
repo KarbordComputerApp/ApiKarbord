@@ -42,5 +42,10 @@ namespace ApiKarbord.Models
         public string LastKharidDate { get; set; }
 
         public string Address { get; set; }
+
+        [Column(TypeName = "image")]
+        public byte[] CustImage { get; set; }
+
+        public string Comm { get; set; }
     }
 }

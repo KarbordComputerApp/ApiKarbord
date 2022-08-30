@@ -18,5 +18,11 @@
         public string KGruName { get; set; }
 
         public double? Mjd { get; set; }
+
+        [Column(TypeName = "image")]
+        public byte[] KalaImage { get; set; }
+
+        public string Comm { get; set; }
+
     }
 }
