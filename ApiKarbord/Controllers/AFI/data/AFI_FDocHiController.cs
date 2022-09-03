@@ -392,7 +392,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @PaymentType = {59},
                                     @Footer = '{60}',
                                     @TotalValue = '{61}',
-                                    @TotalValue = '{62}',
+                                    @Tanzim = '{62}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                             aFI_FDocHi.DocNoMode,
