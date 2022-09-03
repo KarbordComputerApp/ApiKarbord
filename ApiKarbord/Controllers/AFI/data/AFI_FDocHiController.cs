@@ -221,6 +221,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F20 = '{60}',
                                     @OprCode = '{61}', 
                                     @MkzCode = '{62}',
+                                    @Tanzim = '{63}',
                                     @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = ltrim(@DOCNO_OUT)
                            ",
@@ -289,7 +290,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F20,
                             //aFI_FDocHi.Tasvib,
                             aFI_FDocHi.OprCode,
-                            aFI_FDocHi.MkzCode
+                            aFI_FDocHi.MkzCode,
+                            aFI_FDocHi.Tanzim
                             );
                     value = db.Database.SqlQuery<string>(sql2).Single();
 
@@ -327,7 +329,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out nvarchar(50)
-                          EXEC	@return_value = [dbo].[{62}]
+                          EXEC	@return_value = [dbo].[{63}]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = {2} ,
@@ -390,6 +392,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @PaymentType = {59},
                                     @Footer = '{60}',
                                     @TotalValue = '{61}',
+                                    @TotalValue = '{62}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                             aFI_FDocHi.DocNoMode,
@@ -454,6 +457,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.PaymentType,
                             UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? ""),
                             aFI_FDocHi.TotalValue ?? 0,
+                            aFI_FDocHi.Tanzim,
                             aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI"
                             //aFI_FDocHi.VstrCode
                             );

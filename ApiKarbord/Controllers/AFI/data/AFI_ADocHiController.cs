@@ -335,7 +335,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @F17 = '{26}',
 		                            @F18 = '{27}',
 		                            @F19 = '{28}',
-		                            @F20 = '{29}'
+		                            @F20 = '{29}',
+		                            @Tanzim = '{30}'
                             SELECT	'Return Value' = @return_value",
                             AFI_ADocHi_u.SerialNumber,
                             AFI_ADocHi_u.ModeCode,
@@ -369,7 +370,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_u.F17,
                             AFI_ADocHi_u.F18,
                             AFI_ADocHi_u.F19,
-                            AFI_ADocHi_u.F20
+                            AFI_ADocHi_u.F20,
+                            AFI_ADocHi_u.Tanzim
                             );
                     value = db.Database.SqlQuery<string>(sql).Single();
 
@@ -458,7 +460,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     sql = string.Format(
                          @" DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                            EXEC	@return_value = [dbo].[{35}]
+                            EXEC	@return_value = [dbo].[{36}]
 		                            @DocNoMode = {0},
 		                            @InsertMode = {1},
 		                            @ModeCode = '{2}',
@@ -494,6 +496,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @F18 = '{32}',
 		                            @F19 = '{33}',
 		                            @F20 = '{34}',		                            
+		                            @Tanzim = '{35}',		                            
 		                            @DocNo_Out = @DocNo_Out OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             AFI_ADocHi_i.DocNoMode,
@@ -534,6 +537,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             AFI_ADocHi_i.F18,
                             AFI_ADocHi_i.F19,
                             AFI_ADocHi_i.F20,
+                            AFI_ADocHi_i.Tanzim,
                             AFI_ADocHi_i.flagTest == "Y" ? "Web_SaveADoc_HI_Temp" : "Web_SaveADoc_HI"
                             );
                     value = db.Database.SqlQuery<string>(sql).Single();

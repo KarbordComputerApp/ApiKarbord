@@ -86,6 +86,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F20 = '{36}',
                                     @OprCode = '{37}',
                                     @MkzCode = '{38}',
+                                    @Tanzim = '{39}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_IDocHi.DocNoMode,
@@ -131,7 +132,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.F20,
                             //aFI_IDocHi.Tasvib,
                             aFI_IDocHi.OprCode,
-                            aFI_IDocHi.MkzCode
+                            aFI_IDocHi.MkzCode,
+                            aFI_IDocHi.Tanzim
                             );
                     value = db.Database.SqlQuery<string>(sql).Single();
 
@@ -170,7 +172,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     string sql = string.Format(
                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                          EXEC	@return_value = [dbo].[{37}]
+                          EXEC	@return_value = [dbo].[{38}]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = '{2}' ,
@@ -207,7 +209,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F18 = '{33}',
                                     @F19 = '{34}',
                                     @F20 = '{35}',
-                                    @Footer = '{36}',
+                                    @Tanzim = '{36}',
+                                    @Footer = '{37}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_IDocHi.DocNoMode,
@@ -246,6 +249,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.F18,
                             aFI_IDocHi.F19,
                             aFI_IDocHi.F20,
+                            aFI_IDocHi.Tanzim,
                             UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer ?? ""),
                             aFI_IDocHi.flagTest == "Y" ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI"
                             );
