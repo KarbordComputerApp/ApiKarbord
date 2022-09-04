@@ -73,6 +73,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string flagTest { get; set; }
 
             public double? Amount { get; set; }
+
+            public byte? MjdControl { get; set; }
         }
 
         // PUT: api/AFI_ADocBi/5
@@ -81,7 +83,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PutAFI_ADocBi(string ace, string sal, string group, AFI_ADocBi aFI_ADocBi)
         {
             string sql = string.Format(CultureInfo.InvariantCulture,
-                          @" DECLARE	@return_value int
+                          @" DECLARE	@return_value int, @outputSt nvarchar(1000) = ''
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BU]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -108,8 +110,10 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
 		                            @ArzValue = {24},
-		                            @Amount = {25}
-                             SELECT	'Return Value' = @return_value",
+		                            @Amount = {25},
+                                    @MjdControl = {26},
+                                    @outputSt = @outputSt OUTPUT
+                             SELECT	@outputSt as outputSt",
                         aFI_ADocBi.SerialNumber,
                         aFI_ADocBi.BandNo,
                         aFI_ADocBi.AccCode,
@@ -135,7 +139,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.ArzCode,
                         aFI_ADocBi.ArzRate ?? 0,
                         aFI_ADocBi.arzValue ?? 0,
-                        aFI_ADocBi.Amount ?? 0
+                        aFI_ADocBi.Amount ?? 0,
+                        aFI_ADocBi.MjdControl ?? 0
                         );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -143,20 +148,27 @@ namespace ApiKarbord.Controllers.AFI.data
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                int value = db.Database.SqlQuery<int>(sql).Single();
-                if (value == 0)
+                string value = db.Database.SqlQuery<string>(sql).Single();
+                if (value == "")
                 {
                     await db.SaveChangesAsync();
                 }
                 //await db.SaveChangesAsync();
 
-                string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
-                var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 1, aFI_ADocBi.flagLog, 0);
-                return Ok(listSanad);
+
+                if ((aFI_ADocBi.MjdControl ?? 0) == 0)
+                {
+                    string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
+                    var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);
+                    return Ok(listSanad);
+                }
+                else
+                {
+                    return Ok(value);
+                }
             }
             return Ok(conStr);
-
         }
 
         // POST: api/AFI_ADocBi
@@ -193,7 +205,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     }
                     string sql = string.Format(CultureInfo.InvariantCulture,
-                        @" DECLARE	@return_value int
+                        @" DECLARE	@return_value int, @outputSt nvarchar(1000) = ''
                              EXEC	@return_value = [dbo].[Web_SaveADoc_BI]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -220,8 +232,10 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
 		                            @ArzValue = {24},
-		                            @Amount = {25}
-                             SELECT	'Return Value' = @return_value",
+		                            @Amount = {25},
+		                            @MjdControl = {26},
+                                    @outputSt = @outputSt OUTPUT
+                             SELECT	@outputSt as outputSt",
                         aFI_ADocBi.SerialNumber,
                         bandNo == 0 ? aFI_ADocBi.BandNo : bandNo,
                         aFI_ADocBi.AccCode,
@@ -247,19 +261,27 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.ArzCode,
                         aFI_ADocBi.ArzRate ?? 0,
                         aFI_ADocBi.arzValue ?? 0,
-                        aFI_ADocBi.Amount ?? 0
+                        aFI_ADocBi.Amount ?? 0, 
+                        aFI_ADocBi.MjdControl ?? 0
                         );
-                    int value = db.Database.SqlQuery<int>(sql).Single();
-                    if (value == 0)
+                    string value = db.Database.SqlQuery<string>(sql).Single();
+                    if (value == "")
                     {
                         await db.SaveChangesAsync();
                     }
 
-
-                    string sql1 = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
-                    var listSanad = db.Database.SqlQuery<Web_ADocB>(sql1);
                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, "ADoc", 1, aFI_ADocBi.flagLog, 0);
-                    return Ok(listSanad);
+
+                    if ((aFI_ADocBi.MjdControl ?? 0) == 0)
+                    {
+                        sql = string.Format(@"SELECT * FROM Web_ADocB WHERE SerialNumber = {0}", aFI_ADocBi.SerialNumber);
+                        var listSanad = db.Database.SqlQuery<Web_ADocB>(sql);
+                        return Ok(listSanad);
+                    }
+                    else
+                    {
+                        return Ok(value);
+                    }
                 }
                 catch (Exception)
                 {

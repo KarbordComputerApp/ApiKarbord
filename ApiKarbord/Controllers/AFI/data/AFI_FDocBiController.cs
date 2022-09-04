@@ -26,6 +26,8 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(AFI_FDocBi))]
         public async Task<IHttpActionResult> PutAFI_FDocBi(string ace, string sal, string group, long BandNo, AFI_FDocBi aFI_FDocBi)
         {
+            string value;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -38,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"DECLARE	@return_value int
+                          @"DECLARE	@return_value int, @outputSt nvarchar(1000) = ''
                             EXEC	@return_value = [dbo].[Web_SaveFDoc_BU]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -58,9 +60,10 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @BandSpec = N'{15}',
                                     @ArzCode = N'{16}',
                                     @ArzRate = {17},
-                                    @ArzValue = {18}
-                            SELECT	'Return Value' = @return_value
-                            ",
+                                    @ArzValue = {18},
+                                    @MjdControl = {19},
+                                    @outputSt = @outputSt OUTPUT
+                             SELECT	@outputSt as outputSt",
                         aFI_FDocBi.SerialNumber,
                         aFI_FDocBi.BandNo,
                         aFI_FDocBi.KalaCode,
@@ -79,10 +82,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(aFI_FDocBi.BandSpec ?? ""),
                         aFI_FDocBi.ArzCode ?? "",
                         aFI_FDocBi.ArzRate ?? 0,
-                        aFI_FDocBi.ArzValue ?? 0
+                        aFI_FDocBi.ArzValue ?? 0,
+                        aFI_FDocBi.MjdControl ?? 0
                         );
-                    int value = db.Database.SqlQuery<int>(sql).Single();
-                    if (value == 0)
+                    value = db.Database.SqlQuery<string>(sql).Single();
+                    if (value == "")
                     {
                         await db.SaveChangesAsync();
                     }
@@ -91,11 +95,23 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec,ArzValue
-                                          FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
-                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
+                
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
-                return Ok(listFactor);
+
+                if ((aFI_FDocBi.MjdControl ?? 0) == 0)
+                {
+                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,
+                                                         KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,
+                                                         LinkYear,LinkProg,BandSpec,ArzValue
+                                                  FROM   Web_FDocB WHERE SerialNumber = {0}",
+                                                  aFI_FDocBi.SerialNumber);
+                    var list = db.Database.SqlQuery<Web_FDocB>(sql1);
+                    return Ok(list);
+                }
+                else
+                {
+                    return Ok(value);
+                }
             }
             return Ok(conStr);
         }
@@ -105,7 +121,7 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(AFI_FDocBi))]
         public async Task<IHttpActionResult> PostAFI_FDocBi(string ace, string sal, string group, long bandNo, AFI_FDocBi aFI_FDocBi)
         {
-
+            string value;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -147,7 +163,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     }
                     string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"DECLARE	@return_value int
+                          @"DECLARE	@return_value int , @outputSt nvarchar(1000) = ''
                             EXEC	@return_value = [dbo].[Web_SaveFDoc_BI]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -167,9 +183,10 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @BandSpec = N'{15}',
                                     @ArzCode = N'{16}',
                                     @ArzRate = {17},
-                                    @ArzValue = {18}
-                            SELECT	'Return Value' = @return_value
-                            ",
+                                    @ArzValue = {18},
+                                    @MjdControl = {19},
+                                    @outputSt = @outputSt OUTPUT
+                             SELECT	@outputSt as outputSt",
                         aFI_FDocBi.SerialNumber,
                         bandNo == 0 ? aFI_FDocBi.BandNo.ToString() : bandNo.ToString(),
                         aFI_FDocBi.KalaCode,
@@ -188,10 +205,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(aFI_FDocBi.BandSpec ?? ""),
                         aFI_FDocBi.ArzCode ?? "",
                         aFI_FDocBi.ArzRate ?? 0,
-                        aFI_FDocBi.ArzValue ?? 0
+                        aFI_FDocBi.ArzValue ?? 0,
+                        aFI_FDocBi.MjdControl ?? 0
                         );
-                    int value = db.Database.SqlQuery<int>(sql).Single();
-                    if (value == 0)
+                    value = db.Database.SqlQuery<string>(sql).Single();
+                    if (value == "")
                     {
                         await db.SaveChangesAsync();
                     }
@@ -200,11 +218,23 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,LinkYear,LinkProg,BandSpec,ArzValue
-                                         FROM Web_FDocB WHERE SerialNumber = {0}", aFI_FDocBi.SerialNumber);
-                var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
+
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
-                return Ok(listFactor);
+
+                if ((aFI_FDocBi.MjdControl ?? 0) == 0)
+                {
+                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,
+                                                         KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,
+                                                         LinkYear,LinkProg,BandSpec,ArzValue
+                                                  FROM   Web_FDocB WHERE SerialNumber = {0}",
+                                                  aFI_FDocBi.SerialNumber);
+                    var list = db.Database.SqlQuery<Web_FDocB>(sql1);
+                    return Ok(list);
+                }
+                else
+                {
+                    return Ok(value);
+                }
             }
             return Ok(conStr);
 
@@ -300,7 +330,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         string sql = string.Format(CultureInfo.InvariantCulture,
 
 
-                             @"DECLARE	@return_value int
+                             @"DECLARE	@return_value int 
                             EXEC	@return_value = [dbo].[Web_SaveFDoc_BI_Temp]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},

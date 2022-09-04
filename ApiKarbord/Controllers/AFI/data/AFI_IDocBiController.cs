@@ -24,6 +24,7 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(AFI_IDocBi))]
         public async Task<IHttpActionResult> PutAFI_IDocBi(string ace, string sal, string group, long BandNo, AFI_IDocBi aFI_IDocBi)
         {
+            string value;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -34,14 +35,14 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 4, aFI_IDocBi.BandNo ?? 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 4, aFI_IDocBi.BandNo ?? 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"DECLARE	@return_value int
+                          @"DECLARE	@return_value int, @outputSt nvarchar(1000) = ''
                             EXEC	@return_value = [dbo].[Web_SaveIDoc_BU]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -60,9 +61,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @BandSpec = '{14}',
                                     @ArzCode = N'{15}',
                                     @ArzRate = {16},
-                                    @ArzValue = {17}
-                            SELECT	'Return Value' = @return_value
-                            ",
+                                    @ArzValue = {17},
+                                    @MjdControl = {18},
+                                    @outputSt = @outputSt OUTPUT
+                             SELECT	@outputSt as outputSt",
                         aFI_IDocBi.SerialNumber,
                         aFI_IDocBi.BandNo,
                         aFI_IDocBi.KalaCode,
@@ -80,10 +82,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? ""),
                         aFI_IDocBi.ArzCode ?? "",
                         aFI_IDocBi.ArzRate ?? 0,
-                        aFI_IDocBi.ArzValue ?? 0
+                        aFI_IDocBi.ArzValue ?? 0,
+                        aFI_IDocBi.MjdControl ?? 0
                         );
-                    int value = db.Database.SqlQuery<int>(sql).Single();
-                    if (value == 0)
+                    value = db.Database.SqlQuery<string>(sql).Single();
+                    if (value == "")
                     {
                         await db.SaveChangesAsync();
                     }
@@ -93,13 +96,21 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec,ArzValue
-                                          FROM Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
-                var listFactor = db.Database.SqlQuery<Web_IDocB>(sql1);
-
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocBi.flagLog, 0);
 
-                return Ok(listFactor);
+
+                if ((aFI_IDocBi.MjdControl ?? 0) == 0)
+                {
+                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,
+                                                         KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec,ArzValue
+                                                  FROM   Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
+                    var list = db.Database.SqlQuery<Web_IDocB>(sql1);
+                    return Ok(list);
+                }
+                else
+                {
+                    return Ok(value);
+                }
             }
             return Ok(conStr);
         }
@@ -109,13 +120,13 @@ namespace ApiKarbord.Controllers.AFI.data
         [ResponseType(typeof(AFI_IDocBi))]
         public async Task<IHttpActionResult> PostAFI_IDocBi(string ace, string sal, string group, long bandNo, AFI_IDocBi aFI_IDocBi)
         {
-
+            string value;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 5, bandNo == 0 ? aFI_IDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 5, bandNo == 0 ? aFI_IDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -150,7 +161,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                     }
                     string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"DECLARE	@return_value int
+                          @"DECLARE	@return_value int , @outputSt nvarchar(1000) = ''
                             EXEC	@return_value = [dbo].[Web_SaveIDoc_BI]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -168,9 +179,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @BandSpec = '{13}',
                                     @ArzCode = N'{14}',
                                     @ArzRate = {15},
-                                    @ArzValue = {16}
-                            SELECT	'Return Value' = @return_value
-                            ",
+                                    @ArzValue = {16},
+                                    @MjdControl = {17},
+                                    @outputSt = @outputSt OUTPUT
+                             SELECT	@outputSt as outputSt",
                         aFI_IDocBi.SerialNumber,
                         bandNo == 0 ? aFI_IDocBi.BandNo.ToString() : bandNo.ToString(),
                         aFI_IDocBi.KalaCode,
@@ -184,13 +196,14 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.Up_Flag,
                         aFI_IDocBi.OprCode,
                         aFI_IDocBi.MkzCode,
-                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? ""), 
+                        UnitPublic.ConvertTextWebToWin(aFI_IDocBi.BandSpec ?? ""),
                         aFI_IDocBi.ArzCode ?? "",
                         aFI_IDocBi.ArzRate ?? 0,
-                        aFI_IDocBi.ArzValue ?? 0
+                        aFI_IDocBi.ArzValue ?? 0,
+                        aFI_IDocBi.MjdControl ?? 0
                         );
-                    int value = db.Database.SqlQuery<int>(sql).Single();
-                    if (value == 0)
+                    value = db.Database.SqlQuery<string>(sql).Single();
+                    if (value == "")
                     {
                         await db.SaveChangesAsync();
                     }
@@ -200,13 +213,20 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,
-                                              KalaDeghatM3,DeghatR,BandSpec,ArzValue 
-                                         FROM Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
-                var listFactor = db.Database.SqlQuery<Web_IDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocBi.flagLog, 0);
 
-                return Ok(listFactor);
+                if ((aFI_IDocBi.MjdControl ?? 0) == 0)
+                {
+                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,
+                                                         KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec,ArzValue 
+                                                 FROM    Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
+                    var list = db.Database.SqlQuery<Web_IDocB>(sql1);
+                    return Ok(list);
+                }
+                else
+                {
+                    return Ok(value);
+                }
             }
             return Ok(conStr);
         }
@@ -217,7 +237,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_IDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, int InOut, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, InOut == 1 ? "IIDoc" : "IODoc", 6, BandNo);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, InOut == 1 ? "IIDoc" : "IODoc", 6, BandNo);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -281,7 +301,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? "IIDoc" : "IODoc", 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? "IIDoc" : "IODoc", 5, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -379,7 +399,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ConvertObject.SerialNumber, InOut, 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, ConvertObject.SerialNumber, InOut, 5, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

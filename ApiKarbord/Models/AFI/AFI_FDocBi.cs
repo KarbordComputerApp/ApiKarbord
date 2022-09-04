@@ -62,5 +62,7 @@
 
         public double? ArzValue { get; set; }
 
+        public byte? MjdControl { get; set; }
+
     }
 }
