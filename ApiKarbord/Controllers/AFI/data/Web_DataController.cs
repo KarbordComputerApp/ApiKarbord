@@ -288,6 +288,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string InvCode { get; set; }
 
+            public bool? WithImage { get; set; }
 
         }
 
@@ -295,9 +296,16 @@ namespace ApiKarbord.Controllers.AFI.data
         [Route("api/Web_Data/KalaApp/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostWeb_Kala_App(string ace, string sal, string group, Kala_AppObject Kala_AppObject)
         {
-            string sql = "";
-            sql = string.Format("select  * FROM  dbo.Web_Kala_App('{0}') where 1 = 1 ", Kala_AppObject.InvCode);
+            string sql = string.Format("select Code,Name,KGruCode,BarCode,Mjd, ");
 
+            if (Kala_AppObject.WithImage == true)
+                sql += " KalaImage,Comm ";
+            else
+                sql += " null as KalaImage, '' as Comm ";
+
+
+            sql += string.Format(" FROM  dbo.Web_Kala_App('{0}') where 1 = 1 ", Kala_AppObject.InvCode);
+            
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             if (dataAccount[3] != "" && Kala_AppObject.Where != "" && Kala_AppObject.Where != "null" && Kala_AppObject.Where != null)
