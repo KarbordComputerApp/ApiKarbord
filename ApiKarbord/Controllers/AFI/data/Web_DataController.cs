@@ -296,12 +296,12 @@ namespace ApiKarbord.Controllers.AFI.data
         [Route("api/Web_Data/KalaApp/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostWeb_Kala_App(string ace, string sal, string group, Kala_AppObject Kala_AppObject)
         {
-            string sql = string.Format("select Code,Name,KGruCode,BarCode,Mjd, ");
+            string sql = string.Format("select Code,Name,KGruCode,BarCode,Mjd,Comm,");
 
             if (Kala_AppObject.WithImage == true)
-                sql += " KalaImage,Comm ";
+                sql += "KalaImage ";
             else
-                sql += " null as KalaImage, '' as Comm ";
+                sql += "null as KalaImage ";
 
 
             sql += string.Format(" FROM  dbo.Web_Kala_App('{0}') where 1 = 1 ", Kala_AppObject.InvCode);
