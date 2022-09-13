@@ -15,6 +15,6 @@
 
         //public long? SortName { get; set; }
 
-        public bool Cancel { get; set; }
+        public int? Cancel { get; set; }
     }
 }

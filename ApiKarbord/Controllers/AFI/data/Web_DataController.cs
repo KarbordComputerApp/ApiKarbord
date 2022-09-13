@@ -490,9 +490,9 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 ApiModel db = new ApiModel(conStr);
                 if (insert)
-                    return db.Web_KalaPrice.Where(c => c.Cancel == false);
+                    return db.Web_KalaPrice.Where(c => c.Cancel == 1).OrderBy(c => c.Code);
                 else
-                    return db.Web_KalaPrice;
+                    return db.Web_KalaPrice.OrderBy(c => c.Code);
             }
             return null;
         }
@@ -2868,6 +2868,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string F20 { get; set; }
 
+            public Double Latitude { get; set; }
+
+            public Double Longitude { get; set; }
+
         }
 
         // post: api/AFI_SaveCust
@@ -2921,8 +2925,9 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F19 = N'{39}',
 		                        @F20 = N'{40}',
 		                        @Email = N'{41}',
+		                        @Latitude = {42}',
+		                        @Longitude = {43}',
 		                        @oCode = @oCode OUTPUT
-
                         SELECT	@oCode as N'@oCode'",
                         aFI_SaveCust.BranchCode ?? 0,
                         aFI_SaveCust.UserCode,
@@ -2965,7 +2970,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveCust.F18,
                         aFI_SaveCust.F19,
                         aFI_SaveCust.F20,
-                        aFI_SaveCust.Email);
+                        aFI_SaveCust.Email,
+                        aFI_SaveCust.Latitude,
+                        aFI_SaveCust.Longitude
+                        );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
@@ -5994,6 +6002,82 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+
+
+
+        public class Web_SaveKalaImage
+        {
+            public string Code { get; set; }
+
+            public HttpPostedFileBase Atch { get; set; }
+        }
+
+
+        [Route("api/Web_Data/SaveKalaImage/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_SaveKalaImage(string ace, string sal, string group)
+        {
+            string Code = HttpContext.Current.Request["Code"];
+            var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
+
+            int lenght = Atch.ContentLength;
+            byte[] filebyte = new byte[lenght];
+            Atch.InputStream.Read(filebyte, 0, lenght);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                SqlConnection connection = new SqlConnection(conStr);
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Web_SaveKalaImage", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Code", Code);
+                cmd.Parameters.AddWithValue("@Atch", filebyte);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                return Ok(1);
+            }
+            else
+                return Ok(conStr);
+        }
+
+
+
+        public class Web_SaveCustImage
+        {
+            public string Code { get; set; }
+
+            public HttpPostedFileBase Atch { get; set; }
+        }
+
+
+        [Route("api/Web_Data/SaveCustImage/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_SaveCustImage(string ace, string sal, string group)
+        {
+            string Code = HttpContext.Current.Request["Code"];
+            var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
+
+            int lenght = Atch.ContentLength;
+            byte[] filebyte = new byte[lenght];
+            Atch.InputStream.Read(filebyte, 0, lenght);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                SqlConnection connection = new SqlConnection(conStr);
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Web_SaveCustImage", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Code", Code);
+                cmd.Parameters.AddWithValue("@Atch", filebyte);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                return Ok(1);
+            }
+            else
+                return Ok(conStr);
+        }
 
 
     }
