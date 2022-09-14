@@ -489,9 +489,9 @@ namespace ApiKarbord.Controllers.AFI.data
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
-                if (insert)
-                    return db.Web_KalaPrice.Where(c => c.Cancel == 1).OrderBy(c => c.Code);
-                else
+                //if (insert)
+                //    return db.Web_KalaPrice.Where(c => c.Cancel == 0).OrderBy(c => c.Code);
+                //else
                     return db.Web_KalaPrice.OrderBy(c => c.Code);
             }
             return null;
