@@ -6032,7 +6032,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 SqlCommand cmd = new SqlCommand("Web_SaveKalaImage", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Code", Code);
-                cmd.Parameters.AddWithValue("@Atch", filebyte);
+                cmd.Parameters.AddWithValue("@Image", filebyte);
                 cmd.ExecuteNonQuery();
                 connection.Close();
                 return Ok(1);
@@ -6057,6 +6057,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string Code = HttpContext.Current.Request["Code"];
             var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
 
+
             int lenght = Atch.ContentLength;
             byte[] filebyte = new byte[lenght];
             Atch.InputStream.Read(filebyte, 0, lenght);
@@ -6070,7 +6071,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 SqlCommand cmd = new SqlCommand("Web_SaveCustImage", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Code", Code);
-                cmd.Parameters.AddWithValue("@Atch", filebyte);
+                cmd.Parameters.AddWithValue("@Image", filebyte);
                 cmd.ExecuteNonQuery();
                 connection.Close();
                 return Ok(1);
