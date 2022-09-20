@@ -26,6 +26,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+
 namespace ApiKarbord.Controllers.AFI.data
 {
     public class Web_DataController : ApiController
@@ -305,7 +306,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
             sql += string.Format(" FROM  dbo.Web_Kala_App('{0}') where 1 = 1 ", Kala_AppObject.InvCode);
-            
+
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             if (dataAccount[3] != "" && Kala_AppObject.Where != "" && Kala_AppObject.Where != "null" && Kala_AppObject.Where != null)
@@ -349,7 +350,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_Kala_Info(string ace, string sal, string group, Kala_InfoObject Kala_InfoObject)
         {
             string sql = "";
-            sql = string.Format("select  * FROM  dbo.Web_Kala_Info('{0}') where 1 = 1 " , Kala_InfoObject.InvCode);
+            sql = string.Format("select  * FROM  dbo.Web_Kala_Info('{0}') where 1 = 1 ", Kala_InfoObject.InvCode);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
@@ -492,7 +493,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 //if (insert)
                 //    return db.Web_KalaPrice.Where(c => c.Cancel == 0).OrderBy(c => c.Code);
                 //else
-                    return db.Web_KalaPrice.OrderBy(c => c.Code);
+                return db.Web_KalaPrice.OrderBy(c => c.Code);
             }
             return null;
         }
@@ -6023,6 +6024,10 @@ namespace ApiKarbord.Controllers.AFI.data
             byte[] filebyte = new byte[lenght];
             Atch.InputStream.Read(filebyte, 0, lenght);
 
+            Stream S = new MemoryStream(filebyte);
+            filebyte = ConvertToBitmap(S);
+            Atch.InputStream.Read(filebyte, 0, lenght);
+
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
@@ -6063,9 +6068,7 @@ namespace ApiKarbord.Controllers.AFI.data
             Atch.InputStream.Read(filebyte, 0, lenght);
 
             Stream S = new MemoryStream(filebyte);
-
             filebyte = ConvertToBitmap(S);
-
             Atch.InputStream.Read(filebyte, 0, lenght);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -6089,19 +6092,19 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public byte[] ConvertToBitmap(Stream bmpStream)
         {
-            Bitmap bitmap;
             Image image = Image.FromStream(bmpStream);
-            bitmap = new Bitmap(image);
 
-            return ImageToByte(bitmap);
-            //return bitmap;
+            image = resizeImage(image, new Size(256, 256));
+
+            MemoryStream stream = new MemoryStream();
+            image.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+            return stream.ToArray();
         }
 
 
-        public static byte[] ImageToByte(Image img)
+        public static Image resizeImage(Image imgToResize, Size size)
         {
-            ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(img, typeof(byte[]));
+            return (Image)(new Bitmap(imgToResize, size));
         }
 
     }
