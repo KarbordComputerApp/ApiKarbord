@@ -6062,6 +6062,12 @@ namespace ApiKarbord.Controllers.AFI.data
             byte[] filebyte = new byte[lenght];
             Atch.InputStream.Read(filebyte, 0, lenght);
 
+            Stream S = new MemoryStream(filebyte);
+
+            filebyte = ConvertToBitmap(S);
+
+            Atch.InputStream.Read(filebyte, 0, lenght);
+
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
@@ -6080,6 +6086,23 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(conStr);
         }
 
+
+        public byte[] ConvertToBitmap(Stream bmpStream)
+        {
+            Bitmap bitmap;
+            Image image = Image.FromStream(bmpStream);
+            bitmap = new Bitmap(image);
+
+            return ImageToByte(bitmap);
+            //return bitmap;
+        }
+
+
+        public static byte[] ImageToByte(Image img)
+        {
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
+        }
 
     }
 }
