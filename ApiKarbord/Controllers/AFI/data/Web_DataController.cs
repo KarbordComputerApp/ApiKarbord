@@ -5962,6 +5962,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         [Route("api/Web_Data/CustAccMondeh/{ace}/{sal}/{group}")]
+        [Route("api/Web_Data/CustAccMondeh/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostWeb_CustAccMondeh(string ace, string sal, string group, CustAccMondehObject CustAccMondehObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -6105,6 +6106,51 @@ namespace ApiKarbord.Controllers.AFI.data
         public static Image resizeImage(Image imgToResize, Size size)
         {
             return (Image)(new Bitmap(imgToResize, size));
+        }
+
+
+        // Get: api/DelCustImage
+        [Route("api/Web_Data/DelCustImage/{ace}/{sal}/{group}/{CustCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelCustImage(string ace, string sal, string group, string CustCode)
+        {
+            string sql = string.Format(@"DECLARE	@return_value int
+                                         EXEC	@return_value = [dbo].[Web_DelCustImage]
+		                                        @Code = '{0}'
+                                         SELECT	'Return Value' = @return_value",
+                                         CustCode);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<int>(sql);
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+        // Get: api/DelKalaImage
+        [Route("api/Web_Data/DelKalaImage/{ace}/{sal}/{group}/{KalaCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelKalaImage(string ace, string sal, string group, string KalaCode)
+        {
+            string sql = string.Format(@"DECLARE	@return_value int
+                                         EXEC	@return_value = [dbo].[Web_DelKalaImage]
+		                                        @Code = '{0}'
+                                         SELECT	'Return Value' = @return_value",
+                                         KalaCode);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<int>(sql);
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
         }
 
     }
