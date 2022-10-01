@@ -118,14 +118,26 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string CustCode { get; set; }
 
+            public string ImageDate { get; set; }
+
+            public bool? WithImage { get; set; }
+
         }
 
         // Post: api/Web_Data/CustApp لیست اشخاص
         [Route("api/Web_Data/CustApp/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostWeb_Cust_App(string ace, string sal, string group, Cust_AppObject Cust_AppObject)
         {
-            string sql = "";
-            sql = string.Format("select  * FROM  dbo.Web_Cust_App() where 1 = 1 ");
+
+            string sql = string.Format("select Code,Name,CGruCode,Address,");
+
+            if (Cust_AppObject.WithImage == true)
+                sql += "CustImage ";
+            else
+                sql += "null as CustImage ";
+
+            sql = string.Format("FROM dbo.Web_Cust_App('{0}') where 1 = 1 ", Cust_AppObject.ImageDate);
+
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
@@ -168,7 +180,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_Cust_Info(string ace, string sal, string group, Cust_InfoObject Cust_InfoObject)
         {
             string sql = "";
-            sql = string.Format("select  * FROM  dbo.Web_Cust_Info() where 1 = 1 ");
+            sql = string.Format("select * FROM  dbo.Web_Cust_Info() where 1 = 1 ");
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
@@ -289,6 +301,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string InvCode { get; set; }
 
+            public string ImageDate { get; set; }
+
             public bool? WithImage { get; set; }
 
         }
@@ -305,7 +319,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += "null as KalaImage ";
 
 
-            sql += string.Format(" FROM  dbo.Web_Kala_App('{0}') where 1 = 1 ", Kala_AppObject.InvCode);
+            sql += string.Format(" FROM  dbo.Web_Kala_App('{0}','{1}') where 1 = 1 ", Kala_AppObject.InvCode, Kala_AppObject.ImageDate);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
