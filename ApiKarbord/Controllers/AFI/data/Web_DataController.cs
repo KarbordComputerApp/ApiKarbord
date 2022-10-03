@@ -136,7 +136,7 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 sql += "null as CustImage ";
 
-            sql = string.Format("FROM dbo.Web_Cust_App('{0}') where 1 = 1 ", Cust_AppObject.ImageDate);
+            sql += string.Format("FROM dbo.Web_Cust_App('{0}') where 1 = 1 ", Cust_AppObject.ImageDate);
 
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -319,8 +319,14 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += "null as KalaImage ";
 
 
-            sql += string.Format(" FROM  dbo.Web_Kala_App('{0}','{1}') where 1 = 1 ", Kala_AppObject.InvCode, Kala_AppObject.ImageDate);
-
+            if (Kala_AppObject.ImageDate == "0")
+            {
+                sql += string.Format(" FROM  dbo.Web_Kala_App('{0}',0) where 1 = 1 ", Kala_AppObject.InvCode);
+            }
+            else
+            {
+                sql += string.Format(" FROM  dbo.Web_Kala_App('{0}','{1}') where 1 = 1 ", Kala_AppObject.InvCode, Kala_AppObject.ImageDate);
+            }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             if (dataAccount[3] != "" && Kala_AppObject.Where != "" && Kala_AppObject.Where != "null" && Kala_AppObject.Where != null)
