@@ -316,7 +316,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (Kala_AppObject.WithImage == true)
                 sql += "KalaImage ";
             else
-                sql += "null as KalaImage ";
+                sql += "null as KalaImage "; 
 
 
             if (Kala_AppObject.ImageDate == "0")
