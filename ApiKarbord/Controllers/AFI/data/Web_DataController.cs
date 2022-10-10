@@ -20,6 +20,7 @@ using System.Net.Http.Headers;
 using System.IO;
 using System.Drawing;
 using System.IO.Compression;
+using System.Net.Mail;
 
 using System.Web;
 using System.Data.SqlClient;
@@ -316,7 +317,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (Kala_AppObject.WithImage == true)
                 sql += "KalaImage ";
             else
-                sql += "null as KalaImage "; 
+                sql += "null as KalaImage ";
 
 
             if (Kala_AppObject.ImageDate == "0")
@@ -6171,6 +6172,77 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(list);
             }
             return Ok(conStr);
+        }
+
+
+
+
+
+
+        // GET: api/Web_Data/SmsandEmail لیست اطلاعات ایمیل 
+        [Route("api/Web_Data/SmsandEmail/{Mode}")]
+        public async Task<IHttpActionResult> GetWeb_SmsandEmail(string Mode)
+        {
+            string sql = string.Format(@"select * from dbo.Web_SmsandEmail('{0}')", Mode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "", 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<Web_SmsandEmail>(sql);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+        [Route("api/Web_Data/SendEmail/")]
+        public async Task<IHttpActionResult> PosSendEmail()
+        {
+            string fromAddress = HttpContext.Current.Request["fromAddress"];  //partocomputer2@gmail.com
+            string toAddress = HttpContext.Current.Request["toAddress"];
+            string psw = HttpContext.Current.Request["psw"]; //clojovjqibtyhxly
+            string subject = HttpContext.Current.Request["subject"];
+            string body = HttpContext.Current.Request["body"];
+            string host = HttpContext.Current.Request["host"];
+            string port = HttpContext.Current.Request["port"];
+            string timeout = HttpContext.Current.Request["timeout"];
+            var Atch = System.Web.HttpContext.Current.Request.Files["Atch"];
+
+
+            int lenght = Atch.ContentLength;
+            byte[] filebyte = new byte[lenght];
+           Atch.InputStream.Read(filebyte, 0, lenght);
+
+            var from = new MailAddress(fromAddress, "From Name");
+            var to = new MailAddress(toAddress, "To Name");
+
+
+            var smtp = new SmtpClient
+            {
+                Host = host,//"smtp.gmail.com",
+                Port = Int32.Parse(port),//587,
+                EnableSsl = true,
+          //      Timeout = Int32.Parse(timeout),
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(from.Address, psw)
+            };
+
+            Attachment attachment;
+            attachment = new Attachment(new MemoryStream(filebyte), Atch.FileName);
+
+            MailMessage mail = new MailMessage();
+            mail.From = from;
+            mail.To.Add(to);
+            mail.Subject = subject;
+            mail.Body = body;
+            mail.Attachments.Add(attachment);
+            smtp.Send(mail);
+            return Ok(1);
+            
         }
 
     }
