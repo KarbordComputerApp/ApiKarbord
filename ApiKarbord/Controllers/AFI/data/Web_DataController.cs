@@ -3705,7 +3705,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetStatements()
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = string.Format("select * FROM  Web_Statements('{0}')", dataAccount[2]);
+            string sql = string.Format("select * FROM  Web_Statements('{0}') order by name", dataAccount[2]);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "0", 0, "", 0, 0);
             if (conStr.Length > 100)
             {
@@ -6214,7 +6214,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             int lenght = Atch.ContentLength;
             byte[] filebyte = new byte[lenght];
-           Atch.InputStream.Read(filebyte, 0, lenght);
+            Atch.InputStream.Read(filebyte, 0, lenght);
 
             var from = new MailAddress(fromAddress, "From Name");
             var to = new MailAddress(toAddress, "To Name");
@@ -6225,7 +6225,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 Host = host,//"smtp.gmail.com",
                 Port = Int32.Parse(port),//587,
                 EnableSsl = true,
-          //      Timeout = Int32.Parse(timeout),
+                //      Timeout = Int32.Parse(timeout),
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(from.Address, psw)
@@ -6242,8 +6242,42 @@ namespace ApiKarbord.Controllers.AFI.data
             mail.Attachments.Add(attachment);
             smtp.Send(mail);
             return Ok(1);
-            
+
         }
+
+
+
+
+        public class JaneshinObject
+        {
+            public string UserCode { get; set; }
+
+        }
+        public class Janeshin
+        {
+            public string UserCode { get; set; }
+
+        }
+
+        // Post: api/Web_Data/Janeshin لیست جانشین
+        [Route("api/Web_Data/Janeshin/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_Janeshin(string ace, string sal, string group, JaneshinObject JaneshinObject)
+        {
+            string sql = string.Format("select * from dbo.Web_Janeshin('{0}')", JaneshinObject.UserCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var listJaneshin = db.Database.SqlQuery<Janeshin>(sql);
+                return Ok(listJaneshin);
+            }
+            return Ok(conStr);
+        }
+
+
 
     }
 }
