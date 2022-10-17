@@ -1832,6 +1832,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public int ModeCode { get; set; }
 
+            public string Prog { get; set; }
+
             public long SerialNumber { get; set; }
         }
 
@@ -1845,7 +1847,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             @"select  SerialNumber,Comm,FName,BandNo FROM Web_DocAttach
                                              where   ModeCode = {0} and ProgName='{1}' and SerialNumber = {2} order by BandNo desc",
                               DocAttachObject.ModeCode,
-                              "ERJ1",
+                              DocAttachObject.Prog,
                               DocAttachObject.SerialNumber);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
