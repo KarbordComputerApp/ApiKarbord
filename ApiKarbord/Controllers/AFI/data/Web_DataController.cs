@@ -1830,28 +1830,46 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class DocAttachObject
         {
+            public string ProgName { get; set; }
+
+            public string Group { get; set; }
+
+            public string Year { get; set; }
+
             public int ModeCode { get; set; }
 
-            public string Prog { get; set; }
-
             public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
+            public byte ByData { get; set; }
         }
 
 
         // Post: api/Web_Data/DocAttach پیوست  
-        [Route("api/Web_Data/DocAttach/{ace}/{sal}/{group}")]
+        [Route("api/Web_Data/DocAttach/")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_DocAttach(string ace, string sal, string group, DocAttachObject DocAttachObject)
+        public async Task<IHttpActionResult> PostWeb_DocAttach( DocAttachObject DocAttachObject)
         {
             string sql = string.Format(CultureInfo.InvariantCulture,
-                            @"select  SerialNumber,Comm,FName,BandNo FROM Web_DocAttach
-                                             where   ModeCode = {0} and ProgName='{1}' and SerialNumber = {2} order by BandNo desc",
-                              DocAttachObject.ModeCode,
-                              DocAttachObject.Prog,
-                              DocAttachObject.SerialNumber);
-
+                                       @"EXEC [dbo].[Web_DocAttach]
+                                              @ProgName = N'{0}',
+                                              @Group = N'{1}',
+                                              @Year = N'{2}',
+                                              @DMode = N'{3}',
+                                              @SerialNumber = {4},
+                                              @BandNo = {5},
+                                              @ByData = {6}",
+                                              DocAttachObject.ProgName,
+                                              DocAttachObject.Group,
+                                              DocAttachObject.Year,
+                                              DocAttachObject.ModeCode,
+                                              DocAttachObject.SerialNumber,
+                                              DocAttachObject.BandNo,
+                                              DocAttachObject.ByData);
+            //@"select  SerialNumber,Comm,FName,BandNo FROM Web_DocAttach  where   ModeCode = {0} and ProgName='{1}' and SerialNumber = {2} order by BandNo desc",
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "0", 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -4892,6 +4910,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public double? TotalValue { get; set; }
 
             public string DownloadCount { get; set; }
+
+            public string Year { get; set; }
         }
 
         [Route("api/Web_Data/CustAccount/{ace}/{sal}/{group}")]
@@ -6258,6 +6278,8 @@ namespace ApiKarbord.Controllers.AFI.data
         public class Janeshin
         {
             public string UserCode { get; set; }
+
+            public string UserName { get; set; }
 
         }
 

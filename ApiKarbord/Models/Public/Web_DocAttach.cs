@@ -11,6 +11,7 @@
 
         public long? SerialNumber { get; set; }
 
+
         public int? BandNo { get; set; }
 
 
@@ -18,6 +19,9 @@
 
 
         public string FName { get; set; }
+
+
+        public byte[] Atch { get; set; }
 
     }
 }
