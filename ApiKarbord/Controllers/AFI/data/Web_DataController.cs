@@ -4051,30 +4051,30 @@ namespace ApiKarbord.Controllers.AFI.data
 		                                    @DocDate = '{1}',
 		                                    @UserCode = '{2}',
 		                                    @Status = '{3}',
-		                                    @Spec = '{4}',
+		                                    @Spec = N'{4}',
 		                                    @LockNo = '{5}',
-		                                    @Text = '{6}',
-		                                    @F01 = '{7}',
-		                                    @F02 = '{8}',
-		                                    @F03 = '{9}',
-		                                    @F04 = '{10}',
-		                                    @F05 = '{11}',
-		                                    @F06 = '{12}',
-		                                    @F07 = '{13}',
-		                                    @F08 = '{14}',
-		                                    @F09 = '{15}',
-		                                    @F10 = '{16}',
-		                                    @F11 = '{17}',
-		                                    @F12 = '{18}',
-		                                    @F13 = '{19}',
-		                                    @F14 = '{20}',
-		                                    @F15 = '{21}',
-		                                    @F16 = '{22}',
-		                                    @F17 = '{23}',
-		                                    @F18 = '{24}',
-		                                    @F19 = '{25}',
-		                                    @F20 = '{26}',
-		                                    @Motaghazi = '{27}',
+		                                    @Text = N'{6}',
+		                                    @F01 = N'{7}',
+		                                    @F02 = N'{8}',
+		                                    @F03 = N'{9}',
+		                                    @F04 = N'{10}',
+		                                    @F05 = N'{11}',
+		                                    @F06 = N'{12}',
+		                                    @F07 = N'{13}',
+		                                    @F08 = N'{14}',
+		                                    @F09 = N'{15}',
+		                                    @F10 = N'{16}',
+		                                    @F11 = N'{17}',
+		                                    @F12 = N'{18}',
+		                                    @F13 = N'{19}',
+		                                    @F14 = N'{20}',
+		                                    @F15 = N'{21}',
+		                                    @F16 = N'{22}',
+		                                    @F17 = N'{23}',
+		                                    @F18 = N'{24}',
+		                                    @F19 = N'{25}',
+		                                    @F20 = N'{26}',
+		                                    @Motaghazi = N'{27}',
 		                                    @DocNo_Out = @DocNo_Out OUTPUT
                                     SELECT	@DocNo_Out as N'DocNo_Out'",
                                            ErjSaveTicket_HI.SerialNumber,
@@ -4287,14 +4287,14 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Date تاریخ سرور
         [Route("api/Web_Data/Date")]
-        public async Task<IHttpActionResult> GetWeb_Date()
+        public async Task<IHttpActionResult> GetWeb_Date() 
         {
             string sql = string.Format(@"select dbo.Web_CurrentShamsiDate() as tarikh");
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "", 0, "", 0, 0);
             if (conStr.Length > 100)
             {
-                ApiModel db = new ApiModel(conStr);
+                ApiModel db = new ApiModel(conStr); 
                 var list = db.Database.SqlQuery<string>(sql);
                 return Ok(list);
             }
