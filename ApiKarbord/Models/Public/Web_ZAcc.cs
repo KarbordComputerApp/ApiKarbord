@@ -21,5 +21,7 @@
 
         public string ZGruCode { get; set; }
 
+        public string ZGruName { get; set; }
+
     }
 }

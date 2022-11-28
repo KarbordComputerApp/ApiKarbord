@@ -6303,5 +6303,249 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+
+
+
+        public class AFI_SaveZAcc
+        {
+            public byte? BranchCode { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string Spec { get; set; }
+
+            public string ZGruCode { get; set; }
+
+            public string F01 { get; set; }
+
+            public string F02 { get; set; }
+
+            public string F03 { get; set; }
+
+            public string F04 { get; set; }
+
+            public string F05 { get; set; }
+
+            public string F06 { get; set; }
+
+            public string F07 { get; set; }
+
+            public string F08 { get; set; }
+
+            public string F09 { get; set; }
+
+            public string F10 { get; set; }
+
+            public string F11 { get; set; }
+
+            public string F12 { get; set; }
+
+            public string F13 { get; set; }
+
+            public string F14 { get; set; }
+
+            public string F15 { get; set; }
+
+            public string F16 { get; set; }
+
+            public string F17 { get; set; }
+
+            public string F18 { get; set; }
+
+            public string F19 { get; set; }
+
+            public string F20 { get; set; }
+
+        }
+
+        // post: api/AFI_SaveZAcc
+        [Route("api/Web_Data/AFI_SaveZAcc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostAFI_SaveZAcc(string ace, string sal, string group, AFI_SaveZAcc aFI_SaveZAcc)
+        {
+            string sql = string.Format(CultureInfo.InvariantCulture,
+     @" DECLARE @oCode nvarchar(100)
+                           EXEC	[dbo].[Web_SaveZAcc]
+		                        @BranchCode = {0},
+		                        @UserCode = N'{1}',
+		                        @Code = '{2}',
+		                        @Name = N'{3}',
+                                @Spec = N'{4}',
+		                        @F01 = N'{5}',
+		                        @F02 = N'{6}',
+		                        @F03 = N'{7}',
+		                        @F04 = N'{8}',
+		                        @F05 = N'{9}',
+		                        @F06 = N'{10}',
+		                        @F07 = N'{11}',
+		                        @F08 = N'{12}',
+		                        @F09 = N'{13}',
+		                        @F10 = N'{14}',
+		                        @F11 = N'{15}',
+		                        @F12 = N'{16}',
+		                        @F13 = N'{17}',
+		                        @F14 = N'{18}',
+		                        @F15 = N'{19}',
+		                        @F16 = N'{20}',
+		                        @F17 = N'{21}',
+		                        @F18 = N'{22}',
+		                        @F19 = N'{23}',
+		                        @F20 = N'{24}',
+		                        @ZGruCode = '{25}',
+		                        @oCode = @oCode OUTPUT
+                        SELECT	@oCode as N'@oCode' ",
+                                 aFI_SaveZAcc.BranchCode ?? 0,
+                                 aFI_SaveZAcc.UserCode,
+                                 aFI_SaveZAcc.Code,
+                                 aFI_SaveZAcc.Name ?? "",
+                                 aFI_SaveZAcc.Spec ?? "",
+                                 aFI_SaveZAcc.F01,
+                                 aFI_SaveZAcc.F02,
+                                 aFI_SaveZAcc.F03,
+                                 aFI_SaveZAcc.F04,
+                                 aFI_SaveZAcc.F05,
+                                 aFI_SaveZAcc.F06,
+                                 aFI_SaveZAcc.F07,
+                                 aFI_SaveZAcc.F08,
+                                 aFI_SaveZAcc.F09,
+                                 aFI_SaveZAcc.F10,
+                                 aFI_SaveZAcc.F11,
+                                 aFI_SaveZAcc.F12,
+                                 aFI_SaveZAcc.F13,
+                                 aFI_SaveZAcc.F14,
+                                 aFI_SaveZAcc.F15,
+                                 aFI_SaveZAcc.F16,
+                                 aFI_SaveZAcc.F17,
+                                 aFI_SaveZAcc.F18,
+                                 aFI_SaveZAcc.F19,
+                                 aFI_SaveZAcc.F20,
+                                 aFI_SaveZAcc.ZGruCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<string>(sql);
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        // Get: api/AFI_DelZAcc
+        [Route("api/Web_Data/AFI_DelZAcc/{ace}/{sal}/{group}/{ZAccCode}")]
+        public async Task<IHttpActionResult> GetAFI_DelZAcc(string ace, string sal, string group, string ZAccCode)
+        {
+            string sql = string.Format(@"DECLARE	@return_value int
+                                                    EXEC	@return_value = [dbo].[Web_DelZAcc]
+		                                                    @Code = '{0}'
+                                                 SELECT	'Return Value' = @return_value",
+                            ZAccCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<int>(sql);
+                await db.SaveChangesAsync();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        public class AFI_TestZAcc
+        {
+            public string Code { get; set; }
+        }
+
+
+        public class TestZAcc
+        {
+
+            public byte? Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int? BandNo { get; set; }
+        }
+
+
+        [Route("api/Web_Data/TestZAcc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestZAcc))]
+        public async Task<IHttpActionResult> PostWeb_TestZAcc(string ace, string sal, string group, AFI_TestZAcc AFI_TestZAcc)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                           @"EXEC [dbo].[Web_TestZAcc] @Code = '{0}' , @UserCode = '{1}'",
+                           AFI_TestZAcc.Code,
+                           dataAccount[2]);
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var result = db.Database.SqlQuery<TestZAcc>(sql);
+                var list = JsonConvert.SerializeObject(result);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        public class TestZAcc_DeleteObject
+        {
+            public string Code { get; set; }
+
+        }
+
+        public class TestZAcc_Delete
+        {
+            public int id { get; set; }
+
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+
+
+        [Route("api/Web_Data/TestZAcc_Delete/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(TestZAcc_Delete))]
+        public async Task<IHttpActionResult> PostWeb_TestZAcc_Delete(string ace, string sal, string group, TestZAcc_DeleteObject TestZAcc_DeleteObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[Web_TestZAcc_Delete] @Code = '{0}', @UserCode = '{1}' ", TestZAcc_DeleteObject.Code, dataAccount[2]);
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var result = db.Database.SqlQuery<TestZAcc_Delete>(sql);
+                var list = JsonConvert.SerializeObject(result);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
+
     }
 }
