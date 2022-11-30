@@ -479,15 +479,25 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(conStr);
         }
 
-        // GET: api/Web_Data/ZAcc لیست زیر حساب ها
-        [Route("api/Web_Data/ZAcc/{ace}/{sal}/{group}/{filter}")]
-        public async Task<IHttpActionResult> GetWeb_ZAcc(string ace, string sal, string group, string filter)
+
+
+        public class ZAccObject
+        {
+            public int Mode { get; set; }
+
+            public string Filter { get; set; }
+
+        }
+
+        // Post: api/Web_Data/ZAcc لیست زیر حساب ها
+        [Route("api/Web_Data/ZAcc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_ZAcc(string ace, string sal, string group, ZAccObject ZAccObject)
         {
             string sql;
-            if (filter == "null" || filter == "0")
-                sql = string.Format(@" select *  from Web_ZAcc");
+            if (ZAccObject.Filter == null || ZAccObject.Filter == "0")
+                sql = string.Format(@" select *  from Web_ZAcc where Mode = {0}", ZAccObject.Mode);
             else
-                sql = string.Format(@" select *  from Web_ZAcc where ZGruCode in ({0})", filter);
+                sql = string.Format(@" select *  from Web_ZAcc where Mode = {0} and ZGruCode in ({0})", ZAccObject.Mode,  ZAccObject.Filter);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
@@ -6004,7 +6014,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
-        [Route("api/Web_Data/CustAccMondeh/{ace}/{sal}/{group}")]
+
         [Route("api/Web_Data/CustAccMondeh/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostWeb_CustAccMondeh(string ace, string sal, string group, CustAccMondehObject CustAccMondehObject)
         {
