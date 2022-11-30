@@ -495,7 +495,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (ZAccObject.Filter == "Base")
                 sql = string.Format(@" select * from Web_ZAcc where Mode = 0 and ZGruCode not in ('-1','-2','-3')");
             else if (ZAccObject.Filter == "")
-                sql = string.Format(@" select * from Web_ZAcc");
+                sql = string.Format(@" select * from Web_ZAcc where ZGruCode not in ('-1','-2','-3')");
             else
                 sql = string.Format(@" select * from Web_ZAcc where ZGruCode in ({0})", ZAccObject.Filter);
 
