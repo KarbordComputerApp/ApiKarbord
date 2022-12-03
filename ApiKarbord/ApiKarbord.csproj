@@ -245,6 +245,7 @@
     <Compile Include="Models\Public\Web_AGMkz.cs" />
     <Compile Include="Models\Public\Web_FDocHMiniApp.cs" />
     <Compile Include="Models\Public\Web_Vstr.cs" />
+    <Compile Include="Models\Public\Web_ZAccADoc.cs" />
     <Compile Include="Models\Public\Web_ZGru.cs" />
     <Compile Include="Models\Public\Web_AGru.cs" />
     <Compile Include="Models\Public\Web_TicketStatus.cs" />

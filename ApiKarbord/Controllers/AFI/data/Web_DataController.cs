@@ -481,30 +481,46 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class ZAccObject
-        {
-            public string Filter { get; set; }
-
-        }
 
         // Post: api/Web_Data/ZAcc لیست زیر حساب ها
         [Route("api/Web_Data/ZAcc/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostWeb_ZAcc(string ace, string sal, string group, ZAccObject ZAccObject)
+        public async Task<IHttpActionResult> PostWeb_ZAcc(string ace, string sal, string group)
         {
-            string sql;
-            if (ZAccObject.Filter == "Base")
-                sql = string.Format(@" select * from Web_ZAcc where Mode = 0 and ZGruCode not in ('-1','-2','-3')");
-            else if (ZAccObject.Filter == "")
-                sql = string.Format(@" select * from Web_ZAcc where ZGruCode not in ('-1','-2','-3')");
-            else
-                sql = string.Format(@" select * from Web_ZAcc where ZGruCode in ({0})", ZAccObject.Filter);
-
+            string sql = string.Format(@"select * from Web_ZAcc");
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 var list = db.Database.SqlQuery<Web_ZAcc>(sql);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        public class ZAccADocObject
+        {
+            public string Filter { get; set; }
+
+        }
+
+        // Post: api/Web_Data/ZAccADoc لیست زیر حساب ها
+        [Route("api/Web_Data/ZAccADoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_ZAccADoc(string ace, string sal, string group, ZAccADocObject ZAccADocObject)
+        {
+            string sql;
+            if (ZAccADocObject.Filter == "")
+                sql = string.Format(@" select * from Web_ZAccADoc -- where ZGruCode not in ('-1','-2','-3')");
+            else
+                sql = string.Format(@" select * from Web_ZAccADoc where ZGruCode in ({0})", ZAccADocObject.Filter);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<Web_ZAccADoc>(sql);
                 return Ok(list);
             }
             return Ok(conStr);

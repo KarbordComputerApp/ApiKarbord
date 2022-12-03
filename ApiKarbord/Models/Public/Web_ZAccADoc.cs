@@ -6,8 +6,10 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Web_ZAcc
+    public partial class Web_ZAccADoc
     {
+        public int Mode { get; set; }
+
         [Key]
         public string Code { get; set; }
 
