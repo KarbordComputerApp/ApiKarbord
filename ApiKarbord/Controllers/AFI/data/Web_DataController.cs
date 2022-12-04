@@ -4779,6 +4779,23 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(conStr);
         }
 
+       
+        // Get: api/Web_Data/ZGruAcc لیست گروه زیر حساب ها 
+        [Route("api/Web_Data/ZGruAcc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> GetWeb_ZGruAcc(string ace, string sal, string group)
+        {
+            string sql = string.Format("select * FROM  Web_ZGruAcc");
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<Web_ZGruAcc>(sql);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
 
         public class AFI_TestAcc
         {
