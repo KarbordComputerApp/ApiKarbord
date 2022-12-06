@@ -4648,7 +4648,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @AGruCode = '{6}',
 		                        @NextLevelFromZAcc = {7},
 		                        @ZGru = '{8}',
-		                        @AccComm = '{9}',
+		                        @AccComm = N'{9}',
 		                        @EMail = '{10}',
 		                        @Mobile = '{11}',
 		                        @PDMode = {12},
