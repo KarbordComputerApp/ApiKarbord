@@ -241,5 +241,52 @@ namespace ApiKarbord.Controllers.AFI.report
             return Ok(conStr);
         }
 
+
+
+
+
+
+        public class TrazFasliObject
+        {
+            public string mode { get; set; }
+
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+        }
+
+        public class Web_TrazFasli
+        {
+            public double TotalValue { get; set; }
+
+            public string DocDate { get; set; }
+
+        }
+
+        // Post: api/ReportFct/TrazFasli گزارش تراز خرید و  فروش مشتریان
+        // HE_Report_TrazFasli
+        [Route("api/ReportFct/TrazFasli/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TrazFasli(string ace, string sal, string group, TrazFasliObject TrazFasliObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "20", 9, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select   * FROM  dbo.Web_TrazFasli({0}, '{1}', '{2}') AS TrazFasli where 1 = 1 ",
+                          TrazFasliObject.mode,
+                          TrazFasliObject.azTarikh,
+                          TrazFasliObject.taTarikh
+                         );
+
+                var listTrazFasli = db.Database.SqlQuery<Web_TrazFasli>(sql);
+                return Ok(listTrazFasli);
+            }
+            return Ok(conStr);
+        }
+
     }
 }
