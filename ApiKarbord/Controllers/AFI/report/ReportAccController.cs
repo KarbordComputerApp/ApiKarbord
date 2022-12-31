@@ -416,5 +416,53 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
 
+
+
+        public class TChk_SumObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+        }
+
+        public class Web_TChk_Sum
+        {
+            public string Bank { get; set; }
+
+            public string Shobe { get; set; }
+
+            public double? Value { get; set; }
+        }
+
+
+        // Post: api/ReportAcc/Web_TChk_Sum گزارش صورت ریز چک ها
+        // HE_Report_TChk_Sum
+        [Route("api/ReportAcc/TChk_Sum/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TChk_Sum(string ace, string sal, string group, TChk_SumObject TChk_SumObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "17", 9, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  Web_TChk_Sum('{0}','{1}','{2}') AS TChk_Sum where 1 = 1", 
+                          dataAccount[2],
+                          TChk_SumObject.azTarikh,
+                          TChk_SumObject.taTarikh
+                          );
+
+                sql += " order by Bank,Shobe";
+
+                var listTChk_Sum = db.Database.SqlQuery<Web_TChk_Sum>(sql);
+                return Ok(listTChk_Sum);
+            }
+            return Ok(conStr);
+        }
+
+
+
     }
 }
