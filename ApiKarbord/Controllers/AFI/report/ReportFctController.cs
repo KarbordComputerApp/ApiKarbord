@@ -196,6 +196,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string StatusCode { get; set; }
 
+            public string Top { get; set; }
+
         }
         // Post: api/ReportFct/TrzFCust گزارش تراز خرید و  فروش مشتریان
         // HE_Report_TrzFCust
@@ -216,7 +218,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFCustObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000)  * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFCust where 1 = 1 ",
+                          @"select  top ({14})  * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFCust where 1 = 1 ",
                           TrzFCustObject.ModeCode1,
                           TrzFCustObject.ModeCode2,
                           TrzFCustObject.azTarikh,
@@ -230,7 +232,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           invCode,
                           statusCode,
                           TrzFCustObject.ZeroValue,
-                           dataAccount[2]);
+                          dataAccount[2],
+                          TrzFCustObject.Top == null ? "10000" : TrzFCustObject.Top);
 
                 sql += UnitPublic.SpiltCodeAnd("CustCode", TrzFCustObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("CGruCode", TrzFCustObject.CGruCode);
@@ -258,9 +261,9 @@ namespace ApiKarbord.Controllers.AFI.report
 
         public class Web_TrazFasli
         {
-            public double TotalValue { get; set; }
+            public Int64 FinalPrice { get; set; }
 
-            public string DocDate { get; set; }
+            public string docdate { get; set; }
 
         }
 
