@@ -115,6 +115,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string StatusCode { get; set; }
 
+            public string Top { get; set; }
+
         }
         // Post: api/ReportFct/TrzFKala   گزارش تراز خرید و  فروش کالا
         // HE_Report_TrzFKala
@@ -135,7 +137,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFKala where 1 = 1 ",
+                          @"select  top ({14}) * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFKala where 1 = 1 ",
                           TrzFKalaObject.ModeCode1,
                           TrzFKalaObject.ModeCode2,
                           TrzFKalaObject.azTarikh,
@@ -149,7 +151,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           invCode,
                           statusCode,
                           TrzFKalaObject.ZeroValue,
-                          dataAccount[2]
+                          dataAccount[2],
+                          TrzFKalaObject.Top == null ? "10000" : TrzFKalaObject.Top
                           );
 
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzFKalaObject.KalaCode);

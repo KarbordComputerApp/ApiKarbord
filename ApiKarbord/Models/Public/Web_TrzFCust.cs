@@ -55,6 +55,13 @@
 
         public string CustF20 { get; set; }
 
+
+        public string Tel { get; set; }
+
+        public string Mobile { get; set; }
+
+        public string Title { get; set; }
+
         public double? Amount1 { get; set; }
 
         public double? Amount2 { get; set; }
