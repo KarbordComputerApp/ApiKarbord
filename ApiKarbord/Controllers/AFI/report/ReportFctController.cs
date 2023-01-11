@@ -117,6 +117,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string Top { get; set; }
 
+            public string Sort { get; set; }
+
         }
         // Post: api/ReportFct/TrzFKala   گزارش تراز خرید و  فروش کالا
         // HE_Report_TrzFKala
@@ -157,6 +159,11 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzFKalaObject.KalaCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", TrzFKalaObject.KGruCode);
+
+                if (TrzFKalaObject.Sort != null)
+                {
+                    sql += " order by " + TrzFKalaObject.Sort;
+                }
 
                 var listTrzFKala = db.Database.SqlQuery<Web_TrzFKala>(sql);
                 return Ok(listTrzFKala);
@@ -252,7 +259,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
 
 
-        public class TrazFasliObject
+        public class TrzFDorehObject
         {
             public string mode { get; set; }
 
@@ -262,19 +269,19 @@ namespace ApiKarbord.Controllers.AFI.report
 
         }
 
-        public class Web_TrazFasli
+        public class Web_D_TrzFDoreh
         {
-            public Int64 FinalPrice { get; set; }
+            public Int64 totalvalue { get; set; }
 
             public string docdate { get; set; }
 
         }
 
-        // Post: api/ReportFct/TrazFasli گزارش تراز خرید و  فروش مشتریان
-        // HE_Report_TrazFasli
-        [Route("api/ReportFct/TrazFasli/{ace}/{sal}/{group}")]
+        // Post: api/ReportFct/TrzFDoreh گزارش تراز خرید و  فروش مشتریان
+        // HE_Report_TrzFDoreh
+        [Route("api/ReportFct/TrzFDoreh/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TrazFasli(string ace, string sal, string group, TrazFasliObject TrazFasliObject)
+        public async Task<IHttpActionResult> PostWeb_D_TrzFDoreh(string ace, string sal, string group, TrzFDorehObject TrzFDorehObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "20", 9, 0);
@@ -282,14 +289,14 @@ namespace ApiKarbord.Controllers.AFI.report
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select   * FROM  dbo.Web_TrazFasli({0}, '{1}', '{2}') AS TrazFasli where 1 = 1 ",
-                          TrazFasliObject.mode,
-                          TrazFasliObject.azTarikh,
-                          TrazFasliObject.taTarikh
+                          @"select   * FROM  dbo.Web_D_TrzFDoreh({0}, '{1}', '{2}') AS TrzFDoreh where 1 = 1 ",
+                          TrzFDorehObject.mode,
+                          TrzFDorehObject.azTarikh,
+                          TrzFDorehObject.taTarikh
                          );
 
-                var listTrazFasli = db.Database.SqlQuery<Web_TrazFasli>(sql);
-                return Ok(listTrazFasli);
+                var listTrzFDoreh = db.Database.SqlQuery<Web_D_TrzFDoreh>(sql);
+                return Ok(listTrzFDoreh);
             }
             return Ok(conStr);
         }
