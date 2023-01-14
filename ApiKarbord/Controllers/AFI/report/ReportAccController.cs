@@ -426,7 +426,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
         }
 
-        public class Web_TChk_Sum
+        public class Web_D_TChk_Sum
         {
             public string Bank { get; set; }
 
@@ -436,11 +436,11 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
 
-        // Post: api/ReportAcc/Web_TChk_Sum گزارش صورت ریز چک ها
+        // Post: api/ReportAcc/Web_D_TChk_Sum گزارش صورت ریز چک ها
         // HE_Report_TChk_Sum
         [Route("api/ReportAcc/TChk_Sum/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_TChk_Sum(string ace, string sal, string group, TChk_SumObject TChk_SumObject)
+        public async Task<IHttpActionResult> PostWeb_D_TChk_Sum(string ace, string sal, string group, TChk_SumObject TChk_SumObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "17", 9, 0);
@@ -448,7 +448,7 @@ namespace ApiKarbord.Controllers.AFI.report
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_TChk_Sum('{0}','{1}','{2}') AS TChk_Sum where 1 = 1", 
+                          @"select * FROM  Web_D_TChk_Sum('{0}','{1}','{2}') AS TChk_Sum where 1 = 1", 
                           dataAccount[2],
                           TChk_SumObject.azTarikh,
                           TChk_SumObject.taTarikh
@@ -456,7 +456,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by Bank,Shobe";
 
-                var listTChk_Sum = db.Database.SqlQuery<Web_TChk_Sum>(sql);
+                var listTChk_Sum = db.Database.SqlQuery<Web_D_TChk_Sum>(sql);
                 return Ok(listTChk_Sum);
             }
             return Ok(conStr);
