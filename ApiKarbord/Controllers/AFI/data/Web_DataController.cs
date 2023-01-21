@@ -4922,6 +4922,12 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public string LockNo { get; set; }
 
+            public bool FlagLog { get; set; }
+
+            public string IP { get; set; }
+
+            public string CallProg { get; set; }
+
         }
 
         public class CustAccount
@@ -4955,17 +4961,19 @@ namespace ApiKarbord.Controllers.AFI.data
             public string DownloadCount { get; set; }
 
             public string Year { get; set; }
+
         }
 
-        [Route("api/Web_Data/CustAccount/{ace}/{sal}/{group}")]
+
+        [Route("api/Web_Data/CustAccount/{ace}/{group}")]
         [ResponseType(typeof(CustAccount))]
-        public async Task<IHttpActionResult> PostWeb_CustAccount(string ace, string sal, string group, CustAccountObject CustAccountObject)
+        public async Task<IHttpActionResult> PostWeb_CustAccount(string ace, string group, CustAccountObject CustAccountObject)
         {
             string sql = string.Format(CultureInfo.InvariantCulture,
                                        @"EXEC	[dbo].[Web_CustAccount] @LockNo = '{0}' ", CustAccountObject.LockNo);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, "0000", group, 0, "", 0, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -5049,6 +5057,60 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(conStr);
         }
+
+
+
+        public class CustGardeshObject
+        {
+            public string CustCode { get; set; }
+        }
+
+        public class CustGardesh
+        {
+            public string Year { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string Status { get; set; }
+
+            public string DocNo { get; set; }
+
+            public long SerialNumber { get; set; }
+
+            public double SortDocNo { get; set; }
+
+            public string DocDate { get; set; }
+
+            public byte PaymentType { get; set; }
+
+            public string CustCode { get; set; }
+
+            public string Spec { get; set; }
+
+            public double TotalValue { get; set; }
+
+            public string PaymentTypeSt { get; set; }
+        }
+
+        [Route("api/Web_Data/CustGardesh/{ace}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_CustGardesh(string ace, string group, CustGardeshObject CustGardeshObject)
+        {
+            string sql = string.Format(@"EXEC [dbo].[Web_CustGardesh]  @CustCode = N'{0}'", CustGardeshObject.CustCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, "0000", group,0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<CustGardesh>(sql);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
 
 
 
