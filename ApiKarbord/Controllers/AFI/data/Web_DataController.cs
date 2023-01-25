@@ -3877,6 +3877,57 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+       /* // Get: api/Web_Data/ChangeDatabaseFourzero 
+        [Route("api/Web_Data/ChangeDatabaseFourzero/{ace}/{group}/{auto}/{lockNumber}")]
+        public string GetWeb_ChangeDatabaseFourzero(string ace, string group, bool auto, string lockNumber)
+        {
+            string sal = "0000";
+            string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
+
+            IniFile MyIni = new IniFile(IniPath);
+
+            string addressFileSql = MyIni.Read("FileSql");
+
+            string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
+
+            IniFile MyIniConfig = new IniFile(IniConfigPath);
+            try
+            {
+                string Change = MyIniConfig.Read("Change");
+                string BeginDate = MyIniConfig.Read("BeginDate");
+                string User = MyIniConfig.Read("User");
+                string Prog = MyIniConfig.Read("Prog");
+                string Group = MyIniConfig.Read("Group");
+                string Sal = MyIniConfig.Read("Sal");
+                string EndDate = MyIniConfig.Read("EndDate");
+
+                string res = "";
+                var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+                if (Change != "1")
+                {
+                    res = UnitDatabase.ChangeDatabaseFourZero(ace, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1], dataAccount[3]);
+                    return res;
+                }
+                else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
+                {
+                    res = UnitDatabase.ChangeDatabaseFourZero(ace, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1], dataAccount[3]);
+                    return res;
+                }
+                else
+                    return "کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ";
+            }
+            catch (Exception e)
+            {
+                MyIniConfig.Write("Change", "0");
+                MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                MyIniConfig.Write("error", e.Message.ToString());
+                return "error" + e.Message.ToString();
+                throw;
+            }
+        }
+        */
+
+
         // GET: api/Web_Data/ بازسازی دستی بانک اطلاعات کانفیگ  
         [Route("api/Web_Data/ChangeDatabaseConfig/{lockNumber}/{auto}")]
         public string GetWeb_ChangeDatabaseConfig(string lockNumber, bool auto)
@@ -5057,60 +5108,6 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(conStr);
         }
-
-
-
-        public class CustGardeshObject
-        {
-            public string CustCode { get; set; }
-        }
-
-        public class CustGardesh
-        {
-            public string Year { get; set; }
-
-            public string ModeCode { get; set; }
-
-            public string Status { get; set; }
-
-            public string DocNo { get; set; }
-
-            public long SerialNumber { get; set; }
-
-            public double SortDocNo { get; set; }
-
-            public string DocDate { get; set; }
-
-            public byte PaymentType { get; set; }
-
-            public string CustCode { get; set; }
-
-            public string Spec { get; set; }
-
-            public double TotalValue { get; set; }
-
-            public string PaymentTypeSt { get; set; }
-        }
-
-        [Route("api/Web_Data/CustGardesh/{ace}/{group}")]
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_CustGardesh(string ace, string group, CustGardeshObject CustGardeshObject)
-        {
-            string sql = string.Format(@"EXEC [dbo].[Web_CustGardesh]  @CustCode = N'{0}'", CustGardeshObject.CustCode);
-
-            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, "0000", group,0, "", 0, 0);
-            if (conStr.Length > 100)
-            {
-                ApiModel db = new ApiModel(conStr);
-                var list = db.Database.SqlQuery<CustGardesh>(sql);
-                return Ok(list);
-            }
-            return Ok(conStr);
-        }
-
-
-
 
 
 
