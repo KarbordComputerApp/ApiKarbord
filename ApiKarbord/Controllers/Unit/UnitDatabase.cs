@@ -439,7 +439,7 @@ namespace ApiKarbord.Controllers.Unit
 
                         dbName = ("ACE_" + files[2] + group + salTemp);
 
-                        if (files[2] == "Web8" && files[4] == "0000.txt")
+                        if ((files[2] == "Web1" || files[2] == "Web8") && (files[4] == "0000.txt" || files[4] == "0000"))
                         {
                             dbName = ("ACE_" + files[2] + group + "0000");
                         }
@@ -450,11 +450,11 @@ namespace ApiKarbord.Controllers.Unit
                         }
                         else
                         {
-                            if (files[2] == "Web8" && (files[4] == "0000.txt" || files[4] == "0000"))
+                            if ((files[2] == "Web1" || files[2] == "Web8") && (files[4] == "0000.txt" || files[4] == "0000"))
                             {
                                 salTemp = "0000";
                             }
-                           
+
 
                             if (files.Length == 6)
                             {
