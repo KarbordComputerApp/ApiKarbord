@@ -53,7 +53,7 @@
         public long? LinkNumber { get; set; }
 
         public int? LinkYear { get; set; }
-        
+
         public string LinkProg { get; set; }
 
         public string ArzCode { get; set; }
@@ -63,6 +63,40 @@
         public double? ArzValue { get; set; }
 
         public byte? MjdControl { get; set; }
+
+        public string KalaFileNo { get; set; }
+
+        public string KalaState { get; set; }
+
+        public string KalaExf1 { get; set; }
+
+        public string KalaExf2 { get; set; }
+
+        public string KalaExf3 { get; set; }
+
+        public string KalaExf4 { get; set; }
+
+        public string KalaExf5 { get; set; }
+
+        public string KalaExf6 { get; set; }
+
+        public string KalaExf7 { get; set; }
+
+        public string KalaExf8 { get; set; }
+
+        public string KalaExf9 { get; set; }
+
+        public string KalaExf10 { get; set; }
+
+        public string KalaExf11 { get; set; }
+
+        public string KalaExf12 { get; set; }
+
+        public string KalaExf13 { get; set; }
+
+        public string KalaExf14 { get; set; }
+
+        public string KalaExf15 { get; set; }
 
     }
 }

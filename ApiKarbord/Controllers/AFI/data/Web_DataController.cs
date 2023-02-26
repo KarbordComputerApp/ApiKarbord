@@ -48,6 +48,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string CustCode { get; set; }
 
+            public string MelliCode { get; set; }
+
         }
 
         public static readonly object LockObject = new object();
@@ -85,6 +87,11 @@ namespace ApiKarbord.Controllers.AFI.data
             if (custObject.CustCode != "" && custObject.CustCode != null)
             {
                 sql += " and (Code = '" + custObject.CustCode + "' )";
+            }
+
+            if (custObject.MelliCode != "" && custObject.MelliCode != null)
+            {
+                sql += " and (MelliCode = '" + custObject.MelliCode + "' )";
             }
 
 
@@ -1875,7 +1882,7 @@ namespace ApiKarbord.Controllers.AFI.data
         // Post: api/Web_Data/DocAttach پیوست  
         [Route("api/Web_Data/DocAttach/")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PostWeb_DocAttach( DocAttachObject DocAttachObject)
+        public async Task<IHttpActionResult> PostWeb_DocAttach(DocAttachObject DocAttachObject)
         {
             string sql = string.Format(CultureInfo.InvariantCulture,
                                        @"EXEC [dbo].[Web_DocAttach]
@@ -3877,55 +3884,55 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-       /* // Get: api/Web_Data/ChangeDatabaseFourzero 
-        [Route("api/Web_Data/ChangeDatabaseFourzero/{ace}/{group}/{auto}/{lockNumber}")]
-        public string GetWeb_ChangeDatabaseFourzero(string ace, string group, bool auto, string lockNumber)
-        {
-            string sal = "0000";
-            string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
+        /* // Get: api/Web_Data/ChangeDatabaseFourzero 
+         [Route("api/Web_Data/ChangeDatabaseFourzero/{ace}/{group}/{auto}/{lockNumber}")]
+         public string GetWeb_ChangeDatabaseFourzero(string ace, string group, bool auto, string lockNumber)
+         {
+             string sal = "0000";
+             string IniPath = HttpContext.Current.Server.MapPath("~/Content/ini/ServerConfig.Ini");
 
-            IniFile MyIni = new IniFile(IniPath);
+             IniFile MyIni = new IniFile(IniPath);
 
-            string addressFileSql = MyIni.Read("FileSql");
+             string addressFileSql = MyIni.Read("FileSql");
 
-            string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
+             string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config_" + ace + group + sal + ".ini";
 
-            IniFile MyIniConfig = new IniFile(IniConfigPath);
-            try
-            {
-                string Change = MyIniConfig.Read("Change");
-                string BeginDate = MyIniConfig.Read("BeginDate");
-                string User = MyIniConfig.Read("User");
-                string Prog = MyIniConfig.Read("Prog");
-                string Group = MyIniConfig.Read("Group");
-                string Sal = MyIniConfig.Read("Sal");
-                string EndDate = MyIniConfig.Read("EndDate");
+             IniFile MyIniConfig = new IniFile(IniConfigPath);
+             try
+             {
+                 string Change = MyIniConfig.Read("Change");
+                 string BeginDate = MyIniConfig.Read("BeginDate");
+                 string User = MyIniConfig.Read("User");
+                 string Prog = MyIniConfig.Read("Prog");
+                 string Group = MyIniConfig.Read("Group");
+                 string Sal = MyIniConfig.Read("Sal");
+                 string EndDate = MyIniConfig.Read("EndDate");
 
-                string res = "";
-                var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-                if (Change != "1")
-                {
-                    res = UnitDatabase.ChangeDatabaseFourZero(ace, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1], dataAccount[3]);
-                    return res;
-                }
-                else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
-                {
-                    res = UnitDatabase.ChangeDatabaseFourZero(ace, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1], dataAccount[3]);
-                    return res;
-                }
-                else
-                    return "کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ";
-            }
-            catch (Exception e)
-            {
-                MyIniConfig.Write("Change", "0");
-                MyIniConfig.Write("EndDate", DateTime.Now.ToString());
-                MyIniConfig.Write("error", e.Message.ToString());
-                return "error" + e.Message.ToString();
-                throw;
-            }
-        }
-        */
+                 string res = "";
+                 var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+                 if (Change != "1")
+                 {
+                     res = UnitDatabase.ChangeDatabaseFourZero(ace, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1], dataAccount[3]);
+                     return res;
+                 }
+                 else if (Change == "1" && dataAccount[2] == "ACE" && auto == false)
+                 {
+                     res = UnitDatabase.ChangeDatabaseFourZero(ace, group, dataAccount[2], auto, lockNumber, dataAccount[0], dataAccount[1], dataAccount[3]);
+                     return res;
+                 }
+                 else
+                     return "کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ";
+             }
+             catch (Exception e)
+             {
+                 MyIniConfig.Write("Change", "0");
+                 MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                 MyIniConfig.Write("error", e.Message.ToString());
+                 return "error" + e.Message.ToString();
+                 throw;
+             }
+         }
+         */
 
 
         // GET: api/Web_Data/ بازسازی دستی بانک اطلاعات کانفیگ  
@@ -4364,14 +4371,14 @@ namespace ApiKarbord.Controllers.AFI.data
 
         // GET: api/Web_Data/Date تاریخ سرور
         [Route("api/Web_Data/Date")]
-        public async Task<IHttpActionResult> GetWeb_Date() 
+        public async Task<IHttpActionResult> GetWeb_Date()
         {
             string sql = string.Format(@"select dbo.Web_CurrentShamsiDate() as tarikh");
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "", 0, "", 0, 0);
             if (conStr.Length > 100)
             {
-                ApiModel db = new ApiModel(conStr); 
+                ApiModel db = new ApiModel(conStr);
                 var list = db.Database.SqlQuery<string>(sql);
                 return Ok(list);
             }
@@ -4830,7 +4837,7 @@ namespace ApiKarbord.Controllers.AFI.data
             return Ok(conStr);
         }
 
-       
+
         // Get: api/Web_Data/ZGruAcc لیست گروه زیر حساب ها 
         [Route("api/Web_Data/ZGruAcc/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> GetWeb_ZGruAcc(string ace, string sal, string group)
@@ -6695,6 +6702,115 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 ApiModel db = new ApiModel(conStr);
                 var list = db.Database.SqlQuery<CustGardesh>(sql);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
+
+        public class DocLogObject
+        {
+            public string Prog { get; set; }
+
+            public string Serialnumber { get; set; }
+
+            public string GroupNo { get; set; }
+
+            public string Year { get; set; }
+
+        }
+
+
+        public class DocLog
+        {
+            public int? id { get; set; }
+
+            public string LogDate { get; set; }
+
+            public string LogTime { get; set; }
+
+            public string Action { get; set; }
+
+            public string UserCode { get; set; }
+
+            public string Code { get; set; }
+
+            public string SerialNumber { get; set; }
+
+            public string LogProgName { get; set; }
+
+            public string CompName { get; set; }
+
+        }
+       
+        // Post: api/DocLog/ اطلاعات لاگین   
+        [Route("api/Web_Data/DocLog")]
+        public async Task<IHttpActionResult> PostWeb_DocLog(DocLogObject DocLogObject)
+        {
+            string sql = string.Format(@"select * from Web_DocLog('{0}','{1}',{2},{3})", DocLogObject.Prog, DocLogObject.Serialnumber, DocLogObject.GroupNo, DocLogObject.Year);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "00", 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<DocLog>(sql).ToList();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+
+
+
+
+
+
+
+        public class FDocMondeh
+        {
+            public long serialnumber { get; set; }
+
+            public string DocNo { get; set; }
+
+            public double? sortdocno { get; set; }
+
+            public string DocDate { get; set; }
+
+            public string Name { get; set; }
+
+            public double? TotalValue { get; set; }
+
+            public double? Mondeh { get; set; }
+        }
+
+        public class FDocMondehObject
+        {
+            public string DocNo { get; set; }
+
+        }
+
+        [Route("api/Web_Data/FDocMondeh/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(FDocMondeh))]
+        public async Task<IHttpActionResult> PostWeb_FDocMondeh(string ace, string sal, string group, FDocMondehObject FDocMondehObject)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(@"select * from Web_FDocMondeh where 1 = 1");
+
+            if (FDocMondehObject.DocNo != "" && FDocMondehObject.DocNo != null)
+            {
+                sql += string.Format(@" and ltrim(DocNo) = '{0}'" , FDocMondehObject.DocNo.Trim());
+            }
+
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<FDocMondeh>(sql);
                 return Ok(list);
             }
             return Ok(conStr);

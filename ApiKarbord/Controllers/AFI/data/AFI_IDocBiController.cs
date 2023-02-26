@@ -63,6 +63,23 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @ArzRate = {16},
                                     @ArzValue = {17},
                                     @MjdControl = {18},
+                                    @KalaFileNo = N'{19}',
+                                    @KalaState = N'{20}',
+                                    @KalaExf1 = N'{21}',
+                                    @KalaExf2 = N'{22}',
+                                    @KalaExf3 = N'{23}',
+                                    @KalaExf4 = N'{24}',
+                                    @KalaExf5 = N'{25}',
+                                    @KalaExf6 = N'{26}',
+                                    @KalaExf7 = N'{27}',
+                                    @KalaExf8 = N'{28}',
+                                    @KalaExf9 = N'{29}',
+                                    @KalaExf10 = N'{30}',
+                                    @KalaExf11 = N'{31}',
+                                    @KalaExf12 = N'{32}',
+                                    @KalaExf13 = N'{33}',
+                                    @KalaExf14 = N'{34}',
+                                    @KalaExf15 = N'{35}',
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_IDocBi.SerialNumber,
@@ -83,7 +100,24 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.ArzCode ?? "",
                         aFI_IDocBi.ArzRate ?? 0,
                         aFI_IDocBi.ArzValue ?? 0,
-                        aFI_IDocBi.MjdControl ?? 0
+                        aFI_IDocBi.MjdControl ?? 0,
+                        aFI_IDocBi.KalaFileNo,
+                        aFI_IDocBi.KalaState,
+                        aFI_IDocBi.KalaExf1,
+                        aFI_IDocBi.KalaExf2,
+                        aFI_IDocBi.KalaExf3,
+                        aFI_IDocBi.KalaExf4,
+                        aFI_IDocBi.KalaExf5,
+                        aFI_IDocBi.KalaExf6,
+                        aFI_IDocBi.KalaExf7,
+                        aFI_IDocBi.KalaExf8,
+                        aFI_IDocBi.KalaExf9,
+                        aFI_IDocBi.KalaExf10,
+                        aFI_IDocBi.KalaExf11,
+                        aFI_IDocBi.KalaExf12,
+                        aFI_IDocBi.KalaExf13,
+                        aFI_IDocBi.KalaExf14,
+                        aFI_IDocBi.KalaExf15
                         );
                     value = db.Database.SqlQuery<string>(sql).Single();
                     if (value == "")
@@ -101,8 +135,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if ((aFI_IDocBi.MjdControl ?? 0) == 0)
                 {
-                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,
-                                                         KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec,ArzValue
+                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
+                                                         KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
+                                                         DeghatR,BandSpec,ArzValue
                                                   FROM   Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
                     var list = db.Database.SqlQuery<Web_IDocB>(sql1);
                     return Ok(list);
@@ -181,6 +216,23 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @ArzRate = {15},
                                     @ArzValue = {16},
                                     @MjdControl = {17},
+                                    @KalaFileNo = N'{18}',
+                                    @KalaState = N'{19}',
+                                    @KalaExf1 = N'{20}',
+                                    @KalaExf2 = N'{21}',
+                                    @KalaExf3 = N'{22}',
+                                    @KalaExf4 = N'{23}',
+                                    @KalaExf5 = N'{24}',
+                                    @KalaExf6 = N'{25}',
+                                    @KalaExf7 = N'{26}',
+                                    @KalaExf8 = N'{27}',
+                                    @KalaExf9 = N'{28}',
+                                    @KalaExf10 = N'{29}',
+                                    @KalaExf11 = N'{30}',
+                                    @KalaExf12 = N'{31}',
+                                    @KalaExf13 = N'{32}',
+                                    @KalaExf14 = N'{33}',
+                                    @KalaExf15 = N'{34}',
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_IDocBi.SerialNumber,
@@ -200,7 +252,24 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.ArzCode ?? "",
                         aFI_IDocBi.ArzRate ?? 0,
                         aFI_IDocBi.ArzValue ?? 0,
-                        aFI_IDocBi.MjdControl ?? 0
+                        aFI_IDocBi.MjdControl ?? 0,
+                        aFI_IDocBi.KalaFileNo,
+                        aFI_IDocBi.KalaState,
+                        aFI_IDocBi.KalaExf1,
+                        aFI_IDocBi.KalaExf2,
+                        aFI_IDocBi.KalaExf3,
+                        aFI_IDocBi.KalaExf4,
+                        aFI_IDocBi.KalaExf5,
+                        aFI_IDocBi.KalaExf6,
+                        aFI_IDocBi.KalaExf7,
+                        aFI_IDocBi.KalaExf8,
+                        aFI_IDocBi.KalaExf9,
+                        aFI_IDocBi.KalaExf10,
+                        aFI_IDocBi.KalaExf11,
+                        aFI_IDocBi.KalaExf12,
+                        aFI_IDocBi.KalaExf13,
+                        aFI_IDocBi.KalaExf14,
+                        aFI_IDocBi.KalaExf15
                         );
                     value = db.Database.SqlQuery<string>(sql).Single();
                     if (value == "")
@@ -217,9 +286,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if ((aFI_IDocBi.MjdControl ?? 0) == 0)
                 {
-                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,
-                                                         KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,BandSpec,ArzValue 
-                                                 FROM    Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
+                    string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
+                                                         KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
+                                                         DeghatR,BandSpec,ArzValue
+                                                  FROM   Web_IDocB WHERE SerialNumber = {0}", aFI_IDocBi.SerialNumber);
                     var list = db.Database.SqlQuery<Web_IDocB>(sql1);
                     return Ok(list);
                 }
@@ -274,9 +344,10 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3
-                                            ,DeghatR,BandSpec,ArzValue
-                                         FROM Web_IDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
+                string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
+                                                     KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
+                                                     DeghatR,BandSpec,ArzValue
+                                              FROM   Web_IDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
                 var listFactor = db.Database.SqlQuery<Web_IDocB>(sql1);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? "IIDoc" : "IODoc", 2, FlagLog, 0);
 
@@ -313,9 +384,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         i++;
                         string sql = string.Format(CultureInfo.InvariantCulture,
-
-
-                             @"DECLARE	@return_value int
+                            @"DECLARE	@return_value int
                             EXEC	@return_value = [dbo].[Web_SaveIDoc_BI_Temp]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
@@ -333,7 +402,24 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @BandSpec = N'{13}',
                                     @ArzCode = N'{14}',
                                     @ArzRate = {15},
-                                    @ArzValue = {16}
+                                    @ArzValue = {16},
+                                    @KalaFileNo = N'{17}',
+                                    @KalaState = N'{18}',
+                                    @KalaExf1 = N'{19}',
+                                    @KalaExf2 = N'{20}',
+                                    @KalaExf3 = N'{21}',
+                                    @KalaExf4 = N'{22}',
+                                    @KalaExf5 = N'{23}',
+                                    @KalaExf6 = N'{24}',
+                                    @KalaExf7 = N'{25}',
+                                    @KalaExf8 = N'{26}',
+                                    @KalaExf9 = N'{27}',
+                                    @KalaExf10 = N'{28}',
+                                    @KalaExf11 = N'{29}',
+                                    @KalaExf12 = N'{30}',
+                                    @KalaExf13 = N'{31}',
+                                    @KalaExf14 = N'{32}',
+                                    @KalaExf15 = N'{33}'
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
@@ -352,7 +438,24 @@ namespace ApiKarbord.Controllers.AFI.data
                         UnitPublic.ConvertTextWebToWin(item.BandSpec ?? ""),
                         item.ArzCode ?? "",
                         item.ArzRate ?? 0,
-                        item.ArzValue ?? 0
+                        item.ArzValue ?? 0,
+                        item.KalaFileNo,
+                        item.KalaState,
+                        item.KalaExf1,
+                        item.KalaExf2,
+                        item.KalaExf3,
+                        item.KalaExf4,
+                        item.KalaExf5,
+                        item.KalaExf6,
+                        item.KalaExf7,
+                        item.KalaExf8,
+                        item.KalaExf9,
+                        item.KalaExf10,
+                        item.KalaExf11,
+                        item.KalaExf12,
+                        item.KalaExf13,
+                        item.KalaExf14,
+                        item.KalaExf15
                         );
                         value = db.Database.SqlQuery<int>(sql).Single();
                     }
