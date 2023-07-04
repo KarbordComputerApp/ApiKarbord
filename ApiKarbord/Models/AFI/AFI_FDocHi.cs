@@ -85,10 +85,10 @@
         public double? AddMinPrice10 { get; set; }
 
         public string InvCode { get; set; }
-        
+
         public int? DocNo_Out { get; set; }
 
-        public string Status  { get; set; }
+        public string Status { get; set; }
 
         public byte? PaymentType { get; set; }
 
@@ -100,7 +100,7 @@
 
         public string Taeed { get; set; }
 
-       public string F01 { get; set; }
+        public string F01 { get; set; }
 
         public string F02 { get; set; }
 
@@ -108,52 +108,52 @@
 
         public string F04 { get; set; }
 
-       
+
         public string F05 { get; set; }
 
-       
+
         public string F06 { get; set; }
 
-       
+
         public string F07 { get; set; }
 
-       
+
         public string F08 { get; set; }
 
-       
+
         public string F09 { get; set; }
 
-       
+
         public string F10 { get; set; }
 
-       
+
         public string F11 { get; set; }
 
-       
+
         public string F12 { get; set; }
 
-       
+
         public string F13 { get; set; }
 
-       
+
         public string F14 { get; set; }
 
-       
+
         public string F15 { get; set; }
 
-       
+
         public string F16 { get; set; }
 
-       
+
         public string F17 { get; set; }
 
-       
+
         public string F18 { get; set; }
 
-       
+
         public string F19 { get; set; }
 
-       
+
         public string F20 { get; set; }
 
         public string Tasvib { get; set; }
@@ -169,5 +169,26 @@
 
         public double? TotalValue { get; set; }
 
+        public byte? CustAddrValid { get; set; }
+
+        public string CustOstan { get; set; }
+
+        public string CustShahrestan { get; set; }
+
+        public string CustRegion { get; set; }
+
+        public string CustCity { get; set; }
+
+        public string CustStreet { get; set; }
+
+        public string CustAlley { get; set; }
+
+        public string CustPlack { get; set; }
+
+        public string CustZipCode { get; set; }
+
+        public string CustTel { get; set; }
+
+        public string CustMobile { get; set; }
     }
 }

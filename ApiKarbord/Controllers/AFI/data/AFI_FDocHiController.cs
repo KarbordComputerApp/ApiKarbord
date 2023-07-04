@@ -46,7 +46,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -222,6 +222,17 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @OprCode = '{61}', 
                                     @MkzCode = '{62}',
                                     @Tanzim = '{63}',
+                                    @CustAddrValid = {64},
+                                    @CustOstan = '{65}',
+                                    @CustShahrestan = '{66}',
+                                    @CustRegion = '{67}',
+                                    @CustCity = '{68}',
+                                    @CustStreet = '{69}',
+                                    @CustAlley = '{70}',
+                                    @CustPlack = '{71}',
+                                    @CustZipCode = '{72}',
+                                    @CustTel = '{73}',
+                                    @CustMobile = '{74}',
                                     @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = ltrim(@DOCNO_OUT)
                            ",
@@ -236,7 +247,6 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.SerialNumber,
                             aFI_FDocHi.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
                             aFI_FDocHi.Spec,
-                           // aFI_FDocHi.Tanzim,
                             aFI_FDocHi.TahieShode,
                             aFI_FDocHi.CustCode,
                             aFI_FDocHi.VstrCode,
@@ -267,7 +277,6 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.Status,
                             aFI_FDocHi.PaymentType,
                             UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? ""),
-                            //aFI_FDocHi.Taeed == "null" ? "" : aFI_FDocHi.Taeed,
                             aFI_FDocHi.F01,
                             aFI_FDocHi.F02,
                             aFI_FDocHi.F03,
@@ -288,10 +297,20 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.F18,
                             aFI_FDocHi.F19,
                             aFI_FDocHi.F20,
-                            //aFI_FDocHi.Tasvib,
                             aFI_FDocHi.OprCode,
                             aFI_FDocHi.MkzCode,
-                            aFI_FDocHi.Tanzim
+                            aFI_FDocHi.Tanzim,
+                            aFI_FDocHi.CustAddrValid ?? 0,
+                            aFI_FDocHi.CustOstan,
+                            aFI_FDocHi.CustShahrestan,
+                            aFI_FDocHi.CustRegion,
+                            aFI_FDocHi.CustCity,
+                            aFI_FDocHi.CustStreet,
+                            aFI_FDocHi.CustAlley,
+                            aFI_FDocHi.CustPlack,
+                            aFI_FDocHi.CustZipCode,
+                            aFI_FDocHi.CustTel,
+                            aFI_FDocHi.CustMobile
                             );
                     value = db.Database.SqlQuery<string>(sql2).Single();
 
@@ -320,147 +339,168 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 try
                 {
                     string sql = string.Format(
-                         @"DECLARE	@return_value nvarchar(50),
+                          @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out nvarchar(50)
-                          EXEC	@return_value = [dbo].[{63}]
-		                            @DOCNOMODE = {0},
-		                            @INSERTMODE = {1},
-		                            @MODECODE = {2} ,
-		                            @DOCNO = '{3}',
-		                            @STARTNO = {4},
-		                            @ENDNO = {5},
-		                            @BRANCHCODE = {6},
-		                            @USERCODE = '''{7}''',
-		                            @SERIALNUMBER = {8},
-		                            @DOCDATE = '{9}',
-		                            @SPEC = N'{10}',
-		                            @TAHIESHODE = '{11}',
-		                            @CUSTCODE = '{12}',
-		                            @VSTRCODE = '{13}',
-		                            @VSTRPER = {14},
-		                            @PAKHSHCODE = '{15}',
-		                            @KALAPRICECODE = {16},
-		                            @ADDMINSPEC1 = N'{17}',
-		                            @ADDMINSPEC2 = N'{18}',
-		                            @ADDMINSPEC3 = N'{19}',
-		                            @ADDMINSPEC4 = N'{20}',
-		                            @ADDMINSPEC5 = N'{21}',
-		                            @ADDMINSPEC6 = N'{22}',
-		                            @ADDMINSPEC7 = N'{23}',
-		                            @ADDMINSPEC8 = N'{24}',
-		                            @ADDMINSPEC9 = N'{25}',
-		                            @ADDMINSPEC10 = N'{26}',
-		                            @ADDMINPRICE1 = {27},
-		                            @ADDMINPRICE2 = {28},
-		                            @ADDMINPRICE3 = {29},
-		                            @ADDMINPRICE4 = {30},
-		                            @ADDMINPRICE5 = {31},
-		                            @ADDMINPRICE6 = {32},
-		                            @ADDMINPRICE7 = {33},
-		                            @ADDMINPRICE8 = {34},
-		                            @ADDMINPRICE9 = {35},
-		                            @ADDMINPRICE10 = {36},
-                                    @InvCode = '{37}',
-                                    @Eghdam = '''{38}''',
-                                    @F01 = N'{39}',
-                                    @F02 = N'{40}',
-                                    @F03 = N'{41}',
-                                    @F04 = N'{42}',
-                                    @F05 = N'{43}',
-                                    @F06 = N'{44}',
-                                    @F07 = N'{45}',
-                                    @F08 = N'{46}',
-                                    @F09 = N'{47}',
-                                    @F10 = N'{48}',
-                                    @F11 = N'{49}',
-                                    @F12 = N'{50}',
-                                    @F13 = N'{51}',
-                                    @F14 = N'{52}',
-                                    @F15 = N'{53}',
-                                    @F16 = N'{54}',
-                                    @F17 = N'{55}',
-                                    @F18 = N'{56}',
-                                    @F19 = N'{57}',
-                                    @F20 = N'{58}',
-                                    @PaymentType = {59},
-                                    @Footer = N'{60}',
-                                    @TotalValue = '{61}',
-                                    @Tanzim = '{62}',
+                          EXEC	@return_value = [dbo].[{0}]
+		                            @DOCNOMODE = {1},
+		                            @INSERTMODE = {2},
+		                            @MODECODE = {3} ,
+		                            @DOCNO = '{4}',
+		                            @STARTNO = {5},
+		                            @ENDNO = {6},
+		                            @BRANCHCODE = {7},
+		                            @USERCODE = '''{8}''',
+		                            @SERIALNUMBER = {9},
+		                            @DOCDATE = '{10}',
+		                            @SPEC = N'{11}',
+		                            @TAHIESHODE = '{12}',
+		                            @CUSTCODE = '{13}',
+		                            @VSTRCODE = '{14}',
+		                            @VSTRPER = {15},
+		                            @PAKHSHCODE = '{16}',
+		                            @KALAPRICECODE = {17},
+		                            @ADDMINSPEC1 = N'{18}',
+		                            @ADDMINSPEC2 = N'{19}',
+		                            @ADDMINSPEC3 = N'{20}',
+		                            @ADDMINSPEC4 = N'{21}',
+		                            @ADDMINSPEC5 = N'{22}',
+		                            @ADDMINSPEC6 = N'{23}',
+		                            @ADDMINSPEC7 = N'{24}',
+		                            @ADDMINSPEC8 = N'{25}',
+		                            @ADDMINSPEC9 = N'{26}',
+		                            @ADDMINSPEC10 = N'{27}',
+		                            @ADDMINPRICE1 = {28},
+		                            @ADDMINPRICE2 = {29},
+		                            @ADDMINPRICE3 = {30},
+		                            @ADDMINPRICE4 = {31},
+		                            @ADDMINPRICE5 = {32},
+		                            @ADDMINPRICE6 = {33},
+		                            @ADDMINPRICE7 = {34},
+		                            @ADDMINPRICE8 = {35},
+		                            @ADDMINPRICE9 = {36},
+		                            @ADDMINPRICE10 = {37},
+                                    @InvCode = '{38}',
+                                    @Eghdam = '''{39}''',
+                                    @F01 = N'{40}',
+                                    @F02 = N'{41}',
+                                    @F03 = N'{42}',
+                                    @F04 = N'{43}',
+                                    @F05 = N'{44}',
+                                    @F06 = N'{45}',
+                                    @F07 = N'{46}',
+                                    @F08 = N'{47}',
+                                    @F09 = N'{48}',
+                                    @F10 = N'{49}',
+                                    @F11 = N'{50}',
+                                    @F12 = N'{51}',
+                                    @F13 = N'{52}',
+                                    @F14 = N'{53}',
+                                    @F15 = N'{54}',
+                                    @F16 = N'{55}',
+                                    @F17 = N'{56}',
+                                    @F18 = N'{57}',
+                                    @F19 = N'{58}',
+                                    @F20 = N'{59}',
+                                    @PaymentType = {60},
+                                    @Footer = N'{61}',
+                                    @TotalValue = '{62}',
+                                    @Tanzim = '{63}',
+                                    @CustAddrValid = {64},
+                                    @CustOstan = '{65}',
+                                    @CustShahrestan = '{66}',
+                                    @CustRegion = '{67}',
+                                    @CustCity = '{68}',
+                                    @CustStreet = '{69}',
+                                    @CustAlley = '{70}',
+                                    @CustPlack = '{71}',
+                                    @CustZipCode = '{72}',
+                                    @CustTel = '{73}',
+                                    @CustMobile = '{74}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
-                            aFI_FDocHi.DocNoMode,
-                            aFI_FDocHi.InsertMode,
-                            aFI_FDocHi.ModeCode,
-                            aFI_FDocHi.DocNo,
-                            aFI_FDocHi.StartNo,
-                            aFI_FDocHi.EndNo,
-                            aFI_FDocHi.BranchCode,
-                            aFI_FDocHi.UserCode,
-                            aFI_FDocHi.SerialNumber,
-                            aFI_FDocHi.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
-                            aFI_FDocHi.Spec,
-                            aFI_FDocHi.TahieShode,
-                            aFI_FDocHi.CustCode,
-                            aFI_FDocHi.VstrCode,
-                            aFI_FDocHi.VstrPer,
-                            aFI_FDocHi.PakhshCode,
-                            aFI_FDocHi.KalaPriceCode ?? 0,
-                            aFI_FDocHi.AddMinSpec1,
-                            aFI_FDocHi.AddMinSpec2,
-                            aFI_FDocHi.AddMinSpec3,
-                            aFI_FDocHi.AddMinSpec4,
-                            aFI_FDocHi.AddMinSpec5,
-                            aFI_FDocHi.AddMinSpec6,
-                            aFI_FDocHi.AddMinSpec7,
-                            aFI_FDocHi.AddMinSpec8,
-                            aFI_FDocHi.AddMinSpec9,
-                            aFI_FDocHi.AddMinSpec10,
-                            aFI_FDocHi.AddMinPrice1,
-                            aFI_FDocHi.AddMinPrice2,
-                            aFI_FDocHi.AddMinPrice3,
-                            aFI_FDocHi.AddMinPrice4,
-                            aFI_FDocHi.AddMinPrice5,
-                            aFI_FDocHi.AddMinPrice6,
-                            aFI_FDocHi.AddMinPrice7,
-                            aFI_FDocHi.AddMinPrice8,
-                            aFI_FDocHi.AddMinPrice9,
-                            aFI_FDocHi.AddMinPrice10,
-                            aFI_FDocHi.InvCode,
-                            aFI_FDocHi.Eghdam,
-                            aFI_FDocHi.F01,
-                            aFI_FDocHi.F02,
-                            aFI_FDocHi.F03,
-                            aFI_FDocHi.F04,
-                            aFI_FDocHi.F05,
-                            aFI_FDocHi.F06,
-                            aFI_FDocHi.F07,
-                            aFI_FDocHi.F08,
-                            aFI_FDocHi.F09,
-                            aFI_FDocHi.F10,
-                            aFI_FDocHi.F11,
-                            aFI_FDocHi.F12,
-                            aFI_FDocHi.F13,
-                            aFI_FDocHi.F14,
-                            aFI_FDocHi.F15,
-                            aFI_FDocHi.F16,
-                            aFI_FDocHi.F17,
-                            aFI_FDocHi.F18,
-                            aFI_FDocHi.F19,
-                            aFI_FDocHi.F20,
-                            aFI_FDocHi.PaymentType,
-                            UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? ""),
-                            aFI_FDocHi.TotalValue ?? 0,
-                            aFI_FDocHi.Tanzim,
-                            aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI"
-                            //aFI_FDocHi.VstrCode
-                            );
+                             aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI",
+                             aFI_FDocHi.DocNoMode,
+                             aFI_FDocHi.InsertMode,
+                             aFI_FDocHi.ModeCode,
+                             aFI_FDocHi.DocNo,
+                             aFI_FDocHi.StartNo,
+                             aFI_FDocHi.EndNo,
+                             aFI_FDocHi.BranchCode,
+                             aFI_FDocHi.UserCode,
+                             aFI_FDocHi.SerialNumber,
+                             aFI_FDocHi.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
+                             aFI_FDocHi.Spec,
+                             aFI_FDocHi.TahieShode,
+                             aFI_FDocHi.CustCode,
+                             aFI_FDocHi.VstrCode,
+                             aFI_FDocHi.VstrPer,
+                             aFI_FDocHi.PakhshCode,
+                             aFI_FDocHi.KalaPriceCode ?? 0,
+                             aFI_FDocHi.AddMinSpec1,
+                             aFI_FDocHi.AddMinSpec2,
+                             aFI_FDocHi.AddMinSpec3,
+                             aFI_FDocHi.AddMinSpec4,
+                             aFI_FDocHi.AddMinSpec5,
+                             aFI_FDocHi.AddMinSpec6,
+                             aFI_FDocHi.AddMinSpec7,
+                             aFI_FDocHi.AddMinSpec8,
+                             aFI_FDocHi.AddMinSpec9,
+                             aFI_FDocHi.AddMinSpec10,
+                             aFI_FDocHi.AddMinPrice1,
+                             aFI_FDocHi.AddMinPrice2,
+                             aFI_FDocHi.AddMinPrice3,
+                             aFI_FDocHi.AddMinPrice4,
+                             aFI_FDocHi.AddMinPrice5,
+                             aFI_FDocHi.AddMinPrice6,
+                             aFI_FDocHi.AddMinPrice7,
+                             aFI_FDocHi.AddMinPrice8,
+                             aFI_FDocHi.AddMinPrice9,
+                             aFI_FDocHi.AddMinPrice10,
+                             aFI_FDocHi.InvCode,
+                             aFI_FDocHi.Eghdam,
+                             aFI_FDocHi.F01,
+                             aFI_FDocHi.F02,
+                             aFI_FDocHi.F03,
+                             aFI_FDocHi.F04,
+                             aFI_FDocHi.F05,
+                             aFI_FDocHi.F06,
+                             aFI_FDocHi.F07,
+                             aFI_FDocHi.F08,
+                             aFI_FDocHi.F09,
+                             aFI_FDocHi.F10,
+                             aFI_FDocHi.F11,
+                             aFI_FDocHi.F12,
+                             aFI_FDocHi.F13,
+                             aFI_FDocHi.F14,
+                             aFI_FDocHi.F15,
+                             aFI_FDocHi.F16,
+                             aFI_FDocHi.F17,
+                             aFI_FDocHi.F18,
+                             aFI_FDocHi.F19,
+                             aFI_FDocHi.F20,
+                             aFI_FDocHi.PaymentType,
+                             UnitPublic.ConvertTextWebToWin(aFI_FDocHi.Footer ?? ""),
+                             aFI_FDocHi.TotalValue ?? 0,
+                             aFI_FDocHi.Tanzim,
+                             aFI_FDocHi.CustAddrValid ?? 0,
+                             aFI_FDocHi.CustOstan,
+                             aFI_FDocHi.CustShahrestan,
+                             aFI_FDocHi.CustRegion,
+                             aFI_FDocHi.CustCity,
+                             aFI_FDocHi.CustStreet,
+                             aFI_FDocHi.CustAlley,
+                             aFI_FDocHi.CustPlack,
+                             aFI_FDocHi.CustZipCode,
+                             aFI_FDocHi.CustTel,
+                             aFI_FDocHi.CustMobile
+                             );
                     value = db.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
                     {
@@ -485,7 +525,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocHi(string ace, string sal, string group, long SerialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, ModeCode, 3, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, ModeCode, 3, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -612,13 +652,13 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
-       
+
         [Route("api/AFI_FDocHi/AFI_RegFDocToADoc/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostAFI_RegFDocToADoc(string ace, string sal, string group, RegFDocToADocObject RegFDocToADocObject)
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -661,7 +701,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -676,7 +716,7 @@ namespace ApiKarbord.Controllers.AFI.data
                          );
 
                 log = CallRegFDoctoIDoc(
-                    ace,connectionString,
+                    ace, connectionString,
                     dbName,
                     dataAccount[2],
                     RegFDocToIDocObject.ModeCode,
