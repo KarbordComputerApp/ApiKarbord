@@ -569,6 +569,17 @@ namespace ApiKarbord.Controllers.Unit
                                                  ");
                                         dbChange.Database.ExecuteSqlCommand(sql);
                                         sw.WriteLine("End Delete All");
+
+                                        sw.WriteLine("Start Delete Temp Table");
+                                        sql = string.Format(@"  if  exists (select * from sysobjects where id = object_id(N'Web_T_ADocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_ADocB end
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_ADocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_ADocH end
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocB end
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocF') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocF end
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocH end
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocB end
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocH end ");
+                                        dbChange.Database.ExecuteSqlCommand(sql);
+                                        sw.WriteLine("End Delete Temp Table");
                                     }
 
 
@@ -840,16 +851,6 @@ namespace ApiKarbord.Controllers.Unit
                                         db.Database.ExecuteSqlCommand(sql);
                                         sw.WriteLine("End Delete All");
 
-                                        sw.WriteLine("Start Delete Temp Table");
-                                        sql = string.Format(@"  if  exists (select * from sysobjects where id = object_id(N'Web_T_ADocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_ADocB end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_ADocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_ADocH end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocB end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocF') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocF end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocH end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocB end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocH end ");
-                                        db.Database.ExecuteSqlCommand(sql);
-                                        sw.WriteLine("End Delete Temp Table");
                                     }
 
 
