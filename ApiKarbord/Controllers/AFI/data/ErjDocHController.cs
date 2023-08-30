@@ -120,7 +120,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, erjDocH.SerialNumber, "", 2, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, erjDocH.SerialNumber, UnitPublic.access_ErjDoc, UnitPublic.act_Edit , 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -308,7 +308,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ErjSaveDoc_HUObject.SerialNumber, "", 2, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ErjSaveDoc_HUObject.SerialNumber, UnitPublic.access_ErjDoc, UnitPublic.act_New, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -405,7 +405,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_ErjDoc, UnitPublic.act_Delete, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -427,7 +427,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "", 3, "Y", 1, 0);
                 return Ok(1);
             }
             return Ok(conStr);
@@ -465,7 +465,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestDoc_Delete(string ace, string sal, string group, TestDoc_DeleteObject TestDoc_DeleteObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

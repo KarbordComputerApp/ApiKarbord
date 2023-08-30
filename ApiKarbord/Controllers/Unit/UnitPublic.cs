@@ -12,7 +12,7 @@ using ApiKarbord.Models;
 
 using System.Data;
 using System.Drawing;
-
+using System.Globalization;
 
 namespace ApiKarbord.Controllers.Unit
 {
@@ -23,11 +23,11 @@ namespace ApiKarbord.Controllers.Unit
         public static int VerDB = 46;
         public static string conString = "";
 
-        //public static string titleVer = "API KarbordComputer Test : Ver ";
-        //public static int VerNumber = 517;
+        public static string titleVer = "API KarbordComputer Test : Ver ";
+        public static int VerNumber = 518;
 
-         public static string titleVer = "API KarbordComputer : Ver ";
-         public static int VerNumber = 1032;
+        //public static string titleVer = "API KarbordComputer : Ver ";
+        //public static int VerNumber = 1032;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
@@ -47,7 +47,79 @@ namespace ApiKarbord.Controllers.Unit
         public static List<SelectListItem> invSalList = new List<SelectListItem>();//لیست سال انبار
         public static List<SelectListItem> fctSalList = new List<SelectListItem>();//لیست سال فروش
         public static List<SelectListItem> afiSalList = new List<SelectListItem>();//لیست سال مالی و بازرگانی
-        private static object str;
+
+
+        public const string Web1 = "Web1"; // مالی بازرگانی
+        public const string Web2 = "Web2"; // اتوماسیون 
+        public const string Web8 = "Web8"; // سیستم جامع
+
+        public const string access_View = "View";
+
+        public const string access_ADOC = "ADOC";
+        public const string access_SPFCT = "SPFCT";
+        public const string access_SFCT = "SFCT";
+        public const string access_SRFCT = "SRFCT";
+        public const string access_SHVL = "SHVL";
+        public const string access_SEXT = "SEXT";
+        public const string access_PFORD = "PFORD";
+        public const string access_PPFCT = "PPFCT";
+        public const string access_PFCT = "PFCT";
+        public const string access_PRFCT = "PRFCT";
+        public const string access_SFORD = "SFORD";
+        public const string access_IIDOC = "IIDOC";
+        public const string access_IODOC = "IODOC";
+        public const string access_TrzAcc = "TrzAcc";
+        public const string access_Dftr = "Dftr";
+        public const string access_ADocR = "ADocR";
+        public const string access_TChk = "TChk";
+        public const string access_FDocR_S = "FDocR_S";
+        public const string access_FDocR_P = "FDocR_P";
+        public const string access_TrzFKala_S = "TrzFKala_S";
+        public const string access_TrzFKala_P = "TrzFKala_P";
+        public const string access_TrzFCust_S = "TrzFCust_S";
+        public const string access_TrzFCust_P = "TrzFCust_P";
+        public const string access_Krdx = "Krdx";
+        public const string access_TrzIKala = "TrzIKala";
+        public const string access_TrzIKalaExf = "TrzIKalaExf";
+        public const string access_IDocR = "IDocR";
+        public const string access_Kala = "Kala";
+        public const string access_Cust = "Cust";
+        public const string access_Acc = "Acc";
+        public const string access_Opr = "Opr";
+        public const string access_Mkz = "Mkz";
+        public const string access_AGMkz = "AGMkz";
+        public const string access_AGOpr = "AGOpr";
+        public const string access_Arz = "Arz";
+        public const string access_ZAcc = "ZAcc";
+        public const string access_ErjDocK = "ErjDocK";
+        public const string access_ErjDocErja = "ErjDocErja";
+        public const string access_ErjDoc = "ErjDoc";
+        public const string access_Erja_Resive = "Erja_Resive";
+        public const string access_Erja_Send = "Erja_Send";
+
+
+        public const int act_View = 0;
+        public const int act_Edit = 1;
+        public const int act_New = 2;
+        public const int act_Delete = 3;
+        public const int act_EditBand = 4;
+        public const int act_NewBand = 5;
+        public const int act_DeleteBand = 6;
+        public const int act_ChangrStatus = 7;
+        public const int act_Move = 8;
+        public const int act_Report = 9;
+
+        public static string ModeCodeConnection(string modeCode)
+        {
+            if (modeCode == "51") modeCode = access_SPFCT;
+            else if (modeCode == "52") modeCode = access_SFCT;
+            else if (modeCode == "53") modeCode = access_SRFCT;
+            else if (modeCode == "54") modeCode = access_PPFCT;
+            else if (modeCode == "55") modeCode = access_PFCT;
+            else if (modeCode == "56") modeCode = access_PRFCT;
+
+            return modeCode;
+        }
 
         public class listDatabase
         {
@@ -56,93 +128,93 @@ namespace ApiKarbord.Controllers.Unit
 
 
         //دریافت اطلاعات کاربر
-      /*  public static bool UserInformation(string acc, string inv, string fct, string afi)
-        {
-            try
-            {
-                aceList.Clear();
-                invList.Clear();
-                fctList.Clear();
-                accList.Clear();
-                afiList.Clear();
-                invSalList.Clear();
-                fctSalList.Clear();
-                accSalList.Clear();
-                afiSalList.Clear();
+        /*  public static bool UserInformation(string acc, string inv, string fct, string afi)
+          {
+              try
+              {
+                  aceList.Clear();
+                  invList.Clear();
+                  fctList.Clear();
+                  accList.Clear();
+                  afiList.Clear();
+                  invSalList.Clear();
+                  fctSalList.Clear();
+                  accSalList.Clear();
+                  afiSalList.Clear();
 
-                if (!string.IsNullOrEmpty(acc))
-                {
-                    aceList.Add(new SelectListItem { Value = "ACC", Text = "نرم افزار حسابداری" });
-                    string[] accTemp = acc.Split('-');
-                    foreach (string accs in accTemp)
-                    {
-                        accList.Add(new SelectListItem { Value = accs, Text = accs });
-                    }
+                  if (!string.IsNullOrEmpty(acc))
+                  {
+                      aceList.Add(new SelectListItem { Value = "ACC", Text = "نرم افزار حسابداری" });
+                      string[] accTemp = acc.Split('-');
+                      foreach (string accs in accTemp)
+                      {
+                          accList.Add(new SelectListItem { Value = accs, Text = accs });
+                      }
 
-                    var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_ACC5%' order by name");
-                    foreach (var item in salDB)
-                    {
-                        accSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
-                    }
-                }
+                      var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_ACC5%' order by name");
+                      foreach (var item in salDB)
+                      {
+                          accSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
+                      }
+                  }
 
 
-                if (!string.IsNullOrEmpty(inv))
-                {
-                    aceList.Add(new SelectListItem { Value = "INV", Text = "نرم افزار انبار" });
-                    string[] invTemp = inv.Split('-');
-                    foreach (string invs in invTemp)
-                    {
-                        invList.Add(new SelectListItem { Value = invs, Text = invs });
-                    }
+                  if (!string.IsNullOrEmpty(inv))
+                  {
+                      aceList.Add(new SelectListItem { Value = "INV", Text = "نرم افزار انبار" });
+                      string[] invTemp = inv.Split('-');
+                      foreach (string invs in invTemp)
+                      {
+                          invList.Add(new SelectListItem { Value = invs, Text = invs });
+                      }
 
-                    var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_INV5%' order by name");
-                    foreach (var item in salDB)
-                    {
-                        invSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
-                    }
-                }
+                      var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_INV5%' order by name");
+                      foreach (var item in salDB)
+                      {
+                          invSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
+                      }
+                  }
 
-                if (!string.IsNullOrEmpty(fct))
-                {
-                    aceList.Add(new SelectListItem { Value = "FCT", Text = "نرم افزار فروش" });
-                    string[] fctTemp = fct.Split('-');
-                    foreach (string fcts in fctTemp)
-                    {
-                        fctList.Add(new SelectListItem { Value = fcts, Text = fcts });
-                    }
+                  if (!string.IsNullOrEmpty(fct))
+                  {
+                      aceList.Add(new SelectListItem { Value = "FCT", Text = "نرم افزار فروش" });
+                      string[] fctTemp = fct.Split('-');
+                      foreach (string fcts in fctTemp)
+                      {
+                          fctList.Add(new SelectListItem { Value = fcts, Text = fcts });
+                      }
 
-                    var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_FCT5%' order by name");
-                    foreach (var item in salDB)
-                    {
-                        fctSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
-                    }
-                }
+                      var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_FCT5%' order by name");
+                      foreach (var item in salDB)
+                      {
+                          fctSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
+                      }
+                  }
 
-                if (!string.IsNullOrEmpty(afi))
-                {
-                    aceList.Add(new SelectListItem { Value = "AFI", Text = "نرم افزار مالی بازرگانی" });
-                    string[] afiTemp = afi.Split('-');
-                    foreach (string afis in afiTemp)
-                    {
-                        afiList.Add(new SelectListItem { Value = afis, Text = afis });
-                    }
+                  if (!string.IsNullOrEmpty(afi))
+                  {
+                      aceList.Add(new SelectListItem { Value = "AFI", Text = "نرم افزار مالی بازرگانی" });
+                      string[] afiTemp = afi.Split('-');
+                      foreach (string afis in afiTemp)
+                      {
+                          afiList.Add(new SelectListItem { Value = afis, Text = afis });
+                      }
 
-                    var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_AFI1%' order by name");
-                    foreach (var item in salDB)
-                    {
-                        afiSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
-                    }
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-                throw;
-            }
-        }
-        */
+                      var salDB = UnitDatabase.db.Database.SqlQuery<listDatabase>(@"select DISTINCT substring(name,11,4) as name from sys.sysdatabases where name like 'ACE_AFI1%' order by name");
+                      foreach (var item in salDB)
+                      {
+                          afiSalList.Add(new SelectListItem { Value = item.name, Text = item.name });
+                      }
+                  }
+                  return true;
+              }
+              catch (Exception)
+              {
+                  return false;
+                  throw;
+              }
+          }
+          */
         public static string MD5Hash(string itemToHash)
         {
             return string.Join("", MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(itemToHash)).Select(s => s.ToString("x2")));
@@ -281,13 +353,313 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
+        public static string CreateSql_IDocB(AFI_IDocBi band, long serialNumber, int bandNumber)
+        {
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"DECLARE	@return_value int
+                            EXEC	@return_value = [dbo].[Web_SaveIDoc_BI_Temp]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1},
+		                            @KalaCode = N'{2}',
+		                            @Amount1 = {3},
+		                            @Amount2 = {4},
+		                            @Amount3 = {5},
+		                            @UnitPrice = {6},
+		                            @TotalPrice = {7},
+		                            @MainUnit = {8},
+		                            @Comm = N'{9}',
+                                    @Up_Flag = {10},
+                                    @OprCode = N'{11}',
+		                            @MkzCode = N'{12}',
+                                    @BandSpec = N'{13}',
+                                    @ArzCode = N'{14}',
+                                    @ArzRate = {15},
+                                    @ArzValue = {16},
+                                    @KalaFileNo = N'{17}',
+                                    @KalaState = N'{18}',
+                                    @KalaExf1 = N'{19}',
+                                    @KalaExf2 = N'{20}',
+                                    @KalaExf3 = N'{21}',
+                                    @KalaExf4 = N'{22}',
+                                    @KalaExf5 = N'{23}',
+                                    @KalaExf6 = N'{24}',
+                                    @KalaExf7 = N'{25}',
+                                    @KalaExf8 = N'{26}',
+                                    @KalaExf9 = N'{27}',
+                                    @KalaExf10 = N'{28}',
+                                    @KalaExf11 = N'{29}',
+                                    @KalaExf12 = N'{30}',
+                                    @KalaExf13 = N'{31}',
+                                    @KalaExf14 = N'{32}',
+                                    @KalaExf15 = N'{33}'
+                            SELECT	'Return Value' = @return_value",
+                            serialNumber,
+                            bandNumber,
+                            band.KalaCode,
+                            band.Amount1 ?? 0,
+                            band.Amount2 ?? 0,
+                            band.Amount3 ?? 0,
+                            band.UnitPrice ?? 0,
+                            band.TotalPrice ?? 0,
+                            band.MainUnit ?? 1,
+                            UnitPublic.ConvertTextWebToWin(band.Comm ?? ""),
+                            band.Up_Flag,
+                            band.OprCode,
+                            band.MkzCode,
+                            UnitPublic.ConvertTextWebToWin(band.BandSpec ?? ""),
+                            band.ArzCode ?? "",
+                            band.ArzRate ?? 0,
+                            band.ArzValue ?? 0,
+                            band.KalaFileNo,
+                            band.KalaState,
+                            band.KalaExf1,
+                            band.KalaExf2,
+                            band.KalaExf3,
+                            band.KalaExf4,
+                            band.KalaExf5,
+                            band.KalaExf6,
+                            band.KalaExf7,
+                            band.KalaExf8,
+                            band.KalaExf9,
+                            band.KalaExf10,
+                            band.KalaExf11,
+                            band.KalaExf12,
+                            band.KalaExf13,
+                            band.KalaExf14,
+                            band.KalaExf15
+                            );
+            return sql;
+        }
+        public static string CreateSql_IDocH(AFI_IDocHi head, bool flagTest)
+        {
+            string sql = "";
+            if (head.SerialNumber == 0 || flagTest == true)
+            {
+                sql = string.Format(
+                        @"DECLARE	@return_value nvarchar(50),
+		                            @DocNo_Out int
+                          EXEC	@return_value = [dbo].[{38}]
+		                            @DOCNOMODE = {0},
+		                            @INSERTMODE = {1},
+		                            @MODECODE = '{2}' ,
+		                            @DOCNO = {3},
+		                            @STARTNO = {4},
+		                            @ENDNO = {5},
+		                            @BRANCHCODE = {6},
+		                            @USERCODE = '''{7}''', 
+		                            @SERIALNUMBER = {8},
+		                            @DOCDATE = '{9}',
+		                            @SPEC = N'{10}',
+		                            @TAHIESHODE = '{11}',
+		                            @ThvlCODE = '{12}',
+		                            @KALAPRICECODE = {13},
+                                    @InvCode = '{14}',
+                                    @Eghdam = N'''{15}''',
+                                    @F01 = N'{16}',
+                                    @F02 = N'{17}',
+                                    @F03 = N'{18}',
+                                    @F04 = N'{19}',
+                                    @F05 = N'{20}',
+                                    @F06 = N'{21}',
+                                    @F07 = N'{22}',
+                                    @F08 = N'{23}',
+                                    @F09 = N'{24}',
+                                    @F10 = N'{25}',
+                                    @F11 = N'{26}',
+                                    @F12 = N'{27}',
+                                    @F13 = N'{28}',
+                                    @F14 = N'{29}',
+                                    @F15 = N'{30}',
+                                    @F16 = N'{31}',
+                                    @F17 = N'{32}',
+                                    @F18 = N'{33}',
+                                    @F19 = N'{34}',
+                                    @F20 = N'{35}',
+                                    @Tanzim = '{36}',
+                                    @Footer = N'{37}',
+		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
+                            SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
+                                        head.DocNoMode,
+                                        head.InsertMode,
+                                        head.ModeCode,
+                                        head.DocNo ?? 0,
+                                        head.StartNo,
+                                        head.EndNo,
+                                        head.BranchCode,
+                                        head.UserCode,
+                                        head.SerialNumber,
+                                        head.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
+                                        head.Spec,
+                                        head.TahieShode,
+                                        head.ThvlCode ?? "",
+                                        head.KalaPriceCode ?? 0,
+                                        head.InvCode,
+                                        head.Eghdam,
+                                        head.F01,
+                                        head.F02,
+                                        head.F03,
+                                        head.F04,
+                                        head.F05,
+                                        head.F06,
+                                        head.F07,
+                                        head.F08,
+                                        head.F09,
+                                        head.F10,
+                                        head.F11,
+                                        head.F12,
+                                        head.F13,
+                                        head.F14,
+                                        head.F15,
+                                        head.F16,
+                                        head.F17,
+                                        head.F18,
+                                        head.F19,
+                                        head.F20,
+                                        head.Tanzim,
+                                        UnitPublic.ConvertTextWebToWin(head.Footer ?? ""),
+                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI"
+                                        );
+            }
+            else if (head.SerialNumber > 0 && flagTest == false) // update
+            {
+                sql = string.Format(
+                        @"DECLARE	@return_value nvarchar(50),
+		                            @DocNo_Out int
+                          EXEC	@return_value = [dbo].[Web_SaveIDoc_HU]
+		                            @DOCNOMODE = {0},
+		                            @INSERTMODE = {1},
+		                            @MODECODE = '{2}' ,
+		                            @DOCNO = {3},
+		                            @STARTNO = {4},
+		                            @ENDNO = {5},
+		                            @BRANCHCODE = {6},
+		                            @USERCODE = '{7}',
+		                            @SERIALNUMBER = {8},
+		                            @DOCDATE = '{9}',
+		                            @SPEC = N'{10}',
+		                            @TAHIESHODE = '{11}',
+		                            @ThvlCODE = '{12}',
+		                            @KALAPRICECODE = {13},
+                                    @InvCode = '{14}',
+                                    @Status = N'{15}',
+                                    @Footer = N'{16}',
+                                    @F01 = N'{17}',
+                                    @F02 = N'{18}',
+                                    @F03 = N'{19}',
+                                    @F04 = N'{20}',
+                                    @F05 = N'{21}',
+                                    @F06 = N'{22}',
+                                    @F07 = N'{23}',
+                                    @F08 = N'{24}',
+                                    @F09 = N'{25}',
+                                    @F10 = N'{26}',
+                                    @F11 = N'{27}',
+                                    @F12 = N'{28}',
+                                    @F13 = N'{29}',
+                                    @F14 = N'{30}',
+                                    @F15 = N'{31}',
+                                    @F16 = N'{32}',
+                                    @F17 = N'{33}',
+                                    @F18 = N'{34}',
+                                    @F19 = N'{35}',
+                                    @F20 = N'{36}',
+                                    @OprCode = '{37}',
+                                    @MkzCode = '{38}',
+                                    @Tanzim = '{39}',
+		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
+                            SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
+                                    head.DocNoMode,
+                                    head.InsertMode,
+                                    head.ModeCode,
+                                    head.DocNo,
+                                    head.StartNo,
+                                    head.EndNo,
+                                    head.BranchCode,
+                                    head.UserCode,
+                                    head.SerialNumber,
+                                    head.DocDate ?? string.Format("{0:yyyy/MM/dd}", DateTime.Now.AddDays(-1)),
+                                    head.Spec,
+                                    head.TahieShode,
+                                    head.ThvlCode,
+                                    head.KalaPriceCode ?? 0,
+                                    head.InvCode,
+                                    head.Status,
+                                    UnitPublic.ConvertTextWebToWin(head.Footer ?? ""),
+                                    head.F01,
+                                    head.F02,
+                                    head.F03,
+                                    head.F04,
+                                    head.F05,
+                                    head.F06,
+                                    head.F07,
+                                    head.F08,
+                                    head.F09,
+                                    head.F10,
+                                    head.F11,
+                                    head.F12,
+                                    head.F13,
+                                    head.F14,
+                                    head.F15,
+                                    head.F16,
+                                    head.F17,
+                                    head.F18,
+                                    head.F19,
+                                    head.F20,
+                                    head.OprCode,
+                                    head.MkzCode,
+                                    head.Tanzim);
+            }
+            return sql;
+        }
+
+
+
+
+        public static ResTest SetErrorSanad(List<TestDocB> TestDocB)
+        {
+            const string FirstMess = "بند شماره ";
+            ResTest resTest = new ResTest();
+            List<TestDoc> res = new List<TestDoc>();
+
+            int countError = 0;
+            int countWarnning = 0;
+            foreach (var item in TestDocB)
+            {
+                if (item.Test == 1)
+                    countWarnning++;
+                else
+                    countError++;
+
+                TestDoc band = new TestDoc();
+                band.Mode = item.Test;
+                band.ModeName = item.Test == 1 ? "Warnning" : "Error";
+
+                string spec = FirstMess + item.BandNo + " : ";
+                if (item.TestName == "Opr") spec += "پروژه مشخص نشده است";
+                else if (item.TestName == "Mkz") spec += "مرکز هزینه مشخص نشده است";
+                else if (item.TestName == "Arz") spec += "ارز معرفی نشده است";
+                else if (item.TestName == "ZeroAmount") spec += "مقدار صفر است";
+                else if (item.TestName == "ZeroPrice") spec += "مبلغ صفر است";
+                else if (item.TestName == "Thvl") spec = "تحویل دهنده/گیرنده انتخاب نشده است";
+                else if (item.TestCap != "") spec = item.TestCap;
+                band.Spec = spec;
+                res.Add(band);
+            }
+            resTest.CountWarnning = countWarnning;
+            resTest.CountError = countError;
+            resTest.status = countError > 0 ? "Error" : "Success";
+            resTest.Data = res;
+            return resTest;
+        }
 
 
 
 
 
 
-        
+
+
+
 
 
 

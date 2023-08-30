@@ -48,7 +48,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "14", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_TrzAcc, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -118,7 +118,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "15", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_Dftr, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -196,7 +196,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "16", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_ADocR, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -269,7 +269,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "17", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -330,7 +330,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_AGMkz(string ace, string sal, string group, AGMkzObject AGMkzObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "14", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_AGMkz, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -388,7 +388,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_AGOpr(string ace, string sal, string group, AGOprObject AGOprObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "14", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_AGOpr, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -443,7 +443,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_D_TChk_Sum(string ace, string sal, string group, TChk_SumObject TChk_SumObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "17", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

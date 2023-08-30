@@ -53,7 +53,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_FDocR(string ace, string sal, string group, FDocRObject FDocRObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "18", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, FDocRObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_FDocR_S : UnitPublic.access_FDocR_P, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -127,7 +127,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, TrzFKalaObject TrzFKalaObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "19", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, TrzFKalaObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFKala_S : UnitPublic.access_TrzFKala_P, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -216,7 +216,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_TrzFCust(string ace, string sal, string group, TrzFCustObject TrzFCustObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "20", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, TrzFCustObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFCust_S : UnitPublic.access_TrzFCust_P, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -284,7 +284,7 @@ namespace ApiKarbord.Controllers.AFI.report
         public async Task<IHttpActionResult> PostWeb_D_TrzFDoreh(string ace, string sal, string group, TrzFDorehObject TrzFDorehObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "20", 9, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,   UnitPublic.access_View, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

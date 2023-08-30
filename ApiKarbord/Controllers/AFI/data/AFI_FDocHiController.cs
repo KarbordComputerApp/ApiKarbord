@@ -46,7 +46,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_New, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -321,7 +321,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 1, aFI_FDocHi.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), 1, aFI_FDocHi.flagLog, 1, 0);
                 return Ok(value);
             }
             return Ok(conStr);
@@ -339,7 +339,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, aFI_FDocHi.ModeCode, 2, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_Edit, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -513,7 +513,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
                 string[] serials = value.Split('@');
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_FDocHi.ModeCode, 2, aFI_FDocHi.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), 2, aFI_FDocHi.flagLog, 1, 0);
                 return Ok(value);
             }
             return Ok(conStr);
@@ -525,7 +525,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocHi(string ace, string sal, string group, long SerialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, ModeCode, 3, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.ModeCodeConnection(ModeCode), UnitPublic.act_Delete, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -550,7 +550,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y", 1, 0);
                 return Ok(1);
             }
             return Ok(conStr);
@@ -572,7 +572,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public static string CallRegFDoctoADoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = ace == "Web8" ? "Fct6_Web.dll" : "Afi2_Web.dll";
+            string dllName = ace == UnitPublic.Web8 ? "Fct6_Web.dll" : "Afi2_Web.dll";
             string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegFDoctoADoc";
 
@@ -612,7 +612,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public static string CallRegFDoctoIDoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = ace == "Web8" ? "Fct6_Web.dll" : "Afi2_Web.dll";
+            string dllName = ace == UnitPublic.Web8 ? "Fct6_Web.dll" : "Afi2_Web.dll";
             string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegFDoctoIDoc";
 
@@ -658,7 +658,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -681,7 +681,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     RegFDocToADocObject.SerialNumbers
                     );
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 1, 0);
             }
             return Ok(log);
         }
@@ -701,7 +701,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -723,7 +723,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     RegFDocToIDocObject.SerialNumbers
                     );
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 1, 0);
             }
             return Ok(log);
         }

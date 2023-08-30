@@ -33,7 +33,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 4, aFI_FDocBi.BandNo ?? 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), UnitPublic.act_EditBand, aFI_FDocBi.BandNo ?? 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -130,7 +130,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
                 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), 1, aFI_FDocBi.flagLog, 1, 0);
 
                 if ((aFI_FDocBi.MjdControl ?? 0) == 0)
                 {
@@ -162,7 +162,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 5, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), UnitPublic.act_NewBand, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -170,7 +170,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string fieldBandNo;
                     string tableName;
-                    if (ace == "Web1")
+                    if (ace == UnitPublic.Web1)
                     {
                         fieldBandNo = "BandNo";
                         tableName = "Afi1FDocB";
@@ -288,7 +288,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, aFI_FDocBi.ModeCode, 1, aFI_FDocBi.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), 1, aFI_FDocBi.flagLog, 1, 0);
 
                 if ((aFI_FDocBi.MjdControl ?? 0) == 0)
                 {
@@ -316,7 +316,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_FDocBi(string ace, string sal, string group, long SerialNumber, int BandNo, string ModeCode, string FlagLog)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, ModeCode, 6, BandNo);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, ModeCode, UnitPublic.act_DeleteBand, BandNo);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -353,9 +353,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                 @SerialNumber = {1},
                                                                 @BandNoFld = '{2}'
                                                            SELECT	'Return Value' = @return_value",
-                                                           ace == "Web1" ? "Afi1FDocB" : "Fct5DocB",
+                                                           ace == UnitPublic.Web1 ? "Afi1FDocB" : "Fct5DocB",
                                                            SerialNumber,
-                                                           ace == "Web1" ? "BandNo" : "Radif");
+                                                           ace == UnitPublic.Web1 ? "BandNo" : "Radif");
                         int valueUpdateBand = db.Database.SqlQuery<int>(sqlUpdateBand).Single();
                         //await db.SaveChangesAsync();
                     }
@@ -370,7 +370,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                      LinkYear,LinkProg,BandSpec,ArzValue     
                                               FROM   Web_FDocB WHERE SerialNumber = {0}", SerialNumber.ToString());
                 var listFactor = db.Database.SqlQuery<Web_FDocB>(sql1);
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 1, 0);
                 return Ok(listFactor);
             }
             return Ok(conStr);
@@ -389,7 +389,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, UnitPublic.act_NewBand, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -500,7 +500,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "FDoc", 1, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "FDoc", 1, "Y", 1, 0);
                 return Ok("OK");
             }
             else
@@ -534,7 +534,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, 5, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, UnitPublic.act_NewBand, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -557,7 +557,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "FDoc", 1, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "FDoc", 1, "Y", 1, 0);
                 return Ok("OK");
             }
             else

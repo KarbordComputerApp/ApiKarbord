@@ -107,6 +107,50 @@ namespace ApiKarbord.Controllers.Unit
 
             PersianCalendar pc = new System.Globalization.PersianCalendar();
 
+
+            string[] modeCodes = new string[41];
+            modeCodes[0] = UnitPublic.access_View.ToUpper();
+            modeCodes[1] = UnitPublic.access_ADOC.ToUpper();
+            modeCodes[2] = UnitPublic.access_SPFCT.ToUpper();
+            modeCodes[3] = UnitPublic.access_SFCT.ToUpper();
+            modeCodes[4] = UnitPublic.access_SRFCT.ToUpper();
+            modeCodes[5] = UnitPublic.access_SHVL.ToUpper();
+            modeCodes[6] = UnitPublic.access_SEXT.ToUpper();
+            modeCodes[7] = UnitPublic.access_PFORD.ToUpper();
+            modeCodes[8] = UnitPublic.access_PPFCT.ToUpper();
+            modeCodes[9] = UnitPublic.access_PFCT.ToUpper();
+            modeCodes[10] = UnitPublic.access_PRFCT.ToUpper();
+            modeCodes[11] = UnitPublic.access_SFORD.ToUpper();
+            modeCodes[12] = UnitPublic.access_IIDOC.ToUpper();
+            modeCodes[13] = UnitPublic.access_TrzAcc.ToUpper();
+            modeCodes[14] = UnitPublic.access_Dftr.ToUpper();
+            modeCodes[15] = UnitPublic.access_ADocR.ToUpper();
+            modeCodes[16] = UnitPublic.access_TChk.ToUpper();
+            modeCodes[17] = UnitPublic.access_FDocR_S.ToUpper();
+            modeCodes[18] = UnitPublic.access_FDocR_P.ToUpper();
+            modeCodes[19] = UnitPublic.access_TrzFKala_S.ToUpper();
+            modeCodes[20] = UnitPublic.access_TrzFKala_P.ToUpper();
+            modeCodes[21] = UnitPublic.access_TrzFCust_S.ToUpper();
+            modeCodes[22] = UnitPublic.access_TrzFCust_P.ToUpper();
+            modeCodes[23] = UnitPublic.access_Krdx.ToUpper();
+            modeCodes[24] = UnitPublic.access_TrzIKala.ToUpper();
+            modeCodes[25] = UnitPublic.access_TrzIKalaExf.ToUpper();
+            modeCodes[26] = UnitPublic.access_IDocR.ToUpper();
+            modeCodes[27] = UnitPublic.access_Kala.ToUpper();
+            modeCodes[28] = UnitPublic.access_Cust.ToUpper();
+            modeCodes[29] = UnitPublic.access_Acc.ToUpper();
+            modeCodes[30] = UnitPublic.access_Opr.ToUpper();
+            modeCodes[31] = UnitPublic.access_Mkz.ToUpper();
+            modeCodes[32] = UnitPublic.access_AGMkz.ToUpper();
+            modeCodes[33] = UnitPublic.access_AGOpr.ToUpper();
+            modeCodes[34] = UnitPublic.access_Arz.ToUpper();
+            modeCodes[35] = UnitPublic.access_ZAcc.ToUpper();
+            modeCodes[36] = UnitPublic.access_ErjDocK.ToUpper();
+            modeCodes[37] = UnitPublic.access_ErjDocErja.ToUpper();
+            modeCodes[38] = UnitPublic.access_ErjDoc.ToUpper();
+            modeCodes[39] = UnitPublic.access_Erja_Resive.ToUpper();
+            modeCodes[40] = UnitPublic.access_Erja_Send.ToUpper();
+
             MyIniLog.Write("DateTime.Now", DateTime.Now.ToString());
             MyIniLog.Write("GetYear", pc.GetYear(DateTime.Now).ToString());
             MyIniLog.Write("GetMonth", pc.GetMonth(DateTime.Now).ToString());
@@ -115,6 +159,7 @@ namespace ApiKarbord.Controllers.Unit
             string year = pc.GetYear(DateTime.Now).ToString();
             string month = pc.GetMonth(DateTime.Now).ToString();
             string day = pc.GetDayOfMonth(DateTime.Now).ToString();
+
 
             month = month.Length == 1 ? "0" + month : month;
             day = day.Length == 1 ? "0" + day : day;
@@ -155,6 +200,7 @@ namespace ApiKarbord.Controllers.Unit
                         return "Expire Account";
                     }
                 }
+
                 if (list.active == false)
                 {
                     // Data.Add("Disable Account");
@@ -176,19 +222,84 @@ namespace ApiKarbord.Controllers.Unit
                     return "Not Access App";
                 }
 
+                string[] listAccess = new string[0];
+                string[] listGroup = new string[0];
+                bool fullAccess = false;
+                bool groupAccess = false;
+                bool accept = false;
+
+                if (ace == "web1" || ace == "WEB1") ace = UnitPublic.Web1;
+                if (ace == "web2" || ace == "WEB2") ace = UnitPublic.Web2;
+                if (ace == "web8" || ace == "WEB8") ace = UnitPublic.Web8;
+
+
                 if (model.Count > 0)
                 {
                     SqlServerName = list.SqlServerName;
                     SqlUserName = list.SqlUserName;
                     SqlPassword = list.SqlPassword;
 
-                    string connectionString = String.Format(
-                                    //  @"data source = {0};initial catalog = {1};user id = {2}; password = {3}; MultipleActiveResultSets = True; App = EntityFramework",
-                                    @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                    list.SqlServerName, DatabaseName(ace, sal, group), list.SqlUserName, list.SqlPassword);
-                    MyIniLog.Write("connectionString_10", connectionString);
-                    //Data.Add(connectionString);
-                    return connectionString;
+                    if (ace == UnitPublic.Web1)
+                    {
+                        fullAccess = list.AFI1_Access == "*";
+                        listAccess = list.AFI1_Access.Split('*');
+                        listGroup = list.AFI1_Group.Split('-');
+                        groupAccess = listGroup.Contains(group);
+                    }
+                    else if (ace == UnitPublic.Web2)
+                    {
+                        fullAccess = list.ERJ_Access == "*";
+                        listAccess = list.ERJ_Access.Split('*');
+                        listGroup = list.ERJ_Group.Split('-');
+                        groupAccess = listGroup.Contains(group);
+                    }
+                    else if (ace == UnitPublic.Web8)
+                    {
+                        fullAccess = list.AFI8_Access == "*";
+                        listAccess = list.AFI8_Access.Split('*');
+                        listGroup = list.AFI8_Group.Split('-');
+                        groupAccess = listGroup.Contains(group);
+                    }
+                    else
+                    {
+                        groupAccess = true;
+                        fullAccess = true;
+                    }
+
+
+                    if (fullAccess == false)
+                    {
+                        string mode = UnitPublic.ModeCodeConnection(modecode);
+                        if (mode == UnitPublic.access_View)
+                            accept = true;
+                        //else if (modeCodes.Contains(mode.ToUpper()) )
+                        else
+                            accept = listAccess.Contains(mode);
+                        //else     accept = true;
+                    }
+
+
+                    if (fullAccess == true) accept = true;
+                    if (groupAccess == false) accept = false;
+
+                    if (accept)
+                    {
+                        string connectionString = String.Format(
+                                        @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                        list.SqlServerName, DatabaseName(ace, sal, group), list.SqlUserName, list.SqlPassword);
+                        MyIniLog.Write("connectionString_10", connectionString);
+
+                        if (act > 0)
+                        {
+                            SaveLog(userName, password, userKarbord, ace, sal, group, serialNumber, modecode, act, "Y", 0, bandNo);
+                        }
+
+                        return connectionString;
+                    }
+                    else
+                    {
+                        return groupAccess == false ? "Not access to the group" : "Not access to the method";
+                    }
                 }
                 else
                     // Data.Add("");
@@ -355,7 +466,7 @@ namespace ApiKarbord.Controllers.Unit
 
 
         // ذخیره لاگ
-        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, string ins, int bandNo)
+        public static void SaveLog(string userName, string password, string userKarbord, string ace, string sal, string group, long serialNumber, string modecode, int act, string ins, int flag, int bandNo)
         {
             try
             {
@@ -363,7 +474,7 @@ namespace ApiKarbord.Controllers.Unit
                 {
                     var client = new HttpClient();
 
-                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/1/{9}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, bandNo);
+                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/{9}/{10}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, flag, bandNo);
 
                     var task = client.GetAsync(address)
                       .ContinueWith((taskwithresponse) =>
@@ -439,18 +550,18 @@ namespace ApiKarbord.Controllers.Unit
 
                         dbName = ("ACE_" + files[2] + group + salTemp);
 
-                        if ((files[2] == "Web1" || files[2] == "Web8") && (files[4] == "0000.txt" || files[4] == "0000"))
+                        if ((files[2] == UnitPublic.Web1 || files[2] == UnitPublic.Web8) && (files[4] == "0000.txt" || files[4] == "0000"))
                         {
                             dbName = ("ACE_" + files[2] + group + "0000");
                         }
 
-                        if ((files[2] == "Web8" || files[2] == "Web1") && salTemp == "0000")
+                        if ((files[2] == UnitPublic.Web8 || files[2] == UnitPublic.Web1) && salTemp == "0000")
                         {
                             sw.WriteLine("Break For Error Name Database : " + dbName);
                         }
                         else
                         {
-                            if ((files[2] == "Web1" || files[2] == "Web8") && (files[4] == "0000.txt" || files[4] == "0000"))
+                            if ((files[2] == UnitPublic.Web1 || files[2] == UnitPublic.Web8) && (files[4] == "0000.txt" || files[4] == "0000"))
                             {
                                 salTemp = "0000";
                             }
@@ -1023,7 +1134,7 @@ namespace ApiKarbord.Controllers.Unit
 
                         dbName = ("ACE_" + files[2] + group + salTemp);
 
-                        if ((files[2] == "Web8" || files[2] == "Web1") && salTemp == "0000" && files.Length != 5)
+                        if ((files[2] == "Web8" || files[2] == UnitPublic.Web1) && salTemp == "0000" && files.Length != 5)
                         {
                             sw.WriteLine("Break For Error Name Database : " + dbName);
                         }
@@ -1287,7 +1398,7 @@ namespace ApiKarbord.Controllers.Unit
 
                      string textFilePath = "";
 
-                     if (ace == "Web1")
+                     if (ace == UnitPublic.Web1)
                          textFilePath = @"c:\a\Ace8Views_Web1.txt";
                      else if (ace == "Web2")
                          textFilePath = @"c:\a\Ace8Views_Web2.txt";

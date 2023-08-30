@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,8 +13,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
 using ApiKarbord.Controllers.Unit;
 using ApiKarbord.Models;
+using Newtonsoft.Json;
 
 namespace ApiKarbord.Controllers.AFI.data
 {
@@ -37,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC,UnitPublic.act_Edit, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -144,7 +147,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 1, aFI_IDocHi.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 1, aFI_IDocHi.flagLog, 1, 0);
                 return Ok(value);
             }
             return Ok(conStr);
@@ -153,7 +156,7 @@ namespace ApiKarbord.Controllers.AFI.data
         // POST: api/AFI_IDocHi
         [Route("api/AFI_IDocHi/{ace}/{sal}/{group}")]
         [ResponseType(typeof(AFI_IDocHi))]
-        public async Task<IHttpActionResult> PostAFI_IDocHi(string ace, string sal, string group,AFI_IDocHi aFI_IDocHi)
+        public async Task<IHttpActionResult> PostAFI_IDocHi(string ace, string sal, string group, AFI_IDocHi aFI_IDocHi)
         {
             string value = "";
             if (!ModelState.IsValid)
@@ -162,7 +165,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_New, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -261,13 +264,13 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
                 catch (Exception e)
                 {
-                    throw; 
+                    throw;
                 }
 
                 string[] serials = value.Split('-');
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? "IIDoc" : "IODoc", 2, aFI_IDocHi.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocHi.flagLog, 1, 0);
 
-                return Ok(value); 
+                return Ok(value);
             }
             return Ok(conStr);
         }
@@ -278,7 +281,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_IDocHi(string ace, string sal, string group, long SerialNumber, string ModeCode)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc", 3, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, ModeCode == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Delete, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -302,7 +305,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? "IIDoc" : "IODoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 3, "Y", 1, 0);
                 return Ok(1);
             }
             return Ok(conStr);
@@ -339,7 +342,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public static string CallRegIDoctoADoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = ace == "Web8" ? "Inv6_Web.dll" : "Afi2_Web.dll";
+            string dllName = ace == UnitPublic.Web8 ? "Inv6_Web.dll" : "Afi2_Web.dll";
             string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegIDoctoADoc";
 
@@ -379,7 +382,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public static string CallRegIDoctoFDoc(string ace, string ConnetionString, string wDBase, string wUserCode, string wModeCode, string SerialNumbers)
         {
-            string dllName = ace == "Web8" ? "Inv6_Web.dll" : "Afi2_Web.dll";
+            string dllName = ace == UnitPublic.Web8 ? "Inv6_Web.dll" : "Afi2_Web.dll";
             string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RegIDoctoFDoc";
 
@@ -425,7 +428,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,UnitPublic.access_View, UnitPublic.act_View, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -448,7 +451,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     RegIDoctoADocObject.SerialNumbers
                     );
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 1, 0);
             }
             return Ok(log);
         }
@@ -468,7 +471,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,UnitPublic.access_View, UnitPublic.act_View, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -490,7 +493,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     RegIDoctoFDocObject.SerialNumbers
                     );
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "FDoc", 3, "Y", 1, 0);
             }
             return Ok(log);
         }
@@ -500,5 +503,119 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class SaveAllSanadObject
+        {
+            public AFI_IDocHi Head { get; set; }
+
+            public List<AFI_IDocBi> Bands { get; set; }
+
+        }
+
+
+
+        // POST: api/AFI_IDocHi
+        [Route("api/AFI_IDocHi/SaveAllSanad/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(AFI_IDocBi))]
+        public async Task<IHttpActionResult> PostAFI_SaveAllSanad(string ace, string sal, string group, SaveAllSanadObject o)
+        {
+            string sql = "";
+            long serialNumber = 0;
+            long serialNumber_Test = 0;
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, o.Head.SerialNumber, o.Head.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_New, 0);
+            if (conStr.Length > 100)
+            {
+                try
+                {
+                    // save doch temp
+                    sql = UnitPublic.CreateSql_IDocH(o.Head, true);
+                    ApiModel db = new ApiModel(conStr);
+                    var value_H = db.Database.SqlQuery<string>(sql).Single();
+                    if (!string.IsNullOrEmpty(value_H))
+                    {
+                        await db.SaveChangesAsync();
+                    }
+                    serialNumber_Test = Convert.ToInt64(value_H.Split('-')[1]);
+
+                    // save docb temp
+                    int i = 0;
+                    foreach (var item in o.Bands)
+                    {
+                        i++;
+                        sql = UnitPublic.CreateSql_IDocB(item, serialNumber_Test, i);
+                        db.Database.SqlQuery<int>(sql).Single();
+                    }
+                    await db.SaveChangesAsync();
+
+                    //test doc
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                                           @"EXEC	[dbo].[{2}] @serialNumber = {0}, @UserCode = '{1}'",
+                                           serialNumber_Test,
+                                           dataAccount[2],
+                                           "Web_TestIDoc_Temp");
+                    var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = UnitPublic.SetErrorSanad(result);
+
+
+                    sql = UnitPublic.CreateSql_IDocH(o.Head, false);
+
+                    value_H = db.Database.SqlQuery<string>(sql).Single();
+                    if (!string.IsNullOrEmpty(value_H))
+                    {
+                        await db.SaveChangesAsync();
+                        serialNumber = Convert.ToInt64(value_H.Split('-')[0]);
+                    }
+                    else
+                        serialNumber = o.Head.SerialNumber;
+
+                    if (o.Head.SerialNumber > 0)
+                    {
+                        sql = string.Format(@"DECLARE	@return_value int
+                                          EXEC	    @return_value = [dbo].[Web_SaveIDoc_BD]
+		                                            @SerialNumber = {0},
+		                                            @BandNo = 0
+                                          SELECT	'Return Value' = @return_value", serialNumber);
+                        int valueDelete = db.Database.SqlQuery<int>(sql).Single();
+                        if (valueDelete == 0)
+                        {
+                            await db.SaveChangesAsync();
+                        }
+
+                        sql = string.Format(@" DECLARE	@return_value int
+                                           EXEC	@return_value = [dbo].[Web_Doc_BOrder]
+	                                            @TableName = '{0}',
+                                                @SerialNumber = {1},
+                                                @BandNoFld = '{2}'
+                                            SELECT	'Return Value' = @return_value",
+                                                ace == UnitPublic.Web1 ? "Afi1IDocB" : "Inv5DocB",
+                                                serialNumber,
+                                                ace == UnitPublic.Web1 ? "BandNo" : "Radif");
+                        int valueUpdateBand = db.Database.SqlQuery<int>(sql).Single();
+                    }
+
+
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                                  @"DECLARE	@return_value int
+                                    EXEC	@return_value = [dbo].[Web_SaveIDocB_Convert]
+		                                    @SerialNumber = {0},
+		                                    @TempSerialNumber = {1}
+                                    SELECT	'Return Value' = @return_value",
+                                  serialNumber,
+                                  serialNumber_Test);
+                    db.Database.SqlQuery<int>(sql).Single();
+                    await db.SaveChangesAsync();
+
+                    return Ok(jsonResult);
+                    //var value_Test = JsonConvert.SerializeObject(result);
+                }
+                catch (Exception e)
+                {
+                    return Ok(e.Message + " : " + e.InnerException.Message);
+                    throw;
+                }
+            }
+
+            return Ok(conStr);
+        }
     }
 }

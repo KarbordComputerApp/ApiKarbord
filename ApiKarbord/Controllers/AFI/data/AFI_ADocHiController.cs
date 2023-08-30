@@ -85,7 +85,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public static string CallRecoverChecks(string ace, string ConnetionString, string wDBase, string UserCode, long SerialNumber, string DarChecks, string ParChecks)
         {
-            string dllName = ace == "Web8" ? "Acc6_Web.dll" : "Afi2_Web.dll";
+            string dllName = ace == UnitPublic.Web8 ? "Acc6_Web.dll" : "Afi2_Web.dll";
             string dllPath = HttpContext.Current.Server.MapPath("~/Content/Dll/" + dllName);
             const string functionName = "RecoverChecks";
 
@@ -297,7 +297,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             string sql = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_ADocHi_u.SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_Edit, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -431,7 +431,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     parChecks);
 
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, "ADoc", 1, AFI_ADocHi_u.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_ADocHi_u.SerialNumber, UnitPublic.access_ADOC, 1, AFI_ADocHi_u.flagLog, 1, 0);
                 return Ok(value);
             }
             return Ok(conStr);
@@ -451,7 +451,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             string sql = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_ADocHi_i.SerialNumber, "ADoc", 2, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_ADocHi_i.SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_New, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -597,7 +597,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         parChecks
                         );
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), "ADoc", 2, AFI_ADocHi_i.flagLog, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.access_ADOC, 2, AFI_ADocHi_i.flagLog, 1, 0);
                 return Ok(value);
             }
             return Ok(conStr);
@@ -611,7 +611,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> DeleteAFI_ADocHi(string ace, string sal, string group, long SerialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, "ADoc", 3, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_Delete, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -667,7 +667,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     parChecks
                     );
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "ADoc", 3, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, UnitPublic.access_ADOC, 3, "Y", 1, 0);
             }
             return Ok(conStr);
         }

@@ -17,5 +17,29 @@
         public int? BandNo { get; set; }
 
         public string AccCode { get; set; }
+
     }
+
+    public class TestDoc
+    {
+        public byte? Mode { get; set; }
+
+        public string ModeName { get; set; }
+
+        public string Spec { get; set; }
+
+    }
+
+    public class ResTest
+    {
+        public string status { get; set; }
+
+        public int CountError { get; set; }
+
+        public int CountWarnning { get; set; }
+
+        public List<TestDoc> Data { get; set; }
+
+
+}
 }

@@ -25,7 +25,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public IQueryable<Web_IDocH> GetWeb_IDocH(string ace, string sal, string group, long serialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3],  ace, sal, group, serialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -40,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_IDocHCount(string ace, string sal, string group, byte InOut)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -55,7 +55,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_IDocHLastDate(string ace, string sal, string group, byte InOut)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3],  ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -101,7 +101,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -249,7 +249,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetWeb_IDocB(string ace, string sal, string group, long serialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -272,7 +272,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, serialnumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, serialnumber, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -323,7 +323,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -407,7 +407,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_Move.SerialNumber ?? 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, AFI_Move.SerialNumber ?? 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -460,7 +460,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 var list = db.Web_IDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode && c.InvCode == AFI_Move.InvCode);
                 var listTemp = list.Single();
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, value, listTemp.InOut == 1 ? "IIDoc" : "IODoc", 2, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, value, listTemp.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, "Y", 1, 0);
                 return Ok(list);
             }
             return Ok(conStr);
@@ -495,7 +495,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_StatusChange.SerialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Edit, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -525,7 +525,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? "IIDoc" : "IODoc", 7, "Y", 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 7, "Y", 1, 0);
                 return Ok(200);
             }
             return Ok(conStr);
@@ -536,7 +536,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetAllWeb_IDocP(string ace, string sal, string group, long SerialNumber)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -562,7 +562,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestIDoc(string ace, string sal, string group, AFI_TestIDocB AFI_TestIDocB)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -602,7 +602,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_SaveIDoc_HZ(string ace, string sal, string group, AFI_SaveIDoc_HZ AFI_SaveIDoc_HZ)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -648,7 +648,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestIDoc_Delete(string ace, string sal, string group, TestIDoc_DeleteObject TestIDoc_DeleteObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -690,12 +690,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-            [Route("api/IDocData/TestIDoc_New/{ace}/{sal}/{group}")]
+        [Route("api/IDocData/TestIDoc_New/{ace}/{sal}/{group}")]
         [ResponseType(typeof(TestDocB))]
         public async Task<IHttpActionResult> PostWeb_TestIDoc_New(string ace, string sal, string group, AFI_TestIDoc_New AFI_TestIDoc_New)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -739,7 +739,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_TestIDoc_Edit(string ace, string sal, string group, AFI_TestIDoc_Edit AFI_TestIDoc_Edit)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
