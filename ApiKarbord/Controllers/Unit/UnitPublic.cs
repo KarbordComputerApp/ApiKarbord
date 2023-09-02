@@ -647,7 +647,7 @@ namespace ApiKarbord.Controllers.Unit
             }
             resTest.CountWarnning = countWarnning;
             resTest.CountError = countError;
-            resTest.status = countError > 0 ? "Error" : "Success";
+            resTest.Status = countError > 0 ? "Error" : "Success";
             resTest.Data = res;
             return resTest;
         }

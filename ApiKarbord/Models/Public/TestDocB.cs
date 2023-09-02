@@ -32,7 +32,9 @@
 
     public class ResTest
     {
-        public string status { get; set; }
+        public string Status { get; set; }
+
+        public long SerialNumber { get; set; }
 
         public int CountError { get; set; }
 
@@ -41,5 +43,5 @@
         public List<TestDoc> Data { get; set; }
 
 
-}
+    }
 }

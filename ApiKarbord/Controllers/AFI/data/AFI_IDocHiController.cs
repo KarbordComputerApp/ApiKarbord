@@ -40,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC,UnitPublic.act_Edit, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Edit, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -428,7 +428,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,UnitPublic.access_View, UnitPublic.act_View, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -471,7 +471,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string log = "";
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,UnitPublic.access_View, UnitPublic.act_View, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "FDoc", 3, 0);
             if (conStr.Length > 100)
             {
@@ -505,6 +505,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class SaveAllSanadObject
         {
+            public long SerialFactor { get; set; }
+
             public AFI_IDocHi Head { get; set; }
 
             public List<AFI_IDocBi> Bands { get; set; }
@@ -605,6 +607,22 @@ namespace ApiKarbord.Controllers.AFI.data
                     db.Database.SqlQuery<int>(sql).Single();
                     await db.SaveChangesAsync();
 
+
+                    if (o.SerialFactor > 0)
+                    {
+                        sql = string.Format(CultureInfo.InvariantCulture,
+                                  @"DECLARE	@return_value int
+                                    EXEC	@return_value = [dbo].[Web_SetLink_FctToInv]
+		                                    @FCTserial = '{0}',
+		                                    @INVserial = '{1}'
+                                    SELECT	'Return Value' = @return_value",
+                                    o.SerialFactor,
+                                    serialNumber);
+
+                        db.Database.SqlQuery<int>(sql).Single();
+                        await db.SaveChangesAsync();
+                    }
+                    jsonResult.SerialNumber = serialNumber;
                     return Ok(jsonResult);
                     //var value_Test = JsonConvert.SerializeObject(result);
                 }
