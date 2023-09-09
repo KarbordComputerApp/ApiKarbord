@@ -477,6 +477,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @F20 = N'{35}',
                                     @Tanzim = '{36}',
                                     @Footer = N'{37}',
+                                    @Status = N'{38}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                                         head.DocNoMode,
@@ -517,7 +518,8 @@ namespace ApiKarbord.Controllers.Unit
                                         head.F20,
                                         head.Tanzim,
                                         UnitPublic.ConvertTextWebToWin(head.Footer ?? ""),
-                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI"
+                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI",
+                                        head.Status
                                         );
             }
             else if (head.SerialNumber > 0 && flagTest == false) // update

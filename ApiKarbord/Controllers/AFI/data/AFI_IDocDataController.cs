@@ -552,6 +552,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public long SerialNumber { get; set; }
 
+            public long Last_SerialNumber { get; set; }
+
             public string flagTest { get; set; }
 
         }
@@ -567,10 +569,11 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[{2}] @serialNumber = {0}  , @UserCode = '{1}' ",
+                                           @"EXEC	[dbo].[{0}] @serialNumber = {1}  ,@last_SerialNumber = {2}, @UserCode = '{3}' ",
+                                           AFI_TestIDocB.flagTest == "Y" ? "Web_TestIDoc_Temp" : "Web_TestIDoc",
                                            AFI_TestIDocB.SerialNumber,
-                                           dataAccount[2],
-                                           AFI_TestIDocB.flagTest == "Y" ? "Web_TestIDoc_Temp" : "Web_TestIDoc");
+                                           AFI_TestIDocB.Last_SerialNumber,
+                                           dataAccount[2]);
                 try
                 {
                     var result = db.Database.SqlQuery<TestDocB>(sql).ToList();

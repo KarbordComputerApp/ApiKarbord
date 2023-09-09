@@ -551,10 +551,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
                     //test doc
                     sql = string.Format(CultureInfo.InvariantCulture,
-                                           @"EXEC	[dbo].[{2}] @serialNumber = {0}, @UserCode = '{1}'",
+                                            @"EXEC	[dbo].[Web_TestIDoc_Temp] @serialNumber = {0}  ,@last_SerialNumber = {1}, @UserCode = '{2}' ",
                                            serialNumber_Test,
-                                           dataAccount[2],
-                                           "Web_TestIDoc_Temp");
+                                           0,
+                                           dataAccount[2]);
                     var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = UnitPublic.SetErrorSanad(result);
 
@@ -624,7 +624,6 @@ namespace ApiKarbord.Controllers.AFI.data
                     }
                     jsonResult.SerialNumber = serialNumber;
                     return Ok(jsonResult);
-                    //var value_Test = JsonConvert.SerializeObject(result);
                 }
                 catch (Exception e)
                 {
@@ -635,5 +634,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             return Ok(conStr);
         }
+
+
+
     }
 }
