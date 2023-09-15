@@ -46,7 +46,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 return BadRequest(ModelState);
             }
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_New, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_Edit, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -339,7 +339,7 @@ namespace ApiKarbord.Controllers.AFI.data
             }
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_Edit, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_New, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -727,6 +727,156 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             return Ok(log);
         }
+
+
+
+
+
+
+        public class SaveAllSanadObject
+        {
+            public long SerialSanad { get; set; }
+
+            public AFI_FDocHi Head { get; set; }
+
+            public List<AFI_IDocBi> Bands { get; set; }
+
+        }
+
+
+
+        // POST: api/AFI_FDocHi
+        [Route("api/AFI_FDocHi/SaveAllSanad/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(AFI_IDocBi))]
+        public async Task<IHttpActionResult> PostAFI_SaveAllSanad(string ace, string sal, string group, SaveAllSanadObject o)
+        {
+            string sql = "";
+            long serialNumber = 0;
+            long serialNumber_Test = 0;
+
+            string modeCode = o.Head.ModeCode;
+
+            byte forSale;
+
+            if (modeCode == "51" || modeCode == "52" || modeCode == "53" ||
+                modeCode == "SPFCT" || modeCode == "SFCT" || modeCode == "SRFCT" || modeCode == "SORD")
+                forSale = 1;
+            else
+                forSale = 0;
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, o.Head.SerialNumber, UnitPublic.ModeCodeConnection(modeCode), UnitPublic.act_New, 0);
+            if (conStr.Length > 100)
+            {
+                try
+                {
+                    // save doch temp
+                    sql = UnitPublic.CreateSql_FDocH(o.Head, true);
+                    ApiModel db = new ApiModel(conStr);
+                    var value_H = db.Database.SqlQuery<string>(sql).Single();
+                    if (!string.IsNullOrEmpty(value_H))
+                    {
+                        await db.SaveChangesAsync();
+                    }
+                    serialNumber_Test = Convert.ToInt64(value_H.Split('-')[1]);
+
+                    // save docb temp
+                    int i = 0;
+                    foreach (var item in o.Bands)
+                    {
+                        i++;
+                        sql = UnitPublic.CreateSql_IDocB(item, serialNumber_Test, i);
+                        db.Database.SqlQuery<int>(sql).Single();
+                    }
+                    await db.SaveChangesAsync();
+
+                    //test doc
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                                            @"EXEC	[dbo].[Web_TestIDoc_Temp] @serialNumber = {0}  ,@last_SerialNumber = {1}, @UserCode = '{2}' ",
+                                           serialNumber_Test,
+                                           0,
+                                           dataAccount[2]);
+                    var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
+                    var jsonResult = UnitPublic.SetErrorSanad(result);
+
+
+                    sql = UnitPublic.CreateSql_FDocH(o.Head, false);
+
+                    value_H = db.Database.SqlQuery<string>(sql).Single();
+                    if (!string.IsNullOrEmpty(value_H))
+                    {
+                        await db.SaveChangesAsync();
+                        serialNumber = Convert.ToInt64(value_H.Split('-')[0]);
+                    }
+                    else
+                        serialNumber = o.Head.SerialNumber;
+
+                    if (o.Head.SerialNumber > 0)
+                    {
+                        sql = string.Format(@"DECLARE	@return_value int
+                                          EXEC	    @return_value = [dbo].[Web_SaveIDoc_BD]
+		                                            @SerialNumber = {0},
+		                                            @BandNo = 0
+                                          SELECT	'Return Value' = @return_value", serialNumber);
+                        int valueDelete = db.Database.SqlQuery<int>(sql).Single();
+                        if (valueDelete == 0)
+                        {
+                            await db.SaveChangesAsync();
+                        }
+
+                        sql = string.Format(@" DECLARE	@return_value int
+                                           EXEC	@return_value = [dbo].[Web_Doc_BOrder]
+	                                            @TableName = '{0}',
+                                                @SerialNumber = {1},
+                                                @BandNoFld = '{2}'
+                                            SELECT	'Return Value' = @return_value",
+                                                ace == UnitPublic.Web1 ? "Afi1IDocB" : "Inv5DocB",
+                                                serialNumber,
+                                                ace == UnitPublic.Web1 ? "BandNo" : "Radif");
+                        int valueUpdateBand = db.Database.SqlQuery<int>(sql).Single();
+                    }
+
+
+                    sql = string.Format(CultureInfo.InvariantCulture,
+                                  @"DECLARE	@return_value int
+                                    EXEC	@return_value = [dbo].[Web_SaveIDocB_Convert]
+		                                    @SerialNumber = {0},
+		                                    @TempSerialNumber = {1}
+                                    SELECT	'Return Value' = @return_value",
+                                  serialNumber,
+                                  serialNumber_Test);
+                    db.Database.SqlQuery<int>(sql).Single();
+                    await db.SaveChangesAsync();
+
+
+                    if (o.SerialSanad > 0)
+                    {
+                        sql = string.Format(CultureInfo.InvariantCulture,
+                                  @"DECLARE	@return_value int
+                                    EXEC	@return_value = [dbo].[Web_LinkFDocIDoc]
+		                                    @FCTserial = '{0}',
+		                                    @INVserial = '{1}'
+                                    SELECT	'Return Value' = @return_value",
+                                    o.SerialSanad,
+                                    serialNumber);
+
+                        db.Database.SqlQuery<int>(sql).Single();
+                        await db.SaveChangesAsync();
+                    }
+                    jsonResult.SerialNumber = serialNumber;
+                    return Ok(jsonResult);
+                }
+                catch (Exception e)
+                {
+                    return Ok(e.Message + " : " + e.InnerException.Message);
+                    throw;
+                }
+            }
+
+            return Ok(conStr);
+        }
+
+
 
     }
 }

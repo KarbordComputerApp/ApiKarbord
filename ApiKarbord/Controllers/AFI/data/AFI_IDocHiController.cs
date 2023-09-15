@@ -612,7 +612,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         sql = string.Format(CultureInfo.InvariantCulture,
                                   @"DECLARE	@return_value int
-                                    EXEC	@return_value = [dbo].[Web_SetLink_FctToInv]
+                                    EXEC	@return_value = [dbo].[Web_LinkFDocIDoc]
 		                                    @FCTserial = '{0}',
 		                                    @INVserial = '{1}'
                                     SELECT	'Return Value' = @return_value",
