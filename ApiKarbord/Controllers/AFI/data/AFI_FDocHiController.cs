@@ -739,7 +739,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public AFI_FDocHi Head { get; set; }
 
-            public List<AFI_IDocBi> Bands { get; set; }
+            public List<AFI_FDocBi> Bands { get; set; }
 
         }
 
@@ -778,26 +778,93 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await db.SaveChangesAsync();
                     }
-                    serialNumber_Test = Convert.ToInt64(value_H.Split('-')[1]);
+                    serialNumber_Test = Convert.ToInt64(value_H.Split('@')[1]);
 
                     // save docb temp
                     int i = 0;
                     foreach (var item in o.Bands)
                     {
                         i++;
-                        sql = UnitPublic.CreateSql_IDocB(item, serialNumber_Test, i);
+                        sql = UnitPublic.CreateSql_FDocB(item, serialNumber_Test, i);
                         db.Database.SqlQuery<int>(sql).Single();
                     }
                     await db.SaveChangesAsync();
 
-                    //test doc
+
                     sql = string.Format(CultureInfo.InvariantCulture,
-                                            @"EXEC	[dbo].[Web_TestIDoc_Temp] @serialNumber = {0}  ,@last_SerialNumber = {1}, @UserCode = '{2}' ",
+                                            @"EXEC	[dbo].[Web_TestFDoc_Temp] @serialNumber = {0}, 
+                                                                              --@last_SerialNumber = {1},
+                                                                              @UserCode = '{2}' ",
                                            serialNumber_Test,
                                            0,
                                            dataAccount[2]);
                     var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = UnitPublic.SetErrorSanad(result);
+
+
+                    CalcAddmin calcAddmin = new CalcAddmin();
+                    calcAddmin.forSale = true;
+                    calcAddmin.serialNumber = serialNumber_Test;
+                    calcAddmin.custCode = o.Head.CustCode;
+                    calcAddmin.spec1 = o.Head.AddMinSpec1;
+                    calcAddmin.spec2 = o.Head.AddMinSpec2;
+                    calcAddmin.spec3 = o.Head.AddMinSpec3;
+                    calcAddmin.spec4 = o.Head.AddMinSpec4;
+                    calcAddmin.spec5 = o.Head.AddMinSpec5;
+                    calcAddmin.spec6 = o.Head.AddMinSpec6;
+                    calcAddmin.spec7 = o.Head.AddMinSpec7;
+                    calcAddmin.spec8 = o.Head.AddMinSpec8;
+                    calcAddmin.spec9 = o.Head.AddMinSpec9;
+                    calcAddmin.spec10 = o.Head.AddMinSpec10;
+                    calcAddmin.MP1 = o.Head.AddMinPrice1;
+                    calcAddmin.MP2 = o.Head.AddMinPrice2;
+                    calcAddmin.MP3 = o.Head.AddMinPrice3;
+                    calcAddmin.MP4 = o.Head.AddMinPrice4;
+                    calcAddmin.MP5 = o.Head.AddMinPrice5;
+                    calcAddmin.MP6 = o.Head.AddMinPrice6;
+                    calcAddmin.MP7 = o.Head.AddMinPrice7;
+                    calcAddmin.MP8 = o.Head.AddMinPrice8;
+                    calcAddmin.MP9 = o.Head.AddMinPrice9;
+                    calcAddmin.MP10 = o.Head.AddMinPrice10;
+                    calcAddmin.flagTest = "Y";
+
+                    sql = UnitPublic.CreateSql_CalcAddmin(calcAddmin);
+
+                    var value_CalcAddmin = db.Database.SqlQuery<AddMin>(sql).ToList();
+
+                    o.Head.AddMinPrice1 = value_CalcAddmin[0].AddMinPrice;
+                    o.Head.AddMinPrice2 = value_CalcAddmin[1].AddMinPrice;
+                    o.Head.AddMinPrice3 = value_CalcAddmin[2].AddMinPrice;
+                    o.Head.AddMinPrice4 = value_CalcAddmin[3].AddMinPrice;
+                    o.Head.AddMinPrice5 = value_CalcAddmin[4].AddMinPrice;
+                    o.Head.AddMinPrice6 = value_CalcAddmin[5].AddMinPrice;
+                    o.Head.AddMinPrice7 = value_CalcAddmin[6].AddMinPrice;
+                    o.Head.AddMinPrice8 = value_CalcAddmin[7].AddMinPrice;
+                    o.Head.AddMinPrice9 = value_CalcAddmin[8].AddMinPrice;
+                    o.Head.AddMinPrice10 = value_CalcAddmin[9].AddMinPrice;
+
+
+
+
+                    string Deghat = db.Database.SqlQuery<string>("select Param from Web_Param where [key] = 'Deghat'").Single();
+
+                    TashimBand tashimBand = new TashimBand();
+                    tashimBand.ForSale = true;
+                    tashimBand.Deghat = int.Parse(Deghat);
+                    tashimBand.SerialNumber = serialNumber_Test;
+                    tashimBand.MP1 = value_CalcAddmin[0].Mode == 0 ? value_CalcAddmin[0].AddMinPrice : value_CalcAddmin[0].AddMinPrice * -1;
+                    tashimBand.MP2 = value_CalcAddmin[1].Mode == 0 ? value_CalcAddmin[1].AddMinPrice : value_CalcAddmin[1].AddMinPrice * -1;
+                    tashimBand.MP3 = value_CalcAddmin[2].Mode == 0 ? value_CalcAddmin[2].AddMinPrice : value_CalcAddmin[2].AddMinPrice * -1;
+                    tashimBand.MP4 = value_CalcAddmin[3].Mode == 0 ? value_CalcAddmin[3].AddMinPrice : value_CalcAddmin[3].AddMinPrice * -1;
+                    tashimBand.MP5 = value_CalcAddmin[4].Mode == 0 ? value_CalcAddmin[4].AddMinPrice : value_CalcAddmin[4].AddMinPrice * -1;
+                    tashimBand.MP6 = value_CalcAddmin[5].Mode == 0 ? value_CalcAddmin[5].AddMinPrice : value_CalcAddmin[5].AddMinPrice * -1;
+                    tashimBand.MP7 = value_CalcAddmin[6].Mode == 0 ? value_CalcAddmin[6].AddMinPrice : value_CalcAddmin[6].AddMinPrice * -1;
+                    tashimBand.MP8 = value_CalcAddmin[7].Mode == 0 ? value_CalcAddmin[7].AddMinPrice : value_CalcAddmin[7].AddMinPrice * -1;
+                    tashimBand.MP9 = value_CalcAddmin[8].Mode == 0 ? value_CalcAddmin[8].AddMinPrice : value_CalcAddmin[8].AddMinPrice * -1;
+                    tashimBand.MP10 = value_CalcAddmin[9].Mode == 0 ? value_CalcAddmin[9].AddMinPrice : value_CalcAddmin[9].AddMinPrice * -1;
+
+                    sql = UnitPublic.CreateSql_TashimBand(tashimBand);
+                    int livalue_TashimBandst = db.Database.SqlQuery<int>(sql).Single();
 
 
                     sql = UnitPublic.CreateSql_FDocH(o.Head, false);
@@ -806,15 +873,15 @@ namespace ApiKarbord.Controllers.AFI.data
                     if (!string.IsNullOrEmpty(value_H))
                     {
                         await db.SaveChangesAsync();
-                        serialNumber = Convert.ToInt64(value_H.Split('-')[0]);
+                        serialNumber = Convert.ToInt64(value_H.Split('@')[0]);
                     }
                     else
                         serialNumber = o.Head.SerialNumber;
 
-                    if (o.Head.SerialNumber > 0)
+                    if (o.Head.SerialNumber > 0) //update
                     {
                         sql = string.Format(@"DECLARE	@return_value int
-                                          EXEC	    @return_value = [dbo].[Web_SaveIDoc_BD]
+                                          EXEC	    @return_value = [dbo].[Web_SaveFDoc_BD]
 		                                            @SerialNumber = {0},
 		                                            @BandNo = 0
                                           SELECT	'Return Value' = @return_value", serialNumber);
@@ -839,7 +906,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                     sql = string.Format(CultureInfo.InvariantCulture,
                                   @"DECLARE	@return_value int
-                                    EXEC	@return_value = [dbo].[Web_SaveIDocB_Convert]
+                                    EXEC	@return_value = [dbo].[Web_SaveFDocB_Convert]
 		                                    @SerialNumber = {0},
 		                                    @TempSerialNumber = {1}
                                     SELECT	'Return Value' = @return_value",
@@ -848,22 +915,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     db.Database.SqlQuery<int>(sql).Single();
                     await db.SaveChangesAsync();
 
-
-                    if (o.SerialSanad > 0)
-                    {
-                        sql = string.Format(CultureInfo.InvariantCulture,
-                                  @"DECLARE	@return_value int
-                                    EXEC	@return_value = [dbo].[Web_LinkFDocIDoc]
-		                                    @FCTserial = '{0}',
-		                                    @INVserial = '{1}'
-                                    SELECT	'Return Value' = @return_value",
-                                    o.SerialSanad,
-                                    serialNumber);
-
-                        db.Database.SqlQuery<int>(sql).Single();
-                        await db.SaveChangesAsync();
-                    }
                     jsonResult.SerialNumber = serialNumber;
+
                     return Ok(jsonResult);
                 }
                 catch (Exception e)

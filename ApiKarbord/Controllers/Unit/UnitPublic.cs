@@ -783,6 +783,198 @@ namespace ApiKarbord.Controllers.Unit
         }
 
 
+        public static string CreateSql_CalcAddmin(CalcAddmin calcAddmin)
+        {
+            string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[{24}]
+		                                            @serialNumber = {0},
+                                                    @forSale = {1},
+                                                    @custCode = {2},
+                                                    @TypeJob = {3},                                                    
+                                                    @Spec1 = '{4}',
+                                                    @Spec2 = '{5}',
+                                                    @Spec3 = '{6}',
+                                                    @Spec4 = '{7}',
+                                                    @Spec5 = '{8}',
+                                                    @Spec6 = '{9}',
+                                                    @Spec7 = '{10}',
+                                                    @Spec8 = '{11}',
+                                                    @Spec9 = '{12}',
+                                                    @Spec10 = '{13}',                                                    
+                                                    @MP1 = '{14}',
+                                                    @MP2 = {15},
+                                                    @MP3 = {16},
+		                                            @MP4 = {17},
+		                                            @MP5 = {18},
+		                                            @MP6 = {19},
+		                                            @MP7 = {20},
+		                                            @MP8 = {21},
+		                                            @MP9 = {22},
+		                                            @MP10 = {23}
+                                                    ",
+                                    calcAddmin.serialNumber,
+                                    calcAddmin.forSale,
+                                    calcAddmin.custCode ?? "null",
+                                    calcAddmin.typeJob,
+                                    calcAddmin.spec1,
+                                    calcAddmin.spec2,
+                                    calcAddmin.spec3,
+                                    calcAddmin.spec4,
+                                    calcAddmin.spec5,
+                                    calcAddmin.spec6,
+                                    calcAddmin.spec7,
+                                    calcAddmin.spec8,
+                                    calcAddmin.spec9,
+                                    calcAddmin.spec10,
+                                    calcAddmin.MP1 ?? 0,
+                                    calcAddmin.MP2 ?? 0,
+                                    calcAddmin.MP3 ?? 0,
+                                    calcAddmin.MP4 ?? 0,
+                                    calcAddmin.MP5 ?? 0,
+                                    calcAddmin.MP6 ?? 0,
+                                    calcAddmin.MP7 ?? 0,
+                                    calcAddmin.MP8 ?? 0,
+                                    calcAddmin.MP9 ?? 0,
+                                    calcAddmin.MP10 ?? 0,
+                                    calcAddmin.flagTest == "Y" ? "Web_Calc_AddMin_EffPrice_Temp" : "Web_Calc_AddMin_EffPrice"
+                                    );
+            return sql;
+
+        }
+
+        public static string CreateSql_TashimBand(TashimBand tashimBand)
+        {
+            string sql = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
+                             EXEC	@return_value = [dbo].[Web_FDocB_CalcAddMin_Temp]
+                                         @serialNumber = {0},
+                                         @deghat = {1},
+                                         @forSale = {2},
+                                         @MP1 = {3},
+                                         @MP2 = {4},
+                                         @MP3 = {5},
+                                         @MP4 = {6},
+                                         @MP5 = {7},
+                                         @MP6 = {8},
+                                         @MP7 = {9},
+                                         @MP8 = {10},
+                                         @MP9 = {11},
+                                         @MP10 = {12}
+                             SELECT	'Return Value' = @return_value",
+                              tashimBand.SerialNumber,
+                              tashimBand.Deghat,
+                              tashimBand.ForSale,
+                              tashimBand.MP1,
+                              tashimBand.MP2,
+                              tashimBand.MP3,
+                              tashimBand.MP4,
+                              tashimBand.MP5,
+                              tashimBand.MP6,
+                              tashimBand.MP7,
+                              tashimBand.MP8,
+                              tashimBand.MP9,
+                              tashimBand.MP10);
+            return sql;
+
+        }
+
+
+        public static string CreateSql_FDocB(AFI_FDocBi band, long serialNumber, int bandNumber)
+        {
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"DECLARE	@return_value int 
+                            EXEC	@return_value = [dbo].[Web_SaveFDoc_BI_Temp]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1},
+		                            @KalaCode = N'{2}',
+		                            @Amount1 = {3},
+		                            @Amount2 = {4},
+		                            @Amount3 = {5},
+		                            @UnitPrice = {6},
+		                            @TotalPrice = {7},
+                                    @Discount = {8},
+		                            @MainUnit = {9},
+		                            @Comm = N'{10}',
+                                    @Up_Flag = {11},
+                                    @OprCode = N'{12}',
+		                            @MkzCode = N'{13}',
+		                            @InvCode = N'{14}',
+                                    @LFctSerialNumber = {15},
+                                    @InvSerialNumber = {16},
+                                    @LinkNumber = {17},
+                                    @LinkYear = {18},
+                                    @LinkProg = N'{19}',
+                                    @BandSpec = N'{20}',
+                                    @ArzCode = N'{21}',
+                                    @ArzRate = {22},
+                                    @ArzValue = {23},
+                                    @KalaFileNo = N'{24}',
+                                    @KalaState = N'{25}',
+                                    @KalaExf1 = N'{26}',
+                                    @KalaExf2 = N'{27}',
+                                    @KalaExf3 = N'{28}',
+                                    @KalaExf4 = N'{29}',
+                                    @KalaExf5 = N'{30}',
+                                    @KalaExf6 = N'{31}',
+                                    @KalaExf7 = N'{32}',
+                                    @KalaExf8 = N'{33}',
+                                    @KalaExf9 = N'{34}',
+                                    @KalaExf10 = N'{35}',
+                                    @KalaExf11 = N'{36}',
+                                    @KalaExf12 = N'{37}',
+                                    @KalaExf13 = N'{38}',
+                                    @KalaExf14 = N'{39}',
+                                    @KalaExf15 = N'{40}'
+                            SELECT	'Return Value' = @return_value
+                            ",
+                        serialNumber,
+                        bandNumber,
+                        band.KalaCode,
+                        band.Amount1 ?? 0,
+                        band.Amount2 ?? 0,
+                        band.Amount3 ?? 0,
+                        band.UnitPrice ?? 0,
+                        band.TotalPrice ?? 0,
+                        band.Discount ?? 0,
+                        band.MainUnit ?? 1,
+                        UnitPublic.ConvertTextWebToWin(band.Comm ?? ""),
+                        band.Up_Flag,
+                        band.OprCode,
+                        band.MkzCode,
+                        band.InvCode,
+                        band.LFctSerialNumber ?? 0,
+                        band.InvSerialNumber ?? 0,
+                        band.LinkNumber ?? 0,
+                        band.LinkYear ?? 0,
+                        band.LinkProg,
+                        UnitPublic.ConvertTextWebToWin(band.BandSpec ?? ""),
+                        band.ArzCode ?? "",
+                        band.ArzRate ?? 0,
+                        band.ArzValue ?? 0,
+                        band.KalaFileNo,
+                        band.KalaState,
+                        band.KalaExf1,
+                        band.KalaExf2,
+                        band.KalaExf3,
+                        band.KalaExf4,
+                        band.KalaExf5,
+                        band.KalaExf6,
+                        band.KalaExf7,
+                        band.KalaExf8,
+                        band.KalaExf9,
+                        band.KalaExf10,
+                        band.KalaExf11,
+                        band.KalaExf12,
+                        band.KalaExf13,
+                        band.KalaExf14,
+                        band.KalaExf15
+                        );
+            return sql;
+        }
+
+
+
+
+
+
 
         public static ResTest SetErrorSanad(List<TestDocB> TestDocB)
         {

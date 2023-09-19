@@ -650,40 +650,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        public class CalcAddmin
-        {
-            public bool forSale { get; set; }
-
-            public long serialNumber { get; set; }
-
-            public string custCode { get; set; }
-
-            public byte typeJob { get; set; }
-            public string spec1 { get; set; }
-            public string spec2 { get; set; }
-            public string spec3 { get; set; }
-            public string spec4 { get; set; }
-            public string spec5 { get; set; }
-            public string spec6 { get; set; }
-            public string spec7 { get; set; }
-            public string spec8 { get; set; }
-            public string spec9 { get; set; }
-            public string spec10 { get; set; }
-
-            public double? MP1 { get; set; }
-            public double? MP2 { get; set; }
-            public double? MP3 { get; set; }
-            public double? MP4 { get; set; }
-            public double? MP5 { get; set; }
-            public double? MP6 { get; set; }
-            public double? MP7 { get; set; }
-            public double? MP8 { get; set; }
-            public double? MP9 { get; set; }
-            public double? MP10 { get; set; }
-
-            public string flagTest { get; set; }
-        }
-
+       
         // Post: api/Web_Data/AddMin لیست کسورات و افزایشات   
         // [Route("api/Web_Data/AddMin/{ace}/{sal}/{group}/{forSale}/{serialNumber}/{custCode}/{TypeJob}/{Spec1}/{Spec2}/{Spec3}/{Spec4}/{Spec5}/{Spec6}/{Spec7}/{Spec8}/{Spec9}/{Spec10}/{MP1}/{MP2}/{MP3}/{MP4}/{MP5}/{MP6}/{MP7}/{MP8}/{MP9}/{MP10}/")]
         [ResponseType(typeof(CalcAddmin))]
@@ -760,39 +727,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-
-
-
-
-
-        public class TashimBand
-        {
-            public long SerialNumber { get; set; }
-
-            public bool ForSale { get; set; }
-
-            public int Deghat { get; set; }
-
-            public double? MP1 { get; set; }
-
-            public double? MP2 { get; set; }
-
-            public double? MP3 { get; set; }
-
-            public double? MP4 { get; set; }
-
-            public double? MP5 { get; set; }
-
-            public double? MP6 { get; set; }
-
-            public double? MP7 { get; set; }
-
-            public double? MP8 { get; set; }
-
-            public double? MP9 { get; set; }
-
-            public double? MP10 { get; set; }
-        }
 
         // Post: api/Web_Data/TashimBand لیست کسورات و افزایشات   
         [ResponseType(typeof(void))]
