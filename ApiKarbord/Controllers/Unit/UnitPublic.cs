@@ -27,7 +27,7 @@ namespace ApiKarbord.Controllers.Unit
         //public static int VerNumber = 518;
 
         public static string titleVer = "API KarbordComputer : Ver ";
-        public static int VerNumber = 1033;
+        public static int VerNumber = 1034;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
@@ -96,6 +96,7 @@ namespace ApiKarbord.Controllers.Unit
         public const string access_ErjDoc = "ErjDoc";
         public const string access_Erja_Resive = "Erja_Resive";
         public const string access_Erja_Send = "Erja_Send";
+        public const string access_Chante_FDoc_Moved = "Chante_FDoc_Moved";
 
 
         public const int act_View = 0;
@@ -117,7 +118,8 @@ namespace ApiKarbord.Controllers.Unit
             else if (modeCode == "54") modeCode = access_PPFCT;
             else if (modeCode == "55") modeCode = access_PFCT;
             else if (modeCode == "56") modeCode = access_PRFCT;
-
+            else if (modeCode == "SORD") modeCode = access_SFORD;
+            else if (modeCode == "PORD") modeCode = access_PFORD;
             return modeCode;
         }
 

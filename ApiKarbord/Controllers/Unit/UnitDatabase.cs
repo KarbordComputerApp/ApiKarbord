@@ -107,7 +107,7 @@ namespace ApiKarbord.Controllers.Unit
 
             PersianCalendar pc = new System.Globalization.PersianCalendar();
 
-
+/*
             string[] modeCodes = new string[41];
             modeCodes[0] = UnitPublic.access_View.ToUpper();
             modeCodes[1] = UnitPublic.access_ADOC.ToUpper();
@@ -149,7 +149,7 @@ namespace ApiKarbord.Controllers.Unit
             modeCodes[37] = UnitPublic.access_ErjDocErja.ToUpper();
             modeCodes[38] = UnitPublic.access_ErjDoc.ToUpper();
             modeCodes[39] = UnitPublic.access_Erja_Resive.ToUpper();
-            modeCodes[40] = UnitPublic.access_Erja_Send.ToUpper();
+            modeCodes[40] = UnitPublic.access_Erja_Send.ToUpper();*/
 
             MyIniLog.Write("DateTime.Now", DateTime.Now.ToString());
             MyIniLog.Write("GetYear", pc.GetYear(DateTime.Now).ToString());
@@ -270,7 +270,7 @@ namespace ApiKarbord.Controllers.Unit
                     if (fullAccess == false)
                     {
                         string mode = UnitPublic.ModeCodeConnection(modecode);
-                        if (mode == UnitPublic.access_View)
+                        if (mode == UnitPublic.access_View || mode == UnitPublic.access_Chante_FDoc_Moved)
                             accept = true;
                         //else if (modeCodes.Contains(mode.ToUpper()) )
                         else

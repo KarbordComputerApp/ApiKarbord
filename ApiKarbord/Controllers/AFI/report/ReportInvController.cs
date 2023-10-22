@@ -337,18 +337,26 @@ namespace ApiKarbord.Controllers.AFI.report
         }
 
 
-        // Get: api/ReportInv/Chante_FDoc_Moved گزارش وضعیت ها شرکت چنته 
+        public class Chante_FDoc_MovedObject
+        {
+            public string updatedate { get; set; }
+        }
+
+        //Post: api/ReportInv/Chante_FDoc_Moved گزارش وضعیت ها شرکت چنته 
         // HE_Report_Chante_FDoc_Moved
         [Route("api/ReportInv/Chante_FDoc_Moved/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> GetWeb_Chante_FDoc_Moved(string ace, string sal, string group)
+        public async Task<IHttpActionResult> PostWeb_Chante_FDoc_Moved(string ace, string sal, string group, Chante_FDoc_MovedObject Chante_FDoc_MovedObject)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_Chante_FDoc_Moved, UnitPublic.act_Report, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * from Web_Chante_FDoc_Moved where 1 = 1 ");
+
+                if (Chante_FDoc_MovedObject.updatedate != null)
+                    sql += " and mUpdateDate >= CAST('" + Chante_FDoc_MovedObject.updatedate + "' AS DATETIME2)";
 
                 var listChante_FDoc_Moved = db.Database.SqlQuery<Web_Chante_FDoc_Moved>(sql);
                 return Ok(listChante_FDoc_Moved);
