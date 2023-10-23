@@ -268,8 +268,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
                 string[] serials = value.Split('-');
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocHi.flagLog, 1, 0);
-
+                if (aFI_IDocHi.flagTest != "Y")
+                {
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocHi.flagLog, 1, 0);
+                }
                 return Ok(value);
             }
             return Ok(conStr);

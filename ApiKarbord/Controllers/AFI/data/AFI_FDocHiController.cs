@@ -513,7 +513,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 }
 
                 string[] serials = value.Split('@');
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), 2, aFI_FDocHi.flagLog, 1, 0);
+                if (aFI_FDocHi.flagTest != "Y")
+                {
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), 2, aFI_FDocHi.flagLog, 1, 0);
+                }
                 return Ok(value);
             }
             return Ok(conStr);
