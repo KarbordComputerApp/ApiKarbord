@@ -1441,9 +1441,9 @@ namespace ApiKarbord.Controllers.Unit
                  // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
                  throw;
              }
-             /* //string connectionString = String.Format(@"data source = .\sql2014;initial catalog = ACE_Web8011384 ;persist security info = True;user id = sa; password = 114;  multipleactiveresultsets = True; application name = EntityFramework");
+             /* //string connectionString = String.Format(@"data source = .\sql2014;initial catalog = ACE_Web8011384 ;persist security info = True;user id = sa; password = 106;  multipleactiveresultsets = True; application name = EntityFramework");
               string connectionString = String.Format(@"data source = .\sql2014;initial catalog = ACE_Web8011384 ;
-                                                        persist security info = True;user id = sa; password = 114; 
+                                                        persist security info = True;user id = sa; password = 106; 
                                                         multipleactiveresultsets = True; application name = EntityFramework");
 
               try
