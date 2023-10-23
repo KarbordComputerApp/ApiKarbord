@@ -597,7 +597,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         parChecks
                         );
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.access_ADOC, 2, AFI_ADocHi_i.flagLog, 1, 0);
+                if (AFI_ADocHi_i.flagTest != "Y")
+                {
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.access_ADOC, 2, AFI_ADocHi_i.flagLog, 1, 0);
+                }
                 return Ok(value);
             }
             return Ok(conStr);
