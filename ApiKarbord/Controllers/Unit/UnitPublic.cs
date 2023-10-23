@@ -702,6 +702,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @CustZipCode = '{72}',
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
+                                    @Status = '{75}',
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                                              flagTest == true ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI",
@@ -778,9 +779,9 @@ namespace ApiKarbord.Controllers.Unit
                                              head.CustPlack,
                                              head.CustZipCode,
                                              head.CustTel,
-                                             head.CustMobile
+                                             head.CustMobile,
+                                             head.Status
                                              );
-
             return sql;
         }
 
@@ -1014,19 +1015,6 @@ namespace ApiKarbord.Controllers.Unit
             resTest.Data = res;
             return resTest;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
