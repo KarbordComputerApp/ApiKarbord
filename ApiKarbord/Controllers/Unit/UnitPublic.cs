@@ -816,7 +816,7 @@ namespace ApiKarbord.Controllers.Unit
 		                                            @MP10 = {23}
                                                     ",
                                     calcAddmin.serialNumber,
-                                    calcAddmin.forSale,
+                                    calcAddmin.forSale == true ? 0 : 1,
                                     calcAddmin.custCode ?? "null",
                                     calcAddmin.typeJob,
                                     calcAddmin.spec1,
