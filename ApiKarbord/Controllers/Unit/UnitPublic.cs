@@ -440,7 +440,7 @@ namespace ApiKarbord.Controllers.Unit
                 sql = string.Format(
                         @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                          EXEC	@return_value = [dbo].[{38}]
+                          EXEC	@return_value = [dbo].[{39}]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = '{2}' ,
@@ -520,8 +520,9 @@ namespace ApiKarbord.Controllers.Unit
                                         head.F20,
                                         head.Tanzim,
                                         UnitPublic.ConvertTextWebToWin(head.Footer ?? ""),
-                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI",
-                                        head.Status
+                                        head.Status,
+                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI"
+                                        
                                         );
             }
             else if (head.SerialNumber > 0 && flagTest == false) // update
