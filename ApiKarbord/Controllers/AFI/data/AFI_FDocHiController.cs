@@ -847,6 +847,20 @@ namespace ApiKarbord.Controllers.AFI.data
                     o.Head.AddMinPrice10 = value_CalcAddmin[9].AddMinPrice;
 
 
+                    double? totlal = 0;
+                    double? discount = 0;
+
+                    foreach (var item in o.Bands)
+                    {
+                        totlal += item.TotalPrice;
+                        discount += item.Discount;
+                    }
+
+                    
+
+                    o.Head.TotalValue = (totlal - discount) +  value_CalcAddmin[0].SumDiscount;
+
+
 
 
                     string Deghat = db.Database.SqlQuery<string>("select Param from Web_Param where [key] = 'Deghat'").Single();
