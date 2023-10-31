@@ -655,11 +655,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
         // GET: api/FDocData/FDocP لیست سند    
-        [Route("api/FDocData/FDocP/{ace}/{sal}/{group}/{SerialNumber}")]
-        public async Task<IHttpActionResult> GetAllWeb_FDocP(string ace, string sal, string group, long SerialNumber)
+        [Route("api/FDocData/FDocP/{ace}/{sal}/{group}/{SerialNumber}/{ModeCode}")]
+        public async Task<IHttpActionResult> GetAllWeb_FDocP(string ace, string sal, string group, long SerialNumber, string ModeCode = "")
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.ModeCodeConnection(ModeCode) , UnitPublic.act_Print, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

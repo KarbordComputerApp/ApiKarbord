@@ -4167,7 +4167,7 @@ namespace ApiKarbord.Controllers.AFI.data
                            @"EXEC	[dbo].[Web_TestCust] @Code = '{0}'  , @UserCode = '{1}' ",
                            AFI_TestCust.Code,
                            dataAccount[2]);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Cust, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Cust, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -4209,7 +4209,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[Web_TestCust_Delete] @Code = '{0}', @UserCode = '{1}' ", TestCust_DeleteObject.Code, dataAccount[2]);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -4249,7 +4249,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        @"EXEC	[dbo].[Web_TestKala] @Code = '{0}' , @UserCode = '{1}' ",
                                        AFI_TestKala.Code,
                                        dataAccount[2]);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -4291,7 +4291,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"EXEC	[dbo].[Web_TestKala_Delete] @Code = '{0}', @UserCode = '{1}' ", TestKala_DeleteObject.Code, dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -4817,7 +4817,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                            AFI_TestAcc.Code,
                                            dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Acc, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Acc, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -4861,7 +4861,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                            @"EXEC	[dbo].[Web_TestAcc_Delete] @Code = '{0}', @UserCode = '{1}' ", TestAcc_DeleteObject.Code, dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Acc, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Acc, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -5257,7 +5257,7 @@ namespace ApiKarbord.Controllers.AFI.data
                            AFI_TestMkz.Code,
                            dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Mkz, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Mkz, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -5493,7 +5493,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        AFI_TestOpr.Code,
                                        dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Opr, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Opr, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -5535,7 +5535,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                             @"EXEC	[dbo].[Web_TestOpr_Delete] @Code = '{0}', @UserCode = '{1}' ", TestOpr_DeleteObject.Code, dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Opr, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Opr, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -5653,7 +5653,7 @@ namespace ApiKarbord.Controllers.AFI.data
                            AFI_TestArz.Code,
                            dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Arz, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Arz, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -5695,7 +5695,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"EXEC	[dbo].[Web_TestArz_Delete] @Code = '{0}', @UserCode = '{1}' ", TestArz_DeleteObject.Code, dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Arz, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Arz, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -6533,7 +6533,7 @@ namespace ApiKarbord.Controllers.AFI.data
                            AFI_TestZAcc.Code,
                            dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_ZAcc, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_ZAcc, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
@@ -6575,7 +6575,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                                            @"EXEC	[dbo].[Web_TestZAcc_Delete] @Code = '{0}', @UserCode = '{1}' ", TestZAcc_DeleteObject.Code, dataAccount[2]);
 
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_ZAcc, UnitPublic.act_Report, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_ZAcc, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

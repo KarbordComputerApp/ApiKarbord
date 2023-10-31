@@ -532,11 +532,11 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/IDocData/IDocP لیست سند    
-        [Route("api/IDocData/IDocP/{ace}/{sal}/{group}/{SerialNumber}")]
-        public async Task<IHttpActionResult> GetAllWeb_IDocP(string ace, string sal, string group, long SerialNumber)
+        [Route("api/IDocData/IDocP/{ace}/{sal}/{group}/{SerialNumber}/{InOut}")]
+        public async Task<IHttpActionResult> GetAllWeb_IDocP(string ace, string sal, string group, long SerialNumber , int InOut = 1)
         {
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Print, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);

@@ -8,9 +8,9 @@
 
     public class Web_KalaPriceB
     {
-        [Key]
         public int? Code { get; set; }
 
+        [Key]
         public string KalaCode { get; set; }
 
         public double? Price1 { get; set; }

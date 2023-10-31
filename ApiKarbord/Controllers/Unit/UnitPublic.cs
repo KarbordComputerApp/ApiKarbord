@@ -109,6 +109,7 @@ namespace ApiKarbord.Controllers.Unit
         public const int act_ChangrStatus = 7;
         public const int act_Move = 8;
         public const int act_Report = 9;
+        public const int act_Print = 10;
 
         public static string ModeCodeConnection(string modeCode)
         {

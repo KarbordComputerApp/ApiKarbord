@@ -409,7 +409,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string sql = string.Format(@"select * from Web_ADocP where SerialNumber = {0} order by BandNo", SerialNumber);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_Print, 0);
             if (conStr.Length > 100)
             {
                 ApiModel db = new ApiModel(conStr);
