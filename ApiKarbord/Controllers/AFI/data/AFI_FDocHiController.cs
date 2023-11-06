@@ -835,16 +835,16 @@ namespace ApiKarbord.Controllers.AFI.data
 
                     var value_CalcAddmin = db.Database.SqlQuery<AddMin>(sql).ToList();
 
-                    o.Head.AddMinPrice1 = value_CalcAddmin[0].AddMinPrice;
-                    o.Head.AddMinPrice2 = value_CalcAddmin[1].AddMinPrice;
-                    o.Head.AddMinPrice3 = value_CalcAddmin[2].AddMinPrice;
-                    o.Head.AddMinPrice4 = value_CalcAddmin[3].AddMinPrice;
-                    o.Head.AddMinPrice5 = value_CalcAddmin[4].AddMinPrice;
-                    o.Head.AddMinPrice6 = value_CalcAddmin[5].AddMinPrice;
-                    o.Head.AddMinPrice7 = value_CalcAddmin[6].AddMinPrice;
-                    o.Head.AddMinPrice8 = value_CalcAddmin[7].AddMinPrice;
-                    o.Head.AddMinPrice9 = value_CalcAddmin[8].AddMinPrice;
-                    o.Head.AddMinPrice10 = value_CalcAddmin[9].AddMinPrice;
+                    o.Head.AddMinPrice1 = value_CalcAddmin[0].Mode == 1 ? Math.Abs(value_CalcAddmin[0].AddMinPrice ?? 0) : value_CalcAddmin[0].AddMinPrice;
+                    o.Head.AddMinPrice2 = value_CalcAddmin[1].Mode == 1 ? Math.Abs(value_CalcAddmin[1].AddMinPrice ?? 0) : value_CalcAddmin[1].AddMinPrice;
+                    o.Head.AddMinPrice3 = value_CalcAddmin[2].Mode == 1 ? Math.Abs(value_CalcAddmin[2].AddMinPrice ?? 0) : value_CalcAddmin[2].AddMinPrice;
+                    o.Head.AddMinPrice4 = value_CalcAddmin[3].Mode == 1 ? Math.Abs(value_CalcAddmin[3].AddMinPrice ?? 0) : value_CalcAddmin[3].AddMinPrice;
+                    o.Head.AddMinPrice5 = value_CalcAddmin[4].Mode == 1 ? Math.Abs(value_CalcAddmin[4].AddMinPrice ?? 0) : value_CalcAddmin[4].AddMinPrice;
+                    o.Head.AddMinPrice6 = value_CalcAddmin[5].Mode == 1 ? Math.Abs(value_CalcAddmin[5].AddMinPrice ?? 0) : value_CalcAddmin[5].AddMinPrice;
+                    o.Head.AddMinPrice7 = value_CalcAddmin[6].Mode == 1 ? Math.Abs(value_CalcAddmin[6].AddMinPrice ?? 0) : value_CalcAddmin[6].AddMinPrice;
+                    o.Head.AddMinPrice8 = value_CalcAddmin[7].Mode == 1 ? Math.Abs(value_CalcAddmin[7].AddMinPrice ?? 0) : value_CalcAddmin[7].AddMinPrice;
+                    o.Head.AddMinPrice9 = value_CalcAddmin[8].Mode == 1 ? Math.Abs(value_CalcAddmin[8].AddMinPrice ?? 0) : value_CalcAddmin[8].AddMinPrice;
+                    o.Head.AddMinPrice10 = value_CalcAddmin[9].Mode == 1 ? Math.Abs(value_CalcAddmin[9].AddMinPrice ?? 0) : value_CalcAddmin[9].AddMinPrice;
 
 
                     double? totlal = 0;
