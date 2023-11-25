@@ -559,72 +559,74 @@ namespace ApiKarbord.Controllers.AFI.data
                                            dataAccount[2]);
                     var result = db.Database.SqlQuery<TestDocB>(sql).ToList();
                     var jsonResult = UnitPublic.SetErrorSanad(result);
-
-
-                    sql = UnitPublic.CreateSql_IDocH(o.Head, false);
-
-                    value_H = db.Database.SqlQuery<string>(sql).Single();
-                    if (!string.IsNullOrEmpty(value_H))
+                    if (jsonResult.Status == "Success")
                     {
-                        await db.SaveChangesAsync();
-                        serialNumber = Convert.ToInt64(value_H.Split('-')[0]);
-                    }
-                    else
-                        serialNumber = o.Head.SerialNumber;
 
-                    if (o.Head.SerialNumber > 0)
-                    {
-                        sql = string.Format(@"DECLARE	@return_value int
+                        sql = UnitPublic.CreateSql_IDocH(o.Head, false);
+
+                        value_H = db.Database.SqlQuery<string>(sql).Single();
+                        if (!string.IsNullOrEmpty(value_H))
+                        {
+                            await db.SaveChangesAsync();
+                            serialNumber = Convert.ToInt64(value_H.Split('-')[0]);
+                        }
+                        else
+                            serialNumber = o.Head.SerialNumber;
+
+                        if (o.Head.SerialNumber > 0)
+                        {
+                            sql = string.Format(@"DECLARE	@return_value int
                                           EXEC	    @return_value = [dbo].[Web_SaveIDoc_BD]
 		                                            @SerialNumber = {0},
 		                                            @BandNo = 0
                                           SELECT	'Return Value' = @return_value", serialNumber);
-                        int valueDelete = db.Database.SqlQuery<int>(sql).Single();
-                        if (valueDelete == 0)
-                        {
-                            await db.SaveChangesAsync();
-                        }
+                            int valueDelete = db.Database.SqlQuery<int>(sql).Single();
+                            if (valueDelete == 0)
+                            {
+                                await db.SaveChangesAsync();
+                            }
 
-                        sql = string.Format(@" DECLARE	@return_value int
+                            sql = string.Format(@" DECLARE	@return_value int
                                            EXEC	@return_value = [dbo].[Web_Doc_BOrder]
 	                                            @TableName = '{0}',
                                                 @SerialNumber = {1},
                                                 @BandNoFld = '{2}'
                                             SELECT	'Return Value' = @return_value",
-                                                ace == UnitPublic.Web1 ? "Afi1IDocB" : "Inv5DocB",
-                                                serialNumber,
-                                                ace == UnitPublic.Web1 ? "BandNo" : "Radif");
-                        int valueUpdateBand = db.Database.SqlQuery<int>(sql).Single();
-                    }
+                                                    ace == UnitPublic.Web1 ? "Afi1IDocB" : "Inv5DocB",
+                                                    serialNumber,
+                                                    ace == UnitPublic.Web1 ? "BandNo" : "Radif");
+                            int valueUpdateBand = db.Database.SqlQuery<int>(sql).Single();
+                        }
 
 
-                    sql = string.Format(CultureInfo.InvariantCulture,
-                                  @"DECLARE	@return_value int
+                        sql = string.Format(CultureInfo.InvariantCulture,
+                                      @"DECLARE	@return_value int
                                     EXEC	@return_value = [dbo].[Web_SaveIDocB_Convert]
 		                                    @SerialNumber = {0},
 		                                    @TempSerialNumber = {1}
                                     SELECT	'Return Value' = @return_value",
-                                  serialNumber,
-                                  serialNumber_Test);
-                    db.Database.SqlQuery<int>(sql).Single();
-                    await db.SaveChangesAsync();
+                                      serialNumber,
+                                      serialNumber_Test);
+                        db.Database.SqlQuery<int>(sql).Single();
+                        await db.SaveChangesAsync();
 
 
-                    if (o.SerialFactor > 0)
-                    {
-                        sql = string.Format(CultureInfo.InvariantCulture,
-                                  @"DECLARE	@return_value int
+                        if (o.SerialFactor > 0)
+                        {
+                            sql = string.Format(CultureInfo.InvariantCulture,
+                                      @"DECLARE	@return_value int
                                     EXEC	@return_value = [dbo].[Web_LinkFDocIDoc]
 		                                    @FCTserial = '{0}',
 		                                    @INVserial = '{1}'
                                     SELECT	'Return Value' = @return_value",
-                                    o.SerialFactor,
-                                    serialNumber);
+                                        o.SerialFactor,
+                                        serialNumber);
 
-                        db.Database.SqlQuery<int>(sql).Single();
-                        await db.SaveChangesAsync();
+                            db.Database.SqlQuery<int>(sql).Single();
+                            await db.SaveChangesAsync();
+                        }
+                        jsonResult.SerialNumber = serialNumber;
                     }
-                    jsonResult.SerialNumber = serialNumber;
                     return Ok(jsonResult);
                 }
                 catch (Exception e)
