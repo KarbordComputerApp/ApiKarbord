@@ -2877,9 +2877,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string F20 { get; set; }
 
-            public Double? Latitude { get; set; }
+            public decimal? Latitude { get; set; }
 
-            public Double? Longitude { get; set; }
+            public decimal? Altitude { get; set; }
 
         }
 
@@ -2935,7 +2935,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F20 = N'{40}',
 		                        @Email = N'{41}',
 		                        @Latitude = {42},
-		                        @Longitude = {43},
+		                        @altitude = {43},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode'",
                         aFI_SaveCust.BranchCode ?? 0,
@@ -2981,7 +2981,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveCust.F20,
                         aFI_SaveCust.Email,
                         aFI_SaveCust.Latitude ?? 0,
-                        aFI_SaveCust.Longitude ?? 0
+                        aFI_SaveCust.Altitude ?? 0
                         );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);

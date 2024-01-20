@@ -23,18 +23,17 @@ namespace ApiKarbord.Controllers.Unit
         public static int VerDB = 48;
         public static string conString = "";
 
-        //public static string titleVer = "API KarbordComputer Test : Ver ";
-        //public static int VerNumber = 518;
+        public static string titleVer = "API KarbordComputer Test : Ver ";
+        public static int VerNumber = 519;
 
-        public static string titleVer = "API KarbordComputer : Ver ";
-        public static int VerNumber = 1034;
+        //public static string titleVer = "API KarbordComputer : Ver ";
+        //public static int VerNumber = 1034;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
         public static string Appddress; //ادرس نرم افزار
         public static IniFile MyIni;
         public static IniFile MyIniServer;
-
 
         public static List<SelectListItem> free = new List<SelectListItem>();
         public static List<SelectListItem> aceList = new List<SelectListItem>(); //لیست نرم افزار ها

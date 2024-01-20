@@ -219,6 +219,7 @@
     <Compile Include="Controllers\AFI\report\ReportAccController.cs" />
     <Compile Include="Controllers\AFI\report\ReportFctController.cs" />
     <Compile Include="Controllers\AFI\report\ReportInvController.cs" />
+    <Compile Include="Controllers\GPS\NeshanController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Pay\ShaparakController.cs" />
     <Compile Include="Controllers\Unit\CustomPersianCalendar.cs" />
@@ -236,6 +237,10 @@
     <Compile Include="Models\AFI\AFI_IDocHi.cs" />
     <Compile Include="Models\AFI\AFI_FDocHi.cs" />
     <Compile Include="Models\ApiModel.cs" />
+    <Compile Include="Models\GPS\Neshan\MapMatching.cs" />
+    <Compile Include="Models\GPS\Neshan\Geocoding.cs" />
+    <Compile Include="Models\GPS\Neshan\Reverse.cs" />
+    <Compile Include="Models\GPS\Neshan\routes.cs" />
     <Compile Include="Models\Public\TashimBand.cs" />
     <Compile Include="Models\Public\CalcAddmin.cs" />
     <Compile Include="Models\Public\Web_SmsandEmail.cs" />
@@ -416,6 +421,7 @@
     <Folder Include="bin\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ini\GpsConfig.Ini" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMaster.cshtml" />

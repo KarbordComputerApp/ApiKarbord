@@ -64,6 +64,7 @@
 
         public double? EtebarCheck { get; set; }
 
+
         /*public string SAddMin1 { get; set; }
         public string SAddMin2 { get; set; }
         public string SAddMin3 { get; set; }
@@ -133,6 +134,12 @@
         public string CustF20 { get; set; }
 
         public bool EditBaseTrs { get; set; }
+
+        [Column(TypeName = "numeric")]
+        public decimal altitude { get; set; }
+
+        [Column(TypeName = "numeric")]
+        public decimal latitude { get; set; }
 
     }
 }
