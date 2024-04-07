@@ -282,7 +282,17 @@ namespace ApiKarbord.Controllers.AFI.data
                                        Tasvib, 
                                        FinalPrice,
                                        Eghdam,
-                                       UpdateDate,ArzCode,ArzName,ArzRate
+                                       UpdateDate,ArzCode,ArzName,ArzRate,
+                                       AddMinPrice1,
+                                       AddMinPrice2,
+                                       AddMinPrice3,
+                                       AddMinPrice4,
+                                       AddMinPrice5,
+                                       AddMinPrice6,
+                                       AddMinPrice7,
+                                       AddMinPrice8,
+                                       AddMinPrice9,
+                                       AddMinPrice10
                                        from dbo.Web_FDocH_F({0},'{1}') where ModeCode = '{2}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        0, FDocHMinAppObject.user, FDocHMinAppObject.ModeCode.ToString());
                 if (FDocHMinAppObject.AccessSanad == false)

@@ -65,5 +65,25 @@
         public string ArzName { get; set; }
 
         public double? ArzRate { get; set; }
+
+        public double? AddMinPrice1 { get; set; }
+
+        public double? AddMinPrice2 { get; set; }
+
+        public double? AddMinPrice3 { get; set; }
+
+        public double? AddMinPrice4 { get; set; }
+
+        public double? AddMinPrice5 { get; set; }
+
+        public double? AddMinPrice6 { get; set; }
+
+        public double? AddMinPrice7 { get; set; }
+
+        public double? AddMinPrice8 { get; set; }
+
+        public double? AddMinPrice9 { get; set; }
+
+        public double? AddMinPrice10 { get; set; }
     }
 }

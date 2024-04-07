@@ -10,6 +10,7 @@
     {
         [Key]
         public long SerialNumber { get; set; }
+
         public byte? DocNoMode { get; set; }
 
         public byte? InsertMode { get; set; }
@@ -93,7 +94,9 @@
         public byte? PaymentType { get; set; }
 
         public string Footer { get; set; }
+
         public string Eghdam { get; set; }
+
         public string EghdamDate { get; set; }
 
         public int deghat { get; set; }
@@ -108,51 +111,35 @@
 
         public string F04 { get; set; }
 
-
         public string F05 { get; set; }
-
 
         public string F06 { get; set; }
 
-
         public string F07 { get; set; }
-
 
         public string F08 { get; set; }
 
-
         public string F09 { get; set; }
-
 
         public string F10 { get; set; }
 
-
         public string F11 { get; set; }
-
 
         public string F12 { get; set; }
 
-
         public string F13 { get; set; }
-
 
         public string F14 { get; set; }
 
-
         public string F15 { get; set; }
-
 
         public string F16 { get; set; }
 
-
         public string F17 { get; set; }
-
 
         public string F18 { get; set; }
 
-
         public string F19 { get; set; }
-
 
         public string F20 { get; set; }
 
@@ -161,6 +148,7 @@
         public string flagLog { get; set; }
 
         public string OprCode { get; set; }
+
         public string MkzCode { get; set; }
 
         public string flagTest { get; set; }

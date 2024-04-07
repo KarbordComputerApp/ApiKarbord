@@ -313,6 +313,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public bool? WithImage { get; set; }
 
+            public string KGruCode { get; set; }
+
         }
 
         // Post: api/Web_Data/KalaApp لیست کالا
@@ -345,6 +347,11 @@ namespace ApiKarbord.Controllers.AFI.data
             if (Kala_AppObject.KalaCode != "" && Kala_AppObject.KalaCode != null)
             {
                 sql += " and (Code = '" + Kala_AppObject.KalaCode + "' )";
+            }
+
+             if (Kala_AppObject.KGruCode != "" && Kala_AppObject.KGruCode != null)
+            {
+                sql += " and (KGruCode = '" + Kala_AppObject.KGruCode + "' )";
             }
 
 

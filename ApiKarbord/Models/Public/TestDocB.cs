@@ -30,6 +30,18 @@
 
     }
 
+
+    public class TestAddmin
+    {
+        public byte? Mode { get; set; }
+
+        public string ModeName { get; set; }
+
+        public string Spec { get; set; }
+
+    }
+
+
     public class ResTest
     {
         public string Status { get; set; }
@@ -40,7 +52,11 @@
 
         public int CountWarnning { get; set; }
 
+        public double? TotalValue { get; set; }
+
         public List<TestDoc> Data { get; set; }
+
+        public List<AddMin> DataAddmin { get; set; }
 
 
     }
