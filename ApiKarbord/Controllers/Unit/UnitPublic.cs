@@ -24,7 +24,7 @@ namespace ApiKarbord.Controllers.Unit
         public static string conString = "";
 
         public static string titleVer = "API KarbordComputer Test : Ver ";
-        public static int VerNumber = 520;
+        public static int VerNumber = 521;
 
         //public static string titleVer = "API KarbordComputer : Ver ";
         //public static int VerNumber = 1034;
@@ -1334,7 +1334,8 @@ namespace ApiKarbord.Controllers.Unit
                 else if (item.TestName == "ZeroAmount") spec += "مقدار صفر است";
                 else if (item.TestName == "ZeroPrice") spec += "مبلغ صفر است";
                 else if (item.TestName == "Thvl") spec = "تحویل دهنده/گیرنده انتخاب نشده است";
-                else if (item.TestCap != "") spec = item.TestCap;
+                else if (item.TestName == "NegativeAmount") spec += "موجودی منفی می شود";
+                else if (item.TestCap != "") spec = "نامشخص";
                 band.Spec = spec;
                 res.Add(band);
             }
