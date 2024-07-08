@@ -16,25 +16,17 @@
 
         public double? SortDocNo { get; set; }
 
-
         public string ModeName { get; set; }
-
 
         public string ThvlCode { get; set; }
 
         public string ModeCode { get; set; }
 
-
         public string Footer { get; set; }
-
 
         public string DocNo { get; set; }
 
-
-
         public string DocDate { get; set; }
-
-
 
         public string Spec { get; set; }
 

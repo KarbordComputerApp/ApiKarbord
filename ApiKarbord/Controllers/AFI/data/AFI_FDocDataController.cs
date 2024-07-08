@@ -267,6 +267,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        CustName,
                                        Spec,
                                        KalaPriceCode,
+                                       KalaPriceName,
                                        InvCode,
                                        MkzCode,
                                        MkzName,

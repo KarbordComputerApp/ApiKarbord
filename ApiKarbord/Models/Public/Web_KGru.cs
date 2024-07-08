@@ -29,5 +29,9 @@
         public string UpdateUser { get; set; }
 
         public DateTime? UpdateDate { get; set; }
+
+        [Column(TypeName = "image")]
+        public byte[] KGruImage { get; set; }
+
     }
 }

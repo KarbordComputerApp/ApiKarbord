@@ -2590,13 +2590,24 @@ namespace ApiKarbord.Controllers.AFI.data
             public byte Mode { get; set; }
 
             public string UserCode { get; set; }
+
+            public bool? withimage { get; set; }
+
         }
 
         // Post: api/Web_Data/KGru لیست کالا گروه ها
         [Route("api/Web_Data/KGru/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> PostWeb_KGru(string ace, string sal, string group, KGruObject kGruObject)
         {
-            string sql = string.Format("select  * FROM  Web_KGru_F({0},'{1}') ", kGruObject.Mode, kGruObject.UserCode);
+            string sql = "select  Code, SortCode, Name, SortName, Spec, LEVEL, Eghdam, EghdamDate, UpdateUser, UpdateDate ,";
+
+            if (kGruObject.withimage == true)
+                sql += "KGruImage";
+            else
+                sql += "null as KGruImage";
+
+            sql += string.Format(" FROM  Web_KGru_F({0},'{1}') ", kGruObject.Mode, kGruObject.UserCode);
+
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
             if (conStr.Length > 100)
@@ -6759,6 +6770,136 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+        public class Daryafti_ListObject
+        {
+            public long SerialNumber { get; set; }
+
+        }
+
+        // Post: api/Web_Data/Daryafti_List لیست جانشین
+        [Route("api/Web_Data/Daryafti_List/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostDaryafti_List(string ace, string sal, string group, Daryafti_ListObject Daryafti_ListObject)
+        {
+            string sql = "select * from Web_Daryafti_List where 1 = 1 ";
+            if (Daryafti_ListObject.SerialNumber > 0)
+                sql += " and SerialNumber = " + Daryafti_ListObject.SerialNumber;
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
+
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                var list = db.Database.SqlQuery<Web_Daryafti_List>(sql);
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+
+        public class Web_SaveCDoc_IObject
+        {
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
+            public int Mode { get; set; }
+
+            public string DocDate { get; set; }
+
+            public string CheckNo { get; set; }
+
+            public string CheckDate { get; set; }
+
+            public string Bank { get; set; }
+
+            public string Shobe { get; set; }
+
+            public string Jari { get; set; }
+
+            public string Value { get; set; }
+
+        }
+
+        // Post: api/Web_Data/Web_SaveCDoc_I ثبت دریافتی فاکتور   
+        [ResponseType(typeof(void))]
+        [Route("api/Web_Data/Web_SaveCDoc_I/{ace}/{sal}/{group}")]
+
+        public async Task<IHttpActionResult> PostWeb_SaveCDoc_I(string ace, string sal, string group, Web_SaveCDoc_IObject d)
+        {
+
+            string sql = string.Format(CultureInfo.InvariantCulture, @"
+                              DECLARE	@return_value int
+
+                              EXEC	@return_value = [dbo].[Web_SaveCDoc_I]
+		                                @SerialNumber = {0},
+		                                @BandNo = {1},
+		                                @Mode = {2},
+		                                @DocDate = '{3}',
+		                                @CheckNo = N'{4}',
+		                                @CheckDate = N'{5}',
+		                                @Bank = N'{6}',
+		                                @Shobe = N'{7}',
+		                                @Jari = N'{8}',
+		                                @Value = {9}
+                              SELECT	'Return Value' = @return_value",
+                              d.SerialNumber,
+                              d.BandNo,
+                              d.Mode,
+                              d.DocDate,
+                              d.CheckNo,
+                              d.CheckDate,
+                              d.Bank,
+                              d.Shobe,
+                              d.Jari,
+                              d.Value);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, d.SerialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                int list = db.Database.SqlQuery<int>(sql).Single();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
+
+        public class Web_SaveCDoc_DelObject
+        {
+            public long SerialNumber { get; set; }
+
+            public int BandNo { get; set; }
+
+        }
+
+        // Post: api/Web_Data/Web_SaveCDoc_Del ثبت دریافتی فاکتور   
+        [ResponseType(typeof(void))]
+        [Route("api/Web_Data/Web_SaveCDoc_Del/{ace}/{sal}/{group}")]
+
+        public async Task<IHttpActionResult> PostWeb_SaveCDoc_Del(string ace, string sal, string group, Web_SaveCDoc_DelObject d)
+        {
+
+            string sql = string.Format(CultureInfo.InvariantCulture, @"
+                              DECLARE	@return_value int
+                              EXEC	@return_value = [dbo].[Web_SaveCDoc_Del]
+		                            @SerialNumber = {0},
+		                            @BandNo = {1}
+                              SELECT	'Return Value' = @return_value",
+                              d.SerialNumber,
+                              d.BandNo);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, d.SerialNumber, UnitPublic.access_View, UnitPublic.act_View, 0);
+            if (conStr.Length > 100)
+            {
+                ApiModel db = new ApiModel(conStr);
+                int list = db.Database.SqlQuery<int>(sql).Single();
+                return Ok(list);
+            }
+            return Ok(conStr);
+        }
 
 
 
