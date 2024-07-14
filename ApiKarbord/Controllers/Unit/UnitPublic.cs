@@ -34,6 +34,7 @@ namespace ApiKarbord.Controllers.Unit
         public static string Appddress; //ادرس نرم افزار
         public static IniFile MyIni;
         public static IniFile MyIniServer;
+               
 
         public static List<SelectListItem> free = new List<SelectListItem>();
         public static List<SelectListItem> aceList = new List<SelectListItem>(); //لیست نرم افزار ها

@@ -52,14 +52,15 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_FDocR(string ace, string sal, string group, FDocRObject FDocRObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, FDocRObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_FDocR_S : UnitPublic.access_FDocR_P, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000)  * FROM  dbo.Web_FDocR('{0}', '{1}','{2}') AS FDocR where 1 = 1 ",
-                          FDocRObject.ModeCode1, FDocRObject.ModeCode2, dataAccount[2]);
+                          @"select top(10000)  * FROM  {0}.dbo..Web_FDocR('{1}', '{2}','{3}') AS FDocR where 1 = 1 ",
+                          dBName, FDocRObject.ModeCode1, FDocRObject.ModeCode2, dataAccount[2]);
 
                 sql += UnitPublic.SpiltCodeAnd("InvCode", FDocRObject.InvCode);
                 sql += UnitPublic.SpiltCodeAnd("KGruCode", FDocRObject.KGruCode);
@@ -76,10 +77,13 @@ namespace ApiKarbord.Controllers.AFI.report
                 if (FDocRObject.taTarikh != "")
                     sql += string.Format(" and DocDate <= '{0}' ", FDocRObject.taTarikh);
 
-                var listFDocR = db.Database.SqlQuery<Web_FDocR>(sql);
+                var listFDocR = DBase.DB.Database.SqlQuery<Web_FDocR>(sql);
                 return Ok(listFDocR);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, FDocRObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_FDocR_S : UnitPublic.access_FDocR_P, UnitPublic.act_Report, 0);
         }
 
 
@@ -126,11 +130,12 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_TrzFKala(string ace, string sal, string group, TrzFKalaObject TrzFKalaObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, TrzFKalaObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFKala_S : UnitPublic.access_TrzFKala_P, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.MkzCode);
                 string custCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.CustCode);
@@ -139,7 +144,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFKalaObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top ({14}) * FROM  dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFKala where 1 = 1 ",
+                          @"select  top ({14}) * FROM  {15}.dbo.Web_TrzFKala('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFKala where 1 = 1 ",
                           TrzFKalaObject.ModeCode1,
                           TrzFKalaObject.ModeCode2,
                           TrzFKalaObject.azTarikh,
@@ -154,7 +159,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           statusCode,
                           TrzFKalaObject.ZeroValue,
                           dataAccount[2],
-                          TrzFKalaObject.Top == null ? "10000" : TrzFKalaObject.Top
+                          TrzFKalaObject.Top == null ? "10000" : TrzFKalaObject.Top,
+                          dBName
                           );
 
                 sql += UnitPublic.SpiltCodeAnd("KalaCode", TrzFKalaObject.KalaCode);
@@ -165,10 +171,13 @@ namespace ApiKarbord.Controllers.AFI.report
                     sql += " order by " + TrzFKalaObject.Sort;
                 }
 
-                var listTrzFKala = db.Database.SqlQuery<Web_TrzFKala>(sql);
+                var listTrzFKala = DBase.DB.Database.SqlQuery<Web_TrzFKala>(sql);
                 return Ok(listTrzFKala);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, TrzFKalaObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFKala_S : UnitPublic.access_TrzFKala_P, UnitPublic.act_Report, 0);
         }
 
 
@@ -215,11 +224,12 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_TrzFCust(string ace, string sal, string group, TrzFCustObject TrzFCustObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, TrzFCustObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFCust_S : UnitPublic.access_TrzFCust_P, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzFCustObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzFCustObject.MkzCode);
                 string kalaCode = UnitPublic.SpiltCodeCama(TrzFCustObject.KalaCode);
@@ -228,7 +238,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string statusCode = UnitPublic.SpiltCodeCama(TrzFCustObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top ({14})  * FROM  dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFCust where 1 = 1 ",
+                          @"select  top ({14})  * FROM  {15}.dbo.Web_TrzFCust('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}',{12},'{13}') AS TrzFCust where 1 = 1 ",
                           TrzFCustObject.ModeCode1,
                           TrzFCustObject.ModeCode2,
                           TrzFCustObject.azTarikh,
@@ -243,15 +253,19 @@ namespace ApiKarbord.Controllers.AFI.report
                           statusCode,
                           TrzFCustObject.ZeroValue,
                           dataAccount[2],
-                          TrzFCustObject.Top == null ? "10000" : TrzFCustObject.Top);
+                          TrzFCustObject.Top == null ? "10000" : TrzFCustObject.Top,
+                          dBName);
 
                 sql += UnitPublic.SpiltCodeAnd("CustCode", TrzFCustObject.CustCode);
                 sql += UnitPublic.SpiltCodeAnd("CGruCode", TrzFCustObject.CGruCode);
 
-                var listTrzFCust = db.Database.SqlQuery<Web_TrzFCust>(sql);
+                var listTrzFCust = DBase.DB.Database.SqlQuery<Web_TrzFCust>(sql);
                 return Ok(listTrzFCust);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, TrzFCustObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFCust_S : UnitPublic.access_TrzFCust_P, UnitPublic.act_Report, 0);
         }
 
 
@@ -283,22 +297,25 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_D_TrzFDoreh(string ace, string sal, string group, TrzFDorehObject TrzFDorehObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,   UnitPublic.access_View, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
-                string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select   * FROM  dbo.Web_D_TrzFDoreh({0}, '{1}', '{2}') AS TrzFDoreh where 1 = 1 ",
-                          TrzFDorehObject.mode,
-                          TrzFDorehObject.azTarikh,
-                          TrzFDorehObject.taTarikh
-                         );
+                string sql = string.Format(CultureInfo.InvariantCulture, @"select   * FROM  {0}.dbo.Web_D_TrzFDoreh({1}, '{2}', '{3}') AS TrzFDoreh where 1 = 1 ",
+                                          dBName,
+                                          TrzFDorehObject.mode,
+                                          TrzFDorehObject.azTarikh,
+                                          TrzFDorehObject.taTarikh);
 
-                var listTrzFDoreh = db.Database.SqlQuery<Web_D_TrzFDoreh>(sql);
+                var listTrzFDoreh = DBase.DB.Database.SqlQuery<Web_D_TrzFDoreh>(sql);
                 return Ok(listTrzFDoreh);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0,   UnitPublic.access_View, UnitPublic.act_Report, 0);
         }
 
     }

@@ -65,6 +65,7 @@ namespace ApiKarbordAccount.Controllers
         [Route("api/FileUpload/UploadFile/{ace}/{sal}/{group}")]
         public async Task<IHttpActionResult> UploadFile(string ace, string sal, string group)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string SerialNumber = HttpContext.Current.Request["SerialNumber"];
             string ProgName = HttpContext.Current.Request["ProgName"];
             string ModeCode = HttpContext.Current.Request["ModeCode"];
@@ -84,9 +85,13 @@ namespace ApiKarbordAccount.Controllers
 
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
+                string conStr = String.Format(@"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                DBase.SqlServerName, dBName, DBase.SqlUserName, DBase.SqlPassword);
+
                 SqlConnection connection = new SqlConnection(conStr);
                 connection.Open();
 
@@ -107,7 +112,9 @@ namespace ApiKarbordAccount.Controllers
                 return Ok(1);
             }
             else
-                return Ok(conStr);
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, "", 0, 0);
         }
 
 

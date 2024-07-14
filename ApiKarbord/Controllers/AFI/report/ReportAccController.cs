@@ -47,24 +47,26 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_TrzAcc, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(TrzAccObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_TrzAcc({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS TrzAcc where 1 = 1 ",
+                          @"select * FROM  {7}.dbo.Web_TrzAcc({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS TrzAcc where 1 = 1 ",
                           TrzAccObject.Level,
                           TrzAccObject.azTarikh,
                           TrzAccObject.taTarikh,
                           oprCode,
                           mkzCode,
                           aModeCode,
-                          dataAccount[2]);
+                          dataAccount[2],
+                          dBName);
 
                 if (TrzAccObject.Sath == 1)
                     sql += string.Format(" and (Level = {0})", TrzAccObject.Level);
@@ -75,10 +77,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by  SortAccCode";
 
-                var listTrzAcc =db.Database.SqlQuery<Web_TrzAcc>(sql);
+                var listTrzAcc = DBase.DB.Database.SqlQuery<Web_TrzAcc>(sql);
                 return Ok(listTrzAcc);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_TrzAcc, UnitPublic.act_Report, 0);
         }
 
 
@@ -117,18 +122,19 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_Dftr(string ace, string sal, string group, DftrObject DftrObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_Dftr, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(DftrObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(DftrObject.MkzCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(DftrObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_Dftr('{0}','{1}',{2},'{3}','{4}','{5}','{6}','{7}',{8},{9},'{10}') AS Dftr where 1 = 1 and best >= 0 ",
+                          @"select top(10000) * FROM  {11}.dbo.Web_Dftr('{0}','{1}',{2},'{3}','{4}','{5}','{6}','{7}',{8},{9},'{10}') AS Dftr where 1 = 1 and best >= 0 ",
                           DftrObject.azTarikh,
                           DftrObject.taTarikh,
                           DftrObject.Naghl,
@@ -139,7 +145,8 @@ namespace ApiKarbord.Controllers.AFI.report
                           status,
                           DftrObject.DispBands,
                           DftrObject.JamRooz,
-                          dataAccount[2]);
+                          dataAccount[2],
+                          dBName);
 
                 if (DftrObject.azShomarh != "")
                     sql += string.Format(" and DocNo >= '{0}' ", DftrObject.azShomarh);
@@ -154,10 +161,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by bodytag";
 
-                var listDftr =db.Database.SqlQuery<Web_Dftr>(sql);
+                var listDftr = DBase.DB.Database.SqlQuery<Web_Dftr>(sql);
                 return Ok(listDftr);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_Dftr, UnitPublic.act_Report, 0);
         }
 
 
@@ -195,11 +205,12 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_ADocR(string ace, string sal, string group, ADocRObject ADocRObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_ADocR, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
                 string oprCode = UnitPublic.SpiltCodeCama(ADocRObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(ADocRObject.MkzCode);
@@ -207,7 +218,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 string AccCode = UnitPublic.SpiltCodeCama(ADocRObject.AccCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_ADocR({0},{1},'{2}') AS ADocR where 1 = 1 ",
+                          @"select top(10000) * FROM  {0}.dbo.Web_ADocR({1},{2},'{3}') AS ADocR where 1 = 1 ",
+                          dBName,
                           ADocRObject.DispBands,
                           ADocRObject.JamRooz,
                           dataAccount[2]);
@@ -235,10 +247,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by DocNo,BandNo";
 
-                var listADocR =db.Database.SqlQuery<Web_ADocR>(sql);
+                var listADocR = DBase.DB.Database.SqlQuery<Web_ADocR>(sql);
                 return Ok(listADocR);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_ADocR, UnitPublic.act_Report, 0);
         }
 
 
@@ -268,13 +283,14 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_TChk(string ace, string sal, string group, TChkObject TChkObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select top(10000) * FROM  Web_TChk('{0}') AS TChk where 1 = 1", dataAccount[2]);
+                           @"select top(10000) * FROM  {0}.dbo.Web_TChk('{1}') AS TChk where 1 = 1", dBName, dataAccount[2]);
 
                 sql += string.Format(" and PDMode = {0} ", TChkObject.PDMode);
 
@@ -294,10 +310,13 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeLike("AccCode", TChkObject.AccCode);
                 sql += " order by CheckNo,Bank,Shobe";
 
-                var listTChk =db.Database.SqlQuery<Web_TChk>(sql);
+                var listTChk = DBase.DB.Database.SqlQuery<Web_TChk>(sql);
                 return Ok(listTChk);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, 0);
         }
 
 
@@ -329,24 +348,26 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_AGMkz(string ace, string sal, string group, AGMkzObject AGMkzObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_AGMkz, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string oprCode = UnitPublic.SpiltCodeCama(AGMkzObject.OprCode);
                 string accCode = UnitPublic.SpiltCodeCama(AGMkzObject.AccCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(AGMkzObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_AGMkz({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS AGMkz where 1 = 1 ",
+                          @"select * FROM  {7}.dbo.Web_AGMkz({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS AGMkz where 1 = 1 ",
                           AGMkzObject.Level,
                           AGMkzObject.azTarikh,
                           AGMkzObject.taTarikh,
                           accCode,
                           oprCode,
                           aModeCode,
-                          dataAccount[2]);
+                          dataAccount[2],
+                          dBName);
 
                 /* if (AGMkzObject.Sath == 1)
                      sql += string.Format(" and (Level = {0})", AGMkzObject.Level);
@@ -357,10 +378,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by  SortMkzCode";
 
-                var listAGMkz =db.Database.SqlQuery<Web_AGMkz>(sql);
+                var listAGMkz = DBase.DB.Database.SqlQuery<Web_AGMkz>(sql);
                 return Ok(listAGMkz);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_AGMkz, UnitPublic.act_Report, 0);
         }
 
 
@@ -387,32 +411,37 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_AGOpr(string ace, string sal, string group, AGOprObject AGOprObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, 0, UnitPublic.access_AGOpr, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string mkzCode = UnitPublic.SpiltCodeCama(AGOprObject.MkzCode);
                 string accCode = UnitPublic.SpiltCodeCama(AGOprObject.AccCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(AGOprObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  dbo.Web_AGOpr('{0}', '{1}','{2}','{3}','{4}', '{5}') AS AGOpr where 1 = 1 ",
+                          @"select * FROM  {6}.dbo.Web_AGOpr('{0}', '{1}','{2}','{3}','{4}', '{5}') AS AGOpr where 1 = 1 ",
                           AGOprObject.azTarikh,
                           AGOprObject.taTarikh,
                           accCode,
                           mkzCode,
                           aModeCode,
-                          dataAccount[2]);
+                          dataAccount[2],
+                          dBName);
 
                 sql += UnitPublic.SpiltCodeLike("OprCode", AGOprObject.OprCode);
 
                 sql += " order by SortOprCode";
 
-                var listAGOpr =db.Database.SqlQuery<Web_AGOpr>(sql);
+                var listAGOpr = DBase.DB.Database.SqlQuery<Web_AGOpr>(sql);
                 return Ok(listAGOpr);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_AGOpr, UnitPublic.act_Report, 0);
         }
 
 
@@ -442,13 +471,15 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_D_TChk_Sum(string ace, string sal, string group, TChk_SumObject TChk_SumObject)
         {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, 0);
-            if (conStr.Length > 100)
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
             {
-                ApiModel db = new ApiModel(conStr);
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  Web_D_TChk_Sum('{0}','{1}','{2}') AS TChk_Sum where 1 = 1", 
+                          @"select * FROM  {0}.dbo.Web_D_TChk_Sum('{1}','{2}','{3}') AS TChk_Sum where 1 = 1",
+                          dBName,
                           dataAccount[2],
                           TChk_SumObject.azTarikh,
                           TChk_SumObject.taTarikh
@@ -456,10 +487,13 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by Bank,Shobe";
 
-                var listTChk_Sum = db.Database.SqlQuery<Web_D_TChk_Sum>(sql);
+                var listTChk_Sum = DBase.DB.Database.SqlQuery<Web_D_TChk_Sum>(sql);
                 return Ok(listTChk_Sum);
             }
-            return Ok(conStr);
+            else
+                return Ok(res);
+
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, 0);
         }
 
 

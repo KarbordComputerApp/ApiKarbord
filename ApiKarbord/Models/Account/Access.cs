@@ -68,5 +68,11 @@ namespace ApiKarbord.Models
         public string WhereThvl { get; set; }
 
         public string WhereAcc { get; set; }
+
+        public string Spec { get; set; }
+
+        public ApiModel DB { get; set; }
+
+
     }
 }

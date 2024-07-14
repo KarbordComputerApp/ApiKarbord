@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Routing;
+using ApiKarbord.Controllers.Unit;
 
 namespace ApiKarbord
 {
@@ -39,6 +40,7 @@ namespace ApiKarbord
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            UnitDatabase.SetDataDB();
             // convert xml to json
             //var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             //config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
