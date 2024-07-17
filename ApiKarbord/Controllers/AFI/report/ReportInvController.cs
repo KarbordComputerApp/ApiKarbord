@@ -58,7 +58,7 @@ namespace ApiKarbord.Controllers.AFI.report
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_TrzIKala);
             if (res == "")
             {
                 string modeCode = UnitPublic.SpiltCodeCama(TrzIObject.ModeCode);
@@ -176,7 +176,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_TrzIKalaExf);
             if (res == "")
             {
                 string modeCode = UnitPublic.SpiltCodeCama(TrzIExfObject.ModeCode);
@@ -254,7 +254,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_IDocR);
             if (res == "")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
@@ -322,7 +322,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_Krdx);
             if (res == "")
             {
                 string invCode = UnitPublic.SpiltCodeCama(KrdxObject.InvCode);
@@ -370,7 +370,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_Chante_FDoc_Moved);
             if (res == "")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture, @"select * from {0}.dbo.Web_Chante_FDoc_Moved where 1 = 1 ", dBName);
@@ -436,11 +436,11 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_TrzIKala);
             if (res == "")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select  top (10000) * FROM  {0}.dbo..Web_TrzIKalaVstr('{1}','{2}','{3}','{4}') AS TrzI where 1 = 1 ",
+                          @"select  top (10000) * FROM  {0}.dbo.Web_TrzIKalaVstr('{1}','{2}','{3}','{4}') AS TrzI where 1 = 1 ",
                           dBName,
                           TrzIKalaVstrbject.ModeCode,
                           TrzIKalaVstrbject.DocDate,

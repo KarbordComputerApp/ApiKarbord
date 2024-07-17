@@ -40,7 +40,7 @@ namespace ApiKarbord
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            UnitDatabase.SetDataDB();
+            UnitDatabase.SetDataDB("null","null");
             // convert xml to json
             //var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             //config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);

@@ -376,7 +376,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 value = DBase.DB.Database.SqlQuery<long>(sql).Single();
@@ -419,7 +419,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 try
@@ -470,7 +470,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 return Ok(DBase.DB.Database.SqlQuery<Web_ADocP>(sql));
@@ -509,7 +509,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();
@@ -552,7 +552,7 @@ namespace ApiKarbord.Controllers.AFI.data
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 return Ok(DBase.DB.Database.SqlQuery<int>(sql));
@@ -600,7 +600,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 var result = DBase.DB.Database.SqlQuery<TestADoc_Delete>(sql).ToList();
@@ -647,7 +647,7 @@ namespace ApiKarbord.Controllers.AFI.data
                      AFI_TestADoc_New.SerialNumber);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();
@@ -681,7 +681,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
                 var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();

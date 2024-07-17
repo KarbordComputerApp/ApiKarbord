@@ -50,7 +50,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_TrzAcc);
             if (res == "")
             {
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
@@ -125,7 +125,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_Dftr);
             if (res == "")
             {
                 string status = UnitPublic.SpiltCodeCama(DftrObject.StatusCode);
@@ -208,7 +208,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADocR);
             if (res == "")
             {
                 string status = UnitPublic.SpiltCodeCama(ADocRObject.StatusCode);
@@ -286,7 +286,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_TChk);
             if (res == "")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,
@@ -351,7 +351,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_AGMkz);
             if (res == "")
             {
                 string oprCode = UnitPublic.SpiltCodeCama(AGMkzObject.OprCode);
@@ -414,7 +414,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_AGOpr);
             if (res == "")
             {
                 string mkzCode = UnitPublic.SpiltCodeCama(AGOprObject.MkzCode);
@@ -474,7 +474,7 @@ namespace ApiKarbord.Controllers.AFI.report
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
-            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_TChk);
             if (res == "")
             {
                 string sql = string.Format(CultureInfo.InvariantCulture,

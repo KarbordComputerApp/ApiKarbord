@@ -71,8 +71,13 @@ namespace ApiKarbord.Models
 
         public string Spec { get; set; }
 
-        public ApiModel DB { get; set; }
+        public string ProgName { get; set; }
 
+        public string Fct_or_Inv { get; set; }
+
+        public int? SettingApp { get; set; }
+
+        public ApiModel DB { get; set; }
 
     }
 }
