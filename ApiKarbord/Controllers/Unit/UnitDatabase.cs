@@ -1587,7 +1587,7 @@ namespace ApiKarbord.Controllers.Unit
                             DB = new ApiModel(conStr),
                         });
                     }
-                    else // update new user
+                    else // update user
                     {
                         var item = DBase[0];
                         item.Id = data[0].Id;

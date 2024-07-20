@@ -70,7 +70,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string invCode = UnitPublic.SpiltCodeCama(TrzIObject.InvCode);
                 string statusCode = UnitPublic.SpiltCodeCama(TrzIObject.StatusCode);
 
-                string sql = "IF EXISTS(SELECT name FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[Web_TrzIKala]')) select 1 as find else select 0 as find";
+                string sql = string.Format("IF EXISTS(SELECT name FROM {0}.dbo.sysobjects WHERE name = 'Web_TrzIKala') select 1 as find else select 0 as find", dBName);
                 int test = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 if (test == 0)
                 {
