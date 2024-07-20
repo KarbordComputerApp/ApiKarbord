@@ -268,13 +268,14 @@ namespace ApiKarbord.Controllers.AFI.data
             if (res == "")
             {
                 var list = DBase.DB.Database.SqlQuery<Web_Kala>(sql);
-               var b = DateTime.Now;
+                var b = DateTime.Now;
                 var a1 = (b - a).TotalMilliseconds;
+
                 return Ok(list);
             }
             else
                 return Ok(res);
-           
+
 
             /*var a = DateTime.Now;
             var b = DateTime.Now;
@@ -595,7 +596,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = String.Format("select * from {0}.dbo.Web_Unit where KalaCode = {1} and p.Name <> '' ", dBName);
+            string sql = String.Format("select * from {0}.dbo.Web_Unit where KalaCode = {1} and Name <> '' ", dBName, codeKala);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
             if (res == "")
@@ -1630,6 +1631,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ErjDocK);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ErjDocK, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(DBase.DB.Database.SqlQuery<Web_ErjDocK>(sql));
             }
             else
@@ -2212,6 +2214,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ErjDocErja);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ErjDocErja, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(DBase.DB.Database.SqlQuery<Web_ErjDocB_Last>(sql));
             }
             else
@@ -2393,6 +2396,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     await DBase.DB.SaveChangesAsync();
                 }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Web_ErjSaveDoc_BSave.SerialNumber, "ErjDoc", UnitPublic.act_NewBand, "Y", 1, 0);
+
                 return Ok(list);
             }
             else
@@ -2461,6 +2466,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     await DBase.DB.SaveChangesAsync();
                 }
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "ErjDoc", UnitPublic.act_NewBand, "Y", 1, 0);
+
                 return Ok(value);
             }
             else
@@ -2510,6 +2517,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "ErjDoc", UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -2550,6 +2558,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<string>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "ErjDoc", UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -2598,6 +2607,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "ErjDoc", UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -2640,6 +2650,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Web_ErjSaveDoc_HStatus.SerialNumber, "ErjDoc", UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -2735,6 +2746,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, "ErjDoc", UnitPublic.act_DeleteBand, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -2849,7 +2861,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql;
             if (RprtId == "all")
-                sql = string.Format(@"select  * from {0}.dbo.Web_RprtCols where (UserCode = '{1}' or UserCode = '*Default*')",dBName, UserCode);
+                sql = string.Format(@"select  * from {0}.dbo.Web_RprtCols where (UserCode = '{1}' or UserCode = '*Default*')", dBName, UserCode);
             else
                 sql = string.Format(@"
                                   if exists (select 1 from {0}.dbo.Web_RprtCols where RprtId = '{1}' and UserCode = '{2}')
@@ -3205,6 +3217,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_Cust);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Cust, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(DBase.DB.Database.SqlQuery<string>(sql));
             }
             else
@@ -3230,6 +3243,8 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_Cust);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Cust, UnitPublic.act_Delete, "Y", 1, 0);
+
                 return Ok(DBase.DB.Database.SqlQuery<int>(sql).Single());
             }
             else
@@ -3460,6 +3475,8 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<string>(sql);
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_New, "Y", 1, 0);
+
                 return Ok(list);
 
             }
@@ -3487,6 +3504,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -4355,6 +4373,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ErjDoc, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -4988,6 +5007,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<string>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Acc, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -5016,6 +5036,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Acc, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -5518,6 +5539,7 @@ namespace ApiKarbord.Controllers.AFI.data
             if (res == "")
             {
                 var list = DBase.DB.Database.SqlQuery<string>(sql).Single();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Mkz, UnitPublic.act_New, "Y", 1, 0);
                 await DBase.DB.SaveChangesAsync();
                 return Ok(list);
             }
@@ -5547,6 +5569,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Mkz, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -5776,6 +5799,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<string>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Opr, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -5804,6 +5828,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Opr, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -5957,6 +5982,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<string>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Arz, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -5985,6 +6011,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Arz, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -6537,6 +6564,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 cmd.Parameters.AddWithValue("@Image", filebyte);
                 cmd.ExecuteNonQuery();
                 connection.Close();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_Edit, "Y", 1, 0);
                 return Ok(1);
             }
             else
@@ -6586,6 +6614,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 cmd.Parameters.AddWithValue("@Code", Code);
                 cmd.Parameters.AddWithValue("@Image", filebyte);
                 cmd.ExecuteNonQuery();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Cust, UnitPublic.act_Edit, "Y", 1, 0);
                 connection.Close();
                 return Ok(1);
             }
@@ -6633,6 +6662,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 //return Ok(DBase.DB.Database.SqlQuery<int>(sql));
                 var list = DBase.DB.Database.SqlQuery<int>(sql);
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Cust, UnitPublic.act_Edit, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -6662,6 +6692,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql);
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Kala, UnitPublic.act_Edit, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -6913,6 +6944,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ZAcc);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ZAcc, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(DBase.DB.Database.SqlQuery<string>(sql));
             }
             else
@@ -6941,6 +6973,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var list = DBase.DB.Database.SqlQuery<int>(sql);
                 await DBase.DB.SaveChangesAsync();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ZAcc, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(list);
             }
             else

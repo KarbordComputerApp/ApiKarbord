@@ -323,7 +323,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), 1, aFI_FDocHi.flagLog, 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_Edit, aFI_FDocHi.flagLog, 1, 0);
                 return Ok(value);
             }
             else
@@ -523,7 +523,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string[] serials = value.Split('@');
                 if (aFI_FDocHi.flagTest != "Y")
                 {
-                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), 2, aFI_FDocHi.flagLog, 1, 0);
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, Convert.ToInt64(serials[0]), UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_New, aFI_FDocHi.flagLog, 1, 0);
                 }
                 return Ok(value);
             }
@@ -563,7 +563,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 3, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, UnitPublic.ModeCodeConnection(ModeCode), UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(1);
             }
             else
@@ -963,6 +963,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         await DBase.DB.SaveChangesAsync();
                         jsonResult.SerialNumber = serialNumber;
                     }
+                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, o.Head.SerialNumber, UnitPublic.ModeCodeConnection(modeCode), UnitPublic.act_New, "Y", 1, 0);
+ 
                     return Ok(jsonResult);
                 }
                 catch (Exception e)
@@ -1189,6 +1191,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             jsonResult.SerialNumber = serialNumber;
                         }
                     }
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, o.Head.SerialNumber, UnitPublic.ModeCodeConnection(modeCode), UnitPublic.act_New, "Y", 1, 0);
+
                     return Ok(jsonResult);
                 }
                 catch (Exception e)

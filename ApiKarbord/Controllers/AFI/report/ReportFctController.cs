@@ -78,6 +78,7 @@ namespace ApiKarbord.Controllers.AFI.report
                     sql += string.Format(" and DocDate <= '{0}' ", FDocRObject.taTarikh);
 
                 var listFDocR = DBase.DB.Database.SqlQuery<Web_FDocR>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, FDocRObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_FDocR_S : UnitPublic.access_FDocR_P, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listFDocR);
             }
             else
@@ -172,6 +173,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 }
 
                 var listTrzFKala = DBase.DB.Database.SqlQuery<Web_TrzFKala>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, TrzFKalaObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFKala_S : UnitPublic.access_TrzFKala_P, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listTrzFKala);
             }
             else
@@ -260,6 +262,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("CGruCode", TrzFCustObject.CGruCode);
 
                 var listTrzFCust = DBase.DB.Database.SqlQuery<Web_TrzFCust>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, TrzFCustObject.ModeCode1.Substring(0, 1) == "S" ? UnitPublic.access_TrzFCust_S : UnitPublic.access_TrzFCust_P, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listTrzFCust);
             }
             else

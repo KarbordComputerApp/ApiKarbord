@@ -132,7 +132,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
+               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_EditBand, "Y", 1, aFI_IDocBi.BandNo ?? 0);
 
 
                 if ((aFI_IDocBi.MjdControl ?? 0) == 0)
@@ -143,6 +144,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                   FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, aFI_IDocBi.SerialNumber);
                     var list = DBase.DB.Database.SqlQuery<Web_IDocB>(sql1);
                     return Ok(list);
+
                 }
                 else
                 {
@@ -293,7 +295,10 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
+               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_NewBand, "Y", 1, bandNo == 0 ? aFI_IDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+
 
                 if ((aFI_IDocBi.MjdControl ?? 0) == 0)
                 {
@@ -366,7 +371,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                                      DeghatR,BandSpec,ArzValue
                                               FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, SerialNumber.ToString());
                 var listFactor = DBase.DB.Database.SqlQuery<Web_IDocB>(sql1);
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, FlagLog, 1, 0);
+
+               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, FlagLog, 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_DeleteBand, "Y", 1, BandNo);
+
 
                 return Ok(listFactor);
             }
@@ -485,7 +493,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 5, "Y", 1, 0);
+               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 5, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok("OK");
             }
             else
@@ -547,7 +556,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, InOut == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 1, "Y", 1, 0);
+                // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, InOut == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 1, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, InOut == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_NewBand, "Y", 1, 0);
+
                 return Ok("OK");
             }
             else

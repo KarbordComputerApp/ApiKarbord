@@ -164,6 +164,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string sql1 = string.Format(@"SELECT * FROM {0}.dbo.Web_ADocB WHERE SerialNumber = {1}", dBName, aFI_ADocBi.SerialNumber);
                     var listSanad = DBase.DB.Database.SqlQuery<Web_ADocB>(sql1);
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, UnitPublic.access_ADOC, UnitPublic.act_EditBand, "Y", 1, aFI_ADocBi.BandNo ?? 0);
                     return Ok(listSanad);
                 }
                 else
@@ -284,6 +285,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         sql = string.Format(@"SELECT * FROM {0}.dbo.Web_ADocB WHERE SerialNumber = {1}", dBName, aFI_ADocBi.SerialNumber);
                         var listSanad = DBase.DB.Database.SqlQuery<Web_ADocB>(sql);
+                        UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_ADocBi.SerialNumber ?? 0, UnitPublic.access_ADOC, UnitPublic.act_NewBand, "Y", 1, bandNo == 0 ? aFI_ADocBi.BandNo ?? 0 : bandNo);
                         return Ok(listSanad);
                     }
                     else
@@ -394,7 +396,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, UnitPublic.access_ADOC, 1, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, UnitPublic.access_ADOC, UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok("OK");
             }
             else
@@ -459,6 +461,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string sql1 = string.Format(@"SELECT * FROM {0}.dbo.Web_ADocB WHERE SerialNumber = {1}", dBName, SerialNumber.ToString());
                     var listSanad = DBase.DB.Database.SqlQuery<Web_ADocB>(sql1);
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_DeleteBand, "Y", 1, BandNo);
                     return Ok(listSanad);
                 }
                 else
@@ -519,7 +522,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, UnitPublic.access_ADOC, 1, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok("OK");
             }
             else

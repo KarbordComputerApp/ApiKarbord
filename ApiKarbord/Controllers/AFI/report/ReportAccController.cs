@@ -78,6 +78,8 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by  SortAccCode";
 
                 var listTrzAcc = DBase.DB.Database.SqlQuery<Web_TrzAcc>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,  UnitPublic.access_TrzAcc, UnitPublic.act_Report, "Y", 1, 0);
+
                 return Ok(listTrzAcc);
             }
             else
@@ -162,6 +164,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by bodytag";
 
                 var listDftr = DBase.DB.Database.SqlQuery<Web_Dftr>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Dftr, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listDftr);
             }
             else
@@ -248,6 +251,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by DocNo,BandNo";
 
                 var listADocR = DBase.DB.Database.SqlQuery<Web_ADocR>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADocR, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listADocR);
             }
             else
@@ -311,6 +315,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by CheckNo,Bank,Shobe";
 
                 var listTChk = DBase.DB.Database.SqlQuery<Web_TChk>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listTChk);
             }
             else
@@ -379,6 +384,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by  SortMkzCode";
 
                 var listAGMkz = DBase.DB.Database.SqlQuery<Web_AGMkz>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_AGMkz, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listAGMkz);
             }
             else
@@ -435,6 +441,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by SortOprCode";
 
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_AGOpr, UnitPublic.act_Report, "Y", 1, 0);
                 var listAGOpr = DBase.DB.Database.SqlQuery<Web_AGOpr>(sql);
                 return Ok(listAGOpr);
             }
@@ -487,6 +494,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += " order by Bank,Shobe";
 
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_TChk, UnitPublic.act_Report, "Y", 1, 0);
                 var listTChk_Sum = DBase.DB.Database.SqlQuery<Web_D_TChk_Sum>(sql);
                 return Ok(listTChk_Sum);
             }

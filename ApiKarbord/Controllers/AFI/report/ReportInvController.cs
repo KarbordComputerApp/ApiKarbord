@@ -133,6 +133,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 }
                 var listTrzI = DBase.DB.Database.SqlQuery<Web_TrzIKala>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_TrzIKala, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listTrzI);
             }
             else
@@ -208,6 +209,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by KalaCode,KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,InvCode,Tag ";
 
                 var listTrzIExf = DBase.DB.Database.SqlQuery<Web_TrzIKalaExf>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_TrzIKalaExf, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listTrzIExf);
             }
             else
@@ -276,6 +278,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " order by DocNo ";
 
                 var listIDocR = DBase.DB.Database.SqlQuery<Web_IDocR>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_IDocR, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listIDocR);
             }
             else
@@ -348,6 +351,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += " ) as a where VAmount1 is not null";
 
                 var listKrdx = DBase.DB.Database.SqlQuery<Web_Krdx>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Krdx, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listKrdx);
             }
             else
@@ -379,6 +383,7 @@ namespace ApiKarbord.Controllers.AFI.report
                     sql += " and mUpdateDate >= CAST('" + Chante_FDoc_MovedObject.updatedate + "' AS DATETIME2)";
 
                 var listChante_FDoc_Moved = DBase.DB.Database.SqlQuery<Web_Chante_FDoc_Moved>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_Chante_FDoc_Moved, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listChante_FDoc_Moved);
             }
             else
@@ -453,6 +458,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 }
 
                 var listTrzIKalaVstr = DBase.DB.Database.SqlQuery<Web_TrzIKalaVstr>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_TrzIKala, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(listTrzIKalaVstr);
             }
             else

@@ -433,6 +433,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             long value = 0;
+            string sql = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -444,7 +445,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-                    string sql = string.Format(CultureInfo.InvariantCulture,
+                    sql = string.Format(CultureInfo.InvariantCulture,
                           @"DECLARE	@return_value int,
 		                            @oSerialNumber bigint
 
@@ -489,8 +490,10 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-
-                var list = DBase.DB.Web_IDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode && c.InvCode == AFI_Move.InvCode);
+                sql = string.Format(CultureInfo.InvariantCulture,
+                           "select * from {0}.dbo.Web_IDocH where SerialNumber = {1} and ModeCode = '{2}' and InvCode = '{3}'",
+                           dBName, value, AFI_Move.ModeCode, AFI_Move.InvCode);
+                var list = DBase.DB.Database.SqlQuery<Web_IDocH>(sql);
                 var listTemp = list.Single();
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, value, listTemp.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, "Y", 1, 0);
                 return Ok(list);
@@ -563,7 +566,9 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 7, "Y", 1, 0);
+                //UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 7, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, AFI_StatusChange.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Edit, "Y", 1, 0);
+
                 return Ok(200);
             }
             else
@@ -585,6 +590,8 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(@"select * from {0}.dbo.Web_IDocP where SerialNumber = {1} order by BandNo", dBName, SerialNumber);
                 var listIDocP = DBase.DB.Database.SqlQuery<Web_IDocP>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Print, "Y", 1, 0);
+
                 return Ok(listIDocP);
             }
             else

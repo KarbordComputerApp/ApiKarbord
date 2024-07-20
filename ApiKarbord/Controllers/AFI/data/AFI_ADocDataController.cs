@@ -384,6 +384,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 sql = String.Format("SELECT * FROM {0}.dbo.Web_ADocH where SerialNumber = {1}", dBName, value);
                 var list = DBase.DB.Database.SqlQuery<Web_ADocH>(sql).ToList();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_Move.SerialNumber ?? 0, UnitPublic.access_ADOC, UnitPublic.act_New, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -443,7 +444,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await DBase.DB.SaveChangesAsync();
                     }
-                    //UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, UnitPublic.access_ADOC, 7, "Y", 1, 0);
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_StatusChange.SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_Edit, "Y", 1, 0);
                     return Ok("200");
                 }
                 catch (Exception)
@@ -473,6 +474,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_Print, "Y", 1, 0);
                 return Ok(DBase.DB.Database.SqlQuery<Web_ADocP>(sql));
             }
             else
@@ -514,6 +516,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();
                 var list = JsonConvert.SerializeObject(result);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(list);
 
             }
@@ -555,6 +558,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_Edit, "Y", 1, 0);
                 return Ok(DBase.DB.Database.SqlQuery<int>(sql));
             }
             else
@@ -605,6 +609,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var result = DBase.DB.Database.SqlQuery<TestADoc_Delete>(sql).ToList();
                 var list = JsonConvert.SerializeObject(result);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -652,6 +657,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();
                 var list = JsonConvert.SerializeObject(result);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(list);
             }
             else
@@ -686,6 +692,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();
                 var list = JsonConvert.SerializeObject(result);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_Report, "Y", 1, 0);
                 return Ok(list);
             }
             else

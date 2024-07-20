@@ -438,16 +438,16 @@ namespace ApiKarbord.Controllers.Unit
                 {
                     var client = new HttpClient();
 
-                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/'{2}'/'{3}'/'{4}'/'{5}'/{6}/'{7}'/{8}/{9}/{10}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, flag, bandNo);
+                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, flag, bandNo);
 
-                    var task = client.GetAsync(address)
-                      .ContinueWith((taskwithresponse) =>
+                    var task = client.GetAsync(address);
+                      /*.ContinueWith((taskwithresponse) =>
                       {
                           var response = taskwithresponse.Result;
                           var jsonString = response.Content.ReadAsStringAsync();
                           jsonString.Wait();
                       });
-                    task.Wait();
+                    task.Wait();*/
                 }
             }
             catch (Exception e)
@@ -455,7 +455,7 @@ namespace ApiKarbord.Controllers.Unit
                 throw;
             }
         }
-
+        
 
 
 
@@ -1642,7 +1642,7 @@ namespace ApiKarbord.Controllers.Unit
             else // delete in table
             {
                 if (userName != "null")
-                { 
+                {
                     var DBase = dataDB.Where(p => p.UserName == userName && p.Password == password).ToList();
                     if (DBase.Count > 0)
                     {

@@ -126,13 +126,14 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await DBase.DB.SaveChangesAsync();
                     }
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), UnitPublic.act_EditBand, "Y", 1, aFI_FDocBi.BandNo ?? 0);
                 }
                 catch (Exception)
                 {
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), 1, aFI_FDocBi.flagLog, 1, 0);
+                //UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), 1, aFI_FDocBi.flagLog, 1, 0);
 
                 if ((aFI_FDocBi.MjdControl ?? 0) == 0)
                 {
@@ -290,13 +291,15 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await DBase.DB.SaveChangesAsync();
                     }
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), UnitPublic.act_NewBand, "Y", 1, bandNo == 0 ? aFI_FDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
+
                 }
                 catch (Exception e)
                 {
                     throw;
                 }
 
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), 1, aFI_FDocBi.flagLog, 1, 0);
+                //UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_FDocBi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocBi.ModeCode), 1, aFI_FDocBi.flagLog, 1, 0);
 
                 if ((aFI_FDocBi.MjdControl ?? 0) == 0)
                 {
@@ -374,6 +377,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         int valueUpdateBand = DBase.DB.Database.SqlQuery<int>(sqlUpdateBand).Single();
                         //await db.SaveChangesAsync();
                     }
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, UnitPublic.act_DeleteBand, "Y", 1, BandNo);
+
                 }
                 catch (Exception e)
                 {
@@ -385,7 +390,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                      LinkYear,LinkProg,BandSpec,ArzValue     
                                               FROM   {0}.dbo.Web_FDocB WHERE SerialNumber = {1}", dBName, SerialNumber.ToString());
                 var listFactor = DBase.DB.Database.SqlQuery<Web_FDocB>(sql1);
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 1, 0);
+                //UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 1, 0);
                 return Ok(listFactor);
             }
             else
@@ -519,7 +524,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, "FDoc", 1, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_FDocBi[0].ModeCode, UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok("OK");
             }
             else
@@ -578,7 +583,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, "FDoc", 1, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ConvertObject.SerialNumber, ConvertObject.ModeCode, UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok("OK");
             }
             else

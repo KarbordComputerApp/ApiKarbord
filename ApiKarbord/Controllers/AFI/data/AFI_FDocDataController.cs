@@ -640,6 +640,9 @@ namespace ApiKarbord.Controllers.AFI.data
                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, value, AFI_Move.ModeCode, 2, "Y", 1, 0);
                 }
 
+
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, AFI_Move.SerialNumber ?? 0, UnitPublic.ModeCodeConnection(AFI_Move.ModeCode), UnitPublic.act_New, "Y", 1, 0);
+
                 return Ok(list);
             }
             else
@@ -729,6 +732,8 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(@"select * from {0}.dbo.Web_FDocP where SerialNumber = {1} order by BandNo", dBName, SerialNumber);
                 var listFDocP = DBase.DB.Database.SqlQuery<Web_FDocP>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, UnitPublic.ModeCodeConnection(ModeCode), UnitPublic.act_Print, "Y", 1, 0);
+
                 return Ok(listFDocP);
             }
             else

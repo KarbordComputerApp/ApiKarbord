@@ -224,6 +224,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await DBase.DB.SaveChangesAsync();
                     }
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, erjDocH.SerialNumber, UnitPublic.access_ErjDoc, UnitPublic.act_Edit, "Y", 1, 0);
+
                 }
                 catch (Exception e)
                 {
@@ -389,6 +391,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     {
                         await DBase.DB.SaveChangesAsync();
                     }
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, ErjSaveDoc_HUObject.SerialNumber, UnitPublic.access_ErjDoc, UnitPublic.act_New, "Y", 1, 0);
+
                 }
                 catch (Exception e)
                 {
@@ -438,7 +442,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, "", 3, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, UnitPublic.access_ErjDoc, UnitPublic.act_Delete, "Y", 1, 0);
                 return Ok(1);
             }
             else
