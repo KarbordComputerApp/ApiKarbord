@@ -2291,6 +2291,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RooneveshtUsers { get; set; }
 
             public string FarayandName { get; set; }
+
+            public string RjHour { get; set; }
         }
 
         public class ErjDocErja
@@ -2348,6 +2350,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public string RjStatus { get; set; }
 
             public int? FarayandCode { get; set; }
+
+            public string RjHour { get; set; }
         }
 
 
@@ -2370,7 +2374,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @RjMhltDate = N'{7}',
                                     @SrMode = {8},
                                     @RjStatus = '{9}',
-                                    @FarayandCode = {10}
+                                    @FarayandCode = {10},
+                                    @RjHour = '{12}'
                             SELECT	@BandNo as N'@BandNo' ",
                         Web_ErjSaveDoc_BSave.SerialNumber,
                         Web_ErjSaveDoc_BSave.BandNo,
@@ -2383,7 +2388,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         Web_ErjSaveDoc_BSave.SrMode,
                         Web_ErjSaveDoc_BSave.RjStatus,
                         Web_ErjSaveDoc_BSave.FarayandCode ?? 0,
-                        dBName
+                        dBName,
+                        Web_ErjSaveDoc_BSave.RjHour
                         );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -2422,6 +2428,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string RjTime { get; set; }
 
+            public string RjHour { get; set; }
         }
 
         // POST: api/Web_Data/ErjSaveDoc_CSave
@@ -2449,7 +2456,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @Natijeh = N'{2}',
 		                            @ToUserCode = N'{3}',
 		                            @RjDate = N'{4}',
-                                    @RjTime = {5}
+                                    @RjTime = {5},
+                                    @RjHour = '{7}'
                                SELECT	@BandNo as N'@BandNo'",
                         item.SerialNumber,
                         item.BandNo,
@@ -2457,7 +2465,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.ToUserCode,
                         item.RjDate,
                         item.RjTime,
-                        dBName);
+                        dBName,
+                        item.RjHour);
                     value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                 }
 
@@ -7407,6 +7416,24 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
+        // GET: api/Web_Data/Time تاریخ سرور
+        [Route("api/Web_Data/Time")]
+        public async Task<IHttpActionResult> GetWeb_Time()
+        {
+            string dBName = UnitDatabase.DatabaseName("Config", "", "");
+
+            string sql = string.Format(@"select cast(Convert(Time(0), GetDate()) as nvarchar(8)) as Time");
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], "Config", "00", UnitPublic.access_View);
+            if (res == "")
+            {
+                return Ok(DBase.DB.Database.SqlQuery<string>(sql));
+            }
+            else
+                return Ok(res);
+        }
 
     }
 }
