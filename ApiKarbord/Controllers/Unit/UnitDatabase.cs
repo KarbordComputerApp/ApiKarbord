@@ -441,13 +441,13 @@ namespace ApiKarbord.Controllers.Unit
                     string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, flag, bandNo);
 
                     var task = client.GetAsync(address);
-                      /*.ContinueWith((taskwithresponse) =>
-                      {
-                          var response = taskwithresponse.Result;
-                          var jsonString = response.Content.ReadAsStringAsync();
-                          jsonString.Wait();
-                      });
-                    task.Wait();*/
+                    /*.ContinueWith((taskwithresponse) =>
+                    {
+                        var response = taskwithresponse.Result;
+                        var jsonString = response.Content.ReadAsStringAsync();
+                        jsonString.Wait();
+                    });
+                  task.Wait();*/
                 }
             }
             catch (Exception e)
@@ -455,7 +455,7 @@ namespace ApiKarbord.Controllers.Unit
                 throw;
             }
         }
-        
+
 
 
 
@@ -1703,9 +1703,9 @@ namespace ApiKarbord.Controllers.Unit
             bool groupAccess = false;
             bool accept = false;
 
-            if (ace == "web1" || ace == "WEB1") ace = UnitPublic.Web1;
-            if (ace == "web2" || ace == "WEB2") ace = UnitPublic.Web2;
-            if (ace == "web8" || ace == "WEB8") ace = UnitPublic.Web8;
+            if (ace.ToUpper() == "WEB1") ace = UnitPublic.Web1;
+            if (ace.ToUpper() == "WEB2") ace = UnitPublic.Web2;
+            if (ace.ToUpper() == "WEB8") ace = UnitPublic.Web8;
 
 
 

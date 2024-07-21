@@ -40,7 +40,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
         // GET: api/IDocData/IDocH تعداد رکورد ها    
-        [Route("api /IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/Count")]
+        [Route("api/IDocData/IDocH/{ace}/{sal}/{group}/{InOut}/Count")]
         public async Task<IHttpActionResult> GetWeb_IDocHCount(string ace, string sal, string group, byte InOut)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);

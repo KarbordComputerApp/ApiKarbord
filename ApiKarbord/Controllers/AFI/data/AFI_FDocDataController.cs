@@ -573,6 +573,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             long value = 0;
+            string sql = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -584,7 +585,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 try
                 {
-                    string sql = string.Format(CultureInfo.InvariantCulture,
+                    sql = string.Format(CultureInfo.InvariantCulture,
                           @"DECLARE	@return_value int,
 		                            @oSerialNumber bigint
 
@@ -631,7 +632,9 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-                var list = DBase.DB.Web_FDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode);
+                sql = string.Format("select * from {0}.dbo.Web_FDocH where  SerialNumber = {1} and ModeCode = '{2}'", dBName, value, AFI_Move.ModeCode);
+                var list = DBase.DB.Database.SqlQuery<Web_FDocH>(sql).ToList();
+                //var list = DBase.DB.Web_FDocH.Where(c => c.SerialNumber == value && c.ModeCode == AFI_Move.ModeCode);
                 if (AFI_Move.MoveMode == 0) // copy
                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, value, AFI_Move.ModeCode, 2, "Y", 1, 0);
                 else if (AFI_Move.MoveMode == 1) // move
