@@ -802,7 +802,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     // save doch temp
-                    sql = UnitPublic.CreateSql_FDocH(o.Head, true);
+                    sql = UnitPublic.CreateSql_FDocH(o.Head, true,dBName);
                     var value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value_H))
                     {
@@ -815,7 +815,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     foreach (var item in o.Bands)
                     {
                         i++;
-                        sql = UnitPublic.CreateSql_FDocB(item, serialNumber_Test, i);
+                        sql = UnitPublic.CreateSql_FDocB(item, serialNumber_Test, i, dBName);
                         DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }
                     await DBase.DB.SaveChangesAsync();
@@ -859,7 +859,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         calcAddmin.MP10 = o.Head.AddMinPrice10;
                         calcAddmin.flagTest = "Y";
 
-                        sql = UnitPublic.CreateSql_CalcAddmin(calcAddmin);
+                        sql = UnitPublic.CreateSql_CalcAddmin(calcAddmin, dBName);
 
                         var value_CalcAddmin = DBase.DB.Database.SqlQuery<AddMin>(sql).ToList();
 
@@ -908,11 +908,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         tashimBand.MP9 = value_CalcAddmin[8].Mode == 0 ? value_CalcAddmin[8].AddMinPrice : value_CalcAddmin[8].AddMinPrice * -1;
                         tashimBand.MP10 = value_CalcAddmin[9].Mode == 0 ? value_CalcAddmin[9].AddMinPrice : value_CalcAddmin[9].AddMinPrice * -1;
 
-                        sql = UnitPublic.CreateSql_TashimBand(tashimBand);
+                        sql = UnitPublic.CreateSql_TashimBand(tashimBand, dBName);
                         int livalue_TashimBandst = DBase.DB.Database.SqlQuery<int>(sql).Single();
 
 
-                        sql = UnitPublic.CreateSql_FDocH(o.Head, false);
+                        sql = UnitPublic.CreateSql_FDocH(o.Head, false, dBName);
 
                         value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                         if (!string.IsNullOrEmpty(value_H))
@@ -1025,7 +1025,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     // save doch temp
-                    sql = UnitPublic.CreateSql_FDocH(o.Head, true);
+                    sql = UnitPublic.CreateSql_FDocH(o.Head, true, dBName);
                     var value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value_H))
                     {
@@ -1038,7 +1038,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     foreach (var item in o.Bands)
                     {
                         i++;
-                        sql = UnitPublic.CreateSql_FDocB(item, serialNumber_Test, i);
+                        sql = UnitPublic.CreateSql_FDocB(item, serialNumber_Test, i, dBName);
                         DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }
                     await DBase.DB.SaveChangesAsync();
@@ -1083,7 +1083,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         calcAddmin.MP10 = o.Head.AddMinPrice10;
                         calcAddmin.flagTest = "Y";
 
-                        sql = UnitPublic.CreateSql_CalcAddmin(calcAddmin);
+                        sql = UnitPublic.CreateSql_CalcAddmin(calcAddmin, dBName);
 
                         var value_CalcAddmin = DBase.DB.Database.SqlQuery<AddMin>(sql).ToList();
                         jsonResult.DataAddmin = value_CalcAddmin;
@@ -1115,8 +1115,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
                         jsonResult.TotalValue = o.Head.TotalValue;
 
-
-                        string Deghat = DBase.DB.Database.SqlQuery<string>("select Param from {0}.dbo.Web_Param where [key] = 'Deghat'", dBName).Single();
+                        sql = string.Format("select Param from {0}.dbo.Web_Param where [key] = 'Deghat'", dBName);
+                        string Deghat = DBase.DB.Database.SqlQuery<string>(sql).Single();
 
                         TashimBand tashimBand = new TashimBand();
                         tashimBand.ForSale = true;
@@ -1133,13 +1133,13 @@ namespace ApiKarbord.Controllers.AFI.data
                         tashimBand.MP9 = value_CalcAddmin[8].AddMinPrice;
                         tashimBand.MP10 = value_CalcAddmin[9].AddMinPrice;
 
-                        sql = UnitPublic.CreateSql_TashimBand(tashimBand);
+                        sql = UnitPublic.CreateSql_TashimBand(tashimBand, dBName);
                         int livalue_TashimBandst = DBase.DB.Database.SqlQuery<int>(sql).Single();
 
                         if (o.Head.flagTest == "false")
                         {
 
-                            sql = UnitPublic.CreateSql_FDocHApp(o.Head, false);
+                            sql = UnitPublic.CreateSql_FDocHApp(o.Head, false, dBName);
 
                             value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                             if (!string.IsNullOrEmpty(value_H))

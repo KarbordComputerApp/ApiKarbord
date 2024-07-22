@@ -555,7 +555,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     // save doch temp
-                    sql = UnitPublic.CreateSql_IDocH(o.Head, true);
+                    sql = UnitPublic.CreateSql_IDocH(o.Head, true, dBName);
                     var value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value_H))
                     {
@@ -568,7 +568,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     foreach (var item in o.Bands)
                     {
                         i++;
-                        sql = UnitPublic.CreateSql_IDocB(item, serialNumber_Test, i);
+                        sql = UnitPublic.CreateSql_IDocB(item, serialNumber_Test, i, dBName);
                         DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }
                     await DBase.DB.SaveChangesAsync();
@@ -585,7 +585,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     if (jsonResult.Status == "Success")
                     {
 
-                        sql = UnitPublic.CreateSql_IDocH(o.Head, false);
+                        sql = UnitPublic.CreateSql_IDocH(o.Head, false, dBName);
 
                         value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                         if (!string.IsNullOrEmpty(value_H))

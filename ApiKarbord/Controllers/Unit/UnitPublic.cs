@@ -20,14 +20,14 @@ namespace ApiKarbord.Controllers.Unit
     {
 
 
-        public static int VerDB = 49;
+        public static int VerDB = 50;
         public static string conString = "";
 
-        public static string titleVer = "API KarbordComputer Test : Ver ";
-        public static int VerNumber = 522;
+        //public static string titleVer = "API KarbordComputer Test : Ver ";
+       // public static int VerNumber = 523;
 
-        //public static string titleVer = "API KarbordComputer : Ver ";
-        //public static int VerNumber = 1034;
+        public static string titleVer = "API KarbordComputer : Ver ";
+        public static int VerNumber = 1035;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
@@ -356,11 +356,11 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static string CreateSql_IDocB(AFI_IDocBi band, long serialNumber, int bandNumber)
+        public static string CreateSql_IDocB(AFI_IDocBi band, long serialNumber, int bandNumber, string dBName)
         {
             string sql = string.Format(CultureInfo.InvariantCulture,
                           @"DECLARE	@return_value int
-                            EXEC	@return_value = [dbo].[Web_SaveIDoc_BI_Temp]
+                            EXEC	@return_value = {34}.[dbo].[Web_SaveIDoc_BI_Temp]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
 		                            @KalaCode = N'{2}',
@@ -429,11 +429,12 @@ namespace ApiKarbord.Controllers.Unit
                             band.KalaExf12,
                             band.KalaExf13,
                             band.KalaExf14,
-                            band.KalaExf15
+                            band.KalaExf15,
+                            dBName
                             );
             return sql;
         }
-        public static string CreateSql_IDocH(AFI_IDocHi head, bool flagTest)
+        public static string CreateSql_IDocH(AFI_IDocHi head, bool flagTest, string dBName)
         {
             string sql = "";
             if (head.SerialNumber == 0 || flagTest == true)
@@ -441,7 +442,7 @@ namespace ApiKarbord.Controllers.Unit
                 sql = string.Format(
                         @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                          EXEC	@return_value = [dbo].[{39}]
+                          EXEC	@return_value = {40}.[dbo].[{39}]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = '{2}' ,
@@ -522,8 +523,8 @@ namespace ApiKarbord.Controllers.Unit
                                         head.Tanzim,
                                         UnitPublic.ConvertTextWebToWin(head.Footer ?? ""),
                                         head.Status,
-                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI"
-
+                                        flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI",
+                                        dBName
                                         );
             }
             else if (head.SerialNumber > 0 && flagTest == false) // update
@@ -531,7 +532,7 @@ namespace ApiKarbord.Controllers.Unit
                 sql = string.Format(
                         @"DECLARE	@return_value nvarchar(50),
 		                            @DocNo_Out int
-                          EXEC	@return_value = [dbo].[Web_SaveIDoc_HU]
+                          EXEC	@return_value = {40}.[dbo].[Web_SaveIDoc_HU]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = '{2}' ,
@@ -613,7 +614,8 @@ namespace ApiKarbord.Controllers.Unit
                                     head.F20,
                                     head.OprCode,
                                     head.MkzCode,
-                                    head.Tanzim);
+                                    head.Tanzim,
+                                    dBName);
             }
             return sql;
         }
@@ -624,12 +626,12 @@ namespace ApiKarbord.Controllers.Unit
 
 
 
-        public static string CreateSql_FDocH(AFI_FDocHi head, bool flagTest)
+        public static string CreateSql_FDocH(AFI_FDocHi head, bool flagTest, string dBName)
         {
             string sql = string.Format(
                           @"DECLARE	@return_value nvarchar(50),
 		                  @DocNo_Out nvarchar(50)
-                          EXEC	@return_value = [dbo].[{0}]
+                          EXEC	@return_value = {76}.[dbo].[{0}]
 		                            @DOCNOMODE = {1},
 		                            @INSERTMODE = {2},
 		                            @MODECODE = {3} ,
@@ -782,13 +784,14 @@ namespace ApiKarbord.Controllers.Unit
                                              head.CustZipCode,
                                              head.CustTel,
                                              head.CustMobile,
-                                             head.Status
+                                             head.Status,
+                                             dBName
                                              );
             return sql;
         }
 
 
-        public static string CreateSql_FDocHApp(AFI_FDocHi head, bool flagTest)
+        public static string CreateSql_FDocHApp(AFI_FDocHi head, bool flagTest, string dBName)
         {
             string sql = "";
             if (head.SerialNumber == 0)
@@ -796,7 +799,7 @@ namespace ApiKarbord.Controllers.Unit
                 sql = string.Format(
                           @"DECLARE	@return_value nvarchar(50),
 		                  @DocNo_Out nvarchar(50)
-                          EXEC	@return_value = [dbo].[{0}]
+                          EXEC	@return_value = {76}.[dbo].[{0}]
 		                            @DOCNOMODE = {1},
 		                            @INSERTMODE = {2},
 		                            @MODECODE = {3} ,
@@ -949,7 +952,8 @@ namespace ApiKarbord.Controllers.Unit
                                                  head.CustZipCode,
                                                  head.CustTel,
                                                  head.CustMobile,
-                                                 head.Status
+                                                 head.Status,
+                                                 dBName
                                                  );
             }
             else
@@ -957,7 +961,7 @@ namespace ApiKarbord.Controllers.Unit
                 sql = string.Format(CultureInfo.InvariantCulture,
                          @"DECLARE	@return_value nvarchar(50),
                                     @DocNo_Out nvarchar(50)
-                          EXEC	@return_value = [dbo].[Web_SaveFDoc_HU]
+                          EXEC	@return_value = {75}.[dbo].[Web_SaveFDoc_HU]
 		                            @DOCNOMODE = {0},
 		                            @INSERTMODE = {1},
 		                            @MODECODE = {2} ,
@@ -1109,16 +1113,17 @@ namespace ApiKarbord.Controllers.Unit
                             head.CustPlack,
                             head.CustZipCode,
                             head.CustTel,
-                            head.CustMobile);
+                            head.CustMobile,
+                            dBName);
             }
             return sql;
         }
 
 
 
-        public static string CreateSql_CalcAddmin(CalcAddmin calcAddmin)
+        public static string CreateSql_CalcAddmin(CalcAddmin calcAddmin, string dBName)
         {
-            string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	[dbo].[{24}]
+            string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	{25}.[dbo].[{24}]
 		                                            @serialNumber = {0},
                                                     @forSale = {1},
                                                     @custCode = '{2}',
@@ -1168,16 +1173,17 @@ namespace ApiKarbord.Controllers.Unit
                                     calcAddmin.MP8 ?? 0,
                                     calcAddmin.MP9 ?? 0,
                                     calcAddmin.MP10 ?? 0,
-                                    calcAddmin.flagTest == "Y" ? "Web_Calc_AddMin_EffPrice_Temp" : "Web_Calc_AddMin_EffPrice"
+                                    calcAddmin.flagTest == "Y" ? "Web_Calc_AddMin_EffPrice_Temp" : "Web_Calc_AddMin_EffPrice",
+                                    dBName
                                     );
             return sql;
 
         }
 
-        public static string CreateSql_TashimBand(TashimBand tashimBand)
+        public static string CreateSql_TashimBand(TashimBand tashimBand, string dBName)
         {
             string sql = string.Format(CultureInfo.InvariantCulture, @"DECLARE	@return_value int
-                             EXEC	@return_value = [dbo].[Web_FDocB_CalcAddMin_Temp]
+                             EXEC	@return_value = {13}.[dbo].[Web_FDocB_CalcAddMin_Temp]
                                          @serialNumber = {0},
                                          @deghat = {1},
                                          @forSale = {2},
@@ -1204,17 +1210,18 @@ namespace ApiKarbord.Controllers.Unit
                               tashimBand.MP7,
                               tashimBand.MP8,
                               tashimBand.MP9,
-                              tashimBand.MP10);
+                              tashimBand.MP10,
+                              dBName);
             return sql;
 
         }
 
 
-        public static string CreateSql_FDocB(AFI_FDocBi band, long serialNumber, int bandNumber)
+        public static string CreateSql_FDocB(AFI_FDocBi band, long serialNumber, int bandNumber, string dBName)
         {
             string sql = string.Format(CultureInfo.InvariantCulture,
                           @"DECLARE	@return_value int 
-                            EXEC	@return_value = [dbo].[Web_SaveFDoc_BI_Temp]
+                            EXEC	@return_value = {41}.[dbo].[Web_SaveFDoc_BI_Temp]
 		                            @SerialNumber = {0},
 		                            @BandNo = {1},
 		                            @KalaCode = N'{2}',
@@ -1298,7 +1305,8 @@ namespace ApiKarbord.Controllers.Unit
                         band.KalaExf12,
                         band.KalaExf13,
                         band.KalaExf14,
-                        band.KalaExf15
+                        band.KalaExf15,
+                        dBName
                         );
             return sql;
         }

@@ -571,30 +571,31 @@ namespace ApiKarbord.Controllers.Unit
                                 //    dbChange = new ApiModel(conStr);
                                 //}
 
-                                string dBName1 = files[2] == "Ace2.txt" ? "Config" : files[2];
+                                string conStr = String.Format(@"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                DBase.SqlServerName, dbName, DBase.SqlUserName, DBase.SqlPassword);
+                                var DB = new ApiModel(conStr);
+
                                 string sql;
                                 int oldVer = 0;
                                 try
                                 {
                                     try
                                     {
-                                        sql = string.Format(@"if (select count(id) from {0}.dbo.web_version) = 0
+                                        sql = string.Format(@"if (select count(id) from dbo.web_version) = 0
                                                                 select 0
                                                               else
-                                                                select ver from {0}.dbo.web_version where id = (select max(id) from {0}.dbo.web_version)",
-                                                                dBName1);
-                                        oldVer = DBase.DB.Database.SqlQuery<int>(sql).Single();
+                                                                select ver from dbo.web_version where id = (select max(id) from dbo.web_version)");
+                                        oldVer = DB.Database.SqlQuery<int>(sql).Single();
                                     }
                                     catch (Exception e)
                                     {
-                                        sql = string.Format(@"CREATE TABLE {0}.[dbo].[Web_Version] (
+                                        sql = string.Format(@"CREATE TABLE [dbo].[Web_Version] (
                                                                      [id][int] IDENTITY(1,1) NOT NULL,
                                                                      [ver] [int] NULL,
                                                                      [datever] [datetime] NULL,
                                                              CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
-                                                             ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]",
-                                                             dBName1);
-                                        DBase.DB.Database.ExecuteSqlCommand(sql);
+                                                             ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]");
+                                        DB.Database.ExecuteSqlCommand(sql);
                                     }
 
                                     sw.WriteLine("oldVer : " + oldVer.ToString());
@@ -618,7 +619,7 @@ namespace ApiKarbord.Controllers.Unit
                                         {
 
                                             sw.WriteLine("Start Delete All");
-                                            sql = string.Format(@" use [{0}] 
+                                            sql = string.Format(@"
                                                          --IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_Flds') drop table Web_Flds
                                                          --IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_T_ADOCB') drop table Web_T_ADOCB
                                                          --IF EXISTS(SELECT * FROM sys.tables WHERE SCHEMA_NAME(schema_id) LIKE 'dbo' AND name like 'Web_T_ADOCH') drop table Web_T_ADOCH
@@ -650,21 +651,20 @@ namespace ApiKarbord.Controllers.Unit
                                                       end
                                                       close cur
                                                       deallocate cur
-                                                 ", dBName1);
-                                            DBase.DB.Database.ExecuteSqlCommand(sql);
+                                                 ");
+                                            DB.Database.ExecuteSqlCommand(sql);
                                             sw.WriteLine("End Delete All");
 
                                             sw.WriteLine("Start Delete Temp Table");
-                                            sql = string.Format(@"use [{0}] 
+                                            sql = string.Format(@"
                                                                 if  exists (select * from sysobjects where id = object_id(N'Web_T_ADocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_ADocB end
                                                                 if  exists (select * from sysobjects where id = object_id(N'Web_T_ADocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_ADocH end
                                                                 if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocB end
                                                                 if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocF') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocF end
                                                                 if  exists (select * from sysobjects where id = object_id(N'Web_T_FDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_FDocH end
                                                                 if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocB') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocB end
-                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocH end ",
-                                                                dBName1);
-                                            DBase.DB.Database.ExecuteSqlCommand(sql);
+                                                                if  exists (select * from sysobjects where id = object_id(N'Web_T_IDocH') and OBJECTPROPERTY(id, N'IsUserTable') = 1) begin Drop Table Web_T_IDocH end ");
+                                            DB.Database.ExecuteSqlCommand(sql);
                                             sw.WriteLine("End Delete Temp Table");
                                         }
 
@@ -693,7 +693,7 @@ namespace ApiKarbord.Controllers.Unit
                                                     sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());
                                                     sql = sql.Replace("yyyz", (int.Parse(salTemp) + 1).ToString());
 
-                                                    DBase.DB.Database.ExecuteSqlCommand(sql);
+                                                    DB.Database.ExecuteSqlCommand(sql);
                                                     //sw.WriteLine("ExecuteSqlCommand OK : " + sql);
                                                     sql = "";
                                                 }
@@ -709,8 +709,8 @@ namespace ApiKarbord.Controllers.Unit
 
                                         if (isCols == true)
                                         {
-                                            sql = string.Format(@"INSERT INTO {0}.dbo.Web_Version (ver,datever) VALUES ({1},SYSDATETIME())", dBName1, UnitPublic.VerDB);
-                                            DBase.DB.Database.ExecuteSqlCommand(sql);
+                                            sql = string.Format(@"INSERT INTO dbo.Web_Version (ver,datever) VALUES ({0},SYSDATETIME())",  UnitPublic.VerDB);
+                                            DB.Database.ExecuteSqlCommand(sql);
                                             sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
                                             MyIniConfig.Write("Change", "0");
                                             MyIniConfig.Write("EndDate", DateTime.Now.ToString());
@@ -775,11 +775,11 @@ namespace ApiKarbord.Controllers.Unit
             MyIniLog.Write("srart :", "OK");
             try
             {
+                var DBase = UnitDatabase.dataDB.Where(p => p.UserName == srv_User && p.Password == srv_Pass).Single();
 
-                var list = model.First();
                 string dbName;
 
-                lockNumber = list.lockNumber;
+                lockNumber = DBase.lockNumber;
 
                 MyIniLog.Write("lockNumber :", lockNumber.ToString());
                 MyIniLog.Write("addressFileSql :", addressFileSql);
@@ -843,7 +843,7 @@ namespace ApiKarbord.Controllers.Unit
 
                         sw.WriteLine("dbName : " + dbName);
 
-                        var DBase = UnitDatabase.dataDB.Where(p => p.UserName == srv_User && p.Password == srv_Pass).Single();
+                        
                         //string connectionString = CreateConnectionString(srv_User, srv_Pass, device, "", "Master", sal, group, 0, "", 0, 0);
                         string connectionString = String.Format(
                                         @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
@@ -863,6 +863,9 @@ namespace ApiKarbord.Controllers.Unit
                         //string conStr = CreateConnectionString(srv_User, srv_Pass, device, "", "Config", sal, group, 0, "", 0, 0);
                         if (res == "")
                         {
+                            string conStr = String.Format(@"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                                  DBase.SqlServerName, dbName, DBase.SqlUserName, DBase.SqlPassword);
+                            var DB = new ApiModel(conStr);
                             string sql;
                             int oldVer = 0;
                             try
@@ -874,7 +877,7 @@ namespace ApiKarbord.Controllers.Unit
                                                               else
                                                                 select ver from {0}.dbo.web_version where id = (select max(id) from {0}.dbo.web_version)",
                                                                 dbName);
-                                    oldVer = DBase.DB.Database.SqlQuery<int>(sql).Single();
+                                    oldVer = DB.Database.SqlQuery<int>(sql).Single();
                                 }
                                 catch (Exception e)
                                 {
@@ -885,7 +888,7 @@ namespace ApiKarbord.Controllers.Unit
                                                              CONSTRAINT[PK_web_ver] PRIMARY KEY CLUSTERED
                                                              ([id] ASC)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]) ON[PRIMARY]",
                                                              dbName);
-                                    DBase.DB.Database.ExecuteSqlCommand(sql);
+                                    DB.Database.ExecuteSqlCommand(sql);
                                 }
 
                                 sw.WriteLine("oldVer : " + oldVer.ToString());
@@ -905,7 +908,7 @@ namespace ApiKarbord.Controllers.Unit
                                     if (isCols == false)
                                     {
                                         sw.WriteLine("Start Delete All");
-                                        sql = string.Format(@" use [{0}]
+                                        sql = string.Format(@"
                                                     DECLARE @sql VARCHAR(MAX) = '' 
                                                     DECLARE @crlf VARCHAR(2) = CHAR(13) + CHAR(10)
                                                     SELECT @sql = @sql + 'DROP VIEW ' + QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(v.name) +';' + @crlf
@@ -935,7 +938,7 @@ namespace ApiKarbord.Controllers.Unit
                                                       close cur
                                                       deallocate cur
                                                  ", dbName);
-                                        DBase.DB.Database.ExecuteSqlCommand(sql);
+                                        DB.Database.ExecuteSqlCommand(sql);
                                         sw.WriteLine("End Delete All");
 
                                     }
@@ -981,7 +984,8 @@ namespace ApiKarbord.Controllers.Unit
                                                 {
                                                     sql = func[0] + func[1] + func[2] + func[3] + func[4] + func[5] + func[6] + func[7] + func[8] + func[9] + func[10] + func[11] + func[12] + func[13];
                                                 }
-                                                DBase.DB.Database.ExecuteSqlCommand(sql);
+
+                                                DB.Database.ExecuteSqlCommand(sql);
                                                 sw.WriteLine("ExecuteSqlCommand OK : " + sql);
                                                 sql = "";
                                             }
@@ -998,7 +1002,7 @@ namespace ApiKarbord.Controllers.Unit
                                     if (isCols == false)
                                     {
                                         sql = string.Format(@"INSERT INTO {0}.dbo.Web_Version (ver,datever) VALUES ({1},SYSDATETIME())", dbName, UnitPublic.VerDB);
-                                        DBase.DB.Database.ExecuteSqlCommand(sql);
+                                        DB.Database.ExecuteSqlCommand(sql);
                                         sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
                                         MyIniConfig.Write("Change", "0");
                                         MyIniConfig.Write("EndDate", DateTime.Now.ToString());

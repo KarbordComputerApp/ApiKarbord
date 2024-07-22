@@ -4173,7 +4173,8 @@ namespace ApiKarbord.Controllers.AFI.data
                 var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
                 if ((Change != "1") || (Change == "1" && dataAccount[2] == "ACE" && auto == false))
                 {
-                    return res = UnitDatabase.ChangeDatabaseConfig(dataAccount[2], auto == false ? "1234" : "", dataAccount[0], dataAccount[1], dataAccount[3]);
+                    res = UnitDatabase.ChangeDatabaseConfig(dataAccount[2], auto == false ? "1234" : "", dataAccount[0], dataAccount[1], dataAccount[3]);
+                    return res;
                 }
                 else
                     return "کاربر " + User + " در حال بازسازی اطلاعات است . لطفا منتظر بمانید ";
