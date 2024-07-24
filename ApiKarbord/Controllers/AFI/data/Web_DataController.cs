@@ -572,10 +572,10 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = String.Format("select * from {0}.dbo.Web_KalaPriceB where code = '{1}'", dBName, code);
+            string sql = String.Format("select * from {0}.dbo.Web_KalaPriceB where Code = '{1}' ", dBName, code);
             if (kalacode != "null")
             {
-                sql += " and KalaCode = " + kalacode;
+                sql += String.Format(" and KalaCode = '{0}'", kalacode);
             }
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName == dataAccount[0] && p.Password == dataAccount[1]).Single();
