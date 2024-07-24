@@ -1754,6 +1754,10 @@ namespace ApiKarbord.Controllers.Unit
             if (fullAccess == true) accept = true;
             if (groupAccess == false) accept = false;
 
+            if (dBase.DB.Database.Connection.State == System.Data.ConnectionState.Closed)
+                dBase.DB.Database.Connection.Open();
+
+
             if (accept)
             {
                 return "";
