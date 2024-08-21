@@ -859,7 +859,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql = "";
-            sql = string.Format("select * FROM  {0}.dbo.Web_KalaExf_Inv('{1}') where 1 = 1 ", dBName, KalaExf_InvObject.fieldName);
+            sql = string.Format("select * FROM  {0}.dbo.Web_KalaExfList('{1}') where 1 = 1 ", dBName, KalaExf_InvObject.fieldName);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
@@ -873,6 +873,88 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 return Ok(res);
         }
+
+
+
+        public class KalaExf_Inv_Out
+        {
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+            public string KalaFileNo { get; set; }
+
+            public string KalaState { get; set; }
+
+            public string KalaExf1 { get; set; }
+
+            public string KalaExf2 { get; set; }
+
+            public string KalaExf3 { get; set; }
+
+            public string KalaExf4 { get; set; }
+
+            public string KalaExf5 { get; set; }
+
+            public string KalaExf6 { get; set; }
+
+            public string KalaExf7 { get; set; }
+
+            public string KalaExf8 { get; set; }
+
+            public string KalaExf9 { get; set; }
+
+            public string KalaExf10 { get; set; }
+
+            public string KalaExf11 { get; set; }
+
+            public string KalaExf12 { get; set; }
+
+            public string KalaExf13 { get; set; }
+
+            public string KalaExf14 { get; set; }
+
+            public string KalaExf15 { get; set; }
+
+            public string Spec { get; set; }
+
+            public double? Mjd { get; set; }
+        }
+
+
+        public class KalaExf_Inv_OutObject
+        {
+            public string InvCode { get; set; }
+
+            public string KalaCode { get; set; }
+
+        }
+
+
+        // Post: api/IDocData/KalaExf_Inv_Out لیست ویژگی کالای انبار سند صادره
+        [Route("api/IDocData/KalaExf_Inv_Out/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_KalaExf_Inv_Out(string ace, string sal, string group, KalaExf_Inv_OutObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            string sql = "";
+            sql = string.Format("select * FROM  {0}.dbo.Web_KalaExf_Inv_out where Code = '{1}' ", dBName, d.KalaCode);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+
+            if (res == "")
+            {
+                return Ok(DBase.DB.Database.SqlQuery<KalaExf_Inv_Out>(sql));
+            }
+            else
+                return Ok(res);
+        }
+
+
+
+
 
 
     }

@@ -19,7 +19,6 @@ namespace ApiKarbord.Controllers.Unit
     public class UnitPublic
     {
 
-
         public static int VerDB = 51;
         public static string conString = "";
 
