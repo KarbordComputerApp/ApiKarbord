@@ -7436,5 +7436,50 @@ namespace ApiKarbord.Controllers.AFI.data
                 return Ok(res);
         }
 
+
+
+
+ 
+
+
+        public class SaveExtraFieldListsObject
+        {
+            public string KalaExfName { get; set; }
+
+            public string Code { get; set; }
+
+            public string Name { get; set; }
+
+        }
+
+        [Route("api/Web_Data/SaveExtraFieldLists/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_SaveExtraFieldLists(string ace, string sal, string group, SaveExtraFieldListsObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(@"EXEC	{0}.[dbo].[Web_SaveExtraFieldLists]
+		                                        @KalaExfName = N'{1}',
+		                                        @Code = {2},
+		                                        @Name = N'{3}'",
+                                         dBName,
+                                         d.KalaExfName,
+                                         d.Code,
+                                         d.Name);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
+            {
+                var list = DBase.DB.Database.SqlQuery<bool>(sql).Single();
+                await DBase.DB.SaveChangesAsync();
+                return Ok(list);
+            }
+            else
+                return Ok(res);
+
+       }
+
+
     }
 }
