@@ -842,6 +842,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class KalaExf_Inv
         {
+            public int Code { get; set; }
+
             public string Name { get; set; }
         }
 
