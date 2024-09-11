@@ -7458,7 +7458,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = string.Format(@"EXEC	{0}.[dbo].[Web_SaveExtraFieldLists]
+            string sql = string.Format(@"EXEC	{0}.[dbo].[Web_KalaExfList_Save]
 		                                        @KalaExfName = N'{1}',
 		                                        @Code = {2},
 		                                        @Name = N'{3}'",

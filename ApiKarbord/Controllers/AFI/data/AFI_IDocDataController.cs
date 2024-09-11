@@ -939,7 +939,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql = "";
-            sql = string.Format("select * FROM  {0}.dbo.Web_KalaExf_Inv_out where Code = '{1}' ", dBName, d.KalaCode);
+            sql = string.Format("select * FROM  {0}.dbo.Web_KalaExfList_Out where Code = '{1}' ", dBName, d.KalaCode);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
