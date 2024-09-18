@@ -8,6 +8,8 @@
 
     public class Web_RprtCols
     {
+        public int Radif { get; set; }
+
         public string RprtId { get; set; }
 
         public string UserCode { get; set; }
