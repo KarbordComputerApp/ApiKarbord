@@ -2870,7 +2870,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql;
             if (RprtId == "all")
-                sql = string.Format(@"select  * from {0}.dbo.Web_RprtCols where (UserCode = '{1}' or UserCode = '*Default*)'", dBName, UserCode);
+                sql = string.Format(@"select  * from {0}.dbo.Web_RprtCols where (UserCode = '{1}' or UserCode = '*Default*')", dBName, UserCode);
             else
                 sql = string.Format(@"
                                   if exists (select 1 from {0}.dbo.Web_RprtCols where RprtId = '{1}' and UserCode = '{2}')
@@ -7489,6 +7489,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string ToDate { get; set; }
 
+            public int MainUnit { get; set; }
+
             public string InvCode { get; set; }
 
             public string KalaCode { get; set; }
@@ -7530,44 +7532,9 @@ namespace ApiKarbord.Controllers.AFI.data
 
         public class KalaMjd
         {
+            public double? Amount { get; set; }
 
-            public string KalaCode { get; set; }
-
-            public string KalaFileNo { get; set; }
-
-            public string KalaState { get; set; }
-
-            public string KalaExf1 { get; set; }
-
-            public string KalaExf2 { get; set; }
-
-            public string KalaExf3 { get; set; }
-
-            public string KalaExf4 { get; set; }
-
-            public string KalaExf5 { get; set; }
-
-            public string KalaExf6 { get; set; }
-
-            public string KalaExf7 { get; set; }
-
-            public string KalaExf8 { get; set; }
-
-            public string KalaExf9 { get; set; }
-
-            public string KalaExf10 { get; set; }
-
-            public string KalaExf11 { get; set; }
-
-            public string KalaExf12 { get; set; }
-
-            public string KalaExf13 { get; set; }
-
-            public string KalaExf14 { get; set; }
-
-            public string KalaExf15 { get; set; }
-
-            public double? Amount1 { get; set; }
+            public double? TotalPrice { get; set; }
         }
 
         [Route("api/Web_Data/KalaMjd/{ace}/{sal}/{group}")]
@@ -7576,11 +7543,12 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = string.Format(@"select * from {0}.dbo.Web_KalaMjd('{1}','{2}','{3}','{4}',N'{5}',N'{6}',N'{7}',N'{8}',N'{9}',N'{10}',
-                                                                           N'{11}',N'{12}',N'{13}',N'{14}',N'{15}',N'{16}',N'{17}',N'{18}',N'{19}',N'{20}',N'{21}')",
+            string sql = string.Format(@"select * from {0}.dbo.Web_KalaMjd('{1}','{2}',{3},'{4}','{5}',N'{6}',N'{7}',N'{8}',N'{9}',N'{10}',N'{11}',
+                                                                           N'{12}',N'{13}',N'{14}',N'{15}',N'{16}',N'{17}',N'{18}',N'{19}',N'{20}',N'{21}',N'{22}')",
                                          dBName,
                                          d.FromDate,
                                          d.ToDate,
+                                         d.MainUnit,
                                          d.InvCode,
                                          d.KalaCode,
                                          d.KalaFileNo,
