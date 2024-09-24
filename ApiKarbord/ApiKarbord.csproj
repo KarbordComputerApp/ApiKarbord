@@ -214,6 +214,7 @@
     <Compile Include="Controllers\AFI\data\AFI_IDocDataController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_IDocHiController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_FDocHiController.cs" />
+    <Compile Include="Controllers\AFI\data\AFI_LinkController.cs" />
     <Compile Include="Controllers\AFI\data\ErjDocHController.cs" />
     <Compile Include="Controllers\AFI\data\Web_DataController.cs" />
     <Compile Include="Controllers\AFI\report\ReportAccController.cs" />
@@ -411,6 +412,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
+    <Folder Include="Views\AFI_Link\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ini\GpsConfig.Ini" />

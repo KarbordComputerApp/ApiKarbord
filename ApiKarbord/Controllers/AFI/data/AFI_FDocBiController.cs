@@ -387,7 +387,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,
                                                      KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,
                                                      KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                     LinkYear,LinkProg,BandSpec,ArzValue     
+                                                     LinkYear,LinkProg,BandSpec,ArzValue,InvCode     
                                               FROM   {0}.dbo.Web_FDocB WHERE SerialNumber = {1}", dBName, SerialNumber.ToString());
                 var listFactor = DBase.DB.Database.SqlQuery<Web_FDocB>(sql1);
                 //UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, ModeCode, 1, FlagLog, 1, 0);

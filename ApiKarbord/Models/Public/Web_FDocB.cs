@@ -102,5 +102,7 @@
 
         public string KalaExf15 { get; set; }
 
+        public string InvCode { get; set; }
+
     }
 }
