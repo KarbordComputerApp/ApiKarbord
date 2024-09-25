@@ -178,5 +178,7 @@
         public string CustTel { get; set; }
 
         public string CustMobile { get; set; }
+
+        public byte? SaveInv { get; set; }
     }
 }

@@ -234,6 +234,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @CustZipCode = '{72}',
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
+                                    @SaveInv = {76},
                                     @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = ltrim(@DOCNO_OUT)
                            ",
@@ -312,7 +313,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.CustZipCode,
                             aFI_FDocHi.CustTel,
                             aFI_FDocHi.CustMobile,
-                            dBName
+                            dBName,
+                            aFI_FDocHi.SaveInv
                             );
                     value = DBase.DB.Database.SqlQuery<string>(sql2).Single();
 

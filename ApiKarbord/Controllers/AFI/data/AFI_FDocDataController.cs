@@ -171,7 +171,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F19,
                                        F20, 
                                        UpdateDate,ArzCode,ArzName,ArzRate,
-                                       CustEcoCode,CustMelliCode,CustTel,CustFax,CustMobile,CustEmail,CustCity,CustStreet,CustAlley,CustPlack,CustZipCode,CustAddress,CustOstan,CustShahrestan,CustRegion
+                                       CustEcoCode,CustMelliCode,CustTel,CustFax,CustMobile,CustEmail,CustCity,CustStreet,CustAlley,CustPlack,CustZipCode,CustAddress,CustOstan,CustShahrestan,CustRegion,
+                                       InvSerialNumber, AccSerialNumber                                      
                                        from {0}.dbo.Web_FDocH_F({1},'{2}') where ModeCode = '{3}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        dBName,
                                        0,
@@ -424,7 +425,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,
                                                     KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,
                                                     KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                    LinkYear,LinkProg,BandSpec,ArzValue,InvCode
+                                                    LinkYear,LinkProg,BandSpec,ArzValue,InvCode,InvName
                                              FROM   {0}.dbo.Web_FDocB WHERE SerialNumber = {1}", dBName, serialNumber);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
@@ -474,7 +475,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Discount,Comm,Up_Flag,
                                                      KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,DeghatR,InvSerialNumber,LFctSerialNumber,LinkNumber,
                                                      KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                     LinkYear,LinkProg,BandSpec,ArzValue
+                                                     LinkYear,LinkProg,BandSpec,ArzValue,InvCode,InvName
                                               FROM   {0}.dbo.Web_FDocB WHERE SerialNumber = {1}", dBName, serialnumber);
                 var listFactor = DBase.DB.Database.SqlQuery<Web_FDocB>(sql1);
                 return Ok(listFactor);

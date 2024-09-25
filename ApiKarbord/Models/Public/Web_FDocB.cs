@@ -104,5 +104,7 @@
 
         public string InvCode { get; set; }
 
+        public string InvName { get; set; }
+
     }
 }
