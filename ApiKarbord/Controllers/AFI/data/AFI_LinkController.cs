@@ -26,8 +26,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string TahieShode { get; set; }
 
-            public bool isTest { get; set; }
-
         }
 
 
@@ -57,14 +55,12 @@ namespace ApiKarbord.Controllers.AFI.data
                             @serialNumber = {1} ,
                             @addminMode = {2} ,
                             @userCode = N'{3}' , 
-                            @TahieShode = N'{4}',
-                            @isTest = {5}",
+                            @TahieShode = N'{4}'",
                      dBName,
                      d.SerialNumber,
                      d.AddminMode,
                      dataAccount[2],
-                     d.TahieShode,
-                     d.isTest);
+                     d.TahieShode);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
