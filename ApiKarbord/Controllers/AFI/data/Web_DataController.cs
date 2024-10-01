@@ -7582,5 +7582,36 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+        public class TestInvBandFctObject
+        {
+            public long SerialNumber { get; set; }
+
+        }
+
+        [Route("api/Web_Data/TestInvBandFct/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostTestInvBandFct(string ace, string sal, string group, TestInvBandFctObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(@"SELECT count(SerialNumber) as CounterInv FROM {0}.[dbo].[Web_FDocB] where SerialNumber = {1} and InvCode = ''", dBName,d.SerialNumber);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
+            {
+                var list = DBase.DB.Database.SqlQuery<int>(sql).Single();
+                return Ok(list);
+            }
+            else
+                return Ok(res);
+
+        }
+
+
+
+        
+
+
     }
 }

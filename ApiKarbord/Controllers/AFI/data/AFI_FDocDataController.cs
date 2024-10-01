@@ -172,7 +172,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F20, 
                                        UpdateDate,ArzCode,ArzName,ArzRate,
                                        CustEcoCode,CustMelliCode,CustTel,CustFax,CustMobile,CustEmail,CustCity,CustStreet,CustAlley,CustPlack,CustZipCode,CustAddress,CustOstan,CustShahrestan,CustRegion,
-                                       InvSerialNumber, AccSerialNumber                                      
+                                       InvSerialNumber, AccSerialNumber,AccDocNo                                      
                                        from {0}.dbo.Web_FDocH_F({1},'{2}') where ModeCode = '{3}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        dBName,
                                        0,

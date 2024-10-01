@@ -893,7 +893,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-                        string Deghat = DBase.DB.Database.SqlQuery<string>("select Param from {0}.dbo.Web_Param where [key] = 'Deghat'", dBName).Single();
+                        string Deghat = DBase.DB.Database.SqlQuery<string>(string.Format("select Param from {0}.dbo.Web_Param where [key] = 'Deghat'", dBName)).Single();
 
                         TashimBand tashimBand = new TashimBand();
                         tashimBand.ForSale = true;
@@ -1051,7 +1051,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                                               --@last_SerialNumber = {2},
                                                                               @UserCode = '{3}' ",
                                            dBName,
-                                            serialNumber_Test,
+                                           serialNumber_Test,
                                            0,
                                            dataAccount[2]);
                     var result = DBase.DB.Database.SqlQuery<TestDocB>(sql).ToList();

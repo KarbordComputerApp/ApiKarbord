@@ -216,5 +216,7 @@
         public string InvSerialNumber { get; set; }
 
         public int? AccSerialNumber { get; set; }
+
+        public int? AccDocNo { get; set; }
     }
 }
