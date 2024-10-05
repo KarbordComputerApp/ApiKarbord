@@ -22,8 +22,6 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public long SerialNumber { get; set; }
 
-            public int AddminMode { get; set; }
-
             public string TahieShode { get; set; }
 
         }
@@ -53,12 +51,10 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                      @"EXEC	{0}.[dbo].[Web_LinkFDocADoc] 
                             @serialNumber = {1} ,
-                            @addminMode = {2} ,
-                            @userCode = N'{3}' , 
-                            @TahieShode = N'{4}'",
+                            @userCode = N'{2}' , 
+                            @TahieShode = N'{3}'",
                      dBName,
                      d.SerialNumber,
-                     d.AddminMode,
                      dataAccount[2],
                      d.TahieShode);
 
@@ -133,6 +129,65 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 return Ok(res);
         }
+
+
+
+
+
+        public class LinkIDocADocObject
+        {
+            public long SerialNumber { get; set; }
+
+            public string TahieShode { get; set; }
+
+        }
+
+
+        public class LinkIDocADoc
+        {
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+            public string AccCode { get; set; }
+
+        }
+
+
+
+        [Route("api/Link/LinkIDocADoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_LinkIDocADoc(string ace, string sal, string group, LinkIDocADocObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                     @"EXEC	{0}.[dbo].[Web_LinkIDocADoc] 
+                            @serialNumber = {1} ,
+                            @userCode = N'{2}' , 
+                            @TahieShode = N'{3}'",
+                     dBName,
+                     d.SerialNumber,
+                     dataAccount[2],
+                     d.TahieShode);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
+            if (res == "")
+            {
+                var result = DBase.DB.Database.SqlQuery<LinkIDocADoc>(sql).ToList();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_ADOC, UnitPublic.act_New, "Y", 1, 0);
+                return Ok(result);
+
+            }
+            else
+                return Ok(res);
+        }
+
+
 
 
 
