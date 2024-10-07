@@ -213,7 +213,6 @@
 
         public double? ArzRate { get; set; }
 
-        public string InvSerialNumber { get; set; }
 
         public int? AccSerialNumber { get; set; }
 

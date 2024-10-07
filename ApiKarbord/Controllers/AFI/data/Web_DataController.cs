@@ -7594,7 +7594,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = string.Format(@"SELECT count(SerialNumber) as CounterInv FROM {0}.[dbo].[Web_FDocB] where SerialNumber = {1} and InvCode = ''", dBName,d.SerialNumber);
+            string sql = string.Format(@"SELECT count(SerialNumber) as CounterInv FROM {0}.[dbo].[Web_FDocB] where SerialNumber = {1} and InvCode = ''", dBName, d.SerialNumber);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
@@ -7610,7 +7610,47 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        
+
+        public class IDoc_linkto_FDocObject
+        {
+            public long SerialNumber { get; set; }
+        }
+
+        public class IDoc_linkto_FDoc
+        {
+            public long SerialNumber { get; set; }
+
+            public int? DocNo { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string InvCode { get; set; }
+
+            public int? InOut { get; set; }
+
+        }
+
+
+       // Post: api/Web_Data/IDoc_linkto_FDoc لیست اسناد انبار لینک شده به فاکتور 
+       [Route("api/Web_Data/IDoc_linkto_FDoc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_IDoc_linkto_FDoc(string ace, string sal, string group, IDoc_linkto_FDocObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            string sql = string.Format(CultureInfo.InvariantCulture, @"select * FROM {0}.dbo.Web_IDoc_linkto_FDoc_List({1})",
+                                       dBName, d.SerialNumber);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
+            {
+                return Ok(DBase.DB.Database.SqlQuery<IDoc_linkto_FDoc>(sql));
+            }
+            else
+                return Ok(res);
+        }
+
 
 
     }
