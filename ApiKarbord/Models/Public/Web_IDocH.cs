@@ -173,9 +173,9 @@
 
         public double? ArzRate { get; set; }
 
-        public int? AccSerialNumber { get; set; }
+        public long? AccSerialNumber { get; set; }
 
-        public int? AccDocNo { get; set; }
+        public long? AccDocNo { get; set; }
 
 
         /*[Key]

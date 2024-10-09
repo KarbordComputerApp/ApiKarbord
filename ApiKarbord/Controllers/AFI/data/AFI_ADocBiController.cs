@@ -76,6 +76,11 @@ namespace ApiKarbord.Controllers.AFI.data
             public double? Amount { get; set; }
 
             public byte? MjdControl { get; set; }
+
+            public long? LinkSerialNumber { get; set; }
+
+            public string LinkProg { get; set; }
+
         }
 
         // PUT: api/AFI_ADocBi/5
@@ -114,6 +119,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzValue = {24},
 		                            @Amount = {25},
                                     @MjdControl = {26},
+                                    @LinkSerialNumber = {28},
+                                    @LinkProg = '{29}',
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_ADocBi.SerialNumber,
@@ -143,7 +150,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.arzValue ?? 0,
                         aFI_ADocBi.Amount ?? 0,
                         aFI_ADocBi.MjdControl ?? 0,
-                        dBName
+                        dBName,
+                        aFI_ADocBi.LinkSerialNumber ?? 0,
+                        aFI_ADocBi.LinkProg
                         );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -242,6 +251,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzValue = {24},
 		                            @Amount = {25},
 		                            @MjdControl = {26},
+                                    @LinkSerialNumber = {28},
+                                    @LinkProg = '{29}',
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_ADocBi.SerialNumber,
@@ -271,7 +282,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.arzValue ?? 0,
                         aFI_ADocBi.Amount ?? 0,
                         aFI_ADocBi.MjdControl ?? 0,
-                        dBName
+                        dBName,
+                        aFI_ADocBi.LinkSerialNumber ?? 0,
+                        aFI_ADocBi.LinkProg
                         );
                     string value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (value == "")
@@ -357,7 +370,9 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzCode = '{22}',
 		                            @ArzRate = {23},
 		                            @ArzValue = {24},
-                                    @Amount = {26}
+                                    @Amount = {26},
+                                    @LinkSerialNumber = {28},
+                                    @LinkProg = '{29}'
                              SELECT	'Return Value' = @return_value",
                         serialNumber,
                         i,
@@ -386,7 +401,10 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.arzValue ?? 0,
                         item.flagTest == "Y" ? "Web_SaveADoc_BI_Temp" : "Web_SaveADoc_BI",
                         item.Amount ?? 0,
-                        dBName);
+                        dBName,
+                        item.LinkSerialNumber ?? 0,
+                        item.LinkProg);
+
                         value = DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }
                     await DBase.DB.SaveChangesAsync();

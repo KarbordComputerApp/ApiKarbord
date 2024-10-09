@@ -165,5 +165,11 @@
 
 
         public string AccCompleteName { get; set; }
+
+        public string LinkProg { get; set; }
+
+        public int? LinkSerialNumber { get; set; }
+
+
     }
 }
