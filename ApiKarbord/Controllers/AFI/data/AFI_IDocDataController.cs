@@ -273,7 +273,7 @@ namespace ApiKarbord.Controllers.AFI.data
             {
                 string sql = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
                                                     KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                    DeghatR,BandSpec,ArzValue
+                                                    DeghatR,BandSpec,ArzValue,LinkBandNo,LinkSerialNumber,LinkYear,LinkProg
                                              FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, serialNumber);
                 var listIDocB = DBase.DB.Database.SqlQuery<Web_IDocB>(sql);
                 return Ok(listIDocB);
@@ -321,7 +321,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
                                                      KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                     DeghatR,BandSpec,ArzValue
+                                                     DeghatR,BandSpec,ArzValue,LinkBandNo,LinkSerialNumber,LinkYear,LinkProg
                                               FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, serialnumber);
                 var listIDocB = DBase.DB.Database.SqlQuery<Web_IDocB>(sql1);
                 return Ok(listIDocB);

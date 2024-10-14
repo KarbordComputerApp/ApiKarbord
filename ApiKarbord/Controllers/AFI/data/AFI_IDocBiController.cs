@@ -81,6 +81,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @KalaExf13 = N'{33}',
                                     @KalaExf14 = N'{34}',
                                     @KalaExf15 = N'{35}',
+                                    @LinkSerialNumber = {37},
+                                    @LinkYear = {38},
+                                    @LinkBandNo = {39},
+                                    @LinkProg = '{40}',
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_IDocBi.SerialNumber,
@@ -119,7 +123,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.KalaExf13,
                         aFI_IDocBi.KalaExf14,
                         aFI_IDocBi.KalaExf15,
-                        dBName
+                        dBName,
+                        aFI_IDocBi.LinkSerialNumber ?? 0,
+                        aFI_IDocBi.LinkYear ?? 0,
+                        aFI_IDocBi.LinkBandNo ?? 0,
+                        aFI_IDocBi.LinkProg ?? ""
                         );
                     value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (value == "")
@@ -132,7 +140,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
+
+                // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_EditBand, "Y", 1, aFI_IDocBi.BandNo ?? 0);
 
 
@@ -140,8 +149,9 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
                                                          KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                         DeghatR,BandSpec,ArzValue
+                                                         DeghatR,BandSpec,ArzValue,LinkBandNo,LinkSerialNumber,LinkYear,LinkProg
                                                   FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, aFI_IDocBi.SerialNumber);
+
                     var list = DBase.DB.Database.SqlQuery<Web_IDocB>(sql1);
                     return Ok(list);
 
@@ -245,6 +255,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @KalaExf13 = N'{32}',
                                     @KalaExf14 = N'{33}',
                                     @KalaExf15 = N'{34}',
+                                    @LinkSerialNumber = {36},
+                                    @LinkYear = {37},
+                                    @LinkBandNo = {38},
+                                    @LinkProg = '{39}',
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_IDocBi.SerialNumber,
@@ -282,7 +296,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_IDocBi.KalaExf13,
                         aFI_IDocBi.KalaExf14,
                         aFI_IDocBi.KalaExf15,
-                        dBName
+                        dBName,
+                        aFI_IDocBi.LinkSerialNumber ?? 0,
+                        aFI_IDocBi.LinkYear ?? 0,
+                        aFI_IDocBi.LinkBandNo ?? 0,
+                        aFI_IDocBi.LinkProg ?? ""
                         );
                     value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (value == "")
@@ -295,7 +313,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
+                // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, aFI_IDocBi.flagLog, 1, 0);
 
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocBi.SerialNumber, aFI_IDocBi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_NewBand, "Y", 1, bandNo == 0 ? aFI_IDocBi.BandNo ?? 0 : Convert.ToInt32(bandNo));
 
@@ -304,7 +322,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
                                                          KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                         DeghatR,BandSpec,ArzValue
+                                                         DeghatR,BandSpec,ArzValue,LinkBandNo,LinkSerialNumber,LinkYear,LinkProg
                                                   FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, aFI_IDocBi.SerialNumber);
                     var list = DBase.DB.Database.SqlQuery<Web_IDocB>(sql1);
                     return Ok(list);
@@ -368,11 +386,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 string sql1 = string.Format(@"SELECT SerialNumber,BandNo,KalaCode,KalaName,MainUnit,MainUnitName,Amount1,Amount2,Amount3,UnitPrice,TotalPrice,Comm,Up_Flag,KalaDeghatR1,KalaDeghatR2,KalaDeghatR3,KalaDeghatM1,KalaDeghatM2,KalaDeghatM3,
                                                      KalaFileNo,KalaState,KalaExf1,KalaExf2,KalaExf3,KalaExf4,KalaExf5,KalaExf6,KalaExf7,KalaExf8,KalaExf9,KalaExf10,KalaExf11,KalaExf12,KalaExf13,KalaExf14,KalaExf15,
-                                                     DeghatR,BandSpec,ArzValue
+                                                     DeghatR,BandSpec,ArzValue,LinkBandNo,LinkSerialNumber,LinkYear,LinkProg
                                               FROM   {0}.dbo.Web_IDocB WHERE SerialNumber = {1}", dBName, SerialNumber.ToString());
                 var listFactor = DBase.DB.Database.SqlQuery<Web_IDocB>(sql1);
 
-               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, FlagLog, 1, 0);
+                // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 2, FlagLog, 1, 0);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, SerialNumber, InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_DeleteBand, "Y", 1, BandNo);
 
 
@@ -445,7 +463,11 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @KalaExf12 = N'{30}',
                                     @KalaExf13 = N'{31}',
                                     @KalaExf14 = N'{32}',
-                                    @KalaExf15 = N'{33}'
+                                    @KalaExf15 = N'{33}',
+                                    @LinkSerialNumber = {35},
+                                    @LinkYear = {35},
+                                    @LinkBandNo = {36},
+                                    @LinkProg = '{37}'
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
@@ -482,7 +504,11 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.KalaExf13,
                         item.KalaExf14,
                         item.KalaExf15,
-                        dBName
+                        dBName,
+                        item.LinkSerialNumber ?? 0,
+                        item.LinkYear ?? 0,
+                        item.LinkBandNo ?? 0,
+                        item.LinkProg ?? ""
                         );
                         value = DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }
@@ -493,7 +519,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     throw;
                 }
-               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 5, "Y", 1, 0);
+                // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 5, "Y", 1, 0);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, serialNumber, AFI_IDocBi[0].InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_NewBand, "Y", 1, 0);
                 return Ok("OK");
             }

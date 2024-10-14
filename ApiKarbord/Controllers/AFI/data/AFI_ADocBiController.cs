@@ -81,6 +81,10 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string LinkProg { get; set; }
 
+            public int LinkYear { get; set; }
+
+            public int LinkBandNo { get; set; }
+
         }
 
         // PUT: api/AFI_ADocBi/5
@@ -121,6 +125,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @MjdControl = {26},
                                     @LinkSerialNumber = {28},
                                     @LinkProg = '{29}',
+                                    @LinkYear = {30},
+                                    @LinkBandNo = {31},
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_ADocBi.SerialNumber,
@@ -152,7 +158,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.MjdControl ?? 0,
                         dBName,
                         aFI_ADocBi.LinkSerialNumber ?? 0,
-                        aFI_ADocBi.LinkProg
+                        aFI_ADocBi.LinkProg,
+                        aFI_ADocBi.LinkYear,
+                        aFI_ADocBi.LinkBandNo
                         );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -253,6 +261,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @MjdControl = {26},
                                     @LinkSerialNumber = {28},
                                     @LinkProg = '{29}',
+                                    @LinkYear = {30},
+                                    @LinkBandNo = {31},
                                     @outputSt = @outputSt OUTPUT
                              SELECT	@outputSt as outputSt",
                         aFI_ADocBi.SerialNumber,
@@ -284,7 +294,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_ADocBi.MjdControl ?? 0,
                         dBName,
                         aFI_ADocBi.LinkSerialNumber ?? 0,
-                        aFI_ADocBi.LinkProg
+                        aFI_ADocBi.LinkProg, 
+                        aFI_ADocBi.LinkYear,
+                        aFI_ADocBi.LinkBandNo
                         );
                     string value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (value == "")
@@ -372,7 +384,9 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @ArzValue = {24},
                                     @Amount = {26},
                                     @LinkSerialNumber = {28},
-                                    @LinkProg = '{29}'
+                                    @LinkProg = '{29}',
+                                    @LinkYear = {30},
+                                    @LinkBandNo = {31}
                              SELECT	'Return Value' = @return_value",
                         serialNumber,
                         i,
@@ -403,7 +417,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         item.Amount ?? 0,
                         dBName,
                         item.LinkSerialNumber ?? 0,
-                        item.LinkProg);
+                        item.LinkProg,
+                        item.LinkYear,
+                        item.LinkBandNo);
 
                         value = DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }

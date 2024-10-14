@@ -55,17 +55,6 @@
 
         public byte? DeghatR { get; set; }
 
-
-        public long? LFctSerialNumber { get; set; }
-
-        public long? InvSerialNumber { get; set; }
-
-        public long? LinkNumber { get; set; }
-
-        public Int16? LinkYear { get; set; }
-
-        public string LinkProg { get; set; }
-
         public double? ArzValue { get; set; }
 
         public string KalaFileNo { get; set; }
@@ -105,6 +94,19 @@
         public string InvCode { get; set; }
 
         public string InvName { get; set; }
+
+        public long? LFctSerialNumber { get; set; }
+
+        public long? InvSerialNumber { get; set; }
+
+        public long? LinkNumber { get; set; }
+
+        public Int16? LinkYear { get; set; }
+
+        public int? LinkBandNo { get; set; }
+
+        public string LinkProg { get; set; }
+
 
     }
 }

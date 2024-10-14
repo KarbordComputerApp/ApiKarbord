@@ -56,6 +56,8 @@
 
         public string LinkProg { get; set; }
 
+        public int? LinkBandNo { get; set; }
+
         public string ArzCode { get; set; }
 
         public double? ArzRate { get; set; }

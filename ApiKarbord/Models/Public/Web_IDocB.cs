@@ -89,5 +89,13 @@
 
         public string KalaExf15 { get; set; }
 
+        public int? LinkBandNo { get; set; }
+
+        public long? LinkSerialNumber { get; set; }
+
+        public Int16? LinkYear { get; set; }
+
+        public string LinkProg { get; set; }
+
     }
 }

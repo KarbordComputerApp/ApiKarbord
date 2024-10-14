@@ -170,6 +170,10 @@
 
         public int? LinkSerialNumber { get; set; }
 
+        public int? LinkBandNo { get; set; }
+
+        public Int16? LinkYear { get; set; }
+
 
     }
 }
