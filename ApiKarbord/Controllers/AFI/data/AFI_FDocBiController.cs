@@ -494,7 +494,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @KalaExf13 = N'{38}',
                                     @KalaExf14 = N'{39}',
                                     @KalaExf15 = N'{40}',
-                                    @LinkBandNo = {42},
+                                    @LinkBandNo = {42}
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
