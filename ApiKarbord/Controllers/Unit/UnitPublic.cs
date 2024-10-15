@@ -393,7 +393,11 @@ namespace ApiKarbord.Controllers.Unit
                                     @KalaExf12 = N'{30}',
                                     @KalaExf13 = N'{31}',
                                     @KalaExf14 = N'{32}',
-                                    @KalaExf15 = N'{33}'
+                                    @KalaExf15 = N'{33}',
+                                    @LinkSerialNumber = {35},
+                                    @LinkYear = {35},
+                                    @LinkBandNo = {36},
+                                    @LinkProg = '{37}'
                             SELECT	'Return Value' = @return_value",
                             serialNumber,
                             bandNumber,
@@ -429,7 +433,11 @@ namespace ApiKarbord.Controllers.Unit
                             band.KalaExf13,
                             band.KalaExf14,
                             band.KalaExf15,
-                            dBName
+                            dBName,
+                            band.LinkSerialNumber ?? 0,
+                            band.LinkYear ?? 0,
+                            band.LinkBandNo ?? 0,
+                            band.LinkProg ?? ""
                             );
             return sql;
         }
@@ -1261,7 +1269,8 @@ namespace ApiKarbord.Controllers.Unit
                                     @KalaExf12 = N'{37}',
                                     @KalaExf13 = N'{38}',
                                     @KalaExf14 = N'{39}',
-                                    @KalaExf15 = N'{40}'
+                                    @KalaExf15 = N'{40}',
+                                    @LinkBandNo = {42}
                             SELECT	'Return Value' = @return_value
                             ",
                         serialNumber,
@@ -1305,7 +1314,8 @@ namespace ApiKarbord.Controllers.Unit
                         band.KalaExf13,
                         band.KalaExf14,
                         band.KalaExf15,
-                        dBName
+                        dBName,
+                        band.LinkBandNo ?? 0
                         );
             return sql;
         }
