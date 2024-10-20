@@ -314,7 +314,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.CustTel,
                             aFI_FDocHi.CustMobile,
                             dBName,
-                            aFI_FDocHi.SaveInv
+                            aFI_FDocHi.SaveInv ?? 1
                             );
                     value = DBase.DB.Database.SqlQuery<string>(sql2).Single();
 
