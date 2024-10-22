@@ -17,10 +17,7 @@
 
         public long? SortAccCode { get; set; }
 
-
         public string AccCode { get; set; }
-
-
 
         public string AccName { get; set; }
 
