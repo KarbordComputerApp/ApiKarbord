@@ -141,5 +141,7 @@
 
         public int? AccDocNo { get; set; }
 
+        public string FctReg { get; set; }
+
     }
 }

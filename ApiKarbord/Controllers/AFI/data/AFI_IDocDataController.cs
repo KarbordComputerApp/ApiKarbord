@@ -189,7 +189,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlOstan,
                                        ThvlShahrestan,
                                        ThvlEcoCode,
-                                       ThvlMelliCode,ArzCode,ArzName,ArzRate, AccSerialNumber, AccDocNo
+                                       ThvlMelliCode,ArzCode,ArzName,ArzRate, AccSerialNumber, AccDocNo,FctReg
                                        from {0}.dbo.Web_IDocH_F(3,'{1}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo) and (@ModeCode = ''  or ModeCode = @ModeCode)   ", dBName, IDocHMinObject.user);
 
 

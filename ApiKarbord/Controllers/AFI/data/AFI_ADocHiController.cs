@@ -226,8 +226,6 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string Tasvib { get; set; }
 
-            public string TahieShode { get; set; }
-
             public string Status { get; set; }
 
             public string Spec { get; set; }
@@ -301,38 +299,37 @@ namespace ApiKarbord.Controllers.AFI.data
 
             sql = string.Format(
                  @" DECLARE	@return_value nvarchar(50)
-                            EXEC	@return_value = {31}.[dbo].[Web_SaveADoc_HU]
+                            EXEC	@return_value = {30}.[dbo].[Web_SaveADoc_HU]
 		                            @SerialNumber = {0},
 		                            @ModeCode = '{1}',
 		                            @DocNo = {2},
 		                            @DocDate = '{3}',
 		                            @BranchCode = {4},
 		                            @UserCode = '{5}',
-		                            @TahieShode = '{6}',
-		                            @Status = N'{7}',
-		                            @Spec = N'{8}',
-		                            @Footer = N'{9}',
-		                            @F01 = N'{10}',
-		                            @F02 = N'{11}',
-		                            @F03 = N'{12}',
-		                            @F04 = N'{13}',
-		                            @F05 = N'{14}',
-		                            @F06 = N'{15}',
-		                            @F07 = N'{16}',
-		                            @F08 = N'{17}',
-		                            @F09 = N'{18}',
-		                            @F10 = N'{19}',
-		                            @F11 = N'{20}',
-		                            @F12 = N'{21}',
-		                            @F13 = N'{22}',
-		                            @F14 = N'{23}',
-		                            @F15 = N'{24}',
-		                            @F16 = N'{25}',
-		                            @F17 = N'{26}',
-		                            @F18 = N'{27}',
-		                            @F19 = N'{28}',
-		                            @F20 = N'{29}',
-		                            @Tanzim = '{30}'
+		                            @Status = N'{6}',
+		                            @Spec = N'{7}',
+		                            @Footer = N'{8}',
+		                            @F01 = N'{9}',
+		                            @F02 = N'{10}',
+		                            @F03 = N'{11}',
+		                            @F04 = N'{12}',
+		                            @F05 = N'{13}',
+		                            @F06 = N'{14}',
+		                            @F07 = N'{15}',
+		                            @F08 = N'{16}',
+		                            @F09 = N'{17}',
+		                            @F10 = N'{18}',
+		                            @F11 = N'{19}',
+		                            @F12 = N'{20}',
+		                            @F13 = N'{21}',
+		                            @F14 = N'{22}',
+		                            @F15 = N'{23}',
+		                            @F16 = N'{24}',
+		                            @F17 = N'{25}',
+		                            @F18 = N'{26}',
+		                            @F19 = N'{27}',
+		                            @F20 = N'{28}',
+		                            @Tanzim = '{29}'
                             SELECT	'Return Value' = @return_value",
                     AFI_ADocHi_u.SerialNumber,
                     AFI_ADocHi_u.ModeCode,
@@ -343,7 +340,6 @@ namespace ApiKarbord.Controllers.AFI.data
                     //AFI_ADocHi_u.Tanzim,
                     //AFI_ADocHi_u.Taeed == "null" ? "" : AFI_ADocHi_u.Taeed,
                     //AFI_ADocHi_u.Tasvib,
-                    AFI_ADocHi_u.TahieShode,
                     AFI_ADocHi_u.Status,
                     AFI_ADocHi_u.Spec,
                     UnitPublic.ConvertTextWebToWin(AFI_ADocHi_u.Footer ?? ""),
