@@ -179,7 +179,8 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
             if (res == "")
             {
-                return Ok(DBase.DB.Database.SqlQuery<Web_ADocB>(sql));
+                var list = DBase.DB.Database.SqlQuery<Web_ADocB>(sql);
+                return Ok(list);
             }
             else
                 return Ok(res);

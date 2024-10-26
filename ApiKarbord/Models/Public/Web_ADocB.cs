@@ -168,7 +168,7 @@
 
         public string LinkProg { get; set; }
 
-        public int? LinkSerialNumber { get; set; }
+        public long? LinkSerialNumber { get; set; }
 
         public int? LinkBandNo { get; set; }
 
