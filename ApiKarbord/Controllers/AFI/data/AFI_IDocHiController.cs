@@ -638,7 +638,7 @@ namespace ApiKarbord.Controllers.AFI.data
                         {
                             sql = string.Format(CultureInfo.InvariantCulture,
                                       @"DECLARE	@return_value int
-                                    EXEC	@return_value = {0}.[dbo].[Web_LinkFDocIDoc]
+                                    EXEC	@return_value = {0}.[dbo].[Web_LinkFDocIDoc_Plugin]
 		                                    @FCTserial = '{1}',
 		                                    @INVserial = '{2}'
                                     SELECT	'Return Value' = @return_value",

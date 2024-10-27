@@ -108,7 +108,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string sql = string.Format(CultureInfo.InvariantCulture,
-                     @"EXEC	{0}.[dbo].[Web_LinkFDocIDoc_New] 
+                     @"EXEC	{0}.[dbo].[Web_LinkFDocIDoc] 
                             @serialNumber = {1} ,
                             @userCode = N'{2}' , 
                             @TahieShode = N'{3}' ",
