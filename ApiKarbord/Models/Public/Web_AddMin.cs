@@ -15,7 +15,7 @@
 
         public int? Mode { get; set; }
 
-        public bool? Auto { get; set; }
+        public byte? Auto { get; set; }
 
         public bool ForSale { get; set; }
 
