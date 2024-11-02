@@ -7653,5 +7653,38 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+
+        public class TestCustEtebarObject
+        {
+            public byte Mode { get; set; }
+
+            public string CustCode { get; set; }
+
+            public double Value { get; set; }
+        }
+
+     
+        // Post: api/Web_Data/TestCustEtebar لیست اسناد انبار لینک شده به فاکتور 
+        [Route("api/Web_Data/TestCustEtebar/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_TestCustEtebar(string ace, string sal, string group, TestCustEtebarObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            string sql = string.Format(CultureInfo.InvariantCulture, @"select {0}.dbo.Web_TestCustEtebar({1},'{2}',{3})",
+                                       dBName, d.Mode,d.CustCode,d.Value);
+
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
+            {
+                var value = DBase.DB.Database.SqlQuery<double>(sql).Single();
+                return Ok(value);
+            }
+            else
+                return Ok(res);
+        }
+
+
     }
 }
