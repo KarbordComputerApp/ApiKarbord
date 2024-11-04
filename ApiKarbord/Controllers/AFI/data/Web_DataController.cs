@@ -7594,7 +7594,11 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = string.Format(@"SELECT count(SerialNumber) as CounterInv FROM {0}.[dbo].[Web_FDocB] where SerialNumber = {1} and InvCode = ''", dBName, d.SerialNumber);
+            string sql = "";
+            if (ace.ToUpper() == "WEB8")
+                sql = string.Format(@"SELECT count(SerialNumber) as CounterInv FROM {0}.[dbo].[Web_FDocB] where SerialNumber = {1} and InvCode = ''", dBName, d.SerialNumber);
+            else if (ace.ToUpper() == "WEB1")
+                sql = string.Format(@"SELECT cast(iif(InvCode = '',1 , 0) as int) as CounterInv FROM {0}.[dbo].[Web_FDoch] where  SerialNumber = {1} ", dBName, d.SerialNumber);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
@@ -7631,8 +7635,8 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-       // Post: api/Web_Data/IDoc_linkto_FDoc لیست اسناد انبار لینک شده به فاکتور 
-       [Route("api/Web_Data/IDoc_linkto_FDoc/{ace}/{sal}/{group}")]
+        // Post: api/Web_Data/IDoc_linkto_FDoc لیست اسناد انبار لینک شده به فاکتور 
+        [Route("api/Web_Data/IDoc_linkto_FDoc/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_IDoc_linkto_FDoc(string ace, string sal, string group, IDoc_linkto_FDocObject d)
         {
@@ -7663,7 +7667,7 @@ namespace ApiKarbord.Controllers.AFI.data
             public double Value { get; set; }
         }
 
-     
+
         // Post: api/Web_Data/TestCustEtebar لیست اسناد انبار لینک شده به فاکتور 
         [Route("api/Web_Data/TestCustEtebar/{ace}/{sal}/{group}")]
         [ResponseType(typeof(void))]
@@ -7671,7 +7675,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql = string.Format(CultureInfo.InvariantCulture, @"select {0}.dbo.Web_TestCustEtebar({1},'{2}',{3})",
-                                       dBName, d.Mode,d.CustCode,d.Value);
+                                       dBName, d.Mode, d.CustCode, d.Value);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
