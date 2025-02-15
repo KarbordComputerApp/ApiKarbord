@@ -26,7 +26,7 @@ namespace ApiKarbord.Controllers.Unit
         //public static int VerNumber = 524;
 
         public static string titleVer = "API KarbordComputer : Ver ";
-        public static int VerNumber = 1038;
+        public static int VerNumber = 1039;
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
@@ -68,6 +68,7 @@ namespace ApiKarbord.Controllers.Unit
         public const string access_IIDOC = "IIDOC";
         public const string access_IODOC = "IODOC";
         public const string access_TrzAcc = "TrzAcc";
+        public const string access_GrdZAcc = "GrdZAcc";
         public const string access_Dftr = "Dftr";
         public const string access_ADocR = "ADocR";
         public const string access_TChk = "TChk";
@@ -96,6 +97,7 @@ namespace ApiKarbord.Controllers.Unit
         public const string access_Erja_Resive = "Erja_Resive";
         public const string access_Erja_Send = "Erja_Send";
         public const string access_Chante_FDoc_Moved = "Chante_FDoc_Moved";
+
 
 
         public const int act_View = 0;

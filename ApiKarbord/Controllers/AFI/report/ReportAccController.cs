@@ -506,5 +506,66 @@ namespace ApiKarbord.Controllers.AFI.report
 
 
 
+        public class GrdZAccObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string ZAccCode { get; set; }
+
+            public string AccCode { get; set; }
+
+        }
+
+        // Post: api/ReportAcc/GrdZAcc گزارش تراز دفاتر
+        // HE_Report_GrdZAcc
+        [Route("api/ReportAcc/GrdZAcc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_GrdZAcc(string ace, string sal, string group, GrdZAccObject GrdZAccObject)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_GrdZAcc);
+            if (res == "")
+            {
+                string oprCode = UnitPublic.SpiltCodeCama(GrdZAccObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(GrdZAccObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(GrdZAccObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  {0}.dbo.Web_GrdZAcc('{1}','{2}','{3}','{4}','{5}','{6}') AS GrdZAcc where 1 = 1 ",
+                          dBName,
+                          GrdZAccObject.azTarikh,
+                          GrdZAccObject.taTarikh,
+                          oprCode,
+                          mkzCode,
+                          aModeCode,
+                          dataAccount[2]
+                          );
+
+                sql += UnitPublic.SpiltCodeLike("ZAccCode", GrdZAccObject.ZAccCode);
+                sql += UnitPublic.SpiltCodeLike("AccCode", GrdZAccObject.AccCode);
+                sql += " order by AccCode";
+
+                var listGrdZAcc = DBase.DB.Database.SqlQuery<Web_GrdZAcc>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_GrdZAcc, UnitPublic.act_Report, "Y", 1, 0);
+
+                return Ok(listGrdZAcc);
+            }
+            else
+                return Ok(res);
+
+        }
+
+
+
     }
 }

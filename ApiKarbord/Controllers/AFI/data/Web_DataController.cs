@@ -709,7 +709,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture, @"EXEC	{25}.[dbo].[{24}]
 		                                            @serialNumber = {0},
                                                     @forSale = {1},
-                                                    @custCode = {2},
+                                                    @custCode = '{2}',
                                                     @TypeJob = {3},                                                    
                                                     @Spec1 = '{4}',
                                                     @Spec2 = '{5}',
@@ -1260,7 +1260,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  union all
                                                  select 'AGMkz' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'AGMkz') as Trs
                                                  union all
-                                                 select 'AGOpr' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'AGOpr') as Trs"
+                                                 select 'AGOpr' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'AGOpr') as Trs
+                                                 union all
+                                                 select 'GrdZAcc' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'GrdZAcc') as Trs"
                                        , dBName, ace, group, user);
 
 
@@ -2869,7 +2871,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql;
-            if (RprtId == "all")
+            if (RprtId == "all") 
                 sql = string.Format(@"select  * from {0}.dbo.Web_RprtCols where (UserCode = '{1}' or UserCode = '*Default*')", dBName, UserCode);
             else
                 sql = string.Format(@"
