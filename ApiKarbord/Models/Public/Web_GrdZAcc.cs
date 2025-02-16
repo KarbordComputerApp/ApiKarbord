@@ -9,6 +9,10 @@
     public class Web_GrdZAcc
     {
 
+        public int Tag { get; set; }
+
+        public int? ZGruCode { get; set; }
+
         public string ZAccCode { get; set; }
 
         public string ZAccName { get; set; }

@@ -522,6 +522,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string AccCode { get; set; }
 
+            public string ZGruCode { get; set; }
+
         }
 
         // Post: api/ReportAcc/GrdZAcc گزارش تراز دفاتر
@@ -541,19 +543,19 @@ namespace ApiKarbord.Controllers.AFI.report
                 string aModeCode = UnitPublic.SpiltCodeCama(GrdZAccObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  {0}.dbo.Web_GrdZAcc('{1}','{2}','{3}','{4}','{5}','{6}') AS GrdZAcc where 1 = 1 ",
+                          @"select * FROM  {0}.dbo.Web_GrdZAcc('{1}','{2}','{3}','{4}','{5}','{6}') AS GrdZAcc where 1 = 1",
                           dBName,
                           GrdZAccObject.azTarikh,
-                          GrdZAccObject.taTarikh,
+                          GrdZAccObject.taTarikh, 
                           oprCode,
                           mkzCode,
                           aModeCode,
                           dataAccount[2]
                           );
-
-                sql += UnitPublic.SpiltCodeLike("ZAccCode", GrdZAccObject.ZAccCode);
+                sql += UnitPublic.SpiltCodeAnd("ZAccCode", GrdZAccObject.ZAccCode);
+                sql += UnitPublic.SpiltCodeLike("ZGruCode", GrdZAccObject.ZGruCode);
                 sql += UnitPublic.SpiltCodeLike("AccCode", GrdZAccObject.AccCode);
-                sql += " order by AccCode";
+                sql += " order by ZAccCode,Tag,AccCode";
 
                 var listGrdZAcc = DBase.DB.Database.SqlQuery<Web_GrdZAcc>(sql);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_GrdZAcc, UnitPublic.act_Report, "Y", 1, 0);
