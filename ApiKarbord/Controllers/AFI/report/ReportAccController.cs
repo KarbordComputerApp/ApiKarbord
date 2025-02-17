@@ -543,7 +543,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string aModeCode = UnitPublic.SpiltCodeCama(GrdZAccObject.AModeCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
-                          @"select * FROM  {0}.dbo.Web_GrdZAcc('{1}','{2}','{3}','{4}','{5}','{6}') AS GrdZAcc where 1 = 1",
+                          @"select Tag,cast(ZGruCode as nvarchar(250)) as ZGruCode,ZAccCode,ZAccName,AccCode,AccName,Bede,Best,MonBede,MonBest,MonTotal FROM  {0}.dbo.Web_GrdZAcc('{1}','{2}','{3}','{4}','{5}','{6}') AS GrdZAcc where 1 = 1",
                           dBName,
                           GrdZAccObject.azTarikh,
                           GrdZAccObject.taTarikh, 
