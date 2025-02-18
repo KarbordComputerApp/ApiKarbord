@@ -471,6 +471,7 @@
     <Content Include="PrintForms\Public\SRFCT-عمومی با شرح" />
     <Content Include="PrintForms\Public\ReportAGMkz-فرم عمومی" />
     <Content Include="PrintForms\Public\ReportAGOpr-فرم عمومی" />
+    <Content Include="PrintForms\Public\ReportGrdZAcc-عمومی" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
