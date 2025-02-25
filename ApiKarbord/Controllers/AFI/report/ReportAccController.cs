@@ -100,6 +100,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string taShomarh { get; set; }
 
+
             public string DispBands { get; set; }
 
             public string JamRooz { get; set; }
