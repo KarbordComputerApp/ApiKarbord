@@ -21,5 +21,7 @@
         public byte? AutoDocNo { get; set; }
 
         public byte? SameNoAllMode { get; set; }
+
+        public int? Ravesh { get; set; }
     }
 }
