@@ -13,6 +13,8 @@ using ApiKarbord.Models;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.Management;
+using System.Collections;
 
 namespace ApiKarbord.Controllers.Unit
 {
@@ -29,11 +31,14 @@ namespace ApiKarbord.Controllers.Unit
         public static int VerNumber = 1039;
 
 
+        public static bool apiByFile = false;   // برای کارگزاری مفید true باشد
+
+
         // Server.MapPath("ini/SqlServerConfig.Ini");
         public static string Appddress; //ادرس نرم افزار
         public static IniFile MyIni;
         public static IniFile MyIniServer;
-               
+
 
         public static List<SelectListItem> free = new List<SelectListItem>();
         public static List<SelectListItem> aceList = new List<SelectListItem>(); //لیست نرم افزار ها
@@ -1365,6 +1370,81 @@ namespace ApiKarbord.Controllers.Unit
             resTest.Data = res;
             return resTest;
         }
+
+
+
+
+
+
+
+        class HardDrive
+        {
+            private string model = null;
+            private string type = null;
+            private string serialNo = null;
+            public string Model
+            {
+                get { return model; }
+                set { model = value; }
+            }
+            public string Type
+            {
+                get { return type; }
+                set { type = value; }
+            }
+            public string SerialNo
+            {
+                get { return serialNo; }
+                set { serialNo = value; }
+            }
+        }
+
+
+
+
+        static public string GetCPU()
+        {
+            var mbs = new ManagementObjectSearcher("Select * From Win32_processor");
+            var mbsList = mbs.Get();
+            foreach (ManagementObject mo in mbsList)
+            {
+                var cpuid = mo["ProcessorID"].ToString();
+                return cpuid;
+            }
+            return "";
+        }
+
+
+        ArrayList hdCollection = new ArrayList();
+
+        static public string GetHdd()
+        {
+            ManagementObjectSearcher searcher = new
+              ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+            foreach (ManagementObject wmi_HD in searcher.Get())
+            {
+                var SerialNumber = wmi_HD["SerialNumber"].ToString();
+                var TotalHeads = wmi_HD["TotalHeads"].ToString();
+                var Model = wmi_HD["Model"].ToString();
+                var Type = wmi_HD["InterfaceType"].ToString();
+                return SerialNumber;
+            }
+            return "";
+        }
+
+
+        static public string EncodeDecodeXor(string Str)
+        {
+            string Hash = "a2$7hjidrTW@/";
+
+            var result = new StringBuilder();
+            for (int c = 0; c < Str.Length; c++)
+                result.Append((char)((uint)Str[c] ^ (uint)Hash[c % Hash.Length]));
+
+            return result.ToString();
+        }
+
+
 
     }
 }

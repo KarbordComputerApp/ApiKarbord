@@ -434,20 +434,24 @@ namespace ApiKarbord.Controllers.Unit
         {
             try
             {
-                if (ins == "Y")
+                if (addressApiAccounting != "")
                 {
-                    var client = new HttpClient();
 
-                    string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, flag, bandNo);
-
-                    var task = client.GetAsync(address);
-                    /*.ContinueWith((taskwithresponse) =>
+                    if (ins == "Y")
                     {
-                        var response = taskwithresponse.Result;
-                        var jsonString = response.Content.ReadAsStringAsync();
-                        jsonString.Wait();
-                    });
-                  task.Wait();*/
+                        var client = new HttpClient();
+
+                        string address = String.Format(addressApiAccounting + "api/Account/Log/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}", userName, password, userKarbord, ace, group, sal, serialNumber, modecode, act, flag, bandNo);
+
+                        var task = client.GetAsync(address);
+                        /*.ContinueWith((taskwithresponse) =>
+                        {
+                            var response = taskwithresponse.Result;
+                            var jsonString = response.Content.ReadAsStringAsync();
+                            jsonString.Wait();
+                        });
+                      task.Wait();*/
+                    }
                 }
             }
             catch (Exception e)
@@ -709,7 +713,7 @@ namespace ApiKarbord.Controllers.Unit
 
                                         if (isCols == true)
                                         {
-                                            sql = string.Format(@"INSERT INTO dbo.Web_Version (ver,datever) VALUES ({0},SYSDATETIME())",  UnitPublic.VerDB);
+                                            sql = string.Format(@"INSERT INTO dbo.Web_Version (ver,datever) VALUES ({0},SYSDATETIME())", UnitPublic.VerDB);
                                             DB.Database.ExecuteSqlCommand(sql);
                                             sw.WriteLine("INSERT New Version : " + UnitPublic.VerDB.ToString());
                                             MyIniConfig.Write("Change", "0");
@@ -805,6 +809,10 @@ namespace ApiKarbord.Controllers.Unit
 
                 string fileLog = addressFileSql + "\\" + lockNumber + "\\Config.txt";
 
+                string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config.ini";
+                IniFile MyIniConfig = new IniFile(IniConfigPath);
+
+
                 MyIniLog.Write("fileLog :", fileLog);
 
                 if (File.Exists(fileLog))
@@ -897,9 +905,7 @@ namespace ApiKarbord.Controllers.Unit
 
                                     if (oldVer < UnitPublic.VerDB || flag == "1234")
                                     {
-                                        string IniConfigPath = addressFileSql + "\\" + lockNumber + "\\Config.ini";
-
-                                        IniFile MyIniConfig = new IniFile(IniConfigPath);
+                                        
 
                                         MyIniConfig.Write("Change", "1");
                                         MyIniConfig.Write("BeginDate", DateTime.Now.ToString());
@@ -1033,6 +1039,11 @@ namespace ApiKarbord.Controllers.Unit
                                     // return "خطا در اتصال به دیتابیس های کاربرد کامپیوتر";
                                     throw;
                                 }
+                                finally
+                                {
+                                    MyIniConfig.Write("Change", "0");
+                                    MyIniConfig.Write("EndDate", DateTime.Now.ToString());
+                                }
                             }
                         }
 
@@ -1054,7 +1065,7 @@ namespace ApiKarbord.Controllers.Unit
             catch (Exception e)
             {
                 MyIniLog.Write("mess :", e.Message);
-               
+
             }
             return "OK";
 
@@ -1537,129 +1548,224 @@ namespace ApiKarbord.Controllers.Unit
         public static List<Access> dataDB = null;
 
 
-        public static void SetDataDB(string userName, string password)
+        public static async void SetDataDB(string userName, string password)
         {
             List<Access> data = new List<Access>();
-            string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}", userName, password);
-            var client = new HttpClient();
-            var task = client.GetAsync(address)
-              .ContinueWith((taskwithresponse) =>
-              {
-                  var response = taskwithresponse.Result;
-                  var jsonString = response.Content.ReadAsStringAsync();
-                  jsonString.Wait();
-                  data = JsonConvert.DeserializeObject<List<Access>>(jsonString.Result);
-              });
-            task.Wait();
-
-            if (data.Count > 0)
+            IniFile MyIniLog = new IniFile(IniLogPath);
+            if (UnitPublic.apiByFile == true)  // not Api Login for mofid       //UnitPublic.apiByFile == true or  addressApiAccounting == ""
             {
-                if (userName != "null")
+                string path = HttpContext.Current.Server.MapPath("~/Content/ini/DataAccount.dat");
+                //MyIniLog.Write("Path Data File", path, "DataFile");
+                string valueStr = "";
+                if (File.Exists(path))
                 {
-                    string conStr = String.Format(@"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                                  data[0].SqlServerName, "Ace_Config", data[0].SqlUserName, data[0].SqlPassword);
-
-                    var DBase = dataDB.Where(p => p.UserName.ToUpper() == userName.ToUpper() && p.Password == password).ToList();
-                    if (DBase.Count == 0) // add new user
+                    try
                     {
-                        dataDB.Add(new Access
+                        StreamReader streamReader = new StreamReader(path, System.Text.Encoding.UTF8);
+                        var readContents = await streamReader.ReadToEndAsync();
+                        streamReader.Close();
+                        readContents = readContents.Substring(0, readContents.Length - 2);
+                        valueStr = UnitPublic.EncodeDecodeXor(readContents);
+                        if (valueStr.Length > 0)
                         {
-                            Id = data[0].Id,
-                            lockNumber = data[0].lockNumber,
-                            CompanyName = data[0].CompanyName,
-                            UserName = data[0].UserName,
-                            Password = data[0].Password,
-                            AddressApi = data[0].AddressApi,
-                            SqlServerName = data[0].SqlServerName,
-                            SqlUserName = data[0].SqlUserName,
-                            SqlPassword = data[0].SqlPassword,
-                            fromDate = data[0].fromDate,
-                            toDate = data[0].toDate,
-                            userCount = data[0].userCount,
-                            AFI1_Group = data[0].AFI1_Group,
-                            AFI1_Access = data[0].AFI1_Access,
-                            AFI8_Group = data[0].AFI8_Group,
-                            AFI8_Access = data[0].AFI8_Access,
-                            ERJ_Group = data[0].ERJ_Group,
-                            ERJ_Access = data[0].ERJ_Access,
-                            active = data[0].active,
-                            ProgName = data[0].ProgName,
-                            Fct_or_Inv = data[0].Fct_or_Inv,
-                            multilang = data[0].multilang,
-                            logoutmin = data[0].logoutmin,
-                            AddressApiPos = data[0].AddressApiPos,
-                            IsApp = data[0].IsApp,
-                            IsWeb = data[0].IsWeb,
-                            IsApi = data[0].IsApi,
-                            WhereKala = data[0].WhereKala,
-                            WhereCust = data[0].WhereCust,
-                            WhereAcc = data[0].WhereAcc,
-                            WhereThvl = data[0].WhereThvl,
-                            SettingApp = data[0].SettingApp,
-                            Spec = data[0].Spec,
-                            DB = new ApiModel(conStr),
-                        });
+                            var item = valueStr.Split(',');
+                            string serialCpu_File = item[27];
+                            string serialHdd_File = item[28];
+
+                          
+                            var serialCpu = UnitPublic.GetCPU();
+                            var serialHdd = UnitPublic.GetHdd();
+
+                            if (serialCpu_File == serialCpu && serialHdd_File == serialHdd)
+                            {
+                                MyIniLog.Write("Read Data File id", "true", "DataFile");
+
+                                string conStr = String.Format(@"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                      item[7], "Ace_Config", item[8], item[9]);
+
+                                var a = new Access
+                                {
+                                    Id = 0,
+                                    lockNumber = item[0],
+                                    CompanyName = item[1],
+                                    UserName = item[2],
+                                    Password = item[3],
+                                    AddressApi = item[10],
+                                    SqlServerName = item[7],
+                                    SqlUserName = item[8],
+                                    SqlPassword = item[9],
+                                    fromDate = item[4],
+                                    toDate = item[5],
+                                    userCount = Convert.ToByte(item[6]),
+                                    AFI1_Group = item[16],
+                                    AFI1_Access = item[15],
+                                    AFI8_Group = item[20],
+                                    AFI8_Access = item[19],
+                                    ERJ_Group = item[18],
+                                    ERJ_Access = item[17],
+                                    active = item[11] == "true",
+                                    ProgName = item[21],
+                                    Fct_or_Inv = item[22],
+                                    multilang = false,
+                                    logoutmin = 0,
+                                    AddressApiPos = "",
+                                    IsApp = item[12] == "true",
+                                    IsWeb = item[13] == "true",
+                                    IsApi = item[12] == "true",
+                                    WhereKala = item[23],
+                                    WhereCust = item[24],
+                                    WhereAcc = item[25],
+                                    WhereThvl = item[26],
+                                    SettingApp = 0,
+                                    Spec = "",
+                                    DB = new ApiModel(conStr),
+                                };
+
+                                dataDB = new List<Access>();
+                                dataDB.Add(a);
+                            }
+                            else
+                            {
+                                MyIniLog.Write("Read Data File id", "false", "DataFile");
+                            }
+                        }
+
                     }
-                    else // update user
+                    catch (Exception e)
                     {
-                        var item = DBase[0];
-                        item.Id = data[0].Id;
-                        item.lockNumber = data[0].lockNumber;
-                        item.CompanyName = data[0].CompanyName;
-                        item.UserName = data[0].UserName;
-                        item.Password = data[0].Password;
-                        item.AddressApi = data[0].AddressApi;
-                        item.SqlServerName = data[0].SqlServerName;
-                        item.SqlUserName = data[0].SqlUserName;
-                        item.SqlPassword = data[0].SqlPassword;
-                        item.fromDate = data[0].fromDate;
-                        item.toDate = data[0].toDate;
-                        item.userCount = data[0].userCount;
-                        item.AFI1_Group = data[0].AFI1_Group;
-                        item.AFI1_Access = data[0].AFI1_Access;
-                        item.AFI8_Group = data[0].AFI8_Group;
-                        item.AFI8_Access = data[0].AFI8_Access;
-                        item.ERJ_Group = data[0].ERJ_Group;
-                        item.ERJ_Access = data[0].ERJ_Access;
-                        item.active = data[0].active;
-                        item.ProgName = data[0].ProgName;
-                        item.Fct_or_Inv = data[0].Fct_or_Inv;
-                        item.multilang = data[0].multilang;
-                        item.logoutmin = data[0].logoutmin;
-                        item.AddressApiPos = data[0].AddressApiPos;
-                        item.IsApp = data[0].IsApp;
-                        item.IsWeb = data[0].IsWeb;
-                        item.IsApi = data[0].IsApi;
-                        item.WhereKala = data[0].WhereKala;
-                        item.WhereCust = data[0].WhereCust;
-                        item.WhereAcc = data[0].WhereAcc;
-                        item.WhereThvl = data[0].WhereThvl;
-                        item.SettingApp = data[0].SettingApp;
-                        item.Spec = data[0].Spec;
-                        item.DB = new ApiModel(conStr);
+                        MyIniLog.Write("Read Data File", valueStr, "DataFile");
+                        MyIniLog.Write("Exception Read Data File", e.Message.ToString(), "DataFile");
+                        throw;
                     }
                 }
                 else
                 {
-                    dataDB = data;
-                    for (int i = 0; i < dataDB.Count; i++)
-                    {
-                        //dataDB[i].Spec = "";
-                        string conStr = String.Format(
-                                                @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
-                                                dataDB[i].SqlServerName, "Ace_Config", dataDB[i].SqlUserName, dataDB[i].SqlPassword);
-                        dataDB[i].DB = new ApiModel(conStr);
-                    }
+                    MyIniLog.Write("Read Data File", "NotFound", "DataFile");
                 }
             }
-            else // delete in table
+            else
             {
-                if (userName != "null")
+                string address = String.Format(addressApiAccounting + "api/Account/InformationSql/{0}/{1}", userName, password);
+                var client = new HttpClient();
+                var task = client.GetAsync(address)
+                  .ContinueWith((taskwithresponse) =>
+                  {
+                      var response = taskwithresponse.Result;
+                      var jsonString = response.Content.ReadAsStringAsync();
+                      jsonString.Wait();
+                      data = JsonConvert.DeserializeObject<List<Access>>(jsonString.Result);
+                  });
+                task.Wait();
+
+                if (data.Count > 0)
                 {
-                    var DBase = dataDB.Where(p => p.UserName.ToUpper() == userName.ToUpper() && p.Password == password).ToList();
-                    if (DBase.Count > 0)
+                    if (userName != "null")
                     {
-                        dataDB.Remove(DBase.Single());
+                        string conStr = String.Format(@"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                                      data[0].SqlServerName, "Ace_Config", data[0].SqlUserName, data[0].SqlPassword);
+
+                        var DBase = dataDB.Where(p => p.UserName.ToUpper() == userName.ToUpper() && p.Password == password).ToList();
+                        if (DBase.Count == 0) // add new user
+                        {
+                            dataDB.Add(new Access
+                            {
+                                Id = data[0].Id,
+                                lockNumber = data[0].lockNumber,
+                                CompanyName = data[0].CompanyName,
+                                UserName = data[0].UserName,
+                                Password = data[0].Password,
+                                AddressApi = data[0].AddressApi,
+                                SqlServerName = data[0].SqlServerName,
+                                SqlUserName = data[0].SqlUserName,
+                                SqlPassword = data[0].SqlPassword,
+                                fromDate = data[0].fromDate,
+                                toDate = data[0].toDate,
+                                userCount = data[0].userCount,
+                                AFI1_Group = data[0].AFI1_Group,
+                                AFI1_Access = data[0].AFI1_Access,
+                                AFI8_Group = data[0].AFI8_Group,
+                                AFI8_Access = data[0].AFI8_Access,
+                                ERJ_Group = data[0].ERJ_Group,
+                                ERJ_Access = data[0].ERJ_Access,
+                                active = data[0].active,
+                                ProgName = data[0].ProgName,
+                                Fct_or_Inv = data[0].Fct_or_Inv,
+                                multilang = data[0].multilang,
+                                logoutmin = data[0].logoutmin,
+                                AddressApiPos = data[0].AddressApiPos,
+                                IsApp = data[0].IsApp,
+                                IsWeb = data[0].IsWeb,
+                                IsApi = data[0].IsApi,
+                                WhereKala = data[0].WhereKala,
+                                WhereCust = data[0].WhereCust,
+                                WhereAcc = data[0].WhereAcc,
+                                WhereThvl = data[0].WhereThvl,
+                                SettingApp = data[0].SettingApp,
+                                Spec = data[0].Spec,
+                                DB = new ApiModel(conStr),
+                            });
+                        }
+                        else // update user
+                        {
+                            var item = DBase[0];
+                            item.Id = data[0].Id;
+                            item.lockNumber = data[0].lockNumber;
+                            item.CompanyName = data[0].CompanyName;
+                            item.UserName = data[0].UserName;
+                            item.Password = data[0].Password;
+                            item.AddressApi = data[0].AddressApi;
+                            item.SqlServerName = data[0].SqlServerName;
+                            item.SqlUserName = data[0].SqlUserName;
+                            item.SqlPassword = data[0].SqlPassword;
+                            item.fromDate = data[0].fromDate;
+                            item.toDate = data[0].toDate;
+                            item.userCount = data[0].userCount;
+                            item.AFI1_Group = data[0].AFI1_Group;
+                            item.AFI1_Access = data[0].AFI1_Access;
+                            item.AFI8_Group = data[0].AFI8_Group;
+                            item.AFI8_Access = data[0].AFI8_Access;
+                            item.ERJ_Group = data[0].ERJ_Group;
+                            item.ERJ_Access = data[0].ERJ_Access;
+                            item.active = data[0].active;
+                            item.ProgName = data[0].ProgName;
+                            item.Fct_or_Inv = data[0].Fct_or_Inv;
+                            item.multilang = data[0].multilang;
+                            item.logoutmin = data[0].logoutmin;
+                            item.AddressApiPos = data[0].AddressApiPos;
+                            item.IsApp = data[0].IsApp;
+                            item.IsWeb = data[0].IsWeb;
+                            item.IsApi = data[0].IsApi;
+                            item.WhereKala = data[0].WhereKala;
+                            item.WhereCust = data[0].WhereCust;
+                            item.WhereAcc = data[0].WhereAcc;
+                            item.WhereThvl = data[0].WhereThvl;
+                            item.SettingApp = data[0].SettingApp;
+                            item.Spec = data[0].Spec;
+                            item.DB = new ApiModel(conStr);
+                        }
+                    }
+                    else
+                    {
+                        dataDB = data;
+                        for (int i = 0; i < dataDB.Count; i++)
+                        {
+                            //dataDB[i].Spec = "";
+                            string conStr = String.Format(
+                                                    @"data source = {0};initial catalog = {1};persist security info = True;user id = {2}; password = {3};  multipleactiveresultsets = True; application name = EntityFramework",
+                                                    dataDB[i].SqlServerName, "Ace_Config", dataDB[i].SqlUserName, dataDB[i].SqlPassword);
+                            dataDB[i].DB = new ApiModel(conStr);
+                        }
+                    }
+                }
+                else // delete in table
+                {
+                    if (userName != "null")
+                    {
+                        var DBase = dataDB.Where(p => p.UserName.ToUpper() == userName.ToUpper() && p.Password == password).ToList();
+                        if (DBase.Count > 0)
+                        {
+                            dataDB.Remove(DBase.Single());
+                        }
                     }
                 }
             }

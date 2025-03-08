@@ -101,7 +101,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             if (res == "")
             {
-                return Ok(DBase.DB.Database.SqlQuery<Web_Cust>(sql));
+                var list = DBase.DB.Database.SqlQuery<Web_Cust>(sql);
+                return Ok(list);
             }
             else
                 return Ok(res);
@@ -202,7 +203,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             if (res == "")
             {
-                return Ok(DBase.DB.Database.SqlQuery<Web_Cust_Info>(sql));
+                var list = DBase.DB.Database.SqlQuery<Web_Cust_Info>(sql);
+                return Ok(list);
             }
             else
                 return Ok(res);
