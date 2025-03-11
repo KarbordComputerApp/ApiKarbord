@@ -1568,7 +1568,7 @@ namespace ApiKarbord.Controllers.Unit
                         valueStr = UnitPublic.EncodeDecodeXor(readContents);
                         if (valueStr.Length > 0)
                         {
-                            var item = valueStr.Split(',');
+                            var item = valueStr.Split('~');
                             string serialCpu_File = item[27];
                             string serialHdd_File = item[28];
 
