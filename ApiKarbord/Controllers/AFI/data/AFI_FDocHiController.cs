@@ -1196,6 +1196,14 @@ namespace ApiKarbord.Controllers.AFI.data
 
                             jsonResult.SerialNumber = serialNumber;
                         }
+
+                        sql = string.Format(CultureInfo.InvariantCulture,
+                            @"delete   {0}.[dbo].[Web_T_FDocH] where serialnumber = {1} 
+                              delete   {0}.[dbo].[Web_T_FDocB] where serialnumber = {1}
+                              select 0",
+                              dBName,
+                              serialNumber_Test);
+                        DBase.DB.Database.SqlQuery<int>(sql).Single();
                     }
                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, o.Head.SerialNumber, UnitPublic.ModeCodeConnection(modeCode), UnitPublic.act_New, "Y", 1, 0);
 
