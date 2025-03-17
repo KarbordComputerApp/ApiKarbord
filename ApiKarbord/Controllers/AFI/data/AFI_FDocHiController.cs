@@ -530,7 +530,7 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 return Ok(res);
 
-           //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_New, 0);
+            //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, aFI_FDocHi.SerialNumber, UnitPublic.ModeCodeConnection(aFI_FDocHi.ModeCode), UnitPublic.act_New, 0);
         }
 
         // DELETE: api/AFI_FDocHi/5
@@ -802,7 +802,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 try
                 {
                     // save doch temp
-                    sql = UnitPublic.CreateSql_FDocH(o.Head, true,dBName);
+                    sql = UnitPublic.CreateSql_FDocH(o.Head, true, dBName);
                     var value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value_H))
                     {
@@ -943,9 +943,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                 @BandNoFld = '{3}'
                                             SELECT	'Return Value' = @return_value",
                                             dBName,
-                                            ace == UnitPublic.Web1 ? "Afi1IDocB" : "Inv5DocB",
-                                                    serialNumber,
-                                                    ace == UnitPublic.Web1 ? "BandNo" : "Radif");
+                                            ace == UnitPublic.Web1 ? "Afi1FDocB" : "Fct5DocB",
+                                            serialNumber,
+                                            ace == UnitPublic.Web1 ? "BandNo" : "Radif");
                             int valueUpdateBand = DBase.DB.Database.SqlQuery<int>(sql).Single();
                         }
 
@@ -963,8 +963,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         await DBase.DB.SaveChangesAsync();
                         jsonResult.SerialNumber = serialNumber;
                     }
-                     UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, o.Head.SerialNumber, UnitPublic.ModeCodeConnection(modeCode), UnitPublic.act_New, "Y", 1, 0);
- 
+                    UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, o.Head.SerialNumber, UnitPublic.ModeCodeConnection(modeCode), UnitPublic.act_New, "Y", 1, 0);
+
                     return Ok(jsonResult);
                 }
                 catch (Exception e)
@@ -1007,6 +1007,7 @@ namespace ApiKarbord.Controllers.AFI.data
             long serialNumber_Test = 0;
 
             string modeCode = o.Head.ModeCode;
+            bool isUpdate = o.Head.SerialNumber > 0;
 
             byte forSale;
 
@@ -1139,9 +1140,9 @@ namespace ApiKarbord.Controllers.AFI.data
                         if (o.Head.flagTest == "false")
                         {
 
-                            sql = UnitPublic.CreateSql_FDocHApp(o.Head, false, dBName);
+                            var sqlUpdate = UnitPublic.CreateSql_FDocHApp(o.Head, false, dBName);
 
-                            value_H = DBase.DB.Database.SqlQuery<string>(sql).Single();
+                            value_H = DBase.DB.Database.SqlQuery<string>(sqlUpdate).Single();
                             if (!string.IsNullOrEmpty(value_H))
                             {
                                 await DBase.DB.SaveChangesAsync();
@@ -1170,7 +1171,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                                 @BandNoFld = '{3}'
                                             SELECT	'Return Value' = @return_value",
                                             dBName,
-                                            ace == UnitPublic.Web1 ? "Afi1IDocB" : "Inv5DocB",
+                                            ace == UnitPublic.Web1 ? "Afi1FDocB" : "Fct5DocB",
                                             serialNumber,
                                             ace == UnitPublic.Web1 ? "BandNo" : "Radif");
                                 int valueUpdateBand = DBase.DB.Database.SqlQuery<int>(sql).Single();
@@ -1188,6 +1189,11 @@ namespace ApiKarbord.Controllers.AFI.data
                                           serialNumber_Test);
                             DBase.DB.Database.SqlQuery<int>(sql).Single();
                             await DBase.DB.SaveChangesAsync();
+                            if (isUpdate)
+                            {
+                                value_H = DBase.DB.Database.SqlQuery<string>(sqlUpdate).Single();
+                            }
+
                             jsonResult.SerialNumber = serialNumber;
                         }
                     }

@@ -95,7 +95,6 @@ namespace ApiKarbord.Controllers.AFI.data
                 sql += " and (MelliCode = '" + custObject.MelliCode + "' )";
             }
 
-
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
 
