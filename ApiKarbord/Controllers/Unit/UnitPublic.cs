@@ -31,7 +31,7 @@ namespace ApiKarbord.Controllers.Unit
         public static int VerNumber = 1040;
 
 
-        public static bool apiByFile = true;   // برای کارگزاری مفید true باشد
+        public static bool apiByFile = false;   // برای کارگزاری مفید true باشد
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
