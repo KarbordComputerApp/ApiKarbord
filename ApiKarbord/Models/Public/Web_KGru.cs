@@ -20,7 +20,7 @@
 
         public string Spec { get; set; }
 
-        public int Level { get; set; }
+        public int? Level { get; set; }
         
         public string Eghdam { get; set; }
 

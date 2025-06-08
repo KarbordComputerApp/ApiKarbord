@@ -25,13 +25,13 @@ namespace ApiKarbord.Controllers.Unit
         public static string conString = "";
 
         //public static string titleVer = "API KarbordComputer Test : Ver ";
-        //public static int VerNumber = 524;
+        //public static int VerNumber = 525;
 
         public static string titleVer = "API KarbordComputer : Ver ";
         public static int VerNumber = 1040;
 
 
-        public static bool apiByFile = false;   // برای کارگزاری مفید true باشد
+        public static bool apiByFile = true;   // برای کارگزاری مفید true باشد
 
 
         // Server.MapPath("ini/SqlServerConfig.Ini");
@@ -1051,6 +1051,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @CustZipCode = '{72}',
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
+                                    @SaveInv = {76},
                                     @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = ltrim(@DOCNO_OUT)",
                             head.DocNoMode,
@@ -1128,7 +1129,8 @@ namespace ApiKarbord.Controllers.Unit
                             head.CustZipCode,
                             head.CustTel,
                             head.CustMobile,
-                            dBName);
+                            dBName,
+                            head.SaveInv.ToString().ToUpper() == "NULL" ? 1 : head.SaveInv);
             }
             return sql;
         }
@@ -1351,8 +1353,13 @@ namespace ApiKarbord.Controllers.Unit
                 TestDoc band = new TestDoc();
                 band.Mode = item.Test;
                 band.ModeName = item.Test == 1 ? "Warnning" : "Error";
+                string spec = "";
 
-                string spec = FirstMess + item.BandNo + " : ";
+                if (item.BandNo > 0)
+                {
+                    spec = FirstMess + item.BandNo + " : ";
+                }
+                
                 if (item.TestName == "Opr") spec += "پروژه مشخص نشده است";
                 else if (item.TestName == "Mkz") spec += "مرکز هزینه مشخص نشده است";
                 else if (item.TestName == "Arz") spec += "ارز معرفی نشده است";
@@ -1360,6 +1367,7 @@ namespace ApiKarbord.Controllers.Unit
                 else if (item.TestName == "ZeroPrice") spec += "مبلغ صفر است";
                 else if (item.TestName == "Thvl") spec = "تحویل دهنده/گیرنده انتخاب نشده است";
                 else if (item.TestName == "NegativeAmount") spec += "موجودی منفی می شود";
+                else if (item.TestName == "Inv") spec += "انبار انتخاب نشده است";
                 else if (item.TestCap != "") spec = "نامشخص";
                 band.Spec = spec;
                 res.Add(band);

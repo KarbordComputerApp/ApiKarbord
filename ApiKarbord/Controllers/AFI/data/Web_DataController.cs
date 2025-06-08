@@ -122,6 +122,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public bool? WithImage { get; set; }
 
+            public int Mode { get; set; }
+
         }
 
         // Post: api/Web_Data/CustApp لیست اشخاص
@@ -136,7 +138,7 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 sql += "null as CustImage ";
 
-            sql += string.Format("FROM {0}.dbo.Web_Cust_App('{1}') where 1 = 1 ", dBName, Cust_AppObject.ImageDate);
+            sql += string.Format("FROM {0}.dbo.Web_Cust_App({1},'{2}','{3}') where 1 = 1 ", dBName, Cust_AppObject.Mode, Cust_AppObject.UserCode, Cust_AppObject.ImageDate);
 
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -923,6 +925,11 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string VstrCode { get; set; }
 
+            public string InvCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+            public string OprCode { get; set; }
         }
 
         // Post: api/Web_Data/ اطلاعات لاگین   
@@ -934,16 +941,21 @@ namespace ApiKarbord.Controllers.AFI.data
                 LoginObject.pass = "";
             string sql = string.Format(@"DECLARE @return_value int,
                                                  @name nvarchar(100),
-		                                         @vstrcode nvarchar(100)
-
+		                                         @vstrcode nvarchar(100),
+                                                 @InvCode nvarchar(100),
+												 @MkzCode nvarchar(100),
+												 @OprCode nvarchar(100)
                                          EXEC    @return_value = {4}.[dbo].[Web_Login]
                                                  @Code1 = '{0}',
 		                                         @UserCode = N'{1}',
                                                  @Code2 = '{2}',
 		                                         @Psw = N'{3}',
                                                  @Name = @name OUTPUT,
-		                                         @vstrcode = @VstrCode OUTPUT
-                                         SELECT  @return_value as Value, @Name as Name ,  @vstrcode as VstrCode",
+		                                         @vstrcode = @VstrCode OUTPUT,
+		                                         @InvCode = @InvCode OUTPUT,
+		                                         @MkzCode = @MkzCode OUTPUT,
+		                                         @OprCode = @OprCode OUTPUT
+                                         SELECT  @return_value as Value, @Name as Name,  @vstrcode as VstrCode, @InvCode as InvCode, @MkzCode as MkzCode, @OprCode as OprCode ",
                                          LoginObject.param1, LoginObject.userName, LoginObject.param2, LoginObject.pass, dBName);
 
 
@@ -2776,6 +2788,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public bool? withimage { get; set; }
 
+            public int? Level { get; set; }
+
         }
 
         // Post: api/Web_Data/KGru لیست کالا گروه ها
@@ -2790,7 +2804,7 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 sql += "null as KGruImage";
 
-            sql += string.Format(" FROM  {0}.dbo.Web_KGru_F({1},'{2}') ", dBName, kGruObject.Mode, kGruObject.UserCode);
+            sql += string.Format(" FROM  {0}.dbo.Web_KGru_F({1},'{2}',{3}) ", dBName, kGruObject.Mode, kGruObject.UserCode, kGruObject.Level == null ? 0 : kGruObject.Level);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
@@ -2872,7 +2886,7 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             string sql;
-            if (RprtId == "all") 
+            if (RprtId == "all")
                 sql = string.Format(@"select  * from {0}.dbo.Web_RprtCols where (UserCode = '{1}' or UserCode = '*Default*')", dBName, UserCode);
             else
                 sql = string.Format(@"
@@ -3033,6 +3047,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public byte? BranchCode { get; set; }
 
+            public byte? EditMode { get; set; }
+
             public string UserCode { get; set; }
 
             public string Code { get; set; }
@@ -3175,6 +3191,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @Email = N'{41}',
 		                        @Latitude = {42},
 		                        @altitude = {43},
+		                        @EditMode = {45},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode'",
                         aFI_SaveCust.BranchCode ?? 0,
@@ -3221,7 +3238,8 @@ namespace ApiKarbord.Controllers.AFI.data
                         aFI_SaveCust.Email,
                         aFI_SaveCust.Latitude ?? 0,
                         aFI_SaveCust.Altitude ?? 0,
-                        dBName
+                        dBName,
+                        aFI_SaveCust.EditMode ?? 0
                         );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
@@ -3271,6 +3289,8 @@ namespace ApiKarbord.Controllers.AFI.data
         public class AFI_SaveKala
         {
             public byte? BranchCode { get; set; }
+
+            public byte? EditMode { get; set; }
 
             public string UserCode { get; set; }
 
@@ -3427,6 +3447,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F18 = N'{46}',
 		                        @F19 = N'{47}',
 		                        @F20 = N'{48}',
+		                        @EditMode = {50},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                        aFI_SaveKala.BranchCode ?? 0,
@@ -3478,7 +3499,8 @@ namespace ApiKarbord.Controllers.AFI.data
                        aFI_SaveKala.F18,
                        aFI_SaveKala.F19,
                        aFI_SaveKala.F20,
-                       dBName);
+                       dBName,
+                       aFI_SaveKala.EditMode ?? 0);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
@@ -4837,6 +4859,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public byte? BranchCode { get; set; }
 
+            public byte? EditMode { get; set; }
+
             public string UserCode { get; set; }
 
             public string Code { get; set; }
@@ -4968,6 +4992,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F18 = N'{38}',
 		                        @F19 = N'{39}',
 		                        @F20 = N'{40}',
+		                        @EditMode = {42},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                                 aFI_SaveAcc.BranchCode ?? 0,
@@ -5011,7 +5036,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                 aFI_SaveAcc.F18,
                                 aFI_SaveAcc.F19,
                                 aFI_SaveAcc.F20,
-                                dBName);
+                                dBName,
+                                aFI_SaveAcc.EditMode ?? 0
+                                );
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
@@ -5430,6 +5457,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public byte? BranchCode { get; set; }
 
+            public byte? EditMode { get; set; }
+
             public string UserCode { get; set; }
 
             public string Code { get; set; }
@@ -5516,6 +5545,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F19 = N'{23}',
 		                        @F20 = N'{24}',
 		                        @Mode = {25},
+		                        @EditMode = {27},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                                  aFI_SaveMkz.BranchCode ?? 0,
@@ -5544,7 +5574,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                  aFI_SaveMkz.F19,
                                  aFI_SaveMkz.F20,
                                  aFI_SaveMkz.Mode,
-                                 dBName);
+                                 dBName,
+                                 aFI_SaveMkz.EditMode ?? 0);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
@@ -5690,6 +5721,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public byte? BranchCode { get; set; }
 
+            public byte? EditMode { get; set; }
+
             public string UserCode { get; set; }
 
             public string Code { get; set; }
@@ -5776,6 +5809,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F19 = N'{23}',
 		                        @F20 = N'{24}',
 		                        @Mode = {25},
+		                        @EditMode = {27},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                        aFI_SaveOpr.BranchCode ?? 0,
@@ -5804,7 +5838,8 @@ namespace ApiKarbord.Controllers.AFI.data
                        aFI_SaveOpr.F19,
                        aFI_SaveOpr.F20,
                        aFI_SaveOpr.Mode,
-                       dBName);
+                       dBName,
+                       aFI_SaveOpr.EditMode ?? 0);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_Opr);
@@ -5952,6 +5987,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public byte? BranchCode { get; set; }
 
+            public byte? EditMode { get; set; }
+
             public string UserCode { get; set; }
 
             public string Code { get; set; }
@@ -5978,6 +6015,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @Name = N'{3}',
                                 @Spec = N'{4}',
                                 @Rate = {5},
+                                @EditMode = {7},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                                  aFI_SaveArz.BranchCode ?? 0,
@@ -5986,7 +6024,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                  aFI_SaveArz.Name ?? "",
                                  aFI_SaveArz.Spec ?? "",
                                  aFI_SaveArz.Rate ?? 0,
-                                 dBName);
+                                 dBName,
+                                 aFI_SaveArz.EditMode ?? 0);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
@@ -6836,6 +6875,8 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             public byte? BranchCode { get; set; }
 
+            public byte? EditMode { get; set; }
+
             public string UserCode { get; set; }
 
             public string Code { get; set; }
@@ -6922,6 +6963,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                        @F19 = N'{23}',
 		                        @F20 = N'{24}',
 		                        @ZGruCode = '{25}',
+		                        @EditMode = {27},
 		                        @oCode = @oCode OUTPUT
                         SELECT	@oCode as N'@oCode' ",
                                  aFI_SaveZAcc.BranchCode ?? 0,
@@ -6950,7 +6992,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                  aFI_SaveZAcc.F19,
                                  aFI_SaveZAcc.F20,
                                  aFI_SaveZAcc.ZGruCode,
-                                 dBName);
+                                 dBName,
+                                 aFI_SaveZAcc.EditMode ?? 0);
 
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
