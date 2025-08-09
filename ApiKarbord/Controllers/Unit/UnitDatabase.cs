@@ -561,7 +561,7 @@ namespace ApiKarbord.Controllers.Unit
                             connection.Open();
                             var command = connection.CreateCommand();
                             command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
-                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
+                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS  ALTER DATABASE [{0}] SET RECOVERY SIMPLE", dbName);
                             command.ExecuteNonQuery();
                             connection.Close();
 
@@ -865,7 +865,7 @@ namespace ApiKarbord.Controllers.Unit
                             connection.Open();
                             var command = connection.CreateCommand();
                             command.CommandText = string.Format(@"IF Not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'{0}')
-                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS", dbName);
+                                                            CREATE DATABASE [{0}] COLLATE SQL_Latin1_General_CP1256_CI_AS  ALTER DATABASE [{0}] SET RECOVERY SIMPLE", dbName);
                             command.ExecuteNonQuery();
 
                             string res = UnitDatabase.TestAcount(DBase, userCode, "Config", "00", UnitPublic.access_View);

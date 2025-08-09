@@ -1047,7 +1047,7 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
                     sql = string.Format(CultureInfo.InvariantCulture,
-                                            @"EXEC	{0}.[dbo].[Web_TestFDoc_Temp] @serialNumber = {1}, 
+                                            @"EXEC	{0}.[dbo].[Web_TestFDoc_App_Temp] @serialNumber = {1}, 
                                                                               --@last_SerialNumber = {2},
                                                                               @UserCode = '{3}' ",
                                            dBName,
