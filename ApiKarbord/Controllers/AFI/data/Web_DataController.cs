@@ -3957,7 +3957,6 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 return Ok(res);
 
-
             //            string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], "Config", "", "0", 0, UnitPublic.access_View, UnitPublic.act_View, 0);
         }
 
@@ -7733,6 +7732,92 @@ namespace ApiKarbord.Controllers.AFI.data
             }
             else
                 return Ok(res);
+        }
+
+
+
+        // Get: api/Data/GetToken   
+        [Route("api/Web_Data/Token")]
+        public async Task<IHttpActionResult> GetToken()
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string currentDate = DateTime.Now.Ticks.ToString();
+            var token = UnitPublic.Encrypt(dataAccount[0].ToUpper() + "--" + currentDate);
+            return Ok(token);
+        }
+
+
+
+        public class DataAcount
+        {
+            public string Token { get; set; }
+        }
+
+        //LBNlfLHZohcHBKjBi895X0gzVfrCZp4F
+        [Route("api/Web_Data/DataAcount")]
+        public async Task<IHttpActionResult> PostWeb_DataAcount(DataAcount d)
+        {
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+
+            var inputToken = UnitPublic.Decrypt(d.Token);
+
+            long currentDate = DateTime.Now.Ticks;
+            string resSend = "";
+            var data = inputToken.Split('-');
+            if (data.Length == 3)
+            {
+                Int64 tik = Int64.Parse(data[2]);
+                long elapsedTicks = currentDate - tik;
+                TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
+
+                if (elapsedSpan.TotalMinutes <= 1)
+                {
+                    var res = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+
+                    var info = new Access
+                    {
+                        Id = res.Id,
+                        lockNumber = res.lockNumber,
+                        CompanyName = res.CompanyName,
+                        UserName = res.UserName,
+                        Password = res.Password,
+                        AddressApi = res.AddressApi,
+                        SqlServerName = res.SqlServerName,
+                        SqlUserName = res.SqlUserName,
+                        SqlPassword = res.SqlPassword,
+                        fromDate = res.fromDate,
+                        toDate = res.toDate,
+                        userCount = res.userCount,
+                        AFI1_Group = res.AFI1_Group,
+                        AFI1_Access = res.AFI1_Access,
+                        AFI8_Group = res.AFI8_Group,
+                        AFI8_Access = res.AFI8_Access,
+                        ERJ_Group = res.ERJ_Group,
+                        ERJ_Access = res.ERJ_Access,
+                        active = res.active,
+                        AddressApiPos = res.AddressApiPos,
+                        IsApp = res.IsApp,
+                        IsWeb = res.IsWeb,
+                        IsApi = res.IsApi,
+                        WhereKala = res.WhereKala,
+                        WhereCust = res.WhereCust,
+                        WhereThvl = res.WhereThvl,
+                        WhereAcc = res.WhereAcc,
+                        Spec = res.Spec,
+                        ProgName = res.ProgName,
+                        Fct_or_Inv = res.Fct_or_Inv,
+                        SettingApp = res.SettingApp,
+                    };
+
+                    return Ok(info);
+                }
+
+            }
+
+            return Ok("");
+
+
+
         }
 
 

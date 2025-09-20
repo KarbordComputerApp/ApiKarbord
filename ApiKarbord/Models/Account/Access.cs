@@ -22,7 +22,6 @@ namespace ApiKarbord.Models
 
         public string AddressApi { get; set; }
 
-
         public string SqlServerName { get; set; }
 
         public string SqlUserName { get; set; }
