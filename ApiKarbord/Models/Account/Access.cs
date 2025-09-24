@@ -76,6 +76,8 @@ namespace ApiKarbord.Models
 
         public int? SettingApp { get; set; }
 
+        public string ActiveSamane { get; set; }
+
         public ApiModel DB { get; set; }
 
     }

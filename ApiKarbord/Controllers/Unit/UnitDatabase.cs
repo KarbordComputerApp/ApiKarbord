@@ -1701,6 +1701,7 @@ namespace ApiKarbord.Controllers.Unit
                                 WhereAcc = data[0].WhereAcc,
                                 WhereThvl = data[0].WhereThvl,
                                 SettingApp = data[0].SettingApp,
+                                ActiveSamane = data[0].ActiveSamane,
                                 Spec = data[0].Spec,
                                 DB = new ApiModel(conStr),
                             });
@@ -1740,6 +1741,7 @@ namespace ApiKarbord.Controllers.Unit
                             item.WhereAcc = data[0].WhereAcc;
                             item.WhereThvl = data[0].WhereThvl;
                             item.SettingApp = data[0].SettingApp;
+                            item.ActiveSamane = data[0].ActiveSamane;
                             item.Spec = data[0].Spec;
                             item.DB = new ApiModel(conStr);
                         }

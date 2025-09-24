@@ -7751,6 +7751,8 @@ namespace ApiKarbord.Controllers.AFI.data
         public class DataAcount
         {
             public string Token { get; set; }
+
+            public string ActiveSamane { get; set; }
         }
 
         //LBNlfLHZohcHBKjBi895X0gzVfrCZp4F
@@ -7772,44 +7774,56 @@ namespace ApiKarbord.Controllers.AFI.data
 
                 if (elapsedSpan.TotalMinutes <= 1)
                 {
-                    var res = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
-
-                    var info = new Access
+                    try
                     {
-                        Id = res.Id,
-                        lockNumber = res.lockNumber,
-                        CompanyName = res.CompanyName,
-                        UserName = res.UserName,
-                        Password = res.Password,
-                        AddressApi = res.AddressApi,
-                        SqlServerName = res.SqlServerName,
-                        SqlUserName = res.SqlUserName,
-                        SqlPassword = res.SqlPassword,
-                        fromDate = res.fromDate,
-                        toDate = res.toDate,
-                        userCount = res.userCount,
-                        AFI1_Group = res.AFI1_Group,
-                        AFI1_Access = res.AFI1_Access,
-                        AFI8_Group = res.AFI8_Group,
-                        AFI8_Access = res.AFI8_Access,
-                        ERJ_Group = res.ERJ_Group,
-                        ERJ_Access = res.ERJ_Access,
-                        active = res.active,
-                        AddressApiPos = res.AddressApiPos,
-                        IsApp = res.IsApp,
-                        IsWeb = res.IsWeb,
-                        IsApi = res.IsApi,
-                        WhereKala = res.WhereKala,
-                        WhereCust = res.WhereCust,
-                        WhereThvl = res.WhereThvl,
-                        WhereAcc = res.WhereAcc,
-                        Spec = res.Spec,
-                        ProgName = res.ProgName,
-                        Fct_or_Inv = res.Fct_or_Inv,
-                        SettingApp = res.SettingApp,
-                    };
+                         var res = UnitDatabase.dataDB.Where(p => p.ActiveSamane == (d.ActiveSamane ?? "")).ToList();
+                        if (res.Count > 0)
+                        {
+                            var info = new Access
+                            {
+                                Id = res[0].Id,
+                                lockNumber = res[0].lockNumber,
+                                CompanyName = res[0].CompanyName,
+                                UserName = res[0].UserName,
+                                Password = res[0].Password,
+                                AddressApi = res[0].AddressApi,
+                                SqlServerName = res[0].SqlServerName,
+                                SqlUserName = res[0].SqlUserName,
+                                SqlPassword = res[0].SqlPassword,
+                                fromDate = res[0].fromDate,
+                                toDate = res[0].toDate,
+                                userCount = res[0].userCount,
+                                AFI1_Group = res[0].AFI1_Group,
+                                AFI1_Access = res[0].AFI1_Access,
+                                AFI8_Group = res[0].AFI8_Group,
+                                AFI8_Access = res[0].AFI8_Access,
+                                ERJ_Group = res[0].ERJ_Group,
+                                ERJ_Access = res[0].ERJ_Access,
+                                active = res[0].active,
+                                AddressApiPos = res[0].AddressApiPos,
+                                IsApp = res[0].IsApp,
+                                IsWeb = res[0].IsWeb,
+                                IsApi = res[0].IsApi,
+                                WhereKala = res[0].WhereKala,
+                                WhereCust = res[0].WhereCust,
+                                WhereThvl = res[0].WhereThvl,
+                                WhereAcc = res[0].WhereAcc,
+                                Spec = res[0].Spec,
+                                ProgName = res[0].ProgName,
+                                Fct_or_Inv = res[0].Fct_or_Inv,
+                                SettingApp = res[0].SettingApp,
+                                ActiveSamane = res[0].ActiveSamane,
+                            };
+                            return Ok(info);
+                        }
+                        
+                    }
+                    catch (Exception e)
+                    {
 
-                    return Ok(info);
+                        throw;
+                    }
+
                 }
 
             }
