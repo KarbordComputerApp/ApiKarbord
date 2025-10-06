@@ -30,7 +30,7 @@
         public string InvCode { get; set; }
 
         public string ModeCode { get; set; }
-        
+
         public string Status { get; set; }
 
         public byte? PaymentType { get; set; }
@@ -59,7 +59,6 @@
 
         public DateTime? UpdateDate { get; set; }
 
-
         public string ArzCode { get; set; }
 
         public string ArzName { get; set; }
@@ -85,5 +84,7 @@
         public double? AddMinPrice9 { get; set; }
 
         public double? AddMinPrice10 { get; set; }
+
+        public bool? RelatedGroupActive { get; set; }
     }
 }

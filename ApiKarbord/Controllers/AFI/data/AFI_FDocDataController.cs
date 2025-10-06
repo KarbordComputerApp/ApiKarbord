@@ -172,7 +172,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F20, 
                                        UpdateDate,ArzCode,ArzName,ArzRate,
                                        CustEcoCode,CustMelliCode,CustTel,CustFax,CustMobile,CustEmail,CustCity,CustStreet,CustAlley,CustPlack,CustZipCode,CustAddress,CustOstan,CustShahrestan,CustRegion,
-                                       AccSerialNumber,AccDocNo,InvReg                                      
+                                       AccSerialNumber,AccDocNo,InvReg,RelatedGroupActive                                      
                                        from {0}.dbo.Web_FDocH_F({1},'{2}') where ModeCode = '{3}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        dBName,
                                        0,
@@ -308,7 +308,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                        AddMinPrice7,
                                        AddMinPrice8,
                                        AddMinPrice9,
-                                       AddMinPrice10
+                                       AddMinPrice10,
+                                       RelatedGroupActive
                                        from {0}.dbo.Web_FDocH_F({1},'{2}') where ModeCode = '{3}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                       dBName, 0, FDocHMinAppObject.user, FDocHMinAppObject.ModeCode.ToString());
                 if (FDocHMinAppObject.AccessSanad == false)
@@ -986,6 +987,41 @@ namespace ApiKarbord.Controllers.AFI.data
              }
          }*/
 
+        public class SaveFDocH_RelatedGroup
+        {
+            public long Serialnumber { get; set; }
+
+            public string ModeCode { get; set; }
+
+            public string TahieShode { get; set; }
+        }
+
+        [Route("api/FDocData/SaveFDocH_RelatedGroup/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_FDOCH_RelatedGroup(string ace, string sal, string group, SaveFDocH_RelatedGroup d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                                      @"EXEC	{0}.[dbo].[Web_SaveFDocH_RelatedGroup]
+		                                        @SerialNumber = {1},
+		                                        @UserCode = N'''{2}''',
+		                                        @TahieShode = N'{3}'
+                                       select 0",
+                                      dBName,
+                                      d.Serialnumber,
+                                      dataAccount[2],
+                                      d.TahieShode);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.ModeCodeConnection(d.ModeCode));
+            if (res == "")
+            {
+                var result = DBase.DB.Database.SqlQuery<int>(sql).ToList();
+                return Ok(result);
+            }
+            else
+                return Ok(res);
+        }
 
     }
 }

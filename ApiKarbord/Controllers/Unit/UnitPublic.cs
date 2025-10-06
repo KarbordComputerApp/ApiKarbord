@@ -496,6 +496,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @Tanzim = '{36}',
                                     @Footer = N'{37}',
                                     @Status = N'{38}',
+                                    @RelatedGroupActive = {41},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                                         head.DocNoMode,
@@ -538,7 +539,8 @@ namespace ApiKarbord.Controllers.Unit
                                         UnitPublic.ConvertTextWebToWin(head.Footer ?? ""),
                                         head.Status,
                                         flagTest == true ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI",
-                                        dBName
+                                        dBName,
+                                        head.RelatedGroupActive??0
                                         );
             }
             else if (head.SerialNumber > 0 && flagTest == false) // update
@@ -587,6 +589,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @OprCode = '{37}',
                                     @MkzCode = '{38}',
                                     @Tanzim = '{39}',
+                                    @RelatedGroupActive = {41},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                                     head.DocNoMode,
@@ -629,7 +632,8 @@ namespace ApiKarbord.Controllers.Unit
                                     head.OprCode,
                                     head.MkzCode,
                                     head.Tanzim,
-                                    dBName);
+                                    dBName,
+                                    head.RelatedGroupActive ?? 0);
             }
             return sql;
         }
@@ -721,6 +725,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
                                     @Status = '{75}',
+                                    @RelatedGroupActive = {77},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                                              flagTest == true ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI",
@@ -799,7 +804,8 @@ namespace ApiKarbord.Controllers.Unit
                                              head.CustTel,
                                              head.CustMobile,
                                              head.Status,
-                                             dBName
+                                             dBName,
+                                             head.RelatedGroupActive ?? 0
                                              );
             return sql;
         }
@@ -889,6 +895,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
                                     @Status = '{75}',
+                                    @RelatedGroupActive = {77},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                                                  flagTest == true ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI",
@@ -967,7 +974,8 @@ namespace ApiKarbord.Controllers.Unit
                                                  head.CustTel,
                                                  head.CustMobile,
                                                  head.Status,
-                                                 dBName
+                                                 dBName,
+                                                 head.RelatedGroupActive ?? 0
                                                  );
             }
             else
@@ -1052,6 +1060,7 @@ namespace ApiKarbord.Controllers.Unit
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
                                     @SaveInv = {76},
+                                    @RelatedGroupActive = {77},
                                     @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = ltrim(@DOCNO_OUT)",
                             head.DocNoMode,
@@ -1130,7 +1139,8 @@ namespace ApiKarbord.Controllers.Unit
                             head.CustTel,
                             head.CustMobile,
                             dBName,
-                            head.SaveInv.ToString().ToUpper() == "NULL" ? 1 : head.SaveInv);
+                            head.SaveInv.ToString().ToUpper() == "NULL" ? 1 : head.SaveInv,
+                            head.RelatedGroupActive ?? 0);
             }
             return sql;
         }

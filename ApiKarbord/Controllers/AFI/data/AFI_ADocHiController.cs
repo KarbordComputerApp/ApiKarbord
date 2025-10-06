@@ -203,6 +203,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string flagTest { get; set; }
 
+            public byte? RelatedGroupActive { get; set; }
+
         }
 
 
@@ -274,6 +276,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string flagLog { get; set; }
 
+            public byte? RelatedGroupActive { get; set; }
+
         }
 
 
@@ -329,7 +333,8 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @F18 = N'{26}',
 		                            @F19 = N'{27}',
 		                            @F20 = N'{28}',
-		                            @Tanzim = '{29}'
+		                            @Tanzim = '{29}',
+		                            @RelatedGroupActive = {31}
                             SELECT	'Return Value' = @return_value",
                     AFI_ADocHi_u.SerialNumber,
                     AFI_ADocHi_u.ModeCode,
@@ -364,7 +369,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     AFI_ADocHi_u.F19,
                     AFI_ADocHi_u.F20,
                     AFI_ADocHi_u.Tanzim,
-                    dBName
+                    dBName,
+                    AFI_ADocHi_u.RelatedGroupActive ?? 0
                     );
 
             //string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2],dataAccount[3], ace, sal, group, AFI_ADocHi_u.SerialNumber, UnitPublic.access_ADOC, UnitPublic.act_Edit, 0);
@@ -490,6 +496,7 @@ namespace ApiKarbord.Controllers.AFI.data
 		                            @F19 = N'{33}',
 		                            @F20 = N'{34}',		                            
 		                            @Tanzim = '{35}',		                            
+		                            @RelatedGroupActive = {38},		                            
 		                            @DocNo_Out = @DocNo_Out OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                     AFI_ADocHi_i.DocNoMode,
@@ -532,7 +539,8 @@ namespace ApiKarbord.Controllers.AFI.data
                     AFI_ADocHi_i.F20,
                     AFI_ADocHi_i.Tanzim,
                     AFI_ADocHi_i.flagTest == "Y" ? "Web_SaveADoc_HI_Temp" : "Web_SaveADoc_HI",
-                    dBName
+                    dBName,
+                    AFI_ADocHi_i.RelatedGroupActive ?? 0
                     );
 
 

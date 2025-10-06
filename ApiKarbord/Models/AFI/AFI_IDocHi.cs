@@ -102,6 +102,9 @@
         public string MkzCode { get; set; }
 
         public string flagTest { get; set; }
+
+        public byte? RelatedGroupActive { get; set; }
+
     }
 }
 

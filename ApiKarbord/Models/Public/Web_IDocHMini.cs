@@ -143,5 +143,7 @@
 
         public string FctReg { get; set; }
 
+        public bool? RelatedGroupActive { get; set; }
+
     }
 }

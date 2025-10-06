@@ -724,10 +724,43 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class SaveADocH_RelatedGroup
+        {
+            public long Serialnumber { get; set; }
+
+            public string TahieShode { get; set; }
+        }
+
+        [Route("api/ADocData/SaveADocH_RelatedGroup/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_ADOCH_RelatedGroup(string ace, string sal, string group, SaveADocH_RelatedGroup d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                                      @"EXEC	{0}.[dbo].[Web_SaveADocH_RelatedGroup]
+		                                        @SerialNumber = {1},
+		                                        @UserCode = N'''{2}''',
+		                                        @TahieShode = N'{3}'
+                                       select 0",
+                                      dBName,
+                                      d.Serialnumber,
+                                      dataAccount[2],
+                                      d.TahieShode);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
+            if (res == "")
+            {
+                var result = DBase.DB.Database.SqlQuery<int>(sql).ToList();
+                return Ok(result);
+            }
+            else
+                return Ok(res);
+        }
 
 
 
-    
+
 
     }
 

@@ -180,5 +180,8 @@
         public string CustMobile { get; set; }
 
         public byte? SaveInv { get; set; }
+
+        public byte? RelatedGroupActive { get; set; }
+
     }
 }

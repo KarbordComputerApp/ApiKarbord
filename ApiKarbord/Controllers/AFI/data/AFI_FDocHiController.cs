@@ -235,6 +235,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @CustTel = '{72}',
                                     @CustMobile = '{73}',
                                     @SaveInv = {75},
+                                    @RelatedGroupActive = {76},
                                     @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = ltrim(@DOCNO_OUT)
                            ",
@@ -313,7 +314,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_FDocHi.CustTel,
                             aFI_FDocHi.CustMobile,
                             dBName,
-                            aFI_FDocHi.SaveInv ?? 1
+                            aFI_FDocHi.SaveInv ?? 1,
+                            aFI_FDocHi.RelatedGroupActive ?? 0
                             );
                     value = DBase.DB.Database.SqlQuery<string>(sql2).Single();
 
@@ -431,6 +433,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @CustZipCode = '{72}',
                                     @CustTel = '{73}',
                                     @CustMobile = '{74}',
+                                    @RelatedGroupActive = {76},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'@'+ ltrim(@DOCNO_OUT)",
                              aFI_FDocHi.flagTest == "Y" ? "Web_SaveFDoc_HI_Temp" : "Web_SaveFDoc_HI",
@@ -508,7 +511,8 @@ namespace ApiKarbord.Controllers.AFI.data
                              aFI_FDocHi.CustZipCode,
                              aFI_FDocHi.CustTel,
                              aFI_FDocHi.CustMobile,
-                             dBName
+                             dBName,
+                             aFI_FDocHi.RelatedGroupActive ?? 0
                              );
                     value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))

@@ -91,6 +91,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @OprCode = '{36}',
                                     @MkzCode = '{37}',
                                     @Tanzim = '{38}',
+                                    @RelatedGroupActive = {40},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_IDocHi.DocNoMode,
@@ -137,7 +138,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.OprCode,
                             aFI_IDocHi.MkzCode,
                             aFI_IDocHi.Tanzim,
-                            dBName
+                            dBName,
+                            aFI_IDocHi.RelatedGroupActive ?? 0
                             );
                     value = DBase.DB.Database.SqlQuery<string>(sql).Single();
 
@@ -148,7 +150,7 @@ namespace ApiKarbord.Controllers.AFI.data
                     throw;
                 }
 
-               // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 1, aFI_IDocHi.flagLog, 1, 0);
+                // UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, 1, aFI_IDocHi.flagLog, 1, 0);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, aFI_IDocHi.SerialNumber, aFI_IDocHi.InOut == 1 ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Edit, aFI_IDocHi.flagLog, 1, 0);
 
                 return Ok(value);
@@ -221,6 +223,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F20 = N'{35}',
                                     @Tanzim = '{36}',
                                     @Footer = N'{37}',
+                                    @RelatedGroupActive = {40},
 		                            @DOCNO_OUT = @DOCNO_OUT OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                             aFI_IDocHi.DocNoMode,
@@ -262,7 +265,8 @@ namespace ApiKarbord.Controllers.AFI.data
                             aFI_IDocHi.Tanzim,
                             UnitPublic.ConvertTextWebToWin(aFI_IDocHi.Footer ?? ""),
                             aFI_IDocHi.flagTest == "Y" ? "Web_SaveIDoc_HI_Temp" : "Web_SaveIDoc_HI",
-                            dBName
+                            dBName,
+                            aFI_IDocHi.RelatedGroupActive ?? 0
                             );
                     value = DBase.DB.Database.SqlQuery<string>(sql).Single();
                     if (!string.IsNullOrEmpty(value))
@@ -324,7 +328,7 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 return Ok(res);
 
-           // string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, ModeCode == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Delete, 0);
+            // string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, SerialNumber, ModeCode == "1" ? UnitPublic.access_IIDOC : UnitPublic.access_IODOC, UnitPublic.act_Delete, 0);
         }
 
 
@@ -472,7 +476,7 @@ namespace ApiKarbord.Controllers.AFI.data
             else
                 return Ok(res);
 
-           // string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
+            // string conStr = UnitDatabase.CreateConnectionString(dataAccount[0], dataAccount[1], dataAccount[2], dataAccount[3], ace, sal, group, 0, UnitPublic.access_View, UnitPublic.act_View, 0);
         }
 
 
