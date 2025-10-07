@@ -740,8 +740,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                       @"EXEC	{0}.[dbo].[Web_SaveADocH_RelatedGroup]
 		                                        @SerialNumber = {1},
 		                                        @UserCode = N'''{2}''',
-		                                        @TahieShode = N'{3}'
-                                       select 0",
+		                                        @TahieShode = N'{3}'",
                                       dBName,
                                       d.Serialnumber,
                                       dataAccount[2],
@@ -751,7 +750,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ADOC);
             if (res == "")
             {
-                var result = DBase.DB.Database.SqlQuery<int>(sql).ToList();
+                var result = DBase.DB.Database.SqlQuery<Int64>(sql).Single();
                 return Ok(result);
             }
             else

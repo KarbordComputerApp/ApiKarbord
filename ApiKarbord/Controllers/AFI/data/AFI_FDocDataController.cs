@@ -1005,8 +1005,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                       @"EXEC	{0}.[dbo].[Web_SaveFDocH_RelatedGroup]
 		                                        @SerialNumber = {1},
 		                                        @UserCode = N'''{2}''',
-		                                        @TahieShode = N'{3}'
-                                       select 0",
+		                                        @TahieShode = N'{3}'",
                                       dBName,
                                       d.Serialnumber,
                                       dataAccount[2],
@@ -1016,12 +1015,48 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.ModeCodeConnection(d.ModeCode));
             if (res == "")
             {
-                var result = DBase.DB.Database.SqlQuery<int>(sql).ToList();
+                var result = DBase.DB.Database.SqlQuery<Int64>(sql).Single();
                 return Ok(result);
             }
             else
                 return Ok(res);
         }
+
+
+        public class SamaneMakeDoc
+        {
+            public long Serialnumber { get; set; }
+
+            public string RelatedGroup { get; set; }
+
+        }
+
+        [Route("api/FDocData/SamaneMakeDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_SamaneMakeDoc(string ace, string sal, string group, SamaneMakeDoc d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                                      @"EXEC	{0}.[dbo].[Web_SamaneMakeDoc]
+		                                        @SerialNumber = {1},
+		                                        @RelatedGroup = N'{2}'
+                                        SELECT  0",
+                                      dBName,
+                                      d.Serialnumber,
+                                      d.RelatedGroup);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
+            if (res == "")
+            {
+                var result = DBase.DB.Database.SqlQuery<int>(sql).Single();
+                return Ok(result);
+            }
+            else
+                return Ok(res);
+        }
+
+
 
     }
 }
