@@ -894,8 +894,6 @@ namespace ApiKarbord.Controllers.AFI.data
                         o.Head.TotalValue = (totlal - discount) + value_CalcAddmin[0].SumDiscount;
 
 
-
-
                         string Deghat = DBase.DB.Database.SqlQuery<string>(string.Format("select Param from {0}.dbo.Web_Param where [key] = 'Deghat'", dBName)).Single();
 
                         TashimBand tashimBand = new TashimBand();

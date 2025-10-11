@@ -189,6 +189,61 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
+        public class LinkIDocFDocObject
+        {
+            public long SerialNumber { get; set; }
+
+
+            public string TahieShode { get; set; }
+
+        }
+
+
+        public class LinkIDocFDoc
+        {
+            public byte Test { get; set; }
+
+            public string TestName { get; set; }
+
+            public string TestCap { get; set; }
+
+            public int BandNo { get; set; }
+
+            public string KalaCode { get; set; }
+
+            public string KalaName { get; set; }
+
+        }
+
+
+
+        [Route("api/Link/LinkIDocFDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_LinkIDocFDoc(string ace, string sal, string group, LinkIDocFDocObject d)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            string sql = string.Format(CultureInfo.InvariantCulture,
+                     @"EXEC	{0}.[dbo].[Web_LinkIDocFDoc] 
+                            @serialNumber = {1} ,
+                            @userCode = N'{2}' , 
+                            @TahieShode = N'{3}' ",
+                     dBName,
+                     d.SerialNumber,
+                     dataAccount[2],
+                     d.TahieShode);
+
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_IODOC);
+            if (res == "")
+            {
+                var result = DBase.DB.Database.SqlQuery<LinkIDocFDoc>(sql).ToList();
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_IODOC, UnitPublic.act_New, "Y", 1, 0);
+                return Ok(result);
+
+            }
+            else
+                return Ok(res);
+        }
 
 
 

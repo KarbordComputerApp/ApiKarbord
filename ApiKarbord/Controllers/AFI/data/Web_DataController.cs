@@ -429,6 +429,8 @@ namespace ApiKarbord.Controllers.AFI.data
             public short ModeGru { get; set; }
 
             public string UserCode { get; set; }
+
+            public short? Level { get; set; }
         }
 
         // Post: api/Web_Data/CGru لیست گروه اشخاص 
@@ -436,7 +438,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_CGru(string ace, string sal, string group, CGruObject cGruObject)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
-            string sql = string.Format("select  * FROM  {0}.dbo.Web_CGru_F({1},'{2}')", dBName, cGruObject.Mode, cGruObject.UserCode);
+            string sql = string.Format("select  * FROM  {0}.dbo.Web_CGru_F({1},'{2}',{3})", dBName, cGruObject.Mode, cGruObject.UserCode,cGruObject.Level ?? 0);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
 
