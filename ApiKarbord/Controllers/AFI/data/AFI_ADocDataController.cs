@@ -739,7 +739,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string sql = string.Format(CultureInfo.InvariantCulture,
                                       @"EXEC	{0}.[dbo].[Web_SaveADocH_RelatedGroup]
 		                                        @SerialNumber = {1},
-		                                        @UserCode = N'''{2}''',
+		                                        @UserCode = N'{2}',
 		                                        @TahieShode = N'{3}'",
                                       dBName,
                                       d.Serialnumber,
