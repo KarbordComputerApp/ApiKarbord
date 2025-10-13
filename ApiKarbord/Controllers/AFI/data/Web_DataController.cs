@@ -438,7 +438,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> PostWeb_CGru(string ace, string sal, string group, CGruObject cGruObject)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
-            string sql = string.Format("select  * FROM  {0}.dbo.Web_CGru_F({1},'{2}',{3})", dBName, cGruObject.Mode, cGruObject.UserCode,cGruObject.Level ?? 0);
+            string sql = string.Format("select  * FROM  {0}.dbo.Web_CGru_F({1},'{2}',{3})", dBName, cGruObject.Mode, cGruObject.UserCode, cGruObject.Level ?? 0);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
 
@@ -3954,7 +3954,7 @@ namespace ApiKarbord.Controllers.AFI.data
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], "Config", "00", UnitPublic.access_View);
             if (res == "")
             {
-                return Ok(DBase.DB.Database.SqlQuery<Web_Groups>(sql));
+                return Ok(DBase.DB.Database.SqlQuery<Web_Groups>(sql).OrderBy(a => a.Code).ToList());
             }
             else
                 return Ok(res);
@@ -7778,7 +7778,7 @@ namespace ApiKarbord.Controllers.AFI.data
                 {
                     try
                     {
-                         var res = UnitDatabase.dataDB.Where(p => p.ActiveSamane == (d.ActiveSamane ?? "")).ToList();
+                        var res = UnitDatabase.dataDB.Where(p => p.ActiveSamane == (d.ActiveSamane ?? "")).ToList();
                         if (res.Count > 0)
                         {
                             var info = new Access
@@ -7818,7 +7818,7 @@ namespace ApiKarbord.Controllers.AFI.data
                             };
                             return Ok(info);
                         }
-                        
+
                     }
                     catch (Exception e)
                     {
