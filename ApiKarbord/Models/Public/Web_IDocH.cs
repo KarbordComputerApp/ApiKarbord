@@ -136,5 +136,11 @@
 
         public bool? RelatedGroupActive { get; set; }
 
+        public long? FctSerialNumber { get; set; }
+
+        public string FctDocNo { get; set; }
+
+        public string FctModeCode { get; set; }
+
     }
 }
