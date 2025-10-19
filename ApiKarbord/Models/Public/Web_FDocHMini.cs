@@ -187,5 +187,7 @@
 
         public bool? RelatedGroupActive { get; set; }
 
+        public string TahieShode { get; set; }
+
     }
 }

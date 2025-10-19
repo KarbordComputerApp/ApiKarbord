@@ -151,5 +151,7 @@
 
         public string FctModeCode { get; set; }
 
+        public string TahieShode { get; set; }
+
     }
 }
