@@ -77,5 +77,7 @@
         public double? SortDocNo { get; set; }
 
         public bool? RelatedGroupActive { get; set; }
+
+        public string RelatedGroupActiveCap { get; set; }
     }
 }

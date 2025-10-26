@@ -189,5 +189,9 @@
 
         public string TahieShode { get; set; }
 
+        public string RelatedGroupActiveCap { get; set; }
+
+        public byte? Samane_Status { get; set; }
+
     }
 }

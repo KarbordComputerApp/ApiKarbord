@@ -142,5 +142,7 @@
 
         public string FctModeCode { get; set; }
 
+        public string RelatedGroupActiveCap { get; set; }
+
     }
 }

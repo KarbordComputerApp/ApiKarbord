@@ -153,5 +153,7 @@
 
         public string TahieShode { get; set; }
 
+        public string RelatedGroupActiveCap { get; set; }
+
     }
 }

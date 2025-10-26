@@ -190,7 +190,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        ThvlShahrestan,
                                        ThvlEcoCode,
                                        ThvlMelliCode,ArzCode,ArzName,ArzRate, AccSerialNumber, AccDocNo,FctReg,RelatedGroupActive,
-                                       FctSerialNumber,FctDocNo,FctModeCode,TahieShode   
+                                       FctSerialNumber,FctDocNo,FctModeCode,TahieShode,RelatedGroupActiveCap   
                                        from {0}.dbo.Web_IDocH_F(3,'{1}') where 1 = 1 and (@DocNo = ''  or DocNo = @DocNo) and (@ModeCode = ''  or ModeCode = @ModeCode)   ", dBName, IDocHMinObject.user);
 
                 //if (ModeCode == "in")

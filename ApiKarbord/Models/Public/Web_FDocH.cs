@@ -171,5 +171,10 @@
         public int? AccDocNo { get; set; }
 
         public bool? RelatedGroupActive { get; set; }
+
+        public string RelatedGroupActiveCap { get; set; }
+
+        public byte? Samane_Status { get; set; }
+
     }
 }
