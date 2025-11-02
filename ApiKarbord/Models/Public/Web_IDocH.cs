@@ -144,5 +144,7 @@
 
         public string RelatedGroupActiveCap { get; set; }
 
+        public string SrcReg { get; set; }
+
     }
 }

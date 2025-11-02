@@ -1277,7 +1277,9 @@ namespace ApiKarbord.Controllers.AFI.data
                                                  union all
                                                  select 'AGOpr' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'AGOpr') as Trs
                                                  union all
-                                                 select 'GrdZAcc' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'GrdZAcc') as Trs"
+                                                 select 'GrdZAcc' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'GrdZAcc') as Trs
+                                                 union all
+                                                 select 'FADoc' as Code, {0}.[dbo].[Web_RprtTrs](@group, @ace, @username, 'FADoc') as Trs"
                                        , dBName, ace, group, user);
 
 

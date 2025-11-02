@@ -172,7 +172,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        F20, 
                                        UpdateDate,ArzCode,ArzName,ArzRate,
                                        CustEcoCode,CustMelliCode,CustTel,CustFax,CustMobile,CustEmail,CustCity,CustStreet,CustAlley,CustPlack,CustZipCode,CustAddress,CustOstan,CustShahrestan,CustRegion,
-                                       AccSerialNumber,AccDocNo,InvReg,RelatedGroupActive,TahieShode,RelatedGroupActiveCap,Samane_Status,Samane_StatusCap                                   
+                                       AccSerialNumber,AccDocNo,InvReg,RelatedGroupActive,TahieShode,RelatedGroupActiveCap,SamaneStatus,Samane_Status                                   
                                        from {0}.dbo.Web_FDocH_F({1},'{2}') where ModeCode = '{3}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                        dBName,
                                        0,
@@ -310,7 +310,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                        AddMinPrice9,
                                        AddMinPrice10,
                                        RelatedGroupActive,
-                                       TahieShode,RelatedGroupActiveCap,Samane_Status,Samane_StatusCap  
+                                       TahieShode,RelatedGroupActiveCap,Samane_Status,SamaneStatus  
                                        from {0}.dbo.Web_FDocH_F({1},'{2}') where ModeCode = '{3}' and (@DocNo = ''  or DocNo = @DocNo) ",
                                       dBName, 0, FDocHMinAppObject.user, FDocHMinAppObject.ModeCode.ToString());
                 if (FDocHMinAppObject.AccessSanad == false)

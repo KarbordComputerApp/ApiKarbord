@@ -193,7 +193,7 @@
 
         public byte? Samane_Status { get; set; }
 
-        public string Samane_StatusCap { get; set; }
+        public string SamaneStatus { get; set; }
 
     }
 }

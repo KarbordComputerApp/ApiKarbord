@@ -570,5 +570,66 @@ namespace ApiKarbord.Controllers.AFI.report
 
 
 
+
+        public class FADocObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string azShomarh { get; set; }
+
+            public string taShomarh { get; set; }
+
+            public string StatusCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+        }
+
+        // Post: api/ReportAcc/Web_FADoc گزارش فهرست اسناد حسابداری
+        // HE_Report_FADoc
+        [Route("api/ReportAcc/FADoc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_FADoc(string ace, string sal, string group, FADocObject FADocObject)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_FADoc);
+            if (res == "")
+            {
+                string status = UnitPublic.SpiltCodeCama(FADocObject.StatusCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(FADocObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select top(10000) * FROM  {0}.dbo.Web_FADoc AS Web_FADoc where 1 = 1 ",
+                          dBName);
+
+                if (FADocObject.azTarikh != "")
+                    sql += string.Format(" and DocDate >= '{0}' ", FADocObject.azTarikh);
+
+                if (FADocObject.taTarikh != "")
+                    sql += string.Format(" and DocDate <= '{0}' ", FADocObject.taTarikh);
+
+
+                if (FADocObject.azShomarh != "")
+                    sql += string.Format(" and DocNo >= '{0}' ", FADocObject.azShomarh);
+
+                if (FADocObject.taShomarh != "")
+                    sql += string.Format(" and DocNo <= '{0}' ", FADocObject.taShomarh);
+
+                sql += UnitPublic.SpiltCodeAnd("Status", FADocObject.StatusCode);
+                sql += UnitPublic.SpiltCodeAnd("ModeCode", FADocObject.AModeCode);
+                sql += " order by DocNo";
+
+                var listFADoc = DBase.DB.Database.SqlQuery<Web_FADoc>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_FADoc, UnitPublic.act_Report, "Y", 1, 0);
+                return Ok(listFADoc);
+            }
+            else
+                return Ok(res);
+        }
+
     }
 }
