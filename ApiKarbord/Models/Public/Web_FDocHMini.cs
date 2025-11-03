@@ -195,5 +195,7 @@
 
         public string SamaneStatus { get; set; }
 
+        public string SrcReg { get; set; }
+
     }
 }

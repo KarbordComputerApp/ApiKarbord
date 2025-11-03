@@ -177,7 +177,8 @@
         public byte? Samane_Status { get; set; }
 
         public string SamaneStatus { get; set; }
-
+        
+        public string SrcReg { get; set; }
 
     }
 }
