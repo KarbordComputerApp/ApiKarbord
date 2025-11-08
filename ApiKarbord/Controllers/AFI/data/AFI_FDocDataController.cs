@@ -988,7 +988,7 @@ namespace ApiKarbord.Controllers.AFI.data
              }
          }*/
 
-        public class SaveFDocH_RelatedGroup
+        public class SaveFDoc_RelatedGroup
         {
             public long Serialnumber { get; set; }
 
@@ -997,13 +997,13 @@ namespace ApiKarbord.Controllers.AFI.data
             public string TahieShode { get; set; }
         }
 
-        [Route("api/FDocData/SaveFDocH_RelatedGroup/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostWeb_FDOCH_RelatedGroup(string ace, string sal, string group, SaveFDocH_RelatedGroup d)
+        [Route("api/FDocData/SaveFDoc_RelatedGroup/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_FDOC_RelatedGroup(string ace, string sal, string group, SaveFDoc_RelatedGroup d)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string sql = string.Format(CultureInfo.InvariantCulture,
-                                      @"EXEC	{0}.[dbo].[Web_SaveFDocH_RelatedGroup]
+                                      @"EXEC	{0}.[dbo].[Web_SaveFDoc_RelatedGroup]
 		                                        @SerialNumber = {1},
 		                                        @UserCode = N'{2}',
 		                                        @TahieShode = N'{3}'",
@@ -1024,7 +1024,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        public class SamaneMakeDoc
+        public class SaveFDoc_SamaneMakeDoc
         {
             public long Serialnumber { get; set; }
 
@@ -1032,13 +1032,13 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
-        [Route("api/FDocData/SamaneMakeDoc/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostWeb_SamaneMakeDoc(string ace, string sal, string group, SamaneMakeDoc d)
+        [Route("api/FDocData/SaveFDoc_SamaneMakeDoc/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_SaveFDoc_SamaneMakeDoc(string ace, string sal, string group, SaveFDoc_SamaneMakeDoc d)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string sql = string.Format(CultureInfo.InvariantCulture,
-                                      @"EXEC	{0}.[dbo].[Web_SamaneMakeDoc]
+                                      @"EXEC	{0}.[dbo].[Web_SaveFDoc_SamaneMakeDoc]
 		                                        @SerialNumber = {1},
 		                                        @RelatedGroup = N'{2}'
                                         SELECT  0",

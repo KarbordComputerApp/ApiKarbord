@@ -724,20 +724,20 @@ namespace ApiKarbord.Controllers.AFI.data
 
 
 
-        public class SaveADocH_RelatedGroup
+        public class SaveADoc_RelatedGroup
         {
             public long Serialnumber { get; set; }
 
             public string TahieShode { get; set; }
         }
 
-        [Route("api/ADocData/SaveADocH_RelatedGroup/{ace}/{sal}/{group}")]
-        public async Task<IHttpActionResult> PostWeb_ADOCH_RelatedGroup(string ace, string sal, string group, SaveADocH_RelatedGroup d)
+        [Route("api/ADocData/SaveADoc_RelatedGroup/{ace}/{sal}/{group}")]
+        public async Task<IHttpActionResult> PostWeb_ADOC_RelatedGroup(string ace, string sal, string group, SaveADoc_RelatedGroup d)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             string sql = string.Format(CultureInfo.InvariantCulture,
-                                      @"EXEC	{0}.[dbo].[Web_SaveADocH_RelatedGroup]
+                                      @"EXEC	{0}.[dbo].[Web_SaveADoc_RelatedGroup]
 		                                        @SerialNumber = {1},
 		                                        @UserCode = N'{2}',
 		                                        @TahieShode = N'{3}'",
