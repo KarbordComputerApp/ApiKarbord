@@ -692,7 +692,7 @@ namespace ApiKarbord.Controllers.Unit
                                                 try
                                                 {
                                                     //sql = sql.Replace("ی", "ي");
-                                                    sql = sql.Replace("y__y", salTemp);
+                                                    sql = sql.Replace("YYYY", salTemp);
 
                                                     sql = sql.Replace("yyyx", (int.Parse(salTemp) - 1).ToString());
                                                     sql = sql.Replace("yyyz", (int.Parse(salTemp) + 1).ToString());
