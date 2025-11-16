@@ -7817,6 +7817,8 @@ namespace ApiKarbord.Controllers.AFI.data
                                 Fct_or_Inv = res[0].Fct_or_Inv,
                                 SettingApp = res[0].SettingApp,
                                 ActiveSamane = res[0].ActiveSamane,
+                                SamaneGroup = res[0].SamaneGroup,
+                                SamaneProg = res[0].SamaneProg,
                             };
                             return Ok(info);
                         }

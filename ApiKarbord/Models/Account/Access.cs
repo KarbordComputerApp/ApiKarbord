@@ -78,6 +78,10 @@ namespace ApiKarbord.Models
 
         public string ActiveSamane { get; set; }
 
+        public string SamaneGroup { get; set; }
+
+        public byte? SamaneProg { get; set; }
+
         public ApiModel DB { get; set; }
 
     }

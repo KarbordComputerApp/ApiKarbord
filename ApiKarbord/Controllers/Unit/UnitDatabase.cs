@@ -1702,6 +1702,8 @@ namespace ApiKarbord.Controllers.Unit
                                 WhereThvl = data[0].WhereThvl,
                                 SettingApp = data[0].SettingApp,
                                 ActiveSamane = data[0].ActiveSamane,
+                                SamaneGroup = data[0].SamaneGroup,
+                                SamaneProg = data[0].SamaneProg,
                                 Spec = data[0].Spec,
                                 DB = new ApiModel(conStr),
                             });
@@ -1742,6 +1744,8 @@ namespace ApiKarbord.Controllers.Unit
                             item.WhereThvl = data[0].WhereThvl;
                             item.SettingApp = data[0].SettingApp;
                             item.ActiveSamane = data[0].ActiveSamane;
+                            item.SamaneGroup = data[0].SamaneGroup;
+                            item.SamaneProg = data[0].SamaneProg;
                             item.Spec = data[0].Spec;
                             item.DB = new ApiModel(conStr);
                         }
