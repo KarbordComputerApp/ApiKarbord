@@ -631,5 +631,121 @@ namespace ApiKarbord.Controllers.AFI.report
                 return Ok(res);
         }
 
+
+
+        public class KhlAccObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string AccCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+        }
+
+
+        // Post: api/ReportAcc/KhlAcc گزارش صورت خلاصه حسابها
+        [Route("api/ReportAcc/KhlAcc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_KhlAcc(string ace, string sal, string group, KhlAccObject KhlAccObject)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_KhlAcc);
+            if (res == "")
+            {
+                string oprCode = UnitPublic.SpiltCodeCama(KhlAccObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(KhlAccObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(KhlAccObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  {6}.dbo.Web_KhlAcc('{0}','{1}','{2}','{3}','{4}', '{5}') AS KhlAcc where 1 = 1 ",
+                          KhlAccObject.azTarikh,
+                          KhlAccObject.taTarikh,
+                          oprCode,
+                          mkzCode,
+                          aModeCode,
+                          dataAccount[2],
+                          dBName);
+
+                sql += UnitPublic.SpiltCodeLike("AccCode", KhlAccObject.AccCode);
+
+                sql += " order by Tag, SortAccCode";
+
+                var listKhlAcc = DBase.DB.Database.SqlQuery<Web_KhlAcc>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_KhlAcc, UnitPublic.act_Report, "Y", 1, 0);
+
+                return Ok(listKhlAcc);
+            }
+            else
+                return Ok(res);
+
+        }
+
+
+        public class KhlZAccObject
+        {
+            public string azTarikh { get; set; }
+
+            public string taTarikh { get; set; }
+
+            public string ZAccCode { get; set; }
+
+            public string AModeCode { get; set; }
+
+            public string OprCode { get; set; }
+
+            public string MkzCode { get; set; }
+
+        }
+
+
+        // Post: api/ReportAcc/KhlZAcc گزارش صورت خلاصه زیر حساب ها حسابها
+        [Route("api/ReportAcc/KhlZAcc/{ace}/{sal}/{group}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostWeb_KhlZAcc(string ace, string sal, string group, KhlZAccObject KhlZAccObject)
+        {
+            string dBName = UnitDatabase.DatabaseName(ace, sal, group);
+            var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
+            var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
+            string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_KhlZAcc);
+            if (res == "")
+            {
+                string oprCode = UnitPublic.SpiltCodeCama(KhlZAccObject.OprCode);
+                string mkzCode = UnitPublic.SpiltCodeCama(KhlZAccObject.MkzCode);
+                string aModeCode = UnitPublic.SpiltCodeCama(KhlZAccObject.AModeCode);
+
+                string sql = string.Format(CultureInfo.InvariantCulture,
+                          @"select * FROM  {6}.dbo.Web_KhlZAcc('{0}','{1}','{2}','{3}','{4}', '{5}') AS KhlZAcc where 1 = 1 ",
+                          KhlZAccObject.azTarikh,
+                          KhlZAccObject.taTarikh,
+                          oprCode,
+                          mkzCode,
+                          aModeCode,
+                          dataAccount[2],
+                          dBName);
+
+                sql += UnitPublic.SpiltCodeLike("ZAccCode", KhlZAccObject.ZAccCode);
+
+                sql += " order by ZAccCode";
+
+                var listKhlZAcc = DBase.DB.Database.SqlQuery<Web_KhlZAcc>(sql);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_KhlZAcc, UnitPublic.act_Report, "Y", 1, 0);
+
+                return Ok(listKhlZAcc);
+            }
+            else
+                return Ok(res);
+
+        }
+
+
     }
 }

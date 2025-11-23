@@ -11,11 +11,9 @@ namespace ApiKarbord.Models
         [Key]
         public int Code { get; set; }
 
-
         public string Name { get; set; }
 
         public long? SortName { get; set; }
-
 
         public string Spec { get; set; }
     }

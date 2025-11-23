@@ -75,6 +75,9 @@ namespace ApiKarbord.Controllers.Unit
         public const string access_TrzAcc = "TrzAcc";
         public const string access_GrdZAcc = "GrdZAcc";
         public const string access_FADoc = "FADoc";
+        public const string access_KhlAcc = "KhlAcc";
+        public const string access_KhlZAcc = "KhlZAcc";
+
         public const string access_Dftr = "Dftr";
         public const string access_ADocR = "ADocR";
         public const string access_TChk = "TChk";

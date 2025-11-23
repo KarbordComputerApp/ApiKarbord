@@ -243,6 +243,8 @@
     <Compile Include="Models\GPS\Neshan\Geocoding.cs" />
     <Compile Include="Models\GPS\Neshan\Reverse.cs" />
     <Compile Include="Models\GPS\Neshan\routes.cs" />
+    <Compile Include="Models\Public\Web_KhlZAcc.cs" />
+    <Compile Include="Models\Public\Web_KhlAcc.cs" />
     <Compile Include="Models\Public\Web_FADoc.cs" />
     <Compile Include="Models\Public\Web_GrdZAcc.cs" />
     <Compile Include="Models\Public\Web_Daryafti_List.cs" />
