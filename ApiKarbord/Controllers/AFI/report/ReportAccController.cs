@@ -677,7 +677,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
                 sql += UnitPublic.SpiltCodeLike("AccCode", KhlAccObject.AccCode);
 
-                sql += " order by Tag, SortAccCode";
+                sql += " order by SortAccCode";
 
                 var listKhlAcc = DBase.DB.Database.SqlQuery<Web_KhlAcc>(sql);
                 UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_KhlAcc, UnitPublic.act_Report, "Y", 1, 0);
