@@ -8,12 +8,9 @@
 
     public class Web_KhlAcc
     {
-        public short? Tag { get; set; }
+        public byte? Tag { get; set; }
 
-        public byte? HasChild { get; set; }
-
-        public long? SortAccCode { get; set; }
-
+        [Key]
         public string AccCode { get; set; }
 
         [Key]
@@ -59,18 +56,12 @@
 
         public string AccF20 { get; set; }
 
-        public long? SortMkzCode { get; set; }
-
-        [Key]
         public string MkzCode { get; set; }
 
-        [Key]
         public string MkzName { get; set; }
 
-        [Key]
         public string OprCode { get; set; }
 
-        [Key]
         public string OprName { get; set; }
 
         public double? Bede { get; set; }
@@ -81,8 +72,12 @@
 
         public double? MonBest { get; set; }
 
-        [Key]
         public double MonTotal { get; set; }
+
+        //public long? SortAccCode { get; set; }
+
+        //  public long? SortMkzCode { get; set; }
+
 
     }
 }
