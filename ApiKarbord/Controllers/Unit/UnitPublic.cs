@@ -21,14 +21,14 @@ namespace ApiKarbord.Controllers.Unit
     public class UnitPublic
     {
 
-        public static int VerDB = 57;
+        public static int VerDB = 58;
         public static string conString = "";
 
-        //public static string titleVer = "API KarbordComputer Test : Ver ";
+       // public static string titleVer = "API KarbordComputer Test : Ver ";
        // public static int VerNumber = 527;
 
         public static string titleVer = "API KarbordComputer : Ver ";
-        public static int VerNumber = 1041;
+        public static int VerNumber = 1042;
 
 
         public static bool apiByFile = false;   // برای کارگزاری مفید true باشد
