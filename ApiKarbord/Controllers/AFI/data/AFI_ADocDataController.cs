@@ -84,7 +84,7 @@ namespace ApiKarbord.Controllers.AFI.data
         }
 
 
-        // GET: api/ADocData/ADocH لیست سند    
+        // Post: api/ADocData/ADocH لیست سند    
         [Route("api/ADocData/ADocH/{ace}/{sal}/{group}/")]
         public async Task<IHttpActionResult> PostAllWeb_ADocH(string ace, string sal, string group, ADocHObject ADocHObject)
         {

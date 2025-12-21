@@ -7844,6 +7844,12 @@ namespace ApiKarbord.Controllers.AFI.data
 
         }
 
+        // GET: api/Web_Data/Ver ورژن Api 
+        [Route("api/Web_Data/Ver")]
+        public async Task<IHttpActionResult> GetWeb_Ver()
+        {
+            return Ok(new { Ver = UnitPublic.VerNumber, VerDB = UnitPublic.VerDB });
+        }
 
     }
 }

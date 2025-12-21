@@ -206,8 +206,11 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AFI\data\AFI_ADocNotDataController.cs" />
+    <Compile Include="Controllers\AFI\data\AFI_ADocNotBiController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_ADocDataController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_ADocBiController.cs" />
+    <Compile Include="Controllers\AFI\data\AFI_ADocNotHiController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_FDocDataController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_ADocHiController.cs" />
     <Compile Include="Controllers\AFI\data\AFI_IDocBiController.cs" />
@@ -243,6 +246,7 @@
     <Compile Include="Models\GPS\Neshan\Geocoding.cs" />
     <Compile Include="Models\GPS\Neshan\Reverse.cs" />
     <Compile Include="Models\GPS\Neshan\routes.cs" />
+    <Compile Include="Models\Public\Web_ANotH.cs" />
     <Compile Include="Models\Public\Web_KhlZAcc.cs" />
     <Compile Include="Models\Public\Web_KhlAcc.cs" />
     <Compile Include="Models\Public\Web_FADoc.cs" />
@@ -476,6 +480,8 @@
     <Content Include="PrintForms\Public\ReportAGMkz-فرم عمومی" />
     <Content Include="PrintForms\Public\ReportAGOpr-فرم عمومی" />
     <Content Include="PrintForms\Public\ReportGrdZAcc-عمومی" />
+    <Content Include="PrintForms\Public\ReportKhlAcc-عمومی" />
+    <Content Include="PrintForms\Public\ReportKhlZAcc-عمومی" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

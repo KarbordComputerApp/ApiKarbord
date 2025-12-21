@@ -21,14 +21,14 @@ namespace ApiKarbord.Controllers.Unit
     public class UnitPublic
     {
 
-        public static int VerDB = 58;
+        public static int VerDB = 59;
         public static string conString = "";
 
        // public static string titleVer = "API KarbordComputer Test : Ver ";
        // public static int VerNumber = 527;
 
         public static string titleVer = "API KarbordComputer : Ver ";
-        public static int VerNumber = 1042;
+        public static int VerNumber = 1043;
 
 
         public static bool apiByFile = false;   // برای کارگزاری مفید true باشد
@@ -60,6 +60,7 @@ namespace ApiKarbord.Controllers.Unit
         public const string access_View = "View";
 
         public const string access_ADOC = "ADOC";
+        public const string access_ANOTE = "ANOTE";
         public const string access_SPFCT = "SPFCT";
         public const string access_SFCT = "SFCT";
         public const string access_SRFCT = "SRFCT";
