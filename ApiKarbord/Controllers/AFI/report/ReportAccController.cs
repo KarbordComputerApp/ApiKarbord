@@ -66,7 +66,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           mkzCode,
                           aModeCode,
                           dataAccount[2],
-                          dBName);
+                          dBName); 
 
                 if (TrzAccObject.Sath == 1)
                     sql += string.Format(" and (Level = {0})", TrzAccObject.Level);

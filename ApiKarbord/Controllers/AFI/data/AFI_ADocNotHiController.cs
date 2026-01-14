@@ -86,6 +86,8 @@ namespace ApiKarbord.Controllers.AFI.data
 
             public string F20 { get; set; }
 
+            public string ModeCode { get; set; }
+
         }
 
         // POST: api/AFI_ADocNotHi
@@ -113,10 +115,10 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @DocDate = N'{3}',
                                     @RelatedGroupActive = {4},
                                     @BranchCode = {5},
-                                    @UserCode = N'{6}',
+                                    @UserCode = N'''{6}''',
                                     @Tanzim = N'{7}',
                                     @TahieShode = N'{8}',
-                                    @Eghdam = N'{9}',
+                                    @Eghdam = N'''{9}''',
                                     @Status = N'{10}',
                                     @Spec = N'{11}',
                                     @Footer = N'{12}',
@@ -140,6 +142,7 @@ namespace ApiKarbord.Controllers.AFI.data
                                     @F18 = N'{30}',
                                     @F19 = N'{31}',
                                     @F20 = N'{32}',
+                                    @ModeCode = '{33}',
                                     @DocNo_Out = @DocNo_Out OUTPUT
                             SELECT	'return_value' = @return_value +'-'+  CONVERT(nvarchar, @DOCNO_OUT)",
                     //@DocTime = N'{5}', @mDocDate = N'{6}', @IP = N'{8}',
@@ -175,7 +178,9 @@ namespace ApiKarbord.Controllers.AFI.data
                     d.F17,
                     d.F18,
                     d.F19,
-                    d.F20);
+                    d.F20,
+                    d.ModeCode
+                    );
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_ANOTE);
