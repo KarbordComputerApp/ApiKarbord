@@ -25,7 +25,7 @@
 
         public DateTime? UpdateDate { get; set; }
 
-        public int CustMode { get; set; }
+        public int? CustMode { get; set; }
 
 
         public string MelliCode { get; set; }
