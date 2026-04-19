@@ -13,6 +13,8 @@
 
         public string KalaName { get; set; }
 
+        public string KGruCode { get; set; }
+
         public string KalaF01 { get; set; }
 
         public string KalaF02 { get; set; }

@@ -39,6 +39,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public int Sath { get; set; }
 
+            //public string StatusCode { get; set; }
+
         }
 
         // Post: api/ReportAcc/TrzAcc گزارش تراز دفاتر
@@ -47,6 +49,7 @@ namespace ApiKarbord.Controllers.AFI.report
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PostWeb_TrzAcc(string ace, string sal, string group, TrzAccObject TrzAccObject)
         {
+            //TrzAccObject.StatusCode = TrzAccObject.StatusCode == null ? "" : TrzAccObject.StatusCode;
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
@@ -56,6 +59,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 string oprCode = UnitPublic.SpiltCodeCama(TrzAccObject.OprCode);
                 string mkzCode = UnitPublic.SpiltCodeCama(TrzAccObject.MkzCode);
                 string aModeCode = UnitPublic.SpiltCodeCama(TrzAccObject.AModeCode);
+                //string status = UnitPublic.SpiltCodeCama(TrzAccObject.StatusCode);
 
                 string sql = string.Format(CultureInfo.InvariantCulture,
                           @"select * FROM  {7}.dbo.Web_TrzAcc({0}, '{1}','{2}','{3}','{4}', '{5}','{6}') AS TrzAcc where 1 = 1 ",
@@ -66,19 +70,20 @@ namespace ApiKarbord.Controllers.AFI.report
                           mkzCode,
                           aModeCode,
                           dataAccount[2],
-                          dBName);  
+                          dBName);
 
                 if (TrzAccObject.Sath == 1)
                     sql += string.Format(" and (Level = {0})", TrzAccObject.Level);
                 else
                     sql += string.Format(" and (Level <= {0})", TrzAccObject.Level);
 
+                //sql += UnitPublic.SpiltCodeAnd("Status", TrzAccObject.StatusCode);
                 sql += UnitPublic.SpiltCodeLike("AccCode", TrzAccObject.AccCode);
 
                 sql += " order by  SortAccCode";
 
                 var listTrzAcc = DBase.DB.Database.SqlQuery<Web_TrzAcc>(sql);
-                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group,0,  UnitPublic.access_TrzAcc, UnitPublic.act_Report, "Y", 1, 0);
+                UnitDatabase.SaveLog(dataAccount[0], dataAccount[1], dataAccount[2], ace, sal, group, 0, UnitPublic.access_TrzAcc, UnitPublic.act_Report, "Y", 1, 0);
 
                 return Ok(listTrzAcc);
             }
@@ -547,7 +552,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           @"select Tag,cast(ZGruCode as nvarchar(250)) as ZGruCode,ZAccCode,ZAccName,AccCode,AccName,Bede,Best,MonBede,MonBest,MonTotal FROM  {0}.dbo.Web_GrdZAcc('{1}','{2}','{3}','{4}','{5}','{6}') AS GrdZAcc where 1 = 1",
                           dBName,
                           GrdZAccObject.azTarikh,
-                          GrdZAccObject.taTarikh, 
+                          GrdZAccObject.taTarikh,
                           oprCode,
                           mkzCode,
                           aModeCode,

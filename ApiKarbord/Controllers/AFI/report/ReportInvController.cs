@@ -245,6 +245,8 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string StatusCode { get; set; }
 
+            public string TGruCode { get; set; }
+
         }
 
         // Post: api/ReportInv/IDocR گزارش ريز گردش اسناد انبارداري
@@ -271,6 +273,7 @@ namespace ApiKarbord.Controllers.AFI.report
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", IDocRObject.MkzCode);
                 sql += UnitPublic.SpiltCodeAnd("Status", IDocRObject.StatusCode);
                 sql += UnitPublic.SpiltCodeAnd("ModeCode", IDocRObject.ModeCode);
+                sql += UnitPublic.SpiltCodeAnd("TGruCode", IDocRObject.TGruCode);
 
                 if (IDocRObject.DocNo > 0)
                     sql += " and DocNo = " + IDocRObject.DocNo;

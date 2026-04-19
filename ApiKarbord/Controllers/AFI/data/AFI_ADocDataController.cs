@@ -50,8 +50,16 @@ namespace ApiKarbord.Controllers.AFI.data
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
-            string sql = String.Format("SELECT * FROM {0}.dbo.Web_CheckStatus where PDMode = {1} and Report = {2}", dBName, PDMode, Report);
+            string sql = String.Format("SELECT * FROM {0}.dbo.Web_CheckStatus where 1 = 1 ", dBName);
+            if (PDMode > 0)
+            {
+                sql += " and PDMode = " + PDMode;
+            }
 
+            if (Report >= 0)
+            {
+                sql += " and Report = " + Report;
+            }
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
             string res = UnitDatabase.TestAcount(DBase, dataAccount[3], ace, group, UnitPublic.access_View);
             if (res == "")

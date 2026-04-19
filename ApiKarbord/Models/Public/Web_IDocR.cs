@@ -123,6 +123,11 @@
 
         public int? InOut { get; set; }
 
+        public DateTime? mDocDate { get; set; }
+
+        public double? VTotalPrice { get; set; }
+
+        public double? STotalPrice { get; set; }
         /* 250)]
          public string F01 { get; set; }
 
@@ -271,6 +276,9 @@
 
         public double? SortDocNo { get; set; }
 
+        public string KGruCode { get; set; }
+
+        public string KGruName { get; set; }
 
         public string MainUnitName { get; set; }
 
