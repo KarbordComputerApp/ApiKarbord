@@ -476,7 +476,7 @@ namespace ApiKarbord.Controllers.AFI.data
         public async Task<IHttpActionResult> GetAllWeb_ADocP(string ace, string sal, string group, long SerialNumber)
         {
             string dBName = UnitDatabase.DatabaseName(ace, sal, group);
-            string sql = string.Format(@"select * from {0}.dbo.Web_ADocP where SerialNumber = {1} order by BandNo", dBName, SerialNumber);
+            string sql = string.Format(@"select top(10000) * from {0}.dbo.Web_ADocP where SerialNumber = {1} order by BandNo", dBName, SerialNumber);
             var dataAccount = UnitDatabase.ReadUserPassHeader(this.Request.Headers);
 
             var DBase = UnitDatabase.dataDB.Where(p => p.UserName.ToUpper() == dataAccount[0].ToUpper() && p.Password == dataAccount[1]).Single();
