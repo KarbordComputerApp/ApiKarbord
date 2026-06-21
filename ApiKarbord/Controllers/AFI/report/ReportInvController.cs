@@ -300,7 +300,7 @@ namespace ApiKarbord.Controllers.AFI.report
 
             public string InvCode { get; set; }
 
-            public string KGruCode { get; set; }
+            //public string KGruCode { get; set; }
 
             public string KalaCode { get; set; }
 
@@ -342,7 +342,7 @@ namespace ApiKarbord.Controllers.AFI.report
                           invCode,
                           dataAccount[2]);
 
-                sql += UnitPublic.SpiltCodeAnd("KGruCode", KrdxObject.KGruCode);
+                //sql += UnitPublic.SpiltCodeAnd("KGruCode", KrdxObject.KGruCode);
                 sql += UnitPublic.SpiltCodeAnd("ThvlCode", KrdxObject.ThvlCode);
                 sql += UnitPublic.SpiltCodeAnd("OprCode", KrdxObject.OprCode);
                 sql += UnitPublic.SpiltCodeAnd("MkzCode", KrdxObject.MkzCode);
